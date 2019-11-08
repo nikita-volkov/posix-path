@@ -7,10 +7,11 @@ module Coalmine.Prelude
 where
 
 import Prelude
-import Coalmine.Types as Exports
+import Coalmine.Applicative as Exports
 import Coalmine.Building as Exports
-import Coalmine.Parsing as Exports
 import Coalmine.Lens as Exports
+import Coalmine.Parsing as Exports
+import Coalmine.Types as Exports
 
 
 showAsText :: Show a => a -> Text
