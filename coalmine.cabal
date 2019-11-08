@@ -23,6 +23,8 @@ library
     Coalmine.Building
     Coalmine.Lens
     Coalmine.Parsing
+    Coalmine.Prelude
+    Coalmine.Types
   other-modules:
   build-depends:
     attoparsec,
