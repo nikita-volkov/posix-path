@@ -12,6 +12,7 @@ import Coalmine.Building as Exports
 import Coalmine.Lens as Exports
 import Coalmine.Parsing as Exports
 import Coalmine.Types as Exports
+import Reduction as Exports (Reduction)
 
 
 showAsText :: Show a => a -> Text

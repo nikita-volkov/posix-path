@@ -22,6 +22,7 @@ library
   exposed-modules:
     Coalmine.Applicative
     Coalmine.Building
+    Coalmine.Hasql.Decoder
     Coalmine.Lens
     Coalmine.Parsing
     Coalmine.Prelude
@@ -29,6 +30,8 @@ library
   other-modules:
   build-depends:
     attoparsec,
+    hasql,
     lens,
+    reduction,
     rerebase,
     text-builder
