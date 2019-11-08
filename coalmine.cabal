@@ -31,6 +31,7 @@ library
   build-depends:
     attoparsec,
     data-dword,
+    deque,
     hasql,
     lens,
     reduction,
