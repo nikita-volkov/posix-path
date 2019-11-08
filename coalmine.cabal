@@ -1,0 +1,31 @@
+name: coalmine
+version: 0.1
+synopsis: Collection of unpolished utils for application development
+homepage: https://github.com/nikita-volkov/coalmine
+bug-reports: https://github.com/nikita-volkov/coalmine/issues
+author: Nikita Volkov <nikita.y.volkov@mail.ru>
+maintainer: Nikita Volkov <nikita.y.volkov@mail.ru>
+copyright: (c) 2019 Nikita Volkov
+license: MIT
+license-file: LICENSE
+build-type: Simple
+cabal-version: >=1.10
+
+source-repository head
+  type: git
+  location: git://github.com/nikita-volkov/coalmine.git
+
+library
+  hs-source-dirs: library
+  default-extensions: BangPatterns, ConstraintKinds, DataKinds, DefaultSignatures, DeriveDataTypeable, DeriveFoldable, DeriveFunctor, DeriveGeneric, DeriveTraversable, EmptyDataDecls, FlexibleContexts, FlexibleInstances, FunctionalDependencies, GADTs, GeneralizedNewtypeDeriving, InstanceSigs, LambdaCase, LiberalTypeSynonyms, MagicHash, MultiParamTypeClasses, MultiWayIf, NoImplicitPrelude, NoMonomorphismRestriction, OverloadedStrings, PatternGuards, ParallelListComp, QuasiQuotes, RankNTypes, RecordWildCards, ScopedTypeVariables, StandaloneDeriving, TemplateHaskell, TupleSections, TypeFamilies, TypeOperators, UnboxedTuples
+  default-language: Haskell2010
+  exposed-modules:
+    Coalmine.Building
+    Coalmine.Lens
+    Coalmine.Parsing
+  other-modules:
+  build-depends:
+    attoparsec,
+    lens,
+    rerebase,
+    text-builder
