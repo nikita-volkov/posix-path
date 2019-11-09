@@ -13,7 +13,7 @@ import Coalmine.Lens as Exports
 import Coalmine.Parsing as Exports
 import Coalmine.Types as Exports
 import Reduction as Exports (Reduction)
-import Data.DoubleWord as Exports (Word96, Word128, Word160, Word192, Word224, Word256)
+import Data.DoubleWord as Exports (Word96(..), Word128(..), Word160(..), Word192(..), Word224(..), Word256(..))
 import Deque.Strict as Exports (Deque)
 
 
