@@ -37,4 +37,5 @@ library
     lens,
     reduction,
     rerebase,
-    text-builder
+    text-builder,
+    tuple
