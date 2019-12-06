@@ -17,6 +17,7 @@ import Data.DoubleWord as Exports (Word96(..), Word128(..), Word160(..), Word192
 import Deque.Strict as Exports (Deque)
 import Control.Foldl as Exports (Fold(..), FoldM(..))
 import Data.Tuple.All as Exports
+import Data.String.ToString as Exports
 
 
 showAsText :: Show a => a -> Text

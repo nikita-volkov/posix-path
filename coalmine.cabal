@@ -38,4 +38,5 @@ library
     reduction,
     rerebase,
     text-builder,
+    tostring,
     tuple
