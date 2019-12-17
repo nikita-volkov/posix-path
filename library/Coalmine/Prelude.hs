@@ -6,7 +6,7 @@ module Coalmine.Prelude
 )
 where
 
-import Prelude
+import Prelude hiding (Vector)
 import Coalmine.Applicative as Exports
 import Coalmine.Building as Exports
 import Coalmine.Lens as Exports
@@ -18,6 +18,7 @@ import Deque.Strict as Exports (Deque)
 import Control.Foldl as Exports (Fold(..), FoldM(..))
 import Data.Tuple.All as Exports
 import Data.String.ToString as Exports
+import Data.Vector.Generic as Exports (Vector)
 
 
 showAsText :: Show a => a -> Text
