@@ -35,6 +35,7 @@ library
     foldl,
     hasql,
     lens,
+    network-ip,
     reduction,
     rerebase,
     text-builder,
