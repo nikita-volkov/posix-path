@@ -19,7 +19,7 @@ import Control.Foldl as Exports (Fold(..), FoldM(..))
 import Data.Tuple.All as Exports
 import Data.String.ToString as Exports
 import Data.Vector.Generic as Exports (Vector)
-import Network.IP.Addr as Exports (IP, NetAddr)
+import Network.IP.Addr as Exports (IP(..), IP4(..), IP6(..), NetAddr(..))
 
 
 showAsText :: Show a => a -> Text
