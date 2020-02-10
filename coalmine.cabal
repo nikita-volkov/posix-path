@@ -31,6 +31,7 @@ library
   build-depends:
     attoparsec,
     data-dword,
+    deferred-folds,
     deque,
     foldl,
     hasql,
