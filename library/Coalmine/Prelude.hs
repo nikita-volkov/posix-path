@@ -19,8 +19,9 @@ import Data.Vector.Generic as Exports (Vector)
 import Data.Vector.Instances as Exports
 import DeferredFolds.Unfoldr as Exports (Unfoldr(..))
 import Deque.Strict as Exports (Deque)
+import GHC.Exts as Exports (IsList(..))
 import Network.IP.Addr as Exports (IP(..), IP4(..), IP6(..), NetAddr(..), InetAddr(..), InetPort(..))
-import Prelude hiding (Vector)
+import Prelude hiding (Vector, toList)
 import Reduction as Exports (Reduction)
 
 
