@@ -24,6 +24,7 @@ library
     Coalmine.Building
     Coalmine.Hasql.Decoder
     Coalmine.Lens
+    Coalmine.List
     Coalmine.Parsing
     Coalmine.Prelude
     Coalmine.Types
