@@ -26,7 +26,7 @@ Create a temporary directory.
 createTmpDir :: Fx env IOError FilePath
 createTmpDir = runExceptionalIO $ do
   dir <- Temporary.getCanonicalTemporaryDirectory
-  Temporary.createTempDirectory dir ""
+  Temporary.createTempDirectory dir "coalmine"
 
 {-|
 Delete directory.
