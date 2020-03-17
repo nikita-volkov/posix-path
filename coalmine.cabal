@@ -23,6 +23,7 @@ library
     Coalmine.Applicative
     Coalmine.Building
     Coalmine.Hasql.Decoder
+    Coalmine.Fx.FileSys
     Coalmine.Lens
     Coalmine.List
     Coalmine.Parsing
@@ -34,12 +35,16 @@ library
     data-dword,
     deferred-folds,
     deque,
+    directory,
+    filepath,
     foldl,
+    fx,
     hasql,
     lens,
     network-ip,
     reduction,
     rerebase,
+    temporary,
     text-builder,
     tostring,
     tuple,
