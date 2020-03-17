@@ -1,7 +1,7 @@
 module Coalmine.List where
 
 import Prelude
-import qualified Data.Map as Map
+import qualified Data.Map.Strict as Map
 
 
 nubSort :: Ord a => [a] -> [a]
