@@ -23,6 +23,7 @@ library
     Coalmine.Applicative
     Coalmine.Building
     Coalmine.Hasql.Decoder
+    Coalmine.Fx
     Coalmine.Fx.FileSys
     Coalmine.Lens
     Coalmine.List

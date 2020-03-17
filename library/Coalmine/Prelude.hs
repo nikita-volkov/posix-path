@@ -8,6 +8,7 @@ where
 
 import Coalmine.Applicative as Exports
 import Coalmine.Building as Exports
+import Coalmine.Fx as Exports (runFxFailing)
 import Coalmine.Lens as Exports
 import Coalmine.Parsing as Exports
 import Coalmine.Types as Exports
