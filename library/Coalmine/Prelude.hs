@@ -28,3 +28,6 @@ import Reduction as Exports (Reduction)
 
 showAsText :: Show a => a -> Text
 showAsText = show >>> fromString
+
+instance ToString TextBuilder where
+  toString = toString . fromBuilder
