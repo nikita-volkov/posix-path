@@ -17,8 +17,23 @@ provideTmpDir = acquireAndRelease createTmpDir deleteDir
 -- * Effects
 -------------------------
 
-createDirectoryIfMissing :: FilePath -> Fx env IOError ()
-createDirectoryIfMissing path = runExceptionalIO $ Directory.createDirectoryIfMissing True path
+{-|
+Wrapper around @`Directory.createDirectoryIfMissing` `True`@.
+-}
+createDirectoryRecursively :: FilePath -> Fx env IOError ()
+createDirectoryRecursively path = runExceptionalIO (Directory.createDirectoryIfMissing True path)
+
+{-|
+Wrapper around `Directory.listDirectory`.
+-}
+listDirectory :: FilePath -> Fx env IOError [FilePath]
+listDirectory path = runExceptionalIO (Directory.listDirectory path)
+
+{-|
+Wrapper around `Directory.removeFile`.
+-}
+removeFile :: FilePath -> Fx env IOError ()
+removeFile path = runExceptionalIO (Directory.removeFile path)
 
 {-|
 Create a temporary directory.
