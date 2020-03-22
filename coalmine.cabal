@@ -29,6 +29,7 @@ library
     Coalmine.List
     Coalmine.Parsing
     Coalmine.Prelude
+    Coalmine.S3
     Coalmine.Types
   other-modules:
   build-depends:
@@ -42,6 +43,7 @@ library
     fx,
     hasql,
     lens,
+    neat-interpolation,
     network-ip,
     reduction,
     rerebase,
@@ -49,4 +51,5 @@ library
     text-builder,
     tostring,
     tuple,
+    turtle,
     vector-instances
