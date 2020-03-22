@@ -57,3 +57,6 @@ moveFile to from = error "TODO"
 
 writeTextToFile :: FilePath -> Text -> Fx env IOError ()
 writeTextToFile path text = runExceptionalIO $ Text.writeFile path text
+
+setCurrentDirectory :: FilePath -> Fx env IOError ()
+setCurrentDirectory path = runExceptionalIO $ Directory.setCurrentDirectory path
