@@ -31,8 +31,10 @@ library
     Coalmine.Prelude
     Coalmine.S3
     Coalmine.Types
+    Coalmine.Yaml
   other-modules:
   build-depends:
+    aeson,
     attoparsec,
     data-dword,
     deferred-folds,
@@ -52,4 +54,5 @@ library
     tostring,
     tuple,
     turtle,
-    vector-instances
+    vector-instances,
+    yaml
