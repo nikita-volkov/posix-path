@@ -5,8 +5,12 @@ import Fx
 import qualified Turtle
 
 
-runFxFailing :: Show err => Fx () err a -> IO a
-runFxFailing = runFx . handleErr (fail . show)
+runFxFailing :: (err -> String) -> Fx () err a -> IO a
+runFxFailing show fx = do
+  either <- runFx (exposeErr fx)
+  case either of
+    Right a -> return a
+    Left err -> fail (show err)
 
 {-|
 Run a cmd, failing with its stderr output in case of non-zero return code.
