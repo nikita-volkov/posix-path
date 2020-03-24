@@ -24,7 +24,7 @@ library
     Coalmine.Building
     Coalmine.Hasql.Decoder
     Coalmine.Fx
-    Coalmine.Fx.FileSys
+    Coalmine.Fx.FilePath
     Coalmine.Lens
     Coalmine.List
     Coalmine.Megaparsec
