@@ -1,16 +1,12 @@
 module Coalmine.Fx where
 
-import Prelude
+import Coalmine.InternalPrelude
 import Fx
 import qualified Turtle
 
 
-runFxFailing :: (err -> String) -> Fx () err a -> IO a
-runFxFailing show fx = do
-  either <- runFx (exposeErr fx)
-  case either of
-    Right a -> return a
-    Left err -> fail (show err)
+runFxHandling :: (Monad m, FxRunning () err m) => (err -> m a) -> Fx () err a -> m a
+runFxHandling handler = join . fmap (fromEitherM handler) . runFx . exposeErr
 
 {-|
 Run a cmd, failing with its stderr output in case of non-zero return code.

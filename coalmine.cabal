@@ -33,6 +33,7 @@ library
     Coalmine.Types
     Coalmine.Yaml
   other-modules:
+    Coalmine.InternalPrelude
   build-depends:
     aeson,
     attoparsec,
