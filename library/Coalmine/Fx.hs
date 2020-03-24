@@ -5,7 +5,7 @@ import Fx
 import qualified Turtle
 
 
-runFxHandling :: (Monad m, FxRunning () err m) => (err -> m a) -> Fx () err a -> m a
+runFxHandling :: (Monad m, FxRunning env Void m) => (err -> m a) -> Fx env err a -> m a
 runFxHandling handler = join . fmap (fromEitherM handler) . runFx . exposeErr
 
 {-|
