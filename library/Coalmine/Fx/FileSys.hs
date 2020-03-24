@@ -11,7 +11,7 @@ import qualified Data.Text.IO as Text
 -------------------------
 
 provideTmpDir :: Provider IOError FilePath
-provideTmpDir = acquireAndRelease createTmpDir deleteDir
+provideTmpDir = acquireAndRelease createTmpDir (runExceptionalIO Directory.removeDirectoryRecursive)
 
 
 -- * Effects
@@ -21,25 +21,25 @@ provideTmpDir = acquireAndRelease createTmpDir deleteDir
 Wrapper around @`Directory.createDirectoryIfMissing` `True`@.
 -}
 createDirectoryRecursively :: FilePath -> Fx env IOError ()
-createDirectoryRecursively path = runExceptionalIO (Directory.createDirectoryIfMissing True path)
+createDirectoryRecursively path = runExceptionalIO (const (Directory.createDirectoryIfMissing True path))
 
 {-|
 Wrapper around `Directory.listDirectory`.
 -}
 listDirectory :: FilePath -> Fx env IOError [FilePath]
-listDirectory path = runExceptionalIO (Directory.listDirectory path)
+listDirectory path = runExceptionalIO (const (Directory.listDirectory path))
 
 {-|
 Wrapper around `Directory.removeFile`.
 -}
 removeFile :: FilePath -> Fx env IOError ()
-removeFile path = runExceptionalIO (Directory.removeFile path)
+removeFile path = runExceptionalIO (const (Directory.removeFile path))
 
 {-|
 Create a temporary directory.
 -}
 createTmpDir :: Fx env IOError FilePath
-createTmpDir = runExceptionalIO $ do
+createTmpDir = runExceptionalIO $ const $ do
   dir <- Temporary.getCanonicalTemporaryDirectory
   Temporary.createTempDirectory dir "coalmine"
 
@@ -47,7 +47,7 @@ createTmpDir = runExceptionalIO $ do
 Delete directory.
 -}
 deleteDir :: FilePath -> Fx env IOError ()
-deleteDir dir = runExceptionalIO $ Directory.removeDirectoryRecursive dir
+deleteDir dir = runExceptionalIO $ const $ Directory.removeDirectoryRecursive dir
 
 {-|
 Move file to one location from another, producing its new file path.
@@ -56,7 +56,7 @@ moveFile :: FilePath -> FilePath -> Fx env IOError FilePath
 moveFile to from = error "TODO"
 
 writeTextToFile :: FilePath -> Text -> Fx env IOError ()
-writeTextToFile path text = runExceptionalIO $ Text.writeFile path text
+writeTextToFile path text = runExceptionalIO $ const $ Text.writeFile path text
 
 setCurrentDirectory :: FilePath -> Fx env IOError ()
-setCurrentDirectory path = runExceptionalIO $ Directory.setCurrentDirectory path
+setCurrentDirectory path = runExceptionalIO $ const $ Directory.setCurrentDirectory path
