@@ -25,7 +25,7 @@ data Acl =
   BucketOwnerFullControlAcl |
   LogDeliveryWriteAcl
 
-upload :: StorageClass -> Acl -> Text -> FilePath -> Fx env Text ()
+upload :: StorageClass -> Acl -> Text -> FilePath -> Fx env (Text, Text) ()
 upload storageClass acl s3Dir file = void $ Fx.runCmd cmdText where
   cmdText = [text|aws s3 cp --quiet --storage-class=$storageClassText --acl=$aclText $sourceText $s3Dir|]
   storageClassText = case storageClass of
