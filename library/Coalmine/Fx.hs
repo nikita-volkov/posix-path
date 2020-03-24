@@ -8,14 +8,17 @@ import qualified Turtle
 runFxFailing :: Show err => Fx () err a -> IO a
 runFxFailing = runFx . handleErr (fail . show)
 
-runCmd :: Text -> Fx env IOError ()
+{-|
+Run a cmd, failing with its stderr output in case of non-zero return code.
+-}
+runCmd :: Text -> Fx env Text Text
 runCmd cmd = do
-  exitCode <- runTotalIO (Turtle.shell cmd empty)
+  (exitCode, out, err) <- runTotalIO (Turtle.shellStrictWithErr cmd empty)
   case exitCode of
-    Turtle.ExitSuccess -> return ()
-    Turtle.ExitFailure code -> throwErr (userError ("Command exited with code " <> show code))
+    Turtle.ExitSuccess -> return out
+    Turtle.ExitFailure _ -> throwErr err
 
-compressFile :: FilePath -> Fx env IOError FilePath
+compressFile :: FilePath -> Fx env Text FilePath
 compressFile path = do
   runCmd ("xz -zfq7e " <> fromString path)
   return (path <> ".xz")
