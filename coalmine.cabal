@@ -42,6 +42,7 @@ library
     directory,
     filepath,
     foldl,
+    from-sum,
     fx,
     hasql,
     lens,
