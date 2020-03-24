@@ -27,6 +27,7 @@ library
     Coalmine.Fx.FileSys
     Coalmine.Lens
     Coalmine.List
+    Coalmine.Megaparsec
     Coalmine.Parsing
     Coalmine.Prelude
     Coalmine.S3
@@ -47,6 +48,7 @@ library
     fx,
     hasql,
     lens,
+    megaparsec,
     neat-interpolation,
     network-ip,
     reduction,
