@@ -8,11 +8,13 @@ import qualified System.Remote.Monitoring as Server
 import qualified Data.Text.Encoding as Text
 
 
-provider :: Text -> Word16 -> Provider err Server
+type Env = Server
+
+provider :: Text -> Word16 -> Provider err Env
 provider host port =
   acquireAndRelease
     (runTotalIO $ const $ Server.forkServer (Text.encodeUtf8 host) (fromIntegral port))
     (runTotalIO $ \ server -> killThread (Server.serverThreadId server))
 
-customProvider :: Text -> Word16 -> (Server -> Provider err env) -> Provider err env
-customProvider host port subProvider = provider host port >>= subProvider
+extendedProvider :: Text -> Word16 -> (Server -> Provider err env) -> Provider err env
+extendedProvider host port subProvider = provider host port >>= subProvider

@@ -10,7 +10,9 @@ import qualified System.Remote.Label as Label
 import qualified Text.Builder
 
 
-provider :: Server -> Text -> Provider err ()
+type Env = ()
+
+provider :: Server -> Text -> Provider err Env
 provider server name =
   void $
   acquireAndRelease

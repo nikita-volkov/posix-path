@@ -9,12 +9,14 @@ import qualified System.Remote.Monitoring as Server
 import qualified System.Remote.Counter as Counter
 
 
-provider :: Server -> Text -> Provider err Counter
+type Env = Counter
+
+provider :: Server -> Text -> Provider err Env
 provider server name =
   runFx $ runTotalIO $ const $ Server.getCounter name server
 
-add :: Int64 -> Fx Counter err ()
+add :: Int64 -> Fx Env err ()
 add value = runTotalIO $ \ env -> Counter.add env value
 
-inc :: Fx Counter err ()
+inc :: Fx Env err ()
 inc = runTotalIO $ Counter.inc
