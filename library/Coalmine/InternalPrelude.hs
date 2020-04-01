@@ -19,6 +19,7 @@ import Network.IP.Addr as Exports (IP(..), IP4(..), IP6(..), NetAddr(..), InetAd
 import Prelude hiding (Vector, toList)
 import Reduction as Exports (Reduction)
 import Control.FromSum as Exports
+import Data.Hashable.Time as Exports
 
 
 showAsText :: Show a => a -> Text

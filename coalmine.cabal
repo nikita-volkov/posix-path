@@ -52,6 +52,7 @@ library
     foldl,
     from-sum,
     fx,
+    hashable-time,
     hasql,
     lens,
     megaparsec,
