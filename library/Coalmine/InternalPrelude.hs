@@ -20,6 +20,8 @@ import Prelude hiding (Vector, toList)
 import Reduction as Exports (Reduction)
 import Control.FromSum as Exports
 import Data.Hashable.Time as Exports
+import Data.Machine.Mealy as Exports
+import Data.Machine.Moore as Exports
 
 
 showAsText :: Show a => a -> Text

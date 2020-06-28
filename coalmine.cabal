@@ -55,6 +55,7 @@ library
     hashable-time,
     hasql,
     lens,
+    machines,
     megaparsec,
     neat-interpolation,
     network-ip,
