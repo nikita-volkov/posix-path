@@ -29,7 +29,6 @@ library
     Coalmine.Ekg.Server
     Coalmine.Fx
     Coalmine.Fx.FilePath
-    Coalmine.Lens
     Coalmine.List
     Coalmine.Megaparsec
     Coalmine.Parsing
@@ -49,16 +48,14 @@ library
     ekg,
     ekg-core,
     filepath,
-    foldl,
     from-sum,
     fx,
-    hashable-time,
     hasql,
-    lens,
     machines,
     megaparsec,
     neat-interpolation,
     network-ip,
+    optics,
     reduction,
     rerebase,
     temporary,
@@ -66,5 +63,4 @@ library
     tostring,
     tuple,
     turtle,
-    vector-instances,
     yaml
