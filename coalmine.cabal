@@ -22,6 +22,7 @@ library
   exposed-modules:
     Coalmine.Applicative
     Coalmine.Building
+    Coalmine.Domain
     Coalmine.Hasql.Decoder
     Coalmine.HCurrying
     Coalmine.Ekg.Counter
@@ -45,6 +46,8 @@ library
     deferred-folds,
     deque,
     directory,
+    domain,
+    domain-optics,
     ekg,
     ekg-core,
     filepath,
