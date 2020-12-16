@@ -61,6 +61,7 @@ library
     optics,
     reduction,
     rerebase,
+    template-haskell,
     temporary,
     text-builder,
     tostring,
