@@ -59,6 +59,7 @@ library
     neat-interpolation,
     network-ip,
     optics,
+    optics-core,
     reduction,
     rerebase,
     template-haskell,
