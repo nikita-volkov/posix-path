@@ -25,7 +25,7 @@ import Data.Machine.Moore as Exports
 import Optics as Exports hiding (Curry)
 import Data.Set.Optics as Exports
 import Language.Haskell.TH.Quote as Exports (QuasiQuoter(..))
-import Language.Haskell.TH.Syntax as Exports (Q, Lift(..))
+import Language.Haskell.TH.Syntax as Exports (Q, Lift)
 
 
 showAsText :: Show a => a -> Text
