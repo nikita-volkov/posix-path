@@ -37,6 +37,7 @@ library
     Coalmine.Ekg.Server
     Coalmine.Fx
     Coalmine.Fx.FilePath
+    Coalmine.HashSet
     Coalmine.List
     Coalmine.Megaparsec
     Coalmine.Optics
