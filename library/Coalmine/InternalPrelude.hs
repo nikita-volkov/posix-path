@@ -26,6 +26,8 @@ import Optics as Exports hiding (Curry)
 import Data.Set.Optics as Exports
 import Language.Haskell.TH.Quote as Exports (QuasiQuoter(..))
 import Language.Haskell.TH.Syntax as Exports (Q, Lift)
+import Acc as Exports (Acc)
+import Acc.NeAcc as Exports (NeAcc)
 
 
 showAsText :: Show a => a -> Text

@@ -49,6 +49,7 @@ library
   other-modules:
     Coalmine.InternalPrelude
   build-depends:
+    acc,
     aeson,
     attoparsec,
     data-dword,
