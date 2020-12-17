@@ -16,6 +16,37 @@ feedingMooreOf optic =
 
 {-|
 
+>>> toListOf foldedDuplicated [1,2,1,3,5,4,3,1]
+[1,3]
+
+-}
+foldedDuplicated :: (Eq a, Hashable a, Foldable f) => Fold (f a) a
+foldedDuplicated =
+  foldedFilteringByCount (> 1)
+
+{-|
+
+>>> toListOf foldedSingleton [1,2,1,3,5,4,3,1]
+[2,4,5]
+
+-}
+foldedSingleton :: (Eq a, Hashable a, Foldable f) => Fold (f a) a
+foldedSingleton =
+  foldedFilteringByCount (== 1)
+
+foldedFilteringByCount :: (Eq a, Hashable a, Foldable f) => (Int -> Bool) -> Fold (f a) a
+foldedFilteringByCount p =
+  foldedCounting % filtered (p . snd) % _1
+
+foldedCounting :: (Eq a, Hashable a, Foldable f) => Fold (f a) (a, Int)
+foldedCounting =
+  folding folder
+  where
+    folder i =
+      Mm.feedingFoldable i Mm.countEach & extract & HashMap.toList
+
+{-|
+
 >>> toListOf foldedUnique [1,2,1,3,1,4,2]
 [1,2,3,4]
 
