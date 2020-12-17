@@ -16,12 +16,12 @@ feedingMooreOf optic =
 
 {-|
 
->>> toListOf uniqueFolded [1,2,1,3,1,4,2]
+>>> toListOf foldedUnique [1,2,1,3,1,4,2]
 [1,2,3,4]
 
 -}
-uniqueFolded :: (Eq a, Hashable a, Foldable f) => Fold (f a) a
-uniqueFolded =
+foldedUnique :: (Eq a, Hashable a, Foldable f) => Fold (f a) a
+foldedUnique =
   folding HashSet.fromFoldable
 
 {-|
