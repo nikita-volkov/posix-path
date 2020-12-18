@@ -1,4 +1,4 @@
-module Coalmine.IndentingTextBuilder where
+module Coalmine.MultilineTextBuilder where
 
 import Coalmine.InternalPrelude
 import Coalmine.Building

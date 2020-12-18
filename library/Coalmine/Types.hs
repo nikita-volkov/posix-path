@@ -7,10 +7,10 @@ import Prelude
 import qualified Text.Builder as TextBuilder
 import qualified Data.Vector.Unboxed
 import qualified Data.Vector
-import qualified Coalmine.IndentingTextBuilder as IndentingTextBuilder
+import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 
 
-type IndentingTextBuilder = IndentingTextBuilder.Builder
+type MultilineTextBuilder = MultilineTextBuilder.Builder
 
 type TextBuilder = TextBuilder.Builder
 
