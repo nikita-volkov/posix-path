@@ -28,7 +28,12 @@ import Language.Haskell.TH.Quote as Exports (QuasiQuoter(..))
 import Language.Haskell.TH.Syntax as Exports (Q, Lift)
 import Acc as Exports (Acc)
 import Acc.NeAcc as Exports (NeAcc)
+import qualified Text.Builder as TextBuilder
 
 
 showAsText :: Show a => a -> Text
 showAsText = show >>> fromString
+
+
+instance ToString TextBuilder.Builder where
+  toString = toString . TextBuilder.run

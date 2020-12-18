@@ -10,7 +10,3 @@ import Coalmine.HCurrying as Exports
 import Coalmine.InternalPrelude as Exports
 import Coalmine.Parsing as Exports
 import Coalmine.Types as Exports
-
-
-instance ToString TextBuilder where
-  toString = toString . fromBuilder
