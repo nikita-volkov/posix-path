@@ -17,12 +17,13 @@ instance Building Builder where
   fromBuilder = toTextBuilder
 
 instance Show Builder where
-  show =
-    show . fromBuilder
+  show = show . fromBuilder
 
 instance IsString Builder where
-  fromString =
-    text . fromString
+  fromString = text . fromString
+
+instance ToString Builder where
+  toString = toString . toTextBuilder
 
 
 -- * Execution
