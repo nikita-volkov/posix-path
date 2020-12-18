@@ -13,9 +13,14 @@ import qualified Coalmine.List as List
 import qualified Data.Text as Text
 
 
-newtype Builder =
-  Builder (All, Int -> Tb.Builder)
-  deriving (Semigroup, Monoid)
+data Builder =
+  Builder Bool (Int -> Tb.Builder)
+
+instance Semigroup Builder where
+  (<>) (Builder a b) (Builder c d) = Builder (a && c) (b <> d)
+
+instance Monoid Builder where
+  mempty = Builder True mempty
 
 instance Building Builder where
   type BuilderTarget Builder = Tb.Builder
@@ -42,11 +47,11 @@ instance ToText Builder where
 -------------------------
 
 toTextBuilder :: Builder -> Tb.Builder
-toTextBuilder (Builder (_, builder)) =
+toTextBuilder (Builder _ builder) =
   builder 0
 
 null :: Builder -> Bool
-null (Builder (All a, _)) =
+null (Builder a _) =
   a
 
 
@@ -54,8 +59,8 @@ null (Builder (All a, _)) =
 -------------------------
 
 mapBuilder :: ((Int -> Tb.Builder) -> Int -> Tb.Builder) -> Builder -> Builder
-mapBuilder mapper (Builder (a, b)) =
-  Builder (a, mapper b)
+mapBuilder mapper (Builder a b) =
+  Builder a (mapper b)
 
 {-|
 
@@ -101,7 +106,7 @@ Extract lines from input text and indent each one of them according to the rende
 -}
 text :: Text -> Builder
 text text =
-  Builder (All (Text.null text), impl)
+  Builder (Text.null text) impl
   where
     impl indentationAmount =
       List.foldMapHeadAndTail Tb.text (foldMap lineTextMapper) lines
