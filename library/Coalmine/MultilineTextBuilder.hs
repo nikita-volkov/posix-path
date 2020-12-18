@@ -1,6 +1,12 @@
-module Coalmine.MultilineTextBuilder where
+module Coalmine.MultilineTextBuilder
+(
+  Builder,
+  null,
+  indent,
+)
+where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (null)
 import Coalmine.Building
 import qualified Text.Builder as Tb
 import qualified Coalmine.List as List
