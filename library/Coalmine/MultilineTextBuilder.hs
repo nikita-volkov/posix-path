@@ -8,7 +8,7 @@ import qualified Data.Text as Text
 
 
 newtype Builder =
-  Builder (Int -> Tb.Builder)
+  Builder (All, Int -> Tb.Builder)
   deriving (Semigroup, Monoid)
 
 instance Building Builder where
@@ -36,12 +36,20 @@ instance ToText Builder where
 -------------------------
 
 toTextBuilder :: Builder -> Tb.Builder
-toTextBuilder (Builder builder) =
+toTextBuilder (Builder (_, builder)) =
   builder 0
+
+null :: Builder -> Bool
+null (Builder (All a, _)) =
+  a
 
 
 -- * Transformation
 -------------------------
+
+mapBuilder :: ((Int -> Tb.Builder) -> Int -> Tb.Builder) -> Builder -> Builder
+mapBuilder mapper (Builder (a, b)) =
+  Builder (a, mapper b)
 
 {-|
 
@@ -66,8 +74,8 @@ abc
     j
 -}
 indent :: Int -> Builder -> Builder
-indent amount (Builder builder) =
-  Builder (\outerAmount -> builder (amount + outerAmount))
+indent amount =
+  mapBuilder (\builder outerAmount -> builder (amount + outerAmount))
 
 
 -- * Construction
@@ -87,7 +95,7 @@ Extract lines from input text and indent each one of them according to the rende
 -}
 text :: Text -> Builder
 text text =
-  Builder impl
+  Builder (All (Text.null text), impl)
   where
     impl indentationAmount =
       List.foldMapHeadAndTail Tb.text (foldMap lineTextMapper) lines
