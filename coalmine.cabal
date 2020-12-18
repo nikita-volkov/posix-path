@@ -77,6 +77,7 @@ library
     template-haskell,
     temporary,
     text-builder,
+    text-conversions,
     tostring,
     tuple,
     turtle,

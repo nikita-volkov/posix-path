@@ -25,6 +25,12 @@ instance IsString Builder where
 instance ToString Builder where
   toString = toString . toTextBuilder
 
+instance FromText Builder where
+  fromText = text
+
+instance ToText Builder where
+  toText = toText . toTextBuilder
+
 
 -- * Execution
 -------------------------
