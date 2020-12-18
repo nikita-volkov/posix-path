@@ -38,6 +38,7 @@ library
     Coalmine.Fx
     Coalmine.Fx.FilePath
     Coalmine.HashSet
+    Coalmine.IndentingTextBuilder
     Coalmine.List
     Coalmine.Megaparsec
     Coalmine.Optics
