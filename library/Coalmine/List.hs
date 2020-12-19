@@ -38,3 +38,9 @@ mapHeadAndTail hMapper tMapper =
 foldMapHeadAndTail :: Monoid b => (a -> b) -> ([a] -> b) -> [a] -> b
 foldMapHeadAndTail hMapper tMapper =
   eliminate mempty (\h t -> hMapper h <> tMapper t)
+
+isLongerThanOne :: [a] -> Bool
+isLongerThanOne =
+  \case
+    _ : _ : _ -> True
+    _ -> False
