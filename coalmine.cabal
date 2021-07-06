@@ -32,9 +32,6 @@ library
     Coalmine.Domain
     Coalmine.Hasql.Decoder
     Coalmine.HCurrying
-    Coalmine.Ekg.Counter
-    Coalmine.Ekg.RunTimeLabel
-    Coalmine.Ekg.Server
     Coalmine.Fx
     Coalmine.Fx.FilePath
     Coalmine.HashSet
@@ -59,8 +56,6 @@ library
     directory,
     domain,
     domain-optics,
-    ekg,
-    ekg-core,
     filepath,
     from-sum,
     fx,
