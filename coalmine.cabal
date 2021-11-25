@@ -45,6 +45,7 @@ library
     Coalmine.S3
     Coalmine.Types
     Coalmine.Yaml
+    Coalmine.YamlEncoder
   other-modules:
     Coalmine.InternalPrelude
   build-depends:
