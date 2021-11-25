@@ -12,6 +12,8 @@ license: MIT
 license-file: LICENSE
 build-type: Custom
 cabal-version: >=1.10
+extra-source-files:
+  Setup.hs
 
 source-repository head
   type: git
