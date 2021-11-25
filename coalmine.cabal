@@ -37,6 +37,8 @@ library
     Coalmine.HCurrying
     Coalmine.Fx
     Coalmine.Fx.FilePath
+    Coalmine.JsonEncoder
+    Coalmine.JsonLogging
     Coalmine.HashSet
     Coalmine.MultilineTextBuilder
     Coalmine.List
@@ -47,8 +49,6 @@ library
     Coalmine.S3
     Coalmine.Types
     Coalmine.Yaml
-    Coalmine.YamlEncoder
-    Coalmine.YamlLogging
   other-modules:
     Coalmine.InternalPrelude
   build-depends:
@@ -64,6 +64,7 @@ library
     filepath,
     from-sum,
     fx,
+    jsonifier,
     machines,
     megaparsec,
     moore-machines,

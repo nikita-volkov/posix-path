@@ -1,24 +1,24 @@
-module Coalmine.YamlEncoder where
+module Coalmine.JsonEncoder where
 
 import Coalmine.Prelude
-import qualified Data.Aeson as Aeson
+import qualified Jsonifier
 
 -- |
 -- Specification of how to serialize a data structure as YAML.
 --
 -- Can be used to generate 'Schema' for generating format spec
 -- to external processes or for generating code.
-data YamlEncoder a
-  = YamlEncoder Schema (a -> Aeson.Value)
+data JsonEncoder a
+  = JsonEncoder Schema (a -> Jsonifier.Json)
 
-literal :: Text -> YamlEncoder a
+literal :: Text -> JsonEncoder a
 literal = error "TODO"
 
-renderValueAsText :: YamlEncoder a -> a -> Text
+renderValueAsText :: JsonEncoder a -> a -> Text
 renderValueAsText =
   error "TODO"
 
-renderSchema :: YamlEncoder a -> Schema
+renderSchema :: JsonEncoder a -> Schema
 renderSchema =
   error "TODO"
 
