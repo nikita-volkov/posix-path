@@ -17,7 +17,6 @@ import Deque.Strict as Exports (Deque)
 import GHC.Exts as Exports (IsList(..))
 import Network.IP.Addr as Exports (IP(..), IP4(..), IP6(..), NetAddr(..), InetAddr(..), InetPort(..))
 import Prelude hiding (Vector, toList, chosen, uncons, (%))
-import Reduction as Exports (Reduction)
 import Control.FromSum as Exports
 import Data.Hashable.Time as Exports
 import Data.Machine.Mealy as Exports

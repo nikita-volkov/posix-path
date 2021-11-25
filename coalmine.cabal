@@ -1,6 +1,8 @@
 name: coalmine
 version: 0.1
-synopsis: Collection of unpolished utils for application development
+synopsis: My evolving toolkit that I come to projects with
+description:
+  Collection of unpolished utils for application development.
 homepage: https://github.com/nikita-volkov/coalmine
 bug-reports: https://github.com/nikita-volkov/coalmine/issues
 author: Nikita Volkov <nikita.y.volkov@mail.ru>
@@ -30,7 +32,6 @@ library
     Coalmine.Applicative
     Coalmine.Building
     Coalmine.Domain
-    Coalmine.Hasql.Decoder
     Coalmine.HCurrying
     Coalmine.Fx
     Coalmine.Fx.FilePath
@@ -59,7 +60,6 @@ library
     filepath,
     from-sum,
     fx,
-    hasql,
     machines,
     megaparsec,
     moore-machines,
@@ -67,7 +67,6 @@ library
     network-ip,
     optics,
     optics-core,
-    reduction,
     rerebase,
     template-haskell,
     temporary,
