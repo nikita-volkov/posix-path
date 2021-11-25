@@ -4,10 +4,8 @@ import Coalmine.InternalPrelude
 import Fx
 import qualified Turtle
 
-
-{-|
-Run a cmd, failing with its stderr output in case of non-zero return code.
--}
+-- |
+-- Run a cmd, failing with its stderr output in case of non-zero return code.
 runCmd :: Text -> Fx env (Text, Text) Text
 runCmd cmd = do
   (exitCode, out, err) <- runTotalIO (const (Turtle.shellStrictWithErr cmd empty))

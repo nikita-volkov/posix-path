@@ -1,22 +1,20 @@
 module Coalmine.List where
 
-import Prelude
 import qualified Data.Map.Strict as Map
-
+import Prelude
 
 nubSort :: Ord a => [a] -> [a]
 nubSort = nubSortOn id
 
 nubSortOn :: Ord b => (a -> b) -> [a] -> [a]
-nubSortOn mapper = Map.elems . foldr (\ a -> Map.insert (mapper a) a) Map.empty
+nubSortOn mapper = Map.elems . foldr (\a -> Map.insert (mapper a) a) Map.empty
 
-{-|
-Non-recursive transform over a list, like 'maybe'.
-
-> list 1 (\v _ -> v - 2) [5,6,7] == 3
-> list 1 (\v _ -> v - 2) []      == 1
-> \nil cons xs -> maybe nil (uncurry cons) (uncons xs) == list nil cons xs
--}
+-- |
+-- Non-recursive transform over a list, like 'maybe'.
+--
+-- > list 1 (\v _ -> v - 2) [5,6,7] == 3
+-- > list 1 (\v _ -> v - 2) []      == 1
+-- > \nil cons xs -> maybe nil (uncurry cons) (uncons xs) == list nil cons xs
 eliminate :: b -> (a -> [a] -> b) -> [a] -> b
 eliminate onNil onCons =
   \case

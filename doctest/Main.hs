@@ -1,9 +1,8 @@
 module Main where
 
-import Prelude
-import Test.DocTest
 import qualified Build_doctests as Bd
-
+import Test.DocTest
+import Prelude
 
 main :: IO ()
 main =

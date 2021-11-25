@@ -1,14 +1,12 @@
-{-|
-Extra types and aliases.
--}
+-- |
+-- Extra types and aliases.
 module Coalmine.Types where
 
-import Prelude
-import qualified Text.Builder as TextBuilder
-import qualified Data.Vector.Unboxed
-import qualified Data.Vector
 import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
-
+import qualified Data.Vector
+import qualified Data.Vector.Unboxed
+import qualified Text.Builder as TextBuilder
+import Prelude
 
 type MultilineTextBuilder = MultilineTextBuilder.Builder
 

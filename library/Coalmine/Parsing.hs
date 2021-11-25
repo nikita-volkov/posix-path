@@ -1,8 +1,7 @@
 module Coalmine.Parsing where
 
-import Prelude
 import qualified Data.Attoparsec.Text
-
+import Prelude
 
 class Parsing parser where
   type ParserInput parser
@@ -11,5 +10,5 @@ class Parsing parser where
 instance Parsing Data.Attoparsec.Text.Parser where
   type ParserInput Data.Attoparsec.Text.Parser = Text
   parse parser input =
-    Data.Attoparsec.Text.parseOnly (parser <* Data.Attoparsec.Text.endOfInput) input &
-    first fromString
+    Data.Attoparsec.Text.parseOnly (parser <* Data.Attoparsec.Text.endOfInput) input
+      & first fromString

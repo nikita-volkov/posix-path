@@ -1,7 +1,6 @@
 module Coalmine.Prelude
-(
-  module Exports,
-)
+  ( module Exports,
+  )
 where
 
 import Coalmine.Applicative as Exports

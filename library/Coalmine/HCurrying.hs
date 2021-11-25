@@ -2,7 +2,6 @@ module Coalmine.HCurrying where
 
 import Prelude
 
-
 class HCurrying a b | a -> b where
   curryH :: a -> b
   uncurryH :: b -> a
