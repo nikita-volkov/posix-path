@@ -126,18 +126,31 @@ location =
     pure ((line, column), column)
 
 -- |
--- Parse space-like chars as amount of spaces.
--- Tab is interpreted as two spaces.
---
--- Useful for detecting indentation.
-spaces :: Line Int
-spaces = error "TODO"
+-- Narrow a char.
+char :: (Char -> Maybe a) -> Line a
+char narrow =
+  Line $ \line column -> do
+    Just res <- A.satisfyWith narrow' isJust
+    case succ column of
+      column -> return (res, column)
+  where
+    narrow' x =
+      if x == '\r' || x == '\n'
+        then Nothing
+        else narrow x
+
+takeWhile :: (Char -> Bool) -> Line Text
+takeWhile p =
+  Line $ \_ column -> A.runScanner column step
+  where
+    step column char =
+      if char /= '\n' && char /= '\r' && p char
+        then Just $! succ column
+        else Nothing
 
 -- |
--- Narrow a UTF-8 char.
-utf8Char :: (Char -> Maybe a) -> Line a
-utf8Char = error "TODO"
-
+-- It is your responsibility to ensure that the matched text
+-- does not contain newline characters.
 exactString :: Text -> Line a
 exactString = error "TODO"
 
