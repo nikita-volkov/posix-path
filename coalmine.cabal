@@ -33,12 +33,14 @@ library
   exposed-modules:
     Coalmine.Applicative
     Coalmine.Building
+    Coalmine.CharPredicates
     Coalmine.Domain
     Coalmine.HCurrying
     Coalmine.Fx
     Coalmine.Fx.FilePath
     Coalmine.JsonEncoder
     Coalmine.HashSet
+    Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder
     Coalmine.List
     Coalmine.Megaparsec
