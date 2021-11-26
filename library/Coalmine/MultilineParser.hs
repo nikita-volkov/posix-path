@@ -148,6 +148,10 @@ takeWhile p =
         then Just $! succ column
         else Nothing
 
+skipWhile :: (Char -> Bool) -> Line ()
+skipWhile p =
+  error "TODO"
+
 -- |
 -- It is your responsibility to ensure that the matched text
 -- does not contain newline characters.
