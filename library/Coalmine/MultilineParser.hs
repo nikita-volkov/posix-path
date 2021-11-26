@@ -37,7 +37,7 @@ instance Alternative Lines where
   empty = error "TODO"
   Lines l <|> Lines r =
     Lines $ \state ->
-      error "TODO"
+      l state <|> r state
 
 instance Monad Lines where
   return = pure
@@ -55,7 +55,16 @@ instance Monad Lines where
 -- Returns the specific characters detected as indentation
 -- in the first line of this block and unapplied throughout it.
 indented :: Lines a -> Lines (Text, a)
-indented = error "TODO"
+indented (Lines runLines) =
+  Lines $ \(LinesState lineNum indentationNum indentationText) -> do
+    extraIndentation <- A.takeWhile CharPredicates.isSpaceOrTab
+    let extraIndentationSize = Text.length extraIndentation
+        linesState =
+          if extraIndentationSize == 0
+            then LinesState lineNum indentationNum indentationText
+            else LinesState lineNum (indentationNum + extraIndentationSize) (indentationText <> extraIndentation)
+    (res, linesState) <- runLines linesState
+    return ((extraIndentation, res), linesState)
 
 -- |
 -- Parse a single line starting at the indentation of the current level.
@@ -67,7 +76,7 @@ line (Line runLine) =
   Lines $ \(LinesState lineNum indentationNum indentationText) -> do
     unless (indentationNum == 0) $ void $ A.string indentationText
     (res, columnNum) <- runLine lineNum indentationNum
-    eolP
+    eolP <|> A.endOfInput
     return (res, (LinesState (succ lineNum) indentationNum indentationText))
   where
     eolP =
