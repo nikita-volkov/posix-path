@@ -79,7 +79,7 @@ indented (Lines runLines) =
          in return ((extraIndentation, res), linesState)
 
 -- |
--- Parse a single line as a whole starting at the indentation of the current level.
+-- Parse a single line starting at the indentation of the current level.
 -- The line parser must consume the input to the end of the line.
 --
 -- If the current line is not indented enough,
