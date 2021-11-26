@@ -88,7 +88,7 @@ line :: Line a -> Lines a
 line (Line runLine) =
   Lines $ \(LinesState isFirstLine lineNum indentationNum indentationText) -> do
     unless (isFirstLine || indentationNum == 0) $ void $ A.string indentationText
-    (res, columnNum) <- error "TODO"
+    (res, columnNum) <- runLine lineNum indentationNum
     eolP <|> A.endOfInput
     return (res, (LinesState False (succ lineNum) indentationNum indentationText))
   where
@@ -107,11 +107,8 @@ newtype Line a
         Int ->
         -- Column offset.
         Int ->
-        -- Remaining input.
-        Text ->
-        -- Parser producing result and new column offset
-        -- or failing with the colum offset at the error.
-        Either (Text, Int) (Text, Int, a)
+        -- Parser producing result and new column offset.
+        A.Parser (a, Int)
       )
 
 -- *
@@ -125,17 +122,31 @@ newtype Line a
 -- with a specific location in the parsed source code.
 location :: Line (Int, Int)
 location =
-  error "TODO"
+  Line $ \line column ->
+    pure ((line, column), column)
 
 -- |
 -- Narrow a char.
 char :: (Char -> Maybe a) -> Line a
 char narrow =
-  error "TODO"
+  Line $ \line column -> do
+    Just res <- A.satisfyWith narrow' isJust
+    case succ column of
+      column -> return (res, column)
+  where
+    narrow' x =
+      if x == '\r' || x == '\n'
+        then Nothing
+        else narrow x
 
 takeWhile :: (Char -> Bool) -> Line Text
 takeWhile p =
-  error "TODO"
+  Line $ \_ column -> A.runScanner column step
+  where
+    step column char =
+      if char /= '\n' && char /= '\r' && p char
+        then Just $! succ column
+        else Nothing
 
 skipWhile :: (Char -> Bool) -> Line ()
 skipWhile p =
