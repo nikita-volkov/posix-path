@@ -14,6 +14,8 @@ import qualified Text.Megaparsec.Char.Lexer as M
 
 data LinesState
   = LinesState
+      !Bool
+      -- ^ Whether we're at the first line.
       !Int
       -- ^ Line.
       !Int
@@ -46,38 +48,49 @@ instance Monad Lines where
 -- *
 
 -- |
--- Detects the extra indentation on current line
--- and runs the provided parser in the context of this indentation.
+-- Detects the extra indentation on the current line
+-- and runs the provided parser in the context of this indentation
+-- having already been applied.
 --
 -- In other words in the lifted parser you should assume that you're
--- dealing with the content with this indendation unapplied.
+-- dealing with the content as if it is not indented.
 --
 -- Returns the specific characters detected as indentation
 -- in the first line of this block and unapplied throughout it.
 indented :: Lines a -> Lines (Text, a)
 indented (Lines runLines) =
-  Lines $ \(LinesState lineNum indentationNum indentationText) -> do
+  Lines $ \(LinesState isFirstLine lineNum indentationNum indentationText) -> do
+    unless (indentationNum == 0) $ void $ A.string indentationText
     extraIndentation <- A.takeWhile CharPredicates.isSpaceOrTab
     let extraIndentationSize = Text.length extraIndentation
         linesState =
           if extraIndentationSize == 0
-            then LinesState lineNum indentationNum indentationText
-            else LinesState lineNum (indentationNum + extraIndentationSize) (indentationText <> extraIndentation)
+            then LinesState True lineNum indentationNum indentationText
+            else LinesState True lineNum (indentationNum + extraIndentationSize) (indentationText <> extraIndentation)
     (res, linesState) <- runLines linesState
-    return ((extraIndentation, res), linesState)
+    case linesState of
+      LinesState nestedIsFirstLine lineNum _ _ ->
+        let linesState =
+              LinesState
+                (isFirstLine && nestedIsFirstLine)
+                lineNum
+                indentationNum
+                indentationText
+         in return ((extraIndentation, res), linesState)
 
 -- |
--- Parse a single line starting at the indentation of the current level.
+-- Parse a single line as a whole starting at the indentation of the current level.
+-- The line parser must consume the input to the end of the line.
 --
 -- If the current line is not indented enough,
 -- it is the same as reaching the end of input, so this parser will fail.
 line :: Line a -> Lines a
 line (Line runLine) =
-  Lines $ \(LinesState lineNum indentationNum indentationText) -> do
-    unless (indentationNum == 0) $ void $ A.string indentationText
+  Lines $ \(LinesState isFirstLine lineNum indentationNum indentationText) -> do
+    unless (isFirstLine || indentationNum == 0) $ void $ A.string indentationText
     (res, columnNum) <- runLine lineNum indentationNum
     eolP <|> A.endOfInput
-    return (res, (LinesState (succ lineNum) indentationNum indentationText))
+    return (res, (LinesState False (succ lineNum) indentationNum indentationText))
   where
     eolP =
       void (A.char '\n') <|> (A.char '\r' *> (void (A.char '\n') <|> pure ()))
