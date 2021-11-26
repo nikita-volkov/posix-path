@@ -46,6 +46,7 @@ library
     Coalmine.Parsing
     Coalmine.Prelude
     Coalmine.S3
+    Coalmine.Streamer
     Coalmine.Types
     Coalmine.Yaml
   other-modules:
