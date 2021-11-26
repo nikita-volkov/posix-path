@@ -120,10 +120,11 @@ newtype Line a
 -- One typical application of this is in multi-stage parsers.
 -- This function lets you relate errors from further stages
 -- with a specific location in the parsed source code.
-location :: Line (Int, Int)
-location =
+locatedOnLine :: Line a -> Line (Located a)
+locatedOnLine (Line runLine) =
   Line $ \line column ->
-    pure ((line, column), column)
+    runLine line column <&> \(res, endColumn) ->
+      (Located (SingleLineSelection line column endColumn) res, endColumn)
 
 -- |
 -- Narrow a char.
