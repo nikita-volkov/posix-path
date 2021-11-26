@@ -27,23 +27,9 @@ data LinesState
 
 newtype Lines a
   = Lines (LinesState -> A.Parser (a, LinesState))
-
-instance Functor Lines where
-  fmap = error "TODO"
-
-instance Applicative Lines where
-  pure = error "TODO"
-  (<*>) = error "TODO"
-
-instance Alternative Lines where
-  empty = error "TODO"
-  Lines l <|> Lines r =
-    Lines $ \state ->
-      l state <|> r state
-
-instance Monad Lines where
-  return = pure
-  (>>=) = error "TODO"
+  deriving
+    (Functor, Applicative, Alternative, Monad, MonadPlus)
+    via (StateT LinesState A.Parser)
 
 -- *
 
