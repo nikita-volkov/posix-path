@@ -140,3 +140,34 @@ utf8Char = error "TODO"
 
 exactString :: Text -> Line a
 exactString = error "TODO"
+
+-- *
+
+-- |
+-- Location pointing to a chunk of data
+-- possibly spanning multiple lines.
+data Selection
+  = SingleLineSelection
+      !Int
+      -- ^ Line.
+      !Int
+      -- ^ Start column.
+      !Int
+      -- ^ End column.
+  | MultilineSelection
+      !Int
+      -- ^ Start line.
+      !Int
+      -- ^ Start column.
+      !Int
+      -- ^ End line.
+      !Int
+      -- ^ End column.
+  | UnendedSelection
+      !Int
+      -- ^ Start line.
+      !Int
+      -- ^ Start column.
+
+data Located a
+  = Located !Selection a
