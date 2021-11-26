@@ -4,6 +4,7 @@ module Coalmine.MultilineParser where
 
 import qualified Coalmine.CharPredicates as CharPredicates
 import Coalmine.Prelude
+import qualified Data.Attoparsec.Text as A
 import qualified Data.Text as Text
 import qualified Text.Megaparsec as M
 import qualified Text.Megaparsec.Char as M
@@ -11,34 +12,17 @@ import qualified Text.Megaparsec.Char.Lexer as M
 
 -- *
 
-data Located a
-  = Located
-      !Int
-      -- ^ Line.
-      !Int
-      -- ^ Column.
-      a
-  deriving (Functor)
-
-data Loc
-  = Loc
-      !Int
-      -- ^ Line.
-      !Int
-      -- ^ Column.
-
--- *
-
 data LinesState
   = LinesState
       !Int
+      -- ^ Line.
       !Int
-      ![Text]
+      -- ^ Indentation.
 
 -- *
 
 newtype Lines a
-  = Lines (LinesState -> Either (Int, Int, Text) (a, LinesState))
+  = Lines (LinesState -> A.Parser (a, LinesState))
 
 instance Functor Lines where
   fmap = error "TODO"
@@ -50,18 +34,14 @@ instance Applicative Lines where
 instance Alternative Lines where
   empty = error "TODO"
   Lines l <|> Lines r =
-    Lines $ \state -> case l state of
-      Right r -> Right r
-      Left _ -> r state
+    Lines $ \state ->
+      error "TODO"
+
+instance Monad Lines where
+  return = pure
+  (>>=) = error "TODO"
 
 -- *
-
-location :: Lines Loc
-location = error "TODO"
-
-located :: Lines a -> Lines (Located a)
-located (Lines run) = Lines $ \state@(LinesState line col _) ->
-  first (Located line col) <$> run state
 
 -- |
 -- Runs a parser on an indented input.
@@ -72,9 +52,9 @@ indented :: Int -> Lines a -> Lines a
 indented = error "TODO"
 
 -- |
--- Same as @\p -> 'spaces' >>= \i -> 'indented' i p@.
+-- Same as @\p -> 'line' 'spaces' >>= \i -> 'indented' i p@.
 autoindented :: Lines a -> Lines a
-autoindented = error "TODO"
+autoindented = \p -> line spaces >>= \i -> indented i p
 
 -- |
 -- Parse a single line starting at the indentation of the current level.
@@ -91,10 +71,30 @@ line = error "TODO"
 --
 -- Reaching a line end is the same as reaching end of input.
 newtype Line a
-  = -- | Parsec transformer over the state of column offset.
-    Line (M.ParsecT Void Text (State Int) a)
+  = Line
+      ( -- Line.
+        Int ->
+        -- Amount of indentation characters.
+        Int ->
+        -- Column offset.
+        Int ->
+        -- Parser producing result and new column offset.
+        A.Parser (a, Int)
+      )
 
 -- *
+
+-- |
+-- Current location.
+-- Use this to associate results with location in the input.
+--
+-- One typical application of this is in multi-stage parsers.
+-- This function lets you relate errors from further stages
+-- with a specific location in the parsed source code.
+location :: Line (Int, Int)
+location =
+  Line $ \line indentation column ->
+    pure ((line, indentation + column), column)
 
 -- |
 -- Parse space-like chars as amount of spaces.
@@ -105,7 +105,7 @@ spaces :: Line Int
 spaces = error "TODO"
 
 -- |
--- Narrow a UTF char.
+-- Narrow a UTF-8 char.
 utf8Char :: (Char -> Maybe a) -> Line a
 utf8Char = error "TODO"
 
