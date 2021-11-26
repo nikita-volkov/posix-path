@@ -17,7 +17,9 @@ data LinesState
       !Int
       -- ^ Line.
       !Int
-      -- ^ Indentation.
+      -- ^ Indentation in amount of chars.
+      !Text
+      -- ^ Specific chars used for indentation.
 
 -- *
 
@@ -44,25 +46,32 @@ instance Monad Lines where
 -- *
 
 -- |
--- Runs a parser on an indented input.
+-- Detects the extra indentation on current line
+-- and runs the provided parser in the context of this indentation.
 --
--- When the indentation is shorter and line is not blank,
--- it is the same as EOF for the wrapped parser.
-indented :: Int -> Lines a -> Lines a
+-- In other words in the lifted parser you should assume that you're
+-- dealing with the content with this indendation unapplied.
+--
+-- Returns the specific characters detected as indentation
+-- in the first line of this block and unapplied throughout it.
+indented :: Lines a -> Lines (Text, a)
 indented = error "TODO"
-
--- |
--- Same as @\p -> 'line' 'spaces' >>= \i -> 'indented' i p@.
-autoindented :: Lines a -> Lines a
-autoindented = \p -> line spaces >>= \i -> indented i p
 
 -- |
 -- Parse a single line starting at the indentation of the current level.
 --
 -- If the current line is not indented enough,
--- it is the same as reaching end of input, so this parser will fail.
+-- it is the same as reaching the end of input, so this parser will fail.
 line :: Line a -> Lines a
-line = error "TODO"
+line (Line runLine) =
+  Lines $ \(LinesState lineNum indentationNum indentationText) -> do
+    unless (indentationNum == 0) $ void $ A.string indentationText
+    (res, columnNum) <- runLine lineNum indentationNum
+    eolP
+    return (res, (LinesState (succ lineNum) indentationNum indentationText))
+  where
+    eolP =
+      void (A.char '\n') <|> (A.char '\r' *> (void (A.char '\n') <|> pure ()))
 
 -- *
 
@@ -72,9 +81,7 @@ line = error "TODO"
 -- Reaching a line end is the same as reaching end of input.
 newtype Line a
   = Line
-      ( -- Line.
-        Int ->
-        -- Amount of indentation characters.
+      ( -- Line offset.
         Int ->
         -- Column offset.
         Int ->
@@ -93,8 +100,8 @@ newtype Line a
 -- with a specific location in the parsed source code.
 location :: Line (Int, Int)
 location =
-  Line $ \line indentation column ->
-    pure ((line, indentation + column), column)
+  Line $ \line column ->
+    pure ((line, column), column)
 
 -- |
 -- Parse space-like chars as amount of spaces.
