@@ -95,16 +95,6 @@ line (Line runLine) =
     eolP =
       void (A.char '\n') <|> (A.char '\r' *> (void (A.char '\n') <|> pure ()))
 
--- |
--- Get the current line offset.
--- Use this to associate results with location in the input.
---
--- One typical application of this is in multi-stage parsers.
--- This function lets you relate errors from further stages
--- with a specific location in the parsed source code.
-lineOffset :: Lines Int
-lineOffset = error "TODO"
-
 -- *
 
 -- |
@@ -113,10 +103,11 @@ lineOffset = error "TODO"
 -- Reaching a line end is the same as reaching end of input.
 newtype Line a
   = Line
-      ( -- Column offset.
+      ( -- Line offset.
         Int ->
-        -- Remaining input on the line.
-        -- Already ensured not to contain newlines.
+        -- Column offset.
+        Int ->
+        -- Remaining input.
         Text ->
         -- Parser producing result and new column offset
         -- or failing with the colum offset at the error.
@@ -132,8 +123,9 @@ newtype Line a
 -- One typical application of this is in multi-stage parsers.
 -- This function lets you relate errors from further stages
 -- with a specific location in the parsed source code.
-columnOffset :: Line Int
-columnOffset = error "TODO"
+location :: Line (Int, Int)
+location =
+  error "TODO"
 
 -- |
 -- Narrow a char.
