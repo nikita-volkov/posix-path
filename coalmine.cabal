@@ -39,6 +39,7 @@ library
     Coalmine.Fx.FilePath
     Coalmine.HashSet
     Coalmine.HCurrying
+    Coalmine.Isomorphisms.Update
     Coalmine.JsonEncoder
     Coalmine.List
     Coalmine.Megaparsec
