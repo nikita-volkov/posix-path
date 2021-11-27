@@ -4,6 +4,7 @@ module Coalmine.MultilineParser where
 
 import qualified Coalmine.CharPredicates as CharPredicates
 import Coalmine.Prelude hiding (maybe)
+import qualified Coalmine.VectorExtras.Generic as Vec
 import qualified Data.Attoparsec.Text as A
 import qualified Data.Text as Text
 import qualified Text.Megaparsec as M
@@ -268,6 +269,27 @@ sepBy1 step map sep elem =
           _elem <- elem
           go (step acc _elem)
         else return acc
+
+vecSepBy1 ::
+  Vector v elem =>
+  -- |
+  -- Separator parser signaling whether a separator has been
+  -- successfully consumed.
+  --
+  -- False signals to exit the loop.
+  --
+  -- This allows us to avoid the need in Alternative.
+  Line Bool ->
+  Line elem ->
+  Line (v elem)
+vecSepBy1 sep elem =
+  sepBy1 step map sep elem <&> extract
+  where
+    map elem = (1, [elem])
+    step (!n, !list) elem =
+      (succ n, elem : list)
+    extract (n, list) =
+      Vec.fromReverseListN n list
 
 -- *
 
