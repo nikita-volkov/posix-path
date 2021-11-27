@@ -12,8 +12,8 @@ import qualified Text.Megaparsec.Char.Lexer as M
 
 -- *
 
-data LinesState
-  = LinesState
+data BlockState
+  = BlockState
       !Bool
       -- ^ Whether we're at the first line.
       !Int
@@ -25,15 +25,15 @@ data LinesState
 
 -- *
 
-parseLines :: Lines a -> Text -> Either Text a
-parseLines =
+parseBlock :: Block a -> Text -> Either Text a
+parseBlock =
   error "TODO"
 
-newtype Lines a
-  = Lines (LinesState -> A.Parser (a, LinesState))
+newtype Block a
+  = Block (BlockState -> A.Parser (a, BlockState))
   deriving
     (Functor, Applicative, Alternative, Monad, MonadPlus)
-    via (StateT LinesState A.Parser)
+    via (StateT BlockState A.Parser)
 
 -- *
 
@@ -47,21 +47,21 @@ newtype Lines a
 --
 -- Returns the specific characters detected as indentation
 -- in the first line of this block and unapplied throughout it.
-indented :: Lines a -> Lines (Text, a)
-indented (Lines runLines) =
-  Lines $ \(LinesState isFirstLine lineNum indentationNum indentationText) -> do
+indented :: Block a -> Block (Text, a)
+indented (Block runBlock) =
+  Block $ \(BlockState isFirstLine lineNum indentationNum indentationText) -> do
     unless (indentationNum == 0) $ void $ A.string indentationText
     extraIndentation <- A.takeWhile CharPredicates.isSpaceOrTab
     let extraIndentationSize = Text.length extraIndentation
         linesState =
           if extraIndentationSize == 0
-            then LinesState True lineNum indentationNum indentationText
-            else LinesState True lineNum (indentationNum + extraIndentationSize) (indentationText <> extraIndentation)
-    (res, linesState) <- runLines linesState
+            then BlockState True lineNum indentationNum indentationText
+            else BlockState True lineNum (indentationNum + extraIndentationSize) (indentationText <> extraIndentation)
+    (res, linesState) <- runBlock linesState
     case linesState of
-      LinesState nestedIsFirstLine lineNum _ _ ->
+      BlockState nestedIsFirstLine lineNum _ _ ->
         let linesState =
-              LinesState
+              BlockState
                 (isFirstLine && nestedIsFirstLine)
                 lineNum
                 indentationNum
@@ -74,13 +74,13 @@ indented (Lines runLines) =
 --
 -- If the current line is not indented enough,
 -- it is the same as reaching the end of input, so this parser will fail.
-line :: Line a -> Lines a
+line :: Line a -> Block a
 line (Line runLine) =
-  Lines $ \(LinesState isFirstLine lineNum indentationNum indentationText) -> do
+  Block $ \(BlockState isFirstLine lineNum indentationNum indentationText) -> do
     unless (isFirstLine || indentationNum == 0) $ void $ A.string indentationText
     (res, columnNum) <- runLine lineNum indentationNum
     eolP <|> A.endOfInput
-    return (res, (LinesState False (succ lineNum) indentationNum indentationText))
+    return (res, (BlockState False (succ lineNum) indentationNum indentationText))
   where
     eolP =
       void (A.char '\n') <|> (A.char '\r' *> (void (A.char '\n') <|> pure ()))
@@ -93,7 +93,7 @@ line (Line runLine) =
 -- Reaching a line end is the same as reaching end of input.
 --
 -- No Alternative instance is provided,
--- but alternation can be achieved using 'oneOfTokens'.
+-- but alternation can be achieved using 'oneOfLines'.
 newtype Line a
   = Line
       ( -- Line offset.
@@ -166,9 +166,9 @@ exactString :: Text -> Line a
 exactString = error "TODO"
 
 -- |
--- Expect one of multiple named tokens.
-oneOfTokens :: [(Text, Line a)] -> Line a
-oneOfTokens = error "TODO"
+-- Expect one of multiple named line contents.
+oneOfLines :: [(Text, Line a)] -> Line a
+oneOfLines = error "TODO"
 
 -- *
 
