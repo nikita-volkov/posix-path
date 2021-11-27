@@ -50,6 +50,8 @@ library
     Coalmine.S3
     Coalmine.Streamer
     Coalmine.Types
+    Coalmine.VectorExtras.Generic
+    Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml
   other-modules:
     Coalmine.InternalPrelude
