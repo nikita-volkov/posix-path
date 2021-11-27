@@ -35,15 +35,15 @@ library
     Coalmine.Building
     Coalmine.CharPredicates
     Coalmine.Domain
-    Coalmine.HCurrying
     Coalmine.Fx
     Coalmine.Fx.FilePath
-    Coalmine.JsonEncoder
     Coalmine.HashSet
-    Coalmine.MultilineParser
-    Coalmine.MultilineTextBuilder
+    Coalmine.HCurrying
+    Coalmine.JsonEncoder
     Coalmine.List
     Coalmine.Megaparsec
+    Coalmine.MultilineParser
+    Coalmine.MultilineTextBuilder
     Coalmine.Optics
     Coalmine.Parsing
     Coalmine.Prelude
