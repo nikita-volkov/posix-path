@@ -39,7 +39,7 @@ library
     Coalmine.Fx.FilePath
     Coalmine.HashSet
     Coalmine.HCurrying
-    Coalmine.Isomorphisms.Update
+    Coalmine.Isomorphisms
     Coalmine.JsonEncoder
     Coalmine.List
     Coalmine.Megaparsec
@@ -69,6 +69,8 @@ library
     filepath,
     from-sum,
     fx,
+    groups,
+    invariant,
     jsonifier,
     machines,
     megaparsec,

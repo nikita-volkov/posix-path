@@ -9,6 +9,9 @@ import Acc as Exports (Acc)
 import Acc.NeAcc as Exports (NeAcc)
 import Control.FromSum as Exports
 import Data.DoubleWord as Exports (Word128 (..), Word160 (..), Word192 (..), Word224 (..), Word256 (..), Word96 (..))
+import Data.Functor.Invariant as Exports
+import Data.Group as Exports
+import Data.Groupoid as Exports
 import Data.Hashable.Time as Exports
 import Data.Machine.Mealy as Exports
 import Data.Machine.Moore as Exports
