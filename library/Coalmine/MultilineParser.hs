@@ -204,6 +204,40 @@ many step acc elem =
         Just _elem -> go (step acc _elem)
         Nothing -> return acc
 
+sepBy ::
+  -- |
+  -- Update the accumulator.
+  -- Applied to every element after the first one.
+  (acc -> elem -> acc) ->
+  -- |
+  -- Convert the first element into the initial accumulator.
+  acc ->
+  -- |
+  -- Separator parser signaling whether a separator has been
+  -- successfully consumed.
+  --
+  -- False signals to exit the loop.
+  --
+  -- This allows us to avoid the need in Alternative.
+  Line Bool ->
+  Line (Maybe elem) ->
+  Line elem ->
+  Line acc
+sepBy step acc sep firstElem elem =
+  do
+    _firstElem <- firstElem
+    case _firstElem of
+      Just _firstElem -> go (step acc _firstElem)
+      Nothing -> return acc
+  where
+    go !acc = do
+      _sep <- sep
+      if _sep
+        then do
+          _elem <- elem
+          go (step acc _elem)
+        else return acc
+
 sepBy1 ::
   -- |
   -- Update the accumulator.
