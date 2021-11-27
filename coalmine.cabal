@@ -64,7 +64,6 @@ library
     domain,
     domain-optics,
     filepath,
-    foldl,
     from-sum,
     fx,
     jsonifier,

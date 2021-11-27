@@ -4,7 +4,6 @@ module Coalmine.MultilineParser where
 
 import qualified Coalmine.CharPredicates as CharPredicates
 import Coalmine.Prelude hiding (maybe)
-import Control.Foldl (Fold (..))
 import qualified Data.Attoparsec.Text as A
 import qualified Data.Text as Text
 import qualified Text.Megaparsec as M
@@ -183,15 +182,58 @@ maybe = error "TODO"
 
 -- * Combinators
 
-many :: Fold a b -> Line sep -> Line a -> Line b
-many (Fold foldStep foldStart foldEnd) sep elem =
-  go foldStart
+many ::
+  -- |
+  -- Update the accumulator.
+  -- Applied to every element after the first one.
+  (acc -> elem -> acc) ->
+  -- |
+  -- Initial accumulator.
+  acc ->
+  -- |
+  -- Parse the element.
+  -- Nothing signals to exit the loop.
+  Line (Maybe elem) ->
+  Line acc
+many step acc elem =
+  go acc
   where
     go !acc = do
-      res <- maybe elem
-      case res of
-        Just res -> go (foldStep acc res)
-        Nothing -> return $ foldEnd acc
+      _elem <- elem
+      case _elem of
+        Just _elem -> go (step acc _elem)
+        Nothing -> return acc
+
+sepBy1 ::
+  -- |
+  -- Update the accumulator.
+  -- Applied to every element after the first one.
+  (acc -> elem -> acc) ->
+  -- |
+  -- Convert the first element into the initial accumulator.
+  (elem -> acc) ->
+  -- |
+  -- Separator parser signaling whether a separator has been
+  -- successfully consumed.
+  --
+  -- False signals to exit the loop.
+  --
+  -- This allows us to avoid the need in Alternative.
+  Line Bool ->
+  Line elem ->
+  Line acc
+sepBy1 step map sep elem =
+  do
+    head <- elem
+    go (map head)
+  where
+    go !acc = do
+      _sep <- sep
+      if _sep
+        then do
+          _elem <- elem
+          go (step acc _elem)
+        else return acc
 
 -- *
 
