@@ -91,6 +91,9 @@ line (Line runLine) =
 -- Parser in the context of a single line with indentation of the scope applied.
 --
 -- Reaching a line end is the same as reaching end of input.
+--
+-- No Alternative instance is provided,
+-- but alternation can be achieved using 'oneOfTokens'.
 newtype Line a
   = Line
       ( -- Line offset.
@@ -101,7 +104,7 @@ newtype Line a
         A.Parser (a, Int)
       )
   deriving
-    (Functor, Applicative, Alternative, Monad, MonadPlus)
+    (Functor, Applicative, Monad)
     via (ReaderT Int (StateT Int A.Parser))
 
 -- *
@@ -161,6 +164,11 @@ skipWhile p =
 -- does not contain newline characters.
 exactString :: Text -> Line a
 exactString = error "TODO"
+
+-- |
+-- Expect one of multiple named tokens.
+oneOfTokens :: [(Text, Line a)] -> Line a
+oneOfTokens = error "TODO"
 
 -- *
 
