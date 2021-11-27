@@ -146,6 +146,13 @@ validatedChar predicate =
     predicate' x =
       x /= '\n' && x /= '\r' && predicate x
 
+specificChar :: Char -> Line ()
+specificChar char =
+  Line $ \line column -> do
+    A.char char
+    case succ column of
+      column -> return ((), column)
+
 takeWhile :: (Char -> Bool) -> Line Text
 takeWhile p =
   Line $ \_ column -> A.runScanner column step
@@ -162,7 +169,7 @@ skipWhile p =
 -- |
 -- It is your responsibility to ensure that the matched text
 -- does not contain newline characters.
-exactString :: Text -> Line a
+exactString :: Text -> Line ()
 exactString = error "TODO"
 
 -- |
