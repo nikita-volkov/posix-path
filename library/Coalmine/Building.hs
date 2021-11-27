@@ -1,6 +1,7 @@
 module Coalmine.Building where
 
-import qualified Text.Builder as TextBuilder
+import TextBuilder (TextBuilder)
+import qualified TextBuilder
 import Prelude
 
 class Monoid builder => Building builder where
@@ -8,7 +9,7 @@ class Monoid builder => Building builder where
   toBuilder :: BuilderTarget builder -> builder
   fromBuilder :: builder -> BuilderTarget builder
 
-instance Building TextBuilder.Builder where
-  type BuilderTarget TextBuilder.Builder = Text
+instance Building TextBuilder where
+  type BuilderTarget TextBuilder = Text
   toBuilder = TextBuilder.text
-  fromBuilder = TextBuilder.run
+  fromBuilder = TextBuilder.buildText

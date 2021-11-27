@@ -9,10 +9,10 @@ import Coalmine.Building
 import Coalmine.InternalPrelude hiding (null)
 import qualified Coalmine.List as List
 import qualified Data.Text as Text
-import qualified Text.Builder as Tb
+import qualified TextBuilder as Tb
 
 data Builder
-  = Builder Bool (Int -> Tb.Builder)
+  = Builder Bool (Int -> Tb.TextBuilder)
 
 instance Semigroup Builder where
   (<>) (Builder a b) (Builder c d) = Builder (a && c) (b <> d)
@@ -21,7 +21,7 @@ instance Monoid Builder where
   mempty = Builder True mempty
 
 instance Building Builder where
-  type BuilderTarget Builder = Tb.Builder
+  type BuilderTarget Builder = Tb.TextBuilder
   toBuilder = textBuilder
   fromBuilder = toTextBuilder
 
@@ -44,7 +44,7 @@ instance ToText Builder where
 
 -------------------------
 
-toTextBuilder :: Builder -> Tb.Builder
+toTextBuilder :: Builder -> Tb.TextBuilder
 toTextBuilder (Builder _ builder) =
   builder 0
 
@@ -56,7 +56,7 @@ null (Builder a _) =
 
 -------------------------
 
-mapBuilder :: ((Int -> Tb.Builder) -> Int -> Tb.Builder) -> Builder -> Builder
+mapBuilder :: ((Int -> Tb.TextBuilder) -> Int -> Tb.TextBuilder) -> Builder -> Builder
 mapBuilder mapper (Builder a b) =
   Builder a (mapper b)
 
@@ -93,7 +93,7 @@ indent amount =
 -- Same as @'text' . 'fromBuilder'@.
 --
 -- For details on its behavior refer to 'text'.
-textBuilder :: Tb.Builder -> Builder
+textBuilder :: Tb.TextBuilder -> Builder
 textBuilder =
   text . fromBuilder
 

@@ -24,17 +24,18 @@ import GHC.Exts as Exports (IsList (..))
 import Language.Haskell.TH.Quote as Exports (QuasiQuoter (..))
 import Language.Haskell.TH.Syntax as Exports (Lift, Q)
 import Network.IP.Addr as Exports (IP (..), IP4 (..), IP6 (..), InetAddr (..), InetPort (..), NetAddr (..))
-import qualified Text.Builder as TextBuilder
+import TextBuilder (TextBuilder, buildText)
+import qualified TextBuilder
 import Prelude hiding (Vector, chosen, toList, uncons, (%))
 
 showAsText :: Show a => a -> Text
 showAsText = show >>> fromString
 
-instance FromText TextBuilder.Builder where
+instance FromText TextBuilder where
   fromText = TextBuilder.text
 
-instance ToText TextBuilder.Builder where
-  toText = TextBuilder.run
+instance ToText TextBuilder where
+  toText = buildText
 
-instance ToString TextBuilder.Builder where
-  toString = toString . TextBuilder.run
+instance ToString TextBuilder where
+  toString = toString . buildText

@@ -3,3 +3,7 @@ resolver: nightly-2021-11-19
 extra-deps:
   - {git: "https://github.com/nikita-volkov/fx", commit: "a612390cf54c37150c367324b154170921b98318"}
   - {git: "https://github.com/nikita-volkov/moore-machines", commit: "7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290"}
+  - git: https://github.com/nikita-volkov/text-builder
+    commit: 13744b5a3faeb1cda3c749612b07f94bb2e013c4
+  - git: https://github.com/nikita-volkov/yaml-unscrambler
+    commit: 630840e20698389f30a75d5af5c0b8ba249f5600
