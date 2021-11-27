@@ -100,6 +100,9 @@ newtype Line a
         -- Parser producing result and new column offset.
         A.Parser (a, Int)
       )
+  deriving
+    (Functor, Applicative, Alternative, Monad, MonadPlus)
+    via (ReaderT Int (StateT Int A.Parser))
 
 -- *
 
