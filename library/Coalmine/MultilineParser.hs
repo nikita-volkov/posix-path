@@ -111,6 +111,11 @@ newtype Line a
 -- *
 
 -- |
+-- Run an attoparsec parser on the remaining content of this line.
+attoparse :: A.Parser a -> Line a
+attoparse = error "TODO"
+
+-- |
 -- Current location.
 -- Use this to associate results with location in the input.
 --
