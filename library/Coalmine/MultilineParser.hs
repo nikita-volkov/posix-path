@@ -25,6 +25,10 @@ data LinesState
 
 -- *
 
+parseLines :: Lines a -> Text -> Either Text a
+parseLines =
+  error "TODO"
+
 newtype Lines a
   = Lines (LinesState -> A.Parser (a, LinesState))
   deriving
@@ -114,8 +118,8 @@ locatedOnLine (Line runLine) =
 
 -- |
 -- Narrow a char.
-char :: (Char -> Maybe a) -> Line a
-char narrow =
+narrowedChar :: (Char -> Maybe a) -> Line a
+narrowedChar narrow =
   Line $ \line column -> do
     Just res <- A.satisfyWith narrow' isJust
     case succ column of
@@ -125,6 +129,16 @@ char narrow =
       if x == '\r' || x == '\n'
         then Nothing
         else narrow x
+
+validatedChar :: (Char -> Bool) -> Line Char
+validatedChar predicate =
+  Line $ \line column -> do
+    char <- A.satisfy predicate'
+    case succ column of
+      column -> return (char, column)
+  where
+    predicate' x =
+      x /= '\n' && x /= '\r' && predicate x
 
 takeWhile :: (Char -> Bool) -> Line Text
 takeWhile p =
