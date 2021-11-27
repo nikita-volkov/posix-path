@@ -3,7 +3,8 @@
 module Coalmine.MultilineParser where
 
 import qualified Coalmine.CharPredicates as CharPredicates
-import Coalmine.Prelude
+import Coalmine.Prelude hiding (maybe)
+import Control.Foldl (Fold (..))
 import qualified Data.Attoparsec.Text as A
 import qualified Data.Text as Text
 import qualified Text.Megaparsec as M
@@ -176,6 +177,21 @@ exactString = error "TODO"
 -- Expect one of multiple named line contents.
 oneOfLines :: [(Text, Line a)] -> Line a
 oneOfLines = error "TODO"
+
+maybe :: Line a -> Line (Maybe a)
+maybe = error "TODO"
+
+-- * Combinators
+
+many :: Fold a b -> Line sep -> Line a -> Line b
+many (Fold foldStep foldStart foldEnd) sep elem =
+  go foldStart
+  where
+    go !acc = do
+      res <- maybe elem
+      case res of
+        Just res -> go (foldStep acc res)
+        Nothing -> return $ foldEnd acc
 
 -- *
 
