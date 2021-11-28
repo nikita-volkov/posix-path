@@ -69,3 +69,6 @@ updateMap k (PartialIso vi vo) =
 -- failing otherwise
 insertInMap :: k -> v -> EndoPartialIso (Map k v)
 insertInMap = error "TODO"
+
+ensureMapContainsKey :: k -> EndoPartialIso (Map k v)
+ensureMapContainsKey k = error "TODO"
