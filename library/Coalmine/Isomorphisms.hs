@@ -42,18 +42,28 @@ instance Monoid (PartialEndoIso a) where
 instance Group (PartialEndoIso a) where
   invert = coerce (inv :: PartialIso a a -> PartialIso a a)
 
-monoPartial :: (a -> a) -> (a -> a) -> PartialEndoIso a
-monoPartial forw back =
+totalPartialEndoIso :: (a -> a) -> (a -> a) -> PartialEndoIso a
+totalPartialEndoIso forw back =
   PartialEndoIso $ PartialIso (Just . forw) (Just . back)
 
-isoMonoPartial :: Iso (->) a a -> PartialEndoIso a
-isoMonoPartial = error "TODO"
+isoPartialEndoIso :: Iso (->) a a -> PartialEndoIso a
+isoPartialEndoIso = error "TODO"
 
 addInt :: Int -> PartialEndoIso Int
-addInt x = monoPartial (+ x) (subtract x)
+addInt x = totalPartialEndoIso (+ x) (subtract x)
 
 subtractInt :: Int -> PartialEndoIso Int
-subtractInt x = monoPartial (subtract x) (+ x)
+subtractInt x = totalPartialEndoIso (subtract x) (+ x)
 
-atMapKey :: k -> PartialEndoIso v -> PartialEndoIso (Map k v)
-atMapKey = error "TODO"
+-- |
+-- Update an element in map if it exists.
+--
+-- The whole operation fails if it doesn't.
+updateMap :: k -> PartialEndoIso v -> PartialEndoIso (Map k v)
+updateMap = error "TODO"
+
+-- |
+-- Insert only if the key is not present,
+-- failing otherwise
+insertInMap :: k -> v -> PartialEndoIso (Map k v)
+insertInMap = error "TODO"
