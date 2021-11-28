@@ -6,6 +6,8 @@ import qualified Data.Map.Strict as Map
 
 -- *
 
+type EndoPartialIso a = PartialIso a a
+
 data PartialIso a b
   = PartialIso
       (a -> Maybe b)
@@ -24,46 +26,30 @@ instance Category PartialIso where
   id = PartialIso pure pure
   (.) = o
 
--- *
+-- **
 
-newtype PartialEndoIso a
-  = PartialEndoIso (PartialIso a a)
+totalPartialIso :: (a -> b) -> (b -> a) -> PartialIso a b
+totalPartialIso forw back =
+  PartialIso (Just . forw) (Just . back)
 
-instance Invariant PartialEndoIso where
-  invmap = error "TODO"
+isoPartialIso :: Iso (->) a b -> PartialIso a b
+isoPartialIso = error "TODO"
 
-instance Semigroup (PartialEndoIso a) where
-  PartialEndoIso l <> PartialEndoIso r =
-    PartialEndoIso (o l r)
+addInt :: Int -> EndoPartialIso Int
+addInt x = totalPartialIso (+ x) (subtract x)
 
-instance Monoid (PartialEndoIso a) where
-  mempty = PartialEndoIso id
-
-instance Group (PartialEndoIso a) where
-  invert = coerce (inv :: PartialIso a a -> PartialIso a a)
-
-totalPartialEndoIso :: (a -> a) -> (a -> a) -> PartialEndoIso a
-totalPartialEndoIso forw back =
-  PartialEndoIso $ PartialIso (Just . forw) (Just . back)
-
-isoPartialEndoIso :: Iso (->) a a -> PartialEndoIso a
-isoPartialEndoIso = error "TODO"
-
-addInt :: Int -> PartialEndoIso Int
-addInt x = totalPartialEndoIso (+ x) (subtract x)
-
-subtractInt :: Int -> PartialEndoIso Int
-subtractInt x = totalPartialEndoIso (subtract x) (+ x)
+subtractInt :: Int -> EndoPartialIso Int
+subtractInt x = totalPartialIso (subtract x) (+ x)
 
 -- |
 -- Update an element in map if it exists.
 --
 -- The whole operation fails if it doesn't.
-updateMap :: k -> PartialEndoIso v -> PartialEndoIso (Map k v)
-updateMap = error "TODO"
+updateMap :: k -> EndoPartialIso v -> EndoPartialIso (Map k v)
+updateMap k (PartialIso i o) = error "TODO"
 
 -- |
 -- Insert only if the key is not present,
 -- failing otherwise
-insertInMap :: k -> v -> PartialEndoIso (Map k v)
+insertInMap :: k -> v -> EndoPartialIso (Map k v)
 insertInMap = error "TODO"
