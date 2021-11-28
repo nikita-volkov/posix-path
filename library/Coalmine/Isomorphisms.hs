@@ -45,8 +45,24 @@ subtractInt x = totalPartialIso (subtract x) (+ x)
 -- Update an element in map if it exists.
 --
 -- The whole operation fails if it doesn't.
-updateMap :: k -> EndoPartialIso v -> EndoPartialIso (Map k v)
-updateMap k (PartialIso i o) = error "TODO"
+updateMap :: (Ord k) => k -> EndoPartialIso v -> EndoPartialIso (Map k v)
+updateMap k (PartialIso vi vo) =
+  PartialIso mi mo
+  where
+    mi = Map.alterF alter k
+      where
+        alter = \case
+          Nothing -> Nothing
+          Just a -> case vi a of
+            Nothing -> Nothing
+            Just a -> Just (Just a)
+    mo = Map.alterF alter k
+      where
+        alter = \case
+          Nothing -> Nothing
+          Just a -> case vi a of
+            Nothing -> Nothing
+            Just a -> Just (Just a)
 
 -- |
 -- Insert only if the key is not present,
