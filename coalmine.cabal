@@ -87,6 +87,7 @@ library
     tostring,
     tuple,
     turtle,
+    vector-th-unbox,
     yaml
 
 test-suite doctest

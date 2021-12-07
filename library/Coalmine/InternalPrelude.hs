@@ -21,6 +21,7 @@ import Data.Tuple.All as Exports hiding (only)
 import Data.Vector.Generic as Exports (Vector)
 import Data.Vector.Instances as Exports
 import Data.Vector.Unboxed as Exports (Unbox)
+import Data.Vector.Unboxed.Deriving as Exports (derivingUnbox)
 import DeferredFolds.Unfoldr as Exports (Unfoldr (..))
 import Deque.Strict as Exports (Deque)
 import GHC.Exts as Exports (IsList (..))
