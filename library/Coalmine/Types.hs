@@ -12,3 +12,5 @@ type MultilineTextBuilder = MultilineTextBuilder.Builder
 type UVec = Data.Vector.Unboxed.Vector
 
 type Vec = Data.Vector.Vector
+
+type BVec = Data.Vector.Vector
