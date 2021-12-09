@@ -54,7 +54,6 @@ library
     Coalmine.Types
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
-    Coalmine.Ws
     Coalmine.Yaml
   other-modules:
     Coalmine.InternalPrelude
@@ -90,8 +89,6 @@ library
     tuple,
     turtle,
     vector-th-unbox,
-    websockets,
-    wuss,
     yaml,
 
 test-suite doctest
