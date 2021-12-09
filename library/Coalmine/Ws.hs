@@ -1,4 +1,15 @@
-module Coalmine.Ws where
+module Coalmine.Ws
+  ( -- *
+    Env,
+    acquire,
+    release,
+    send,
+    recv,
+
+    -- *
+    Err (..),
+  )
+where
 
 import Coalmine.Prelude
 import qualified Network.WebSockets as Ws
