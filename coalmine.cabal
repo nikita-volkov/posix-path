@@ -54,6 +54,7 @@ library
     Coalmine.Types
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
+    Coalmine.Ws
     Coalmine.Yaml
   other-modules:
     Coalmine.InternalPrelude
@@ -89,7 +90,9 @@ library
     tuple,
     turtle,
     vector-th-unbox,
-    yaml
+    websockets,
+    wuss,
+    yaml,
 
 test-suite doctest
   type: exitcode-stdio-1.0
