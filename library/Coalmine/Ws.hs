@@ -10,6 +10,7 @@ import qualified Wuss
 data Err
   = ConnectionErr !Ws.ConnectionException
   | TimeoutErr
+  | ClosedErr
 
 data Env
   = Env
@@ -17,12 +18,8 @@ data Env
       -- ^ Incoming messages.
       !(TQueue ByteString)
       -- ^ Outgoing messages.
-      !(TMVar ShutdownReason)
+      !(TMVar Err)
       -- ^ Shutdown var.
-
-data ShutdownReason
-  = FailedShutdownReason !Err
-  | ClosedShutdownReason
 
 -- *
 
@@ -41,10 +38,10 @@ acquire host port path timeoutSetting = do
                   res <- try $ timeout timeoutSetting $ Ws.receiveData conn
                   case res of
                     Left exc -> do
-                      void $ atomically $ tryPutTMVar shutdownVar $ FailedShutdownReason $ ConnectionErr exc
+                      void $ atomically $ tryPutTMVar shutdownVar $ ConnectionErr exc
                     Right res -> case res of
                       Nothing ->
-                        void $ atomically $ tryPutTMVar shutdownVar $ FailedShutdownReason $ TimeoutErr
+                        void $ atomically $ tryPutTMVar shutdownVar $ TimeoutErr
                       Just res ->
                         join . atomically . asum $
                           [ writeTBQueue inQueue res $> loop,
@@ -60,28 +57,36 @@ acquire host port path timeoutSetting = do
                     res <- try $ timeout timeoutSetting $ Ws.sendTextData conn bs
                     case res of
                       Left exc ->
-                        void $ atomically $ tryPutTMVar shutdownVar $ FailedShutdownReason $ ConnectionErr exc
+                        void $ atomically $ tryPutTMVar shutdownVar $ ConnectionErr exc
                       Right Nothing ->
-                        void $ atomically $ tryPutTMVar shutdownVar $ FailedShutdownReason $ TimeoutErr
+                        void $ atomically $ tryPutTMVar shutdownVar $ TimeoutErr
                       Right (Just ()) ->
                         loop
                   _ -> return ()
            in loop
     case res of
       Left exc ->
-        void $ atomically $ tryPutTMVar shutdownVar $ FailedShutdownReason $ ConnectionErr exc
+        void $ atomically $ tryPutTMVar shutdownVar $ ConnectionErr exc
       Right Nothing ->
-        void $ atomically $ tryPutTMVar shutdownVar $ FailedShutdownReason TimeoutErr
+        void $ atomically $ tryPutTMVar shutdownVar TimeoutErr
       Right (Just ()) ->
         return ()
   return $ Env inQueue outQueue shutdownVar
 
 release :: Env -> IO ()
 release (Env _ _ shutdownVar) =
-  void $ atomically $ tryPutTMVar shutdownVar ClosedShutdownReason
+  void $ atomically $ tryPutTMVar shutdownVar ClosedErr
 
 send :: Env -> ByteString -> IO (Either Err ())
-send = error "TODO"
+send (Env _ outQueue shutdownVar) msg =
+  atomically . asum $
+    [ readTMVar shutdownVar <&> Left,
+      writeTQueue outQueue msg $> Right ()
+    ]
 
 recv :: Env -> IO (Either Err ByteString)
-recv = error "TODO"
+recv (Env inQueue _ shutdownVar) =
+  atomically . asum $
+    [ readTMVar shutdownVar <&> Left,
+      readTBQueue inQueue <&> Right
+    ]
