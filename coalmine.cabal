@@ -51,6 +51,7 @@ library
     Coalmine.Prelude
     Coalmine.S3
     Coalmine.Streamer
+    Coalmine.TH
     Coalmine.Types
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
