@@ -32,7 +32,7 @@ upload storageClass acl s3Dir file = void $ Fx.runCmd cmdText
       StandardStorageClass -> "STANDARD"
       ReducedRedundancyStorageClass -> "REDUCED_REDUNDANCY"
       StandardIaStorageClass -> "STANDARD_IA"
-      OneZoneIaStorageClass -> "ONE-ZONE_IA"
+      OneZoneIaStorageClass -> "ONEZONE_IA"
       IntelligentTieringStorageClass -> "INTELLIGENT_TIERING"
       GlacierStorageClass -> "GLACIER"
       DeepArchiveStorageClass -> "DEEP_ARCHIVE"
