@@ -1,4 +1,4 @@
-resolver: nightly-2021-11-19
+resolver: nightly-2022-01-04
 
 extra-deps:
   - {git: "https://github.com/nikita-volkov/fx", commit: "a612390cf54c37150c367324b154170921b98318"}
@@ -7,3 +7,4 @@ extra-deps:
     commit: 13744b5a3faeb1cda3c749612b07f94bb2e013c4
   - git: https://github.com/nikita-volkov/yaml-unscrambler
     commit: 630840e20698389f30a75d5af5c0b8ba249f5600
+  - aeson-2.0.2.0

@@ -71,8 +71,6 @@ library
     filepath,
     from-sum,
     fx,
-    groups,
-    invariant,
     jsonifier,
     machines,
     megaparsec,
