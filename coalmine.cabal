@@ -46,6 +46,7 @@ library
     Coalmine.Megaparsec
     Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder
+    Coalmine.Name
     Coalmine.Optics
     Coalmine.Parsing
     Coalmine.Prelude
@@ -58,10 +59,14 @@ library
     Coalmine.Yaml
   other-modules:
     Coalmine.InternalPrelude
+    Coalmine.Name.Attoparsec
+    Coalmine.Name.Megaparsec
   build-depends:
     acc,
     aeson,
+    aeson-value-parser,
     attoparsec,
+    attoparsec-data,
     data-dword,
     deferred-folds,
     deque,
@@ -87,6 +92,7 @@ library
     tostring,
     tuple,
     turtle,
+    vector-builder,
     vector-th-unbox,
     yaml,
 

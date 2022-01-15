@@ -8,3 +8,4 @@ extra-deps:
   - git: https://github.com/nikita-volkov/yaml-unscrambler
     commit: 630840e20698389f30a75d5af5c0b8ba249f5600
   - aeson-2.0.2.0
+  - aeson-value-parser-0.19.6
