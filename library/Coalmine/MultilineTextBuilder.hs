@@ -42,8 +42,6 @@ instance ToText Builder where
 
 -- * Execution
 
--------------------------
-
 toTextBuilder :: Builder -> Tb.TextBuilder
 toTextBuilder (Builder _ builder) =
   builder 0
@@ -53,8 +51,6 @@ null (Builder a _) =
   a
 
 -- * Transformation
-
--------------------------
 
 mapBuilder :: ((Int -> Tb.TextBuilder) -> Int -> Tb.TextBuilder) -> Builder -> Builder
 mapBuilder mapper (Builder a b) =
@@ -86,8 +82,6 @@ indent amount =
   mapBuilder (\builder outerAmount -> builder (amount + outerAmount))
 
 -- * Construction
-
--------------------------
 
 -- |
 -- Same as @'text' . 'fromBuilder'@.
