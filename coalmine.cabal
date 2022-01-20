@@ -34,6 +34,7 @@ library
   exposed-modules:
     Coalmine.Applicative
     Coalmine.Building
+    Coalmine.ByteArrayArray
     Coalmine.CharPredicates
     Coalmine.Domain
     Coalmine.Fx
