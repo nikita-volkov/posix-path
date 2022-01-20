@@ -16,9 +16,7 @@ data ByteArrayArray = ByteArrayArray
   { -- | Bytes.
     array :: !ByteArray#,
     -- | Offsets.
-    offsets :: !(UVec Int),
-    -- | Length.
-    length :: !Int
+    offsets :: !(UVec Int)
   }
 
 -- *
