@@ -2,11 +2,12 @@ module Coalmine.MultilineTextBuilder
   ( Builder,
     null,
     indent,
+    intercalate,
   )
 where
 
 import Coalmine.Building
-import Coalmine.InternalPrelude hiding (null)
+import Coalmine.InternalPrelude hiding (intercalate, null)
 import qualified Coalmine.List as List
 import qualified Data.Text as Text
 import qualified TextBuilder as Tb
@@ -80,6 +81,18 @@ mapBuilder mapper (Builder a b) =
 indent :: Int -> Builder -> Builder
 indent amount =
   mapBuilder (\builder outerAmount -> builder (amount + outerAmount))
+
+-- |
+-- Concatenate a list by inserting a separator between each element.
+intercalate :: Builder -> [Builder] -> Builder
+intercalate (Builder _sepNull _sepRender) _builders =
+  Builder _null _render
+  where
+    _null = _sepNull && all null _builders
+    _render _indent =
+      Tb.intercalate
+        (_sepRender _indent)
+        (fmap (\(Builder _ _render) -> _render _indent) _builders)
 
 -- * Construction
 
