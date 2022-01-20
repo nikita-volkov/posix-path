@@ -17,8 +17,6 @@ newtype Name = Name (Vec Text)
 
 -- * Instances
 
--------------------------
-
 deriving instance Eq Name
 
 deriving instance Ord Name
@@ -46,8 +44,6 @@ instance AttoparsecData.LenientParser Name where
 
 -- *
 
--------------------------
-
 attoparsec :: Attoparsec.Parser Name
 attoparsec = Attoparsec.nameWords <&> Name
 
@@ -58,8 +54,6 @@ stringAesonValueParser :: AesonValueParser.String Name
 stringAesonValueParser = AesonValueParser.megaparsedText megaparsec
 
 -- *
-
--------------------------
 
 toLowerCamelCaseText :: Name -> Text
 toLowerCamelCaseText (Name vec) = case toList vec of
@@ -74,8 +68,6 @@ toSpinalCaseText (Name vec) = Text.intercalate "-" (toList vec)
 
 -- *
 
--------------------------
-
 toLowerCamelCaseTextBuilder :: Name -> TextBuilder
 toLowerCamelCaseTextBuilder (Name vec) = case toList vec of
   head : tail -> mconcat (TextBuilder.text head : fmap (TextBuilder.text . Text.toTitle) tail)
@@ -88,8 +80,6 @@ toSpinalCaseTextBuilder :: Name -> TextBuilder
 toSpinalCaseTextBuilder (Name vec) = TextBuilder.intercalate "-" (fmap TextBuilder.text vec)
 
 -- *
-
--------------------------
 
 refineText :: Text -> Either Text Name
 refineText = Megaparsec.refineText megaparsec
