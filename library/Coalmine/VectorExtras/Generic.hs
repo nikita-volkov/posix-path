@@ -1,6 +1,6 @@
 module Coalmine.VectorExtras.Generic where
 
-import Coalmine.Prelude hiding (Vector)
+import Coalmine.Prelude hiding (Vector, length)
 import qualified Coalmine.VectorExtras.Generic.Mutable as Mut
 import Data.Vector.Generic
 import qualified Data.Vector.Generic.Mutable as Mut
@@ -39,3 +39,7 @@ initialized size initialize = runST $ do
   mv <- Mut.unsafeNew size
   initialize mv
   unsafeFreeze mv
+
+{-# INLINE lastMaybe #-}
+lastMaybe :: Vector v a => v a -> Maybe a
+lastMaybe v = v !? pred (length v)
