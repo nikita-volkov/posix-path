@@ -85,6 +85,7 @@ library
     network-ip,
     optics,
     optics-core,
+    primitive,
     rerebase,
     template-haskell,
     temporary,
