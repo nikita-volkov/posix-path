@@ -35,6 +35,7 @@ library
     Coalmine.Applicative
     Coalmine.Building
     Coalmine.ByteArrayArray
+    Coalmine.ByteArrayArray.Ends
     Coalmine.CharPredicates
     Coalmine.Domain
     Coalmine.Fx
