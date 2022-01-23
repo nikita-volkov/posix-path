@@ -40,6 +40,8 @@ library
     Coalmine.Domain
     Coalmine.Fx
     Coalmine.Fx.FilePath
+    Coalmine.Formatting
+    Coalmine.Formatting.Rendering
     Coalmine.HashSet
     Coalmine.HCurrying
     Coalmine.Isomorphisms
