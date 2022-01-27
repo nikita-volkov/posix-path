@@ -42,6 +42,15 @@ instance Monoid Name where
 instance AttoparsecData.LenientParser Name where
   lenientParser = attoparsec
 
+instance ToString Name where
+  toString = toString . toText
+
+instance ToText Name where
+  toText = toText . toTextBuilder
+
+instance ToTextBuilder Name where
+  toTextBuilder = toSpinalCaseTextBuilder
+
 -- *
 
 attoparsec :: Attoparsec.Parser Name
