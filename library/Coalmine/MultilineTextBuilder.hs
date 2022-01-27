@@ -9,7 +9,6 @@ where
 import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
 import qualified Coalmine.List as List
-import Coalmine.ToTextBuilder
 import qualified Data.Text as Text
 import qualified TextBuilder as Tb
 

@@ -8,5 +8,4 @@ import Coalmine.Building as Exports
 import Coalmine.HCurrying as Exports
 import Coalmine.InternalPrelude as Exports
 import Coalmine.Parsing as Exports
-import Coalmine.ToTextBuilder as Exports
 import Coalmine.Types as Exports
