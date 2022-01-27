@@ -1,6 +1,7 @@
 module Coalmine.SimplePaths
   ( DirPath,
     FilePath,
+    inDir,
   )
 where
 
@@ -12,6 +13,15 @@ import qualified TextBuilder
 
 -- *
 
+-- |
+-- >>> "a/b" :: DirPath
+-- "a/b/"
+--
+-- >>> "a/b/" :: DirPath
+-- "a/b/"
+--
+-- >>> "/a/b/" :: DirPath
+-- "/a/b/"
 data DirPath
   = DirPath !Bool ![Text]
 
@@ -26,9 +36,8 @@ instance Monoid DirPath where
 
 instance LenientParser DirPath where
   lenientParser =
-    AttoparsecHelpers.directories <&> \case
-      "" : directories -> DirPath True directories
-      directories -> DirPath False directories
+    DirPath True <$> AttoparsecHelpers.absDirPath
+      <|> DirPath False <$> AttoparsecHelpers.dirPath
 
 instance IsString DirPath where
   fromString =
@@ -45,11 +54,23 @@ instance ToText DirPath where
 instance ToTextBuilder DirPath where
   toTextBuilder (DirPath abs dirs) =
     if abs
-      then foldMap (mappend "/" . fromText) dirs
-      else TextBuilder.intercalate "/" (fmap fromText dirs)
+      then "/" <> foldMap (flip mappend "/" . fromText) dirs
+      else foldMap (flip mappend "/" . fromText) dirs
+
+instance Show DirPath where
+  show = show . toText
 
 -- *
 
+-- |
+-- >>> inDir "a/b" ("c/d/e" :: FilePath)
+-- "a/b/c/d/e"
+--
+-- >>> inDir "a/b/" ("c/d/e" :: FilePath)
+-- "a/b/c/d/e"
+--
+-- >>> inDir "a/b/" ("/c/d/e" :: FilePath)
+-- "/c/d/e"
 data FilePath
   = FilePath
       !DirPath
@@ -59,14 +80,43 @@ data FilePath
       ![Text]
       -- ^ File extensions.
 
+instance LenientParser FilePath where
+  lenientParser =
+    FilePath <$> dir <*> AttoparsecHelpers.fileName <*> many AttoparsecHelpers.extension
+    where
+      dir = DirPath <$> AttoparsecHelpers.abs <*> AttoparsecHelpers.filePathDirs
+
+instance IsString FilePath where
+  fromString =
+    either error id
+      . Attoparsec.parseOnly (AttoparsecHelpers.complete lenientParser)
+      . fromString
+
+instance ToString FilePath where
+  toString = toString . toText
+
+instance ToText FilePath where
+  toText = toText . toTextBuilder
+
+instance ToTextBuilder FilePath where
+  toTextBuilder (FilePath dir name extensions) =
+    toTextBuilder dir <> toTextBuilder name
+      <> foldMap (mappend "." . toTextBuilder) extensions
+
+instance Show FilePath where
+  show = show . toText
+
 -- *
 
 class InDir path where
   inDir :: DirPath -> path -> path
 
 instance InDir FilePath where
-  inDir lDir (FilePath rDir fileName extensions) =
-    FilePath (lDir <> rDir) fileName extensions
+  inDir lDir (FilePath rDir name extensions) =
+    FilePath (lDir <> rDir) name extensions
+
+instance InDir DirPath where
+  inDir = (<>)
 
 -- *
 
