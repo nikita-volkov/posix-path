@@ -2,6 +2,7 @@ module Coalmine.SimplePaths
   ( DirPath,
     FilePath,
     inDir,
+    filePathDir,
   )
 where
 
@@ -125,3 +126,6 @@ mapFileName = error "TODO"
 
 mapFileExtensions :: ([Text] -> [Text]) -> FilePath -> FilePath
 mapFileExtensions = error "TODO"
+
+filePathDir :: FilePath -> DirPath
+filePathDir (FilePath dir _ _) = dir
