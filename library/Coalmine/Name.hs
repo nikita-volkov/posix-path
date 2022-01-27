@@ -66,6 +66,9 @@ toUpperCamelCaseText (Name vec) = foldMap Text.toTitle vec
 toSpinalCaseText :: Name -> Text
 toSpinalCaseText (Name vec) = Text.intercalate "-" (toList vec)
 
+toSnakeCaseText :: Name -> Text
+toSnakeCaseText (Name vec) = Text.intercalate "_" (toList vec)
+
 -- *
 
 toLowerCamelCaseTextBuilder :: Name -> TextBuilder
@@ -78,6 +81,9 @@ toUpperCamelCaseTextBuilder (Name vec) = foldMap (TextBuilder.text . Text.toTitl
 
 toSpinalCaseTextBuilder :: Name -> TextBuilder
 toSpinalCaseTextBuilder (Name vec) = TextBuilder.intercalate "-" (fmap TextBuilder.text vec)
+
+toSnakeCaseTextBuilder :: Name -> TextBuilder
+toSnakeCaseTextBuilder (Name vec) = TextBuilder.intercalate "_" (fmap TextBuilder.text vec)
 
 -- *
 
