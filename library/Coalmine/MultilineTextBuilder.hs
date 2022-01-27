@@ -9,6 +9,7 @@ where
 import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
 import qualified Coalmine.List as List
+import Coalmine.ToTextBuilder
 import qualified Data.Text as Text
 import qualified TextBuilder as Tb
 
@@ -41,11 +42,11 @@ instance FromText Builder where
 instance ToText Builder where
   toText = toText . toTextBuilder
 
--- * Execution
+instance ToTextBuilder Builder where
+  toTextBuilder (Builder _ builder) =
+    builder 0
 
-toTextBuilder :: Builder -> Tb.TextBuilder
-toTextBuilder (Builder _ builder) =
-  builder 0
+-- * Execution
 
 null :: Builder -> Bool
 null (Builder a _) =

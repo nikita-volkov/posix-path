@@ -40,12 +40,13 @@ instance ToString DirPath where
   toString = toString . toText
 
 instance ToText DirPath where
-  toText = toText . toBuilder
-    where
-      toBuilder (DirPath abs dirs) =
-        if abs
-          then foldMap (mappend "/" . fromText) dirs
-          else TextBuilder.intercalate "/" (fmap fromText dirs)
+  toText = toText . toTextBuilder
+
+instance ToTextBuilder DirPath where
+  toTextBuilder (DirPath abs dirs) =
+    if abs
+      then foldMap (mappend "/" . fromText) dirs
+      else TextBuilder.intercalate "/" (fmap fromText dirs)
 
 -- *
 

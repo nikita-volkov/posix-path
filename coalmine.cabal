@@ -59,6 +59,7 @@ library
     Coalmine.SimplePaths.AttoparsecHelpers
     Coalmine.Streamer
     Coalmine.TH
+    Coalmine.ToTextBuilder
     Coalmine.Types
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
