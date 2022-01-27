@@ -1,5 +1,11 @@
 module Coalmine.MultilineTextBuilder
-  ( Builder,
+  ( -- *
+    Builder,
+
+    -- *
+    ToMultilineTextBuilder (..),
+
+    -- *
     null,
     indent,
     intercalate,
@@ -11,6 +17,25 @@ import Coalmine.InternalPrelude hiding (intercalate, null)
 import qualified Coalmine.List as List
 import qualified Data.Text as Text
 import qualified TextBuilder as Tb
+
+-- *
+
+class ToMultilineTextBuilder a where
+  toMultilineTextBuilder :: a -> Builder
+
+instance ToMultilineTextBuilder Builder where
+  toMultilineTextBuilder = id
+
+instance ToMultilineTextBuilder TextBuilder where
+  toMultilineTextBuilder = textBuilder
+
+instance ToMultilineTextBuilder Text where
+  toMultilineTextBuilder = text
+
+instance ToMultilineTextBuilder String where
+  toMultilineTextBuilder = fromString
+
+-- *
 
 data Builder
   = Builder Bool (Int -> Tb.TextBuilder)
