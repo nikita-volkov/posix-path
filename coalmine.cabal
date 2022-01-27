@@ -38,10 +38,10 @@ library
     Coalmine.ByteArrayArray.Ends
     Coalmine.CharPredicates
     Coalmine.Domain
-    Coalmine.Fx
-    Coalmine.Fx.FilePath
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
+    Coalmine.Fx
+    Coalmine.Fx.FilePath
     Coalmine.HashSet
     Coalmine.HCurrying
     Coalmine.Isomorphisms
@@ -55,9 +55,9 @@ library
     Coalmine.Parsing
     Coalmine.Prelude
     Coalmine.S3
-    Coalmine.Streamer
     Coalmine.SimplePaths
     Coalmine.SimplePaths.AttoparsecHelpers
+    Coalmine.Streamer
     Coalmine.TH
     Coalmine.Types
     Coalmine.VectorExtras.Generic
