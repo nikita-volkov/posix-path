@@ -113,13 +113,16 @@ class InDir path where
   inDir :: DirPath -> path -> path
 
 instance InDir FilePath where
-  inDir lDir (FilePath rDir name extensions) =
-    FilePath (lDir <> rDir) name extensions
+  inDir dir = mapFileDir (mappend dir)
 
 instance InDir DirPath where
   inDir = (<>)
 
 -- *
+
+mapFileDir :: (DirPath -> DirPath) -> FilePath -> FilePath
+mapFileDir fn (FilePath dir name extensions) =
+  FilePath (fn dir) name extensions
 
 mapFileName :: (Text -> Text) -> FilePath -> FilePath
 mapFileName = error "TODO"
