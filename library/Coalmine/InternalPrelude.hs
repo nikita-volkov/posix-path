@@ -34,12 +34,3 @@ import Prelude hiding (Vector, chosen, toList, uncons, (%))
 
 showAsText :: Show a => a -> Text
 showAsText = show >>> fromString
-
-instance FromText TextBuilder where
-  fromText = TextBuilder.text
-
-instance ToText TextBuilder where
-  toText = buildText
-
-instance ToString TextBuilder where
-  toString = toString . buildText
