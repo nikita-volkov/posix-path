@@ -47,8 +47,6 @@ library
     Coalmine.HCurrying
     Coalmine.Isomorphisms
     Coalmine.Inter
-    Coalmine.Inter.Format.Model
-    Coalmine.Inter.Format.Parsers
     Coalmine.JsonEncoder
     Coalmine.List
     Coalmine.Megaparsec
@@ -61,7 +59,6 @@ library
     Coalmine.Prelude
     Coalmine.S3
     Coalmine.SimplePaths
-    Coalmine.SimplePaths.AttoparsecHelpers
     Coalmine.Streamer
     Coalmine.TH
     Coalmine.Types
@@ -69,10 +66,13 @@ library
     Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml
   other-modules:
+    Coalmine.Inter.Format.Model
+    Coalmine.Inter.Format.Parsers
     Coalmine.InternalPrelude
     Coalmine.InternalPrelude.Function
     Coalmine.Name.Attoparsec
     Coalmine.Name.Megaparsec
+    Coalmine.SimplePaths.AttoparsecHelpers
   build-depends:
     acc,
     aeson,
