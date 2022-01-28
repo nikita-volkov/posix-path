@@ -57,6 +57,7 @@ library
     Coalmine.Name
     Coalmine.Optics
     Coalmine.Parsing
+    Coalmine.Predicates
     Coalmine.Prelude
     Coalmine.S3
     Coalmine.SimplePaths
@@ -69,6 +70,7 @@ library
     Coalmine.Yaml
   other-modules:
     Coalmine.InternalPrelude
+    Coalmine.InternalPrelude.Function
     Coalmine.Name.Attoparsec
     Coalmine.Name.Megaparsec
   build-depends:
@@ -104,6 +106,7 @@ library
     tuple,
     turtle,
     vector-builder,
+    vector-extras,
     vector-th-unbox,
     yaml,
 
