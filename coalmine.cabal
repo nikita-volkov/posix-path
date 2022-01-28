@@ -66,9 +66,9 @@ library
     Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml
   other-modules:
-    Coalmine.Inter.Analysis
     Coalmine.Inter.Format.Model
     Coalmine.Inter.Format.Parsers
+    Coalmine.Inter.Normalization
     Coalmine.InternalPrelude
     Coalmine.InternalPrelude.Function
     Coalmine.Name.Attoparsec
