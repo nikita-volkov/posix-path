@@ -1,0 +1,25 @@
+
+QuasiQuote:
+  product:
+    content: BVec Line
+
+Line:
+  product:
+    indentation: BVec Space
+    content: BVec ContentSegment
+
+Space:
+  enum:
+    - space
+    - tab
+
+ContentSegment:
+  sum:
+    plain: Text
+    vLine:
+    placeholder: Name
+
+Name:
+  product:
+    head: Char
+    tail: Text

@@ -15,6 +15,7 @@ license-file: LICENSE
 build-type: Custom
 extra-source-files:
   Setup.hs
+  domain/*.domain.yaml
 
 source-repository head
   type: git
@@ -46,6 +47,8 @@ library
     Coalmine.HCurrying
     Coalmine.Isomorphisms
     Coalmine.Inter
+    Coalmine.Inter.Format.Model
+    Coalmine.Inter.Format.Parsers
     Coalmine.JsonEncoder
     Coalmine.List
     Coalmine.Megaparsec
