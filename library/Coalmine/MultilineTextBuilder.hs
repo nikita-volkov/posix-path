@@ -9,6 +9,7 @@ module Coalmine.MultilineTextBuilder
     null,
     indent,
     intercalate,
+    textBuilderLine,
   )
 where
 
@@ -27,7 +28,7 @@ instance ToMultilineTextBuilder Builder where
   toMultilineTextBuilder = id
 
 instance ToMultilineTextBuilder TextBuilder where
-  toMultilineTextBuilder = textBuilder
+  toMultilineTextBuilder = text . fromBuilder
 
 instance ToMultilineTextBuilder Text where
   toMultilineTextBuilder = text
@@ -48,7 +49,7 @@ instance Monoid Builder where
 
 instance Building Builder where
   type BuilderTarget Builder = Tb.TextBuilder
-  toBuilder = textBuilder
+  toBuilder = text . fromBuilder
   fromBuilder = toTextBuilder
 
 instance Show Builder where
@@ -122,14 +123,6 @@ intercalate (Builder _sepNull _sepRender) _builders =
 -- * Construction
 
 -- |
--- Same as @'text' . 'fromBuilder'@.
---
--- For details on its behavior refer to 'text'.
-textBuilder :: Tb.TextBuilder -> Builder
-textBuilder =
-  text . fromBuilder
-
--- |
 -- Extract lines from input text and indent each one of them according to the rendering settings.
 text :: Text -> Builder
 text text =
@@ -146,3 +139,13 @@ text text =
           Tb.char '\n' <> Tb.text indentationText
         lineTextMapper lineText =
           linePrefixBuilder <> Tb.text lineText
+
+-- |
+-- Efficiently lift a text builder, interpreting its contents as of a single line.
+-- So if it contains newline characters, the contained lines won't be indented.
+textBuilderLine :: Tb.TextBuilder -> Builder
+textBuilderLine builder =
+  Builder (Tb.null builder) $ \indentation ->
+    let indentationText =
+          Text.replicate indentation (Text.singleton ' ')
+     in fromText indentationText <> builder
