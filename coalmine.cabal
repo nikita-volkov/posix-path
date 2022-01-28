@@ -45,6 +45,7 @@ library
     Coalmine.HashSet
     Coalmine.HCurrying
     Coalmine.Isomorphisms
+    Coalmine.Inter
     Coalmine.JsonEncoder
     Coalmine.List
     Coalmine.Megaparsec
