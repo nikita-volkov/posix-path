@@ -49,12 +49,3 @@ finishAddingLiteral (BuildingLiteral indent chunks lines exps) =
 
 addExp :: Exp -> BuildingExps -> BuildingExps
 addExp = error "TODO"
-
--- *
-
-data Symbol
-  = LiteralSymbol !Text
-  | PlaceholderSymbol
-      !Int
-      -- ^ Indentation.
-      !Text
