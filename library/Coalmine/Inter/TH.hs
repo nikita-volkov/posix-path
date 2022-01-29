@@ -3,15 +3,16 @@ module Coalmine.Inter.TH where
 import qualified Coalmine.Inter.Deindentation as D
 import qualified Coalmine.MultilineTextBuilder as B
 import Coalmine.Prelude
+import Coalmine.TH
 import qualified Data.Text as Text
 import Language.Haskell.TH.Syntax
 import qualified THLego.Helpers as Helpers
 
 -- *
 
-linesExpressions :: BVec D.Line -> [Exp]
-linesExpressions =
-  \vec -> foldr progress finish vec 0 []
+linesExp :: BVec D.Line -> Exp
+linesExp =
+  mconcatExp . \vec -> foldr progress finish vec 0 []
   where
     progress line next !indent !literalChunks = case line of
       D.BlankLine -> next 0 ("\n" : literalChunks)

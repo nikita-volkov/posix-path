@@ -12,3 +12,7 @@ pureAttoparsedExpQq parser =
     (const (fail "Context unsupported"))
     (const (fail "Context unsupported"))
     (const (fail "Context unsupported"))
+
+mconcatExp :: [Exp] -> Exp
+mconcatExp exps =
+  AppE (VarE 'mconcat) (ListE exps)
