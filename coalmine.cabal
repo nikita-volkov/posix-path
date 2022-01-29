@@ -69,7 +69,9 @@ library
     Coalmine.Inter.Format.Model
     Coalmine.Inter.Format.Parsers
     Coalmine.Inter.Normalization
+    Coalmine.Inter.Streamlining
     Coalmine.Inter.TH
+    Coalmine.Inter.TH.ExpAcc
     Coalmine.InternalPrelude
     Coalmine.InternalPrelude.Function
     Coalmine.Name.Attoparsec
@@ -104,6 +106,7 @@ library
     temporary,
     text-builder,
     text-conversions,
+    th-lego,
     tostring,
     tuple,
     turtle,

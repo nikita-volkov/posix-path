@@ -9,7 +9,7 @@ module Coalmine.MultilineTextBuilder
     null,
     indent,
     intercalate,
-    textBuilderLine,
+    uniline,
   )
 where
 
@@ -143,8 +143,8 @@ text text =
 -- |
 -- Efficiently lift a text builder, interpreting its contents as of a single line.
 -- So if it contains newline characters, the contained lines won't be indented.
-textBuilderLine :: Tb.TextBuilder -> Builder
-textBuilderLine builder =
+uniline :: Tb.TextBuilder -> Builder
+uniline builder =
   Builder (Tb.null builder) $ \indentation ->
     let indentationText =
           Text.replicate indentation (Text.singleton ' ')
