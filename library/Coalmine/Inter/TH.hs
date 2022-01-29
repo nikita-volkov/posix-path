@@ -24,8 +24,8 @@ linesExp =
               case segment of
                 D.PlainContentSegment content ->
                   next indent (content : literalChunks)
-                D.VLineContentSegment ->
-                  next indent ("|" : literalChunks)
+                D.DollarContentSegment ->
+                  next indent ("$" : literalChunks)
                 D.PlaceholderContentSegment placeholderName ->
                   literalExps literalChunks
                     <> (placeholder indent placeholderName : next indent [])

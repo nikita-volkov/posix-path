@@ -16,7 +16,7 @@ Space:
 ContentSegment:
   sum:
     plain: Text
-    vLine:
+    dollar:
     placeholder: Name
 
 Name:

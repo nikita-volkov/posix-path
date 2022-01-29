@@ -36,14 +36,16 @@ contentSegment :: Parser ContentSegment
 contentSegment =
   asum
     [ PlainContentSegment <$> takeWhile1 isPlainContentChar,
-      VLineContentSegment <$ string "||",
+      DollarContentSegment <$ string "$$",
       PlaceholderContentSegment <$> placeholder
     ]
   where
     isPlainContentChar x =
-      x /= '\n' && x /= '\r' && x /= '|'
+      x /= '\n' && x /= '\r' && x /= '$'
     placeholder =
-      char '|' *> name <* char '|'
+      char '$' *> (wrapped <|> name)
+      where
+        wrapped = char '{' *> name <* char '}'
 
 name :: Parser Name
 name =

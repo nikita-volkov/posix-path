@@ -13,16 +13,16 @@ import Test.Tasty.Runners
 
 tests =
   [ testCase "" $
-      let expected = "a:\n  - a\n  b\n  c.\n\n  - b:\n    a\n    b\n    c\n  - c"
+      let expected = "a:\n  - a\n  b\n  c.\n\n  - b:\n    a\n    b\n    c\n  - c: $"
           actual =
             toText
               [i|
                 a:
-                  - |var|.
+                  - $var.
 
                   - b:
-                    |var|
-                  - c
+                    ${var}
+                  - c: $$
               |]
             where
               var = "a\nb\nc"
