@@ -9,8 +9,7 @@ extra-deps:
     commit: 32a9b8a27e7d82848943b8287653b2056f84c063
   - git: https://github.com/nikita-volkov/yaml-unscrambler
     commit: 630840e20698389f30a75d5af5c0b8ba249f5600
-  - git: https://github.com/metrix-ai/vector-extras
-    commit: 3f32814e3e187bf75cd8efc03e26eb5ee2e5c757
   - aeson-2.0.2.0
   - aeson-value-parser-0.19.6
   - yaml-0.11.7.0
+  - vector-extras-0.2.6
