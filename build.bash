@@ -6,4 +6,4 @@ $(find . -name "*.hs" \
   -not -path "./*.stack-work/*" \
   -not -path "./.git/*")
 
-stack build --fast --test
+stack build --fast --test --ghc-options=-ddump-splices
