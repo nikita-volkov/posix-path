@@ -1,4 +1,4 @@
-resolver: nightly-2022-01-04
+resolver: nightly-2022-01-27
 
 extra-deps:
   - git: https://github.com/nikita-volkov/fx
@@ -13,3 +13,4 @@ extra-deps:
     commit: 3f32814e3e187bf75cd8efc03e26eb5ee2e5c757
   - aeson-2.0.2.0
   - aeson-value-parser-0.19.6
+  - yaml-0.11.7.0

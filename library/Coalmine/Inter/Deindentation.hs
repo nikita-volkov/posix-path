@@ -70,3 +70,4 @@ quasiQuote = content . #content
 data Line
   = BlankLine
   | ContentLine !Int !(BVec M.ContentSegment)
+  deriving (Show, Eq)

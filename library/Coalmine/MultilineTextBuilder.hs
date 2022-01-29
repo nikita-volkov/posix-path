@@ -71,6 +71,10 @@ instance ToTextBuilder Builder where
   toTextBuilder (Builder _ builder) =
     builder 0
 
+instance Eq Builder where
+  Builder _ l == Builder _ r =
+    toText (l 0) == toText (r 0)
+
 -- * Execution
 
 null :: Builder -> Bool

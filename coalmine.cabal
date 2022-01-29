@@ -66,9 +66,9 @@ library
     Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml
   other-modules:
+    Coalmine.Inter.Deindentation
     Coalmine.Inter.Format.Model
     Coalmine.Inter.Format.Parsers
-    Coalmine.Inter.Deindentation
     Coalmine.Inter.TH
     Coalmine.InternalPrelude
     Coalmine.InternalPrelude.Function
@@ -125,3 +125,23 @@ test-suite doctest
   build-depends:
     doctest,
     rerebase
+
+test-suite test
+  type: exitcode-stdio-1.0
+  hs-source-dirs: test
+  default-extensions: BangPatterns, ConstraintKinds, DataKinds, DefaultSignatures, DeriveDataTypeable, DeriveFoldable, DeriveFunctor, DeriveGeneric, DeriveTraversable, DerivingVia, EmptyDataDecls, FlexibleContexts, FlexibleInstances, FunctionalDependencies, GADTs, GeneralizedNewtypeDeriving, InstanceSigs, LambdaCase, LiberalTypeSynonyms, MagicHash, MultiParamTypeClasses, MultiWayIf, NoImplicitPrelude, NoMonomorphismRestriction, NumericUnderscores, OverloadedStrings, PatternGuards, ParallelListComp, QuasiQuotes, RankNTypes, RecordWildCards, ScopedTypeVariables, StandaloneDeriving, TemplateHaskell, TupleSections, TypeApplications, TypeFamilies, TypeOperators
+  default-language: Haskell2010
+  ghc-options: -ddump-splices
+  main-is:
+    Main.hs
+  other-modules:
+    Coalmine.Test.Inter
+  build-depends:
+    coalmine,
+    QuickCheck >=2.8.1 && <3,
+    quickcheck-instances >=0.3.11 && <0.4,
+    rerebase <2,
+    tasty >=0.12 && <2,
+    tasty-hunit >=0.9 && <0.11,
+    tasty-quickcheck >=0.9 && <0.11,
+

@@ -6,8 +6,8 @@ import qualified Coalmine.Inter.TH as InterTH
 import Coalmine.Prelude
 import qualified Coalmine.TH as TH
 
-inter :: QuasiQuoter
-inter = TH.pureAttoparsedExpQq parser
+i :: QuasiQuoter
+i = TH.pureAttoparsedExpQq parser
   where
     parser =
       Parsers.quasiQuote
