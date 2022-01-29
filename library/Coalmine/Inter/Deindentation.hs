@@ -1,4 +1,4 @@
-module Coalmine.Inter.Normalization
+module Coalmine.Inter.Deindentation
   ( -- *
     Line (..),
     M.ContentSegment (..),

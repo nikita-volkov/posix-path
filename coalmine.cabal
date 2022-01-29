@@ -68,7 +68,7 @@ library
   other-modules:
     Coalmine.Inter.Format.Model
     Coalmine.Inter.Format.Parsers
-    Coalmine.Inter.Normalization
+    Coalmine.Inter.Deindentation
     Coalmine.Inter.TH
     Coalmine.InternalPrelude
     Coalmine.InternalPrelude.Function
