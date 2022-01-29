@@ -1,6 +1,7 @@
 module Coalmine.Inter.TH where
 
 import qualified Coalmine.Inter.Deindentation as D
+import qualified Coalmine.MultilineTextBuilder as B
 import Coalmine.Prelude
 import qualified Data.Text as Text
 import Language.Haskell.TH.Syntax
@@ -31,7 +32,11 @@ linesExpressions =
 
 placeholder :: Int -> D.Name -> Exp
 placeholder indent name =
-  error "TODO"
+  AppE
+    (AppE (VarE 'B.indent) (LitE (IntegerL (fromIntegral indent))))
+    (VarE varName)
+  where
+    varName = mkName $ #head name : toString (#tail name)
 
 literalExps :: [Text] -> [Exp]
 literalExps literalChunks =
