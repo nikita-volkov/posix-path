@@ -34,6 +34,8 @@ library
   default-language: Haskell2010
   exposed-modules:
     Coalmine.Applicative
+    Coalmine.AttoparsecExtras.Text
+    Coalmine.BaseExtras.Integer
     Coalmine.Building
     Coalmine.ByteArrayArray
     Coalmine.ByteArrayArray.Ends
