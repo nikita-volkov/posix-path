@@ -8,10 +8,12 @@ import Language.Haskell.TH.Syntax
 pureAttoparsedExpQq :: Atto.Parser Exp -> QuasiQuoter
 pureAttoparsedExpQq parser =
   QuasiQuoter
-    (either fail pure . Atto.parseOnly parser . fromString)
+    (either fail pure . Atto.parseOnly parser' . fromString)
     (const (fail "Context unsupported"))
     (const (fail "Context unsupported"))
     (const (fail "Context unsupported"))
+  where
+    parser' = parser <* Atto.endOfInput
 
 mconcatExp :: [Exp] -> Exp
 mconcatExp exps =
