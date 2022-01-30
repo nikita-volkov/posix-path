@@ -149,7 +149,4 @@ text text =
 -- So if it contains newline characters, the contained lines won't be indented.
 uniline :: Tb.TextBuilder -> Builder
 uniline builder =
-  Builder (Tb.null builder) $ \indentation ->
-    let indentationText =
-          Text.replicate indentation (Text.singleton ' ')
-     in fromText indentationText <> builder
+  Builder (Tb.null builder) $ \_ -> builder
