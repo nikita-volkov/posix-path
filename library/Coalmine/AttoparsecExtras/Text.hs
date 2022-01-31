@@ -4,6 +4,10 @@ import qualified Coalmine.BaseExtras.Integer as IntegerExtras
 import Coalmine.Prelude
 import Data.Attoparsec.Text
 
+validated :: (a -> Maybe String) -> Parser a -> Parser a
+validated validator parser =
+  parser >>= \a -> maybe (return a) fail (validator a)
+
 nonGreedyUnsignedDecimal :: (Integral a, Show a) => a -> a -> Parser a
 nonGreedyUnsignedDecimal min max =
   runScanner (0, 0) step >>= postCheck . snd
