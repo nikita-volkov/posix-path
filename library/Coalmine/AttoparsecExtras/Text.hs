@@ -20,8 +20,22 @@ invulnerableUnsignedDecimal min max =
             then
               if acc >= min
                 then return acc
-                else fail $ "Decimal is smaller than the expected minimum of " <> show min <> ": " <> show acc
-            else fail $ "Decimal is larger than the expected maximum of " <> show max <> ": " <> show acc
+                else
+                  fail $
+                    mconcat
+                      [ "Decimal is smaller than the expected minimum of ",
+                        show min,
+                        ": ",
+                        show acc
+                      ]
+            else
+              fail $
+                mconcat
+                  [ "Decimal is larger than the expected maximum of ",
+                    show max,
+                    ": ",
+                    show acc
+                  ]
         else
           fail $
             mconcat
