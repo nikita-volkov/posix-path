@@ -147,3 +147,27 @@ fixedLengthUnsignedDecimal length =
                 show i,
                 " characters long"
               ]
+
+boundedFixedLengthUnsignedDecimal :: (Integral a, Show a) => Int -> a -> a -> Parser a
+boundedFixedLengthUnsignedDecimal length min max =
+  fixedLengthUnsignedDecimal length >>= \a ->
+    if a < min
+      then
+        fail $
+          mconcat
+            [ "Decimal is smaller than the expected minimum of ",
+              show min,
+              ": ",
+              show a
+            ]
+      else
+        if a > max
+          then
+            fail $
+              mconcat
+                [ "Decimal is larger than the expected maximum of ",
+                  show max,
+                  ": ",
+                  show a
+                ]
+          else return a
