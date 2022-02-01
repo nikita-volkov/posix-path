@@ -19,13 +19,13 @@ class Collector c where
   type Input c
   type Output c
   feed :: Input c -> c -> c
-  build :: c -> Output c
+  burn :: c -> Output c
 
 -- *
 
 collect :: (Collector c, Foldable f) => c -> f (Input c) -> Output c
 collect collector =
-  build . foldl' (flip feed) collector
+  burn . foldl' (flip feed) collector
 
 -- *
 
@@ -36,4 +36,4 @@ feedMany foldable collector =
 -- *
 
 toFold :: Collector c => c -> Fold (Input c) (Output c)
-toFold init = Fold (flip feed) init build
+toFold init = Fold (flip feed) init burn
