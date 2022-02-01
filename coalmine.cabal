@@ -143,6 +143,7 @@ test-suite test
     Main.hs
   other-modules:
     Coalmine.Test.Inter
+    Coalmine.Test.Inter.RegressionsFromFormatica
   build-depends:
     coalmine,
     QuickCheck >=2.8.1 && <3,

@@ -2,6 +2,7 @@ module Coalmine.Test.Inter where
 
 import Coalmine.Inter
 import Coalmine.Prelude
+import qualified Coalmine.Test.Inter.RegressionsFromFormatica as RegressionsFromFormatica
 import qualified Data.Text as Text
 import qualified Test.QuickCheck as QuickCheck
 import Test.QuickCheck.Instances
@@ -26,5 +27,8 @@ tests =
               |]
             where
               var = "a\nb\nc"
-       in assertEqual "" expected actual
+       in assertEqual "" expected actual,
+    testGroup "Regression" $
+      [ testGroup "Formatica" RegressionsFromFormatica.tests
+      ]
   ]
