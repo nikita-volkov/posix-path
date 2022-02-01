@@ -36,4 +36,5 @@ feedMany foldable collector =
 -- *
 
 toFold :: Collector c => c -> Fold (Input c) (Output c)
-toFold init = Fold (flip feed) init burn
+toFold init =
+  Fold (flip feed) init burn
