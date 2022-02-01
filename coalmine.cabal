@@ -21,6 +21,11 @@ source-repository head
   type: git
   location: git://github.com/nikita-volkov/coalmine.git
 
+-- Make the test suites dump their template-haskell splices.
+flag doctest
+  default: False
+  manual: True
+
 custom-setup
   setup-depends:
     Cabal >=1.10 && <3.5,
@@ -115,18 +120,19 @@ library
     vector-th-unbox,
     yaml,
 
-test-suite doctest
-  type: exitcode-stdio-1.0
-  hs-source-dirs: doctest
-  default-extensions: BangPatterns, ConstraintKinds, DataKinds, DefaultSignatures, DeriveDataTypeable, DeriveFoldable, DeriveFunctor, DeriveGeneric, DeriveTraversable, DerivingVia, EmptyDataDecls, FlexibleContexts, FlexibleInstances, FunctionalDependencies, GADTs, GeneralizedNewtypeDeriving, InstanceSigs, LambdaCase, LiberalTypeSynonyms, MagicHash, MultiParamTypeClasses, MultiWayIf, NoImplicitPrelude, NoMonomorphismRestriction, NumericUnderscores, OverloadedStrings, PatternGuards, ParallelListComp, QuasiQuotes, RankNTypes, RecordWildCards, ScopedTypeVariables, StandaloneDeriving, TemplateHaskell, TupleSections, TypeApplications, TypeFamilies, TypeOperators
-  default-language: Haskell2010
-  main-is:
-    Main.hs
-  other-modules:
-    Build_doctests
-  build-depends:
-    doctest,
-    rerebase
+if flag(doctest)
+  test-suite doctest
+    type: exitcode-stdio-1.0
+    hs-source-dirs: doctest
+    default-extensions: BangPatterns, ConstraintKinds, DataKinds, DefaultSignatures, DeriveDataTypeable, DeriveFoldable, DeriveFunctor, DeriveGeneric, DeriveTraversable, DerivingVia, EmptyDataDecls, FlexibleContexts, FlexibleInstances, FunctionalDependencies, GADTs, GeneralizedNewtypeDeriving, InstanceSigs, LambdaCase, LiberalTypeSynonyms, MagicHash, MultiParamTypeClasses, MultiWayIf, NoImplicitPrelude, NoMonomorphismRestriction, NumericUnderscores, OverloadedStrings, PatternGuards, ParallelListComp, QuasiQuotes, RankNTypes, RecordWildCards, ScopedTypeVariables, StandaloneDeriving, TemplateHaskell, TupleSections, TypeApplications, TypeFamilies, TypeOperators
+    default-language: Haskell2010
+    main-is:
+      Main.hs
+    other-modules:
+      Build_doctests
+    build-depends:
+      doctest,
+      rerebase
 
 test-suite test
   type: exitcode-stdio-1.0
