@@ -45,6 +45,7 @@ library
     Coalmine.ByteArrayArray
     Coalmine.ByteArrayArray.Ends
     Coalmine.CharPredicates
+    Coalmine.Collector
     Coalmine.Domain
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
@@ -96,6 +97,7 @@ library
     domain-optics,
     filepath,
     from-sum,
+    foldl,
     fx,
     jsonifier,
     machines,
