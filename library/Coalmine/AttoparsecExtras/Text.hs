@@ -8,54 +8,8 @@ validated :: (a -> Maybe String) -> Parser a -> Parser a
 validated validator parser =
   parser >>= \a -> maybe (return a) fail (validator a)
 
-nonGreedyUnsignedDecimal :: (Integral a, Show a) => a -> a -> Parser a
-nonGreedyUnsignedDecimal min max =
-  runScanner (0, 0) step >>= postCheck . snd
-  where
-    step (i, acc) char =
-      if i < maxLen && isDigit char
-        then case acc * 10 + fromIntegral (ord char - 48) of
-          acc -> Just (succ i, acc)
-        else Nothing
-    postCheck (i, acc) =
-      if i >= minLen
-        then
-          if acc <= max
-            then
-              if acc >= min
-                then return acc
-                else
-                  fail $
-                    mconcat
-                      [ "Decimal is smaller than the expected minimum of ",
-                        show min,
-                        ": ",
-                        show acc
-                      ]
-            else
-              fail $
-                mconcat
-                  [ "Decimal is larger than the expected maximum of ",
-                    show max,
-                    ": ",
-                    show acc
-                  ]
-        else
-          fail $
-            mconcat
-              [ "Decimal is shorter than the expected minimum length of ",
-                show minLen,
-                ". It is ",
-                show i,
-                " characters long"
-              ]
-    maxLen =
-      IntegerExtras.countDigits max
-    minLen =
-      IntegerExtras.countDigits min
-
-greedyUnsignedDecimal :: (Integral a, Show a) => a -> a -> Parser a
-greedyUnsignedDecimal min max =
+variableLengthUnsignedDecimal :: (Integral a, Show a) => a -> a -> Parser a
+variableLengthUnsignedDecimal min max =
   runScanner (0, 0) step >>= postCheck . snd
   where
     step (i, acc) char =
