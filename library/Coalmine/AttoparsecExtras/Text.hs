@@ -112,22 +112,22 @@ greedyUnsignedDecimal min max =
       IntegerExtras.countDigits max
 
 -- |
--- >>> parseOnly (fixedLengthUnsignedDecimal 4) "2003"
+-- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4) "2003"
 -- Right 2003
 --
--- >>> parseOnly (fixedLengthUnsignedDecimal 4) "20030"
+-- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4) "20030"
 -- Right 2003
 --
--- >>> parseOnly (fixedLengthUnsignedDecimal 4) "0034"
+-- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4) "0034"
 -- Right 34
 --
--- >>> parseOnly (fixedLengthUnsignedDecimal 4) "003"
+-- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4) "003"
 -- Left "Failed reading: Decimal is shorter than the expected length of 4. It is 3 characters long"
 --
--- >>> parseOnly (fixedLengthUnsignedDecimal 4) "OO34"
+-- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4) "OO34"
 -- Left "Failed reading: Decimal is shorter than the expected length of 4. It is 0 characters long"
-fixedLengthUnsignedDecimal :: Integral a => Int -> Parser a
-fixedLengthUnsignedDecimal length =
+unboundedFixedLengthUnsignedDecimal :: Integral a => Int -> Parser a
+unboundedFixedLengthUnsignedDecimal length =
   runScanner (0, 0) step >>= postCheck . snd
   where
     step (i, acc) char =
@@ -150,7 +150,7 @@ fixedLengthUnsignedDecimal length =
 
 boundedFixedLengthUnsignedDecimal :: (Integral a, Show a) => Int -> a -> a -> Parser a
 boundedFixedLengthUnsignedDecimal length min max =
-  fixedLengthUnsignedDecimal length >>= \a ->
+  unboundedFixedLengthUnsignedDecimal length >>= \a ->
     if a < min
       then
         fail $
