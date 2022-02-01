@@ -15,11 +15,12 @@ import Test.Tasty.Runners
 tests =
   [ testCase "Nested indentation" $
       let expected =
-            "a =\n\
+            "a :: Parser A\n\
+            \a =\n\
             \  asum\n\
-            \    [ \"a\",\n\
-            \      \"b\",\n\
-            \      \"c\"\n\
+            \    [ a,\n\
+            \      b,\n\
+            \      c\n\
             \    ]"
           actual =
             parserDecl "a" "A" $

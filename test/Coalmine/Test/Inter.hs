@@ -28,7 +28,7 @@ tests =
             where
               var = "a\nb\nc"
        in assertEqual "" expected actual,
-    testGroup "Regression" $
+    testGroup "Regressions from" $
       [ testGroup "Formatica" RegressionsFromFormatica.tests
       ]
   ]

@@ -10,6 +10,7 @@ module Coalmine.MultilineTextBuilder
     indent,
     intercalate,
     uniline,
+    newline,
   )
 where
 
@@ -150,3 +151,16 @@ text text =
 uniline :: Tb.TextBuilder -> Builder
 uniline builder =
   Builder (Tb.null builder) $ \_ -> builder
+
+-- |
+-- Efficiently constructed newline character.
+newline :: Builder
+newline =
+  Builder False impl
+  where
+    impl indentationAmount = linePrefixBuilder
+      where
+        indentationText =
+          Text.replicate indentationAmount (Text.singleton ' ')
+        linePrefixBuilder =
+          Tb.char '\n' <> Tb.text indentationText
