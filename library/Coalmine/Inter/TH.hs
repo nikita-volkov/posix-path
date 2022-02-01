@@ -12,39 +12,61 @@ import qualified THLego.Helpers as Helpers
 
 linesExp :: BVec D.Line -> Exp
 linesExp =
-  mconcatExp . \vec -> foldr progress finish vec True 0 []
+  mconcatExp . build
   where
-    progress line next !first !indent !literalChunks =
+    build vec = foldr step (const []) vec True
+    step line next firstLine =
       case line of
-        D.BlankLine -> next False 0 prelinedLiteralChunks
-        D.ContentLine indent segments ->
-          foldr progress (next False) segments indent (Text.replicate indent " " : prelinedLiteralChunks)
-          where
-            progress segment next !indent !literalChunks =
-              case segment of
-                D.PlainContentSegment content ->
-                  next indent (content : literalChunks)
-                D.DollarContentSegment ->
-                  next indent ("$" : literalChunks)
-                D.PlaceholderContentSegment placeholderName ->
-                  literalExps literalChunks
-                    <> (placeholder indent placeholderName : next indent [])
-      where
-        prelinedLiteralChunks =
-          if first then literalChunks else "\n" : literalChunks
-    finish _ !indent !literalChunks =
-      literalExps literalChunks
+        D.BlankLine ->
+          if firstLine
+            then next False
+            else unilineBuilder "\n" : next False
+        D.ContentLine indentation segments ->
+          lineExps firstLine indentation segments <> next False
 
-placeholder :: Int -> D.Name -> Exp
-placeholder indent name =
-  AppE
-    (AppE (VarE 'B.indent) (LitE (IntegerL (fromIntegral indent))))
-    (VarE varName)
+-- *
+
+lineExps firstLine indentation segments =
+  foldr progress finish segments prefix
   where
-    varName = mkName $ #head name : toString (#tail name)
+    prefix =
+      (if firstLine then id else ("\n" <>)) $
+        fromText (Text.replicate indentation " ")
+    progress segment next litBuilder =
+      case segment of
+        D.PlainContentSegment content ->
+          next (litBuilder <> content)
+        D.DollarContentSegment ->
+          next (litBuilder <> "$")
+        D.PlaceholderContentSegment name ->
+          prependLitIfNeeded litBuilder $
+            indent indentation (placeholder name) :
+            next mempty
+    finish litBuilder =
+      prependLitIfNeeded litBuilder []
+    prependLitIfNeeded litBuilder =
+      if Text.null text
+        then id
+        else (unilineBuilder text :)
+      where
+        text = toText litBuilder
 
-literalExps :: [Text] -> [Exp]
-literalExps literalChunks =
-  case literalChunks of
-    [] -> []
-    _ -> pure $ Helpers.textLitE $ mconcat $ reverse literalChunks
+-- *
+
+litBuilder :: Text -> Exp
+litBuilder text =
+  SigE
+    (AppE (VarE 'fromString) (Helpers.textLitE text))
+    (ConT ''B.Builder)
+
+unilineBuilder :: Text -> Exp
+unilineBuilder text =
+  AppE (VarE 'B.uniline) (Helpers.textLitE text)
+
+indent :: Int -> Exp -> Exp
+indent indent =
+  AppE (AppE (VarE 'B.indent) (LitE (IntegerL (fromIntegral indent))))
+
+placeholder :: D.Name -> Exp
+placeholder name =
+  VarE $ mkName $ #head name : toString (#tail name)
