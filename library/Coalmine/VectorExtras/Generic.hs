@@ -47,4 +47,4 @@ lastMaybe v = v !? pred (length v)
 {-# INLINE mapToList #-}
 mapToList :: Vector v a => (a -> b) -> v a -> [b]
 mapToList mapper =
-  foldMap (pure . mapper)
+  foldr (\l r -> mapper l : r) []
