@@ -15,3 +15,7 @@ both l r x = l x && r x
 {-# INLINE all #-}
 all :: [a -> Bool] -> a -> Bool
 all = getPredicate . mconcat . coerce
+
+{-# INLINE any #-}
+any :: [a -> Bool] -> a -> Bool
+any predicates x = foldr (\pred next -> pred x || next) False predicates
