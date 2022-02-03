@@ -1,6 +1,6 @@
 module Coalmine.VectorExtras.Generic where
 
-import Coalmine.Prelude hiding (Vector, length)
+import Coalmine.Prelude hiding (Vector, foldMap, foldl', foldr, length)
 import qualified Coalmine.VectorExtras.Generic.Mutable as Mut
 import Data.Vector.Generic
 import qualified Data.Vector.Generic.Mutable as Mut
@@ -43,3 +43,8 @@ initialized size initialize = runST $ do
 {-# INLINE lastMaybe #-}
 lastMaybe :: Vector v a => v a -> Maybe a
 lastMaybe v = v !? pred (length v)
+
+{-# INLINE mapToList #-}
+mapToList :: Vector v a => (a -> b) -> v a -> [b]
+mapToList mapper =
+  foldMap (pure . mapper)
