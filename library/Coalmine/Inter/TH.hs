@@ -71,4 +71,5 @@ indent indent =
 
 placeholder :: D.Name -> Exp
 placeholder name =
-  VarE $ mkName $ #head name : toString (#tail name)
+  AppE (VarE 'B.toMultilineTextBuilder) $
+    VarE $ mkName $ #head name : toString (#tail name)
