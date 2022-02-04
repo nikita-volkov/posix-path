@@ -12,8 +12,13 @@ function build_and_test {
   stack build \
   --test \
   --fast
+}
 
-  ./.stack-work/dist/x86_64-osx/Cabal-3.4.1.0/build/doctest/doctest
+function build_and_test_with_doctest {
+  stack build \
+  --test \
+  --fast \
+  --flag coalmine:doctest
 }
 
 function build {
