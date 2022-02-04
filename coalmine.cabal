@@ -68,6 +68,7 @@ library
     Coalmine.S3
     Coalmine.SimplePaths
     Coalmine.Streamer
+    Coalmine.Tasty
     Coalmine.TH
     Coalmine.Types
     Coalmine.VectorExtras.Generic
@@ -96,8 +97,8 @@ library
     domain,
     domain-optics,
     filepath,
-    from-sum,
     foldl,
+    from-sum,
     fx,
     jsonifier,
     machines,
@@ -108,7 +109,11 @@ library
     optics,
     optics-core,
     primitive,
+    quickcheck-instances,
     rerebase,
+    tasty,
+    tasty-hunit,
+    tasty-quickcheck,
     template-haskell,
     temporary,
     text-builder,
