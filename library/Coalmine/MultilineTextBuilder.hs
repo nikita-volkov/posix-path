@@ -6,6 +6,9 @@ module Coalmine.MultilineTextBuilder
     ToMultilineTextBuilder (..),
 
     -- *
+    FromMultilineTextBuilder (..),
+
+    -- *
     null,
     indent,
     intercalate,
@@ -36,6 +39,23 @@ instance ToMultilineTextBuilder Text where
 
 instance ToMultilineTextBuilder String where
   toMultilineTextBuilder = fromString
+
+-- *
+
+class FromMultilineTextBuilder a where
+  fromMultilineTextBuilder :: Builder -> a
+
+instance FromMultilineTextBuilder Builder where
+  fromMultilineTextBuilder = id
+
+instance FromMultilineTextBuilder TextBuilder where
+  fromMultilineTextBuilder = toTextBuilder
+
+instance FromMultilineTextBuilder Text where
+  fromMultilineTextBuilder = toText
+
+instance FromMultilineTextBuilder String where
+  fromMultilineTextBuilder = toString
 
 -- *
 
