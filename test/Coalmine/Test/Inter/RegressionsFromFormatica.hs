@@ -59,6 +59,7 @@ alternativeExp = \case
       optionsList =
         multilineList options
 
+parserDecl :: B.Builder -> B.Builder -> B.Builder -> B.Builder
 parserDecl parserName modelTypeName exp =
   [i|
     $parserName :: Parser $modelTypeName

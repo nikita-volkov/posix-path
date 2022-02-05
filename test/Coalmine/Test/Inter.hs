@@ -26,6 +26,7 @@ tests =
                   - c: $$
               |]
             where
+              var :: Text
               var = "a\nb\nc"
        in assertEqual "" expected actual,
     testGroup "Regressions from" $
