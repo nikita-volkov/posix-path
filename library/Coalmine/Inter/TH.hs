@@ -12,7 +12,9 @@ import qualified THLego.Helpers as Helpers
 
 linesExp :: BVec D.Line -> Exp
 linesExp =
-  mconcatExp . build
+  AppE (VarE 'B.fromMultilineTextBuilder)
+    . mconcatExp
+    . build
   where
     build vec = foldr step (const []) vec True
     step line next firstLine =
