@@ -1,3 +1,5 @@
+-- |
+-- Layout for text with indentation using efficient specialised builders.
 module Coalmine.Inter where
 
 import qualified Coalmine.Inter.Deindentation as Deindentation
