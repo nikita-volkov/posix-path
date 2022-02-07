@@ -15,16 +15,16 @@ import Test.Tasty.Runners
 tests =
   [ testCase "" $
       let expected = "a:\n  - a\n  b\n  c.\n\n  - b:\n    a\n    b\n    c\n  - c: $"
+          actual :: Text
           actual =
-            toText
-              [i|
-                a:
-                  - $var.
+            [i|
+              a:
+                - $var.
 
-                  - b:
-                    ${var}
-                  - c: $$
-              |]
+                - b:
+                  ${var}
+                - c: $$
+            |]
             where
               var :: Text
               var = "a\nb\nc"
