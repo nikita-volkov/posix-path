@@ -35,6 +35,9 @@ module Coalmine.BasePreludes.DataTypes
     -- * From "Data.Ratio"
     Data.Ratio.Rational,
 
+    -- * From "Numeric.Natural"
+    Numeric.Natural.Natural,
+
     -- * From "Data.List.NonEmpty"
     Data.List.NonEmpty.NonEmpty (..),
   )
@@ -44,4 +47,5 @@ import qualified Data.Int
 import qualified Data.List.NonEmpty
 import qualified Data.Ratio
 import qualified Data.Word
+import qualified Numeric.Natural
 import qualified Prelude
