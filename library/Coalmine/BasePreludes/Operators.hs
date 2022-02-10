@@ -1,47 +1,47 @@
 module Coalmine.BasePreludes.Operators
-  ( -- * From "Control.Applicative":
+  ( -- * From "Control.Applicative"
     (Control.Applicative.*>),
     (Control.Applicative.<*),
     (Control.Applicative.<*>),
     (Control.Applicative.<|>),
 
-    -- * From "Control.Monad":
+    -- * From "Control.Monad"
     (Control.Monad.<=<),
     (Control.Monad.=<<),
     (Control.Monad.>=>),
     (Control.Monad.>>),
     (Control.Monad.>>=),
 
-    -- * From "Data.Bool":
+    -- * From "Data.Bool"
     (Data.Bool.&&),
     (Data.Bool.||),
     (Data.Eq./=),
     (Data.Eq.==),
 
-    -- * From "Data.Function":
+    -- * From "Data.Function"
     (Data.Function.$),
     (Data.Function.&),
     (Data.Function..),
 
-    -- * From "Data.Functor":
+    -- * From "Data.Functor"
     (Data.Functor.$>),
     (Data.Functor.<$),
     (Data.Functor.<$>),
     (Data.Functor.<&>),
 
-    -- * From "Data.Ord":
+    -- * From "Data.Ord"
     (Data.Ord.<),
     (Data.Ord.<=),
     (Data.Ord.>),
     (Data.Ord.>=),
 
-    -- * From "Data.Ratio":
+    -- * From "Data.Ratio"
     (Data.Ratio.%),
 
-    -- * From "Data.Semigroup":
+    -- * From "Data.Semigroup"
     (Data.Semigroup.<>),
 
-    -- * From "Prelude":
+    -- * From "Prelude"
     (Prelude.$!),
     (Prelude.*),
     (Prelude.+),
