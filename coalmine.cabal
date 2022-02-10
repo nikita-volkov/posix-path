@@ -61,6 +61,7 @@ library
     Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder
     Coalmine.Name
+    Coalmine.Operators
     Coalmine.Optics
     Coalmine.Parsing
     Coalmine.Predicates
