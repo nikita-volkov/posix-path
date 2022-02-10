@@ -3,6 +3,7 @@ module Coalmine.Range
     Range (..),
 
     -- **
+    isEmpty,
     contains,
   )
 where
@@ -27,6 +28,12 @@ instance (Bounded a, Ord a) => Monoid (Range a) where
     Range minBound maxBound
 
 -- *
+
+-- |
+-- Checks whether the range includes any elements at all.
+isEmpty :: Ord a => Range a -> Bool
+isEmpty (Range min max) =
+  min >= max
 
 contains :: Ord a => a -> Range a -> Bool
 contains a (Range min max) =
