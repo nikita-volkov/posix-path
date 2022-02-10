@@ -40,11 +40,9 @@ import Data.Ord as Exports
 import Data.Semigroup as Exports
   ( (<>),
   )
-import GHC.Num as Exports
+import Prelude as Exports
   ( (*),
     (+),
     (-),
-  )
-import GHC.Real as Exports
-  ( (/),
+    (/),
   )
