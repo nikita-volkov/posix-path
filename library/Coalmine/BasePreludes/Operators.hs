@@ -1,58 +1,64 @@
 module Coalmine.BasePreludes.Operators
-  ( module Exports,
+  ( -- * From "Control.Applicative":
+    (Control.Applicative.*>),
+    (Control.Applicative.<*),
+    (Control.Applicative.<*>),
+    (Control.Applicative.<|>),
+
+    -- * From "Control.Monad":
+    (Control.Monad.<=<),
+    (Control.Monad.=<<),
+    (Control.Monad.>=>),
+    (Control.Monad.>>),
+    (Control.Monad.>>=),
+
+    -- * From "Data.Bool":
+    (Data.Bool.&&),
+    (Data.Bool.||),
+    (Data.Eq./=),
+    (Data.Eq.==),
+
+    -- * From "Data.Function":
+    (Data.Function.$),
+    (Data.Function.&),
+    (Data.Function..),
+
+    -- * From "Data.Functor":
+    (Data.Functor.$>),
+    (Data.Functor.<$),
+    (Data.Functor.<$>),
+    (Data.Functor.<&>),
+
+    -- * From "Data.Ord":
+    (Data.Ord.<),
+    (Data.Ord.<=),
+    (Data.Ord.>),
+    (Data.Ord.>=),
+
+    -- * From "Data.Ratio":
+    (Data.Ratio.%),
+
+    -- * From "Data.Semigroup":
+    (Data.Semigroup.<>),
+
+    -- * From "Prelude":
+    (Prelude.$!),
+    (Prelude.*),
+    (Prelude.+),
+    (Prelude.-),
+    (Prelude./),
+    (Prelude.^),
+    (Prelude.^^),
   )
 where
 
-import Control.Applicative as Exports
-  ( (*>),
-    (<*),
-    (<*>),
-    (<|>),
-  )
-import Control.Monad as Exports
-  ( (<=<),
-    (=<<),
-    (>=>),
-    (>>),
-    (>>=),
-  )
-import Data.Bool as Exports
-  ( (&&),
-    (||),
-  )
-import Data.Eq as Exports
-  ( (/=),
-    (==),
-  )
-import Data.Function as Exports
-  ( ($),
-    (&),
-    (.),
-  )
-import Data.Functor as Exports
-  ( ($>),
-    (<$),
-    (<$>),
-    (<&>),
-  )
-import Data.Ord as Exports
-  ( (<),
-    (<=),
-    (>),
-    (>=),
-  )
-import Data.Ratio as Exports
-  ( (%),
-  )
-import Data.Semigroup as Exports
-  ( (<>),
-  )
-import Prelude as Exports
-  ( ($!),
-    (*),
-    (+),
-    (-),
-    (/),
-    (^),
-    (^^),
-  )
+import qualified Control.Applicative
+import qualified Control.Monad
+import qualified Data.Bool
+import qualified Data.Eq
+import qualified Data.Function
+import qualified Data.Functor
+import qualified Data.Ord
+import qualified Data.Ratio
+import qualified Data.Semigroup
+import qualified Prelude
