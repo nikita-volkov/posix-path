@@ -1,4 +1,4 @@
-module Coalmine.Operators
+module Coalmine.BaseOperators
   ( module Exports,
   )
 where

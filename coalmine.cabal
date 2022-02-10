@@ -41,6 +41,7 @@ library
     Coalmine.Applicative
     Coalmine.AttoparsecExtras.Text
     Coalmine.BaseExtras.Integer
+    Coalmine.BaseOperators
     Coalmine.Building
     Coalmine.ByteArrayArray
     Coalmine.ByteArrayArray.Ends
@@ -61,7 +62,6 @@ library
     Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder
     Coalmine.Name
-    Coalmine.Operators
     Coalmine.Optics
     Coalmine.Parsing
     Coalmine.Predicates
