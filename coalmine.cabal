@@ -40,9 +40,9 @@ library
   exposed-modules:
     Coalmine.Applicative
     Coalmine.AttoparsecExtras.Text
+    Coalmine.BaseExtras.Integer
     Coalmine.BasePreludes.DataTypes
     Coalmine.BasePreludes.Operators
-    Coalmine.BaseExtras.Integer
     Coalmine.Building
     Coalmine.ByteArrayArray
     Coalmine.ByteArrayArray.Ends
@@ -55,8 +55,8 @@ library
     Coalmine.Fx.FilePath
     Coalmine.HashSet
     Coalmine.HCurrying
-    Coalmine.Isomorphisms
     Coalmine.Inter
+    Coalmine.Isomorphisms
     Coalmine.JsonEncoder
     Coalmine.List
     Coalmine.Megaparsec
