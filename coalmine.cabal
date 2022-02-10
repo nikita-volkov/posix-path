@@ -65,6 +65,7 @@ library
     Coalmine.Parsing
     Coalmine.Predicates
     Coalmine.Prelude
+    Coalmine.Range
     Coalmine.S3
     Coalmine.SimplePaths
     Coalmine.Streamer
