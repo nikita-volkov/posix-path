@@ -40,8 +40,8 @@ library
   exposed-modules:
     Coalmine.Applicative
     Coalmine.AttoparsecExtras.Text
+    Coalmine.BasePreludes.Operators
     Coalmine.BaseExtras.Integer
-    Coalmine.BaseOperators
     Coalmine.Building
     Coalmine.ByteArrayArray
     Coalmine.ByteArrayArray.Ends
