@@ -41,6 +41,9 @@ import Data.Ord as Exports
     (>),
     (>=),
   )
+import Data.Ratio as Exports
+  ( (%),
+  )
 import Data.Semigroup as Exports
   ( (<>),
   )
