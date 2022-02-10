@@ -40,8 +40,8 @@ module Coalmine.BasePreludes.DataTypes
   )
 where
 
-import Data.Int
-import Data.List.NonEmpty
-import Data.Ratio
-import Data.Word
-import Prelude
+import qualified Data.Int
+import qualified Data.List.NonEmpty
+import qualified Data.Ratio
+import qualified Data.Word
+import qualified Prelude
