@@ -5,8 +5,8 @@
 -- By data types we mean that it is the ones we use
 -- to define data structures.
 -- It is not abstraction integration wrappers,
--- like "Data.Semigroup.First".
--- It is not resource types like "System.IO.Handle".
+-- like 'Data.Semigroup.First'.
+-- It is not resource types like 'System.IO.Handle'.
 module Coalmine.BasePreludes.DataTypes
   ( -- * From "Prelude"
     Prelude.Bool (..),
