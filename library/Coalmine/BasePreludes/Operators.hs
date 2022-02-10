@@ -16,6 +16,10 @@ import Control.Monad as Exports
     (>>),
     (>>=),
   )
+import Data.Bool as Exports
+  ( (&&),
+    (||),
+  )
 import Data.Eq as Exports
   ( (/=),
     (==),
@@ -41,8 +45,11 @@ import Data.Semigroup as Exports
   ( (<>),
   )
 import Prelude as Exports
-  ( (*),
+  ( ($!),
+    (*),
     (+),
     (-),
     (/),
+    (^),
+    (^^),
   )
