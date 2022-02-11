@@ -1,3 +1,6 @@
+-- |
+-- A collection of common operators provided across
+-- various modules of the \"base\" package.
 module Coalmine.BasePreludes.Operators
   ( -- * From "Control.Applicative"
     (Control.Applicative.*>),
