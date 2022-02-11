@@ -53,6 +53,7 @@ library
     Coalmine.Formatting.Rendering
     Coalmine.Fx
     Coalmine.Fx.FilePath
+    Coalmine.HashableExtras
     Coalmine.HashSet
     Coalmine.HCurrying
     Coalmine.Inter
