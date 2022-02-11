@@ -42,3 +42,7 @@ isLongerThanOne =
   \case
     _ : _ : _ -> True
     _ -> False
+
+dropFromEnd :: Int -> [a] -> [a]
+dropFromEnd amount =
+  reverse . drop amount . reverse
