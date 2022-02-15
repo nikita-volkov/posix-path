@@ -1,9 +1,9 @@
 module Coalmine.Formatting where
 
+import qualified Coalmine.BaseExtras.List as List
 import Coalmine.Building
 import qualified Coalmine.Formatting.Rendering as Finalization
 import Coalmine.InternalPrelude hiding (intercalate, null)
-import qualified Coalmine.List as List
 import qualified Data.Text as Text
 import qualified TextBuilder as Tb
 

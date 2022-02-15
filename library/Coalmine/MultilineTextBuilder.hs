@@ -17,9 +17,9 @@ module Coalmine.MultilineTextBuilder
   )
 where
 
+import qualified Coalmine.BaseExtras.List as List
 import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
-import qualified Coalmine.List as List
 import qualified Data.Text as Text
 import qualified TextBuilder as Tb
 

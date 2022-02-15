@@ -1,4 +1,4 @@
-module Coalmine.List where
+module Coalmine.BaseExtras.List where
 
 import qualified Data.Map.Strict as Map
 import Prelude

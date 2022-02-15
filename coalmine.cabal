@@ -41,6 +41,7 @@ library
     Coalmine.Applicative
     Coalmine.AttoparsecExtras.Text
     Coalmine.BaseExtras.Integer
+    Coalmine.BaseExtras.List
     Coalmine.BasePreludes.DataTypes
     Coalmine.BasePreludes.Operators
     Coalmine.Building
@@ -59,7 +60,6 @@ library
     Coalmine.Inter
     Coalmine.Isomorphisms
     Coalmine.JsonEncoder
-    Coalmine.List
     Coalmine.Megaparsec
     Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder
