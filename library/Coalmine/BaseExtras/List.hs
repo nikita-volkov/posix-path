@@ -44,8 +44,13 @@ foldMapHeadAndEachOfTail hMapper tMapper =
   eliminate mempty (\h t -> foldr (\t next -> tMapper t <> next) (hMapper h) t)
 
 foldrHeadAndEachOfTail ::
+  -- | Step function to be executed on each element of the tail.
   (a -> b -> b) ->
+  -- | Mapping function to be executed on the head element.
   (a -> b) ->
+  -- | Default value to be used when the list is empty.
+  --
+  -- It is not the initial state of the accumulator.
   b ->
   [a] ->
   b
