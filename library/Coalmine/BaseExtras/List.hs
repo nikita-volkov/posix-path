@@ -41,7 +41,7 @@ foldMapHeadAndTail hMapper tMapper =
 -- Same as 'foldMap', but applies a different mapping function to head.
 foldMapHeadAndEachOfTail :: Monoid b => (a -> b) -> (a -> b) -> [a] -> b
 foldMapHeadAndEachOfTail hMapper tMapper =
-  eliminate mempty (\h t -> foldr (\t next -> tMapper t <> next) (hMapper h) t)
+  eliminate mempty (\h t -> foldl' (\acc t -> acc <> tMapper t) (hMapper h) t)
 
 foldrHeadAndEachOfTail ::
   -- | Step function to be executed on each element of the tail.
