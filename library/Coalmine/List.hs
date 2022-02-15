@@ -37,6 +37,10 @@ foldMapHeadAndTail :: Monoid b => (a -> b) -> ([a] -> b) -> [a] -> b
 foldMapHeadAndTail hMapper tMapper =
   eliminate mempty (\h t -> hMapper h <> tMapper t)
 
+foldMapHeadAndEachOfTail :: Monoid b => (a -> b) -> (a -> b) -> [a] -> b
+foldMapHeadAndEachOfTail hMapper tMapper =
+  eliminate mempty (\h t -> foldr (\t next -> tMapper t <> next) (hMapper h) t)
+
 isLongerThanOne :: [a] -> Bool
 isLongerThanOne =
   \case
