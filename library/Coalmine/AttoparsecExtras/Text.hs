@@ -1,4 +1,10 @@
-module Coalmine.AttoparsecExtras.Text where
+module Coalmine.AttoparsecExtras.Text
+  ( -- *
+    variableLengthUnsignedDecimal,
+    unboundedFixedLengthUnsignedDecimal,
+    boundedFixedLengthUnsignedDecimal,
+  )
+where
 
 import qualified Coalmine.BaseExtras.Integer as IntegerExtras
 import Coalmine.Prelude
@@ -64,22 +70,22 @@ variableLengthUnsignedDecimal min max =
       IntegerExtras.countDigits max
 
 -- |
--- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4) "2003"
+-- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4 0) "2003"
 -- Right 2003
 --
--- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4) "20030"
+-- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4 0) "20030"
 -- Right 2003
 --
--- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4) "0034"
+-- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4 0) "0034"
 -- Right 34
 --
--- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4) "003"
+-- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4 0) "003"
 -- Left "Failed reading: Decimal is shorter than the expected length of 4. It is 3 characters long"
 --
--- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4) "OO34"
+-- >>> parseOnly (unboundedFixedLengthUnsignedDecimal 4 0) "OO34"
 -- Left "Failed reading: Decimal is shorter than the expected length of 4. It is 0 characters long"
-unboundedFixedLengthUnsignedDecimal :: Integral a => Int -> Parser a
-unboundedFixedLengthUnsignedDecimal length =
+unboundedFixedLengthUnsignedDecimal :: (Integral a, Show a) => Int -> a -> Parser a
+unboundedFixedLengthUnsignedDecimal length min =
   runScanner (0, 0) step >>= postCheck . snd
   where
     step (i, acc) char =
@@ -89,7 +95,17 @@ unboundedFixedLengthUnsignedDecimal length =
         else Nothing
     postCheck (i, acc) =
       if i == length
-        then return acc
+        then
+          if acc < min
+            then
+              fail $
+                mconcat
+                  [ "Decimal is smaller than the expected minimum of ",
+                    show min,
+                    ": ",
+                    show acc
+                  ]
+            else return acc
         else
           fail $
             mconcat
@@ -102,27 +118,17 @@ unboundedFixedLengthUnsignedDecimal length =
 
 boundedFixedLengthUnsignedDecimal :: (Integral a, Show a) => Int -> a -> a -> Parser a
 boundedFixedLengthUnsignedDecimal length min max =
-  unboundedFixedLengthUnsignedDecimal length >>= \a ->
-    if a < min
+  unboundedFixedLengthUnsignedDecimal length min >>= \a ->
+    if a > max
       then
         fail $
           mconcat
-            [ "Decimal is smaller than the expected minimum of ",
-              show min,
+            [ "Decimal is larger than the expected maximum of ",
+              show max,
               ": ",
               show a
             ]
-      else
-        if a > max
-          then
-            fail $
-              mconcat
-                [ "Decimal is larger than the expected maximum of ",
-                  show max,
-                  ": ",
-                  show a
-                ]
-          else return a
+      else return a
 
 -- *
 
