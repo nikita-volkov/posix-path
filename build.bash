@@ -5,6 +5,7 @@ function format {
   ormolu --mode inplace -ce \
   $(find . -name "*.hs" \
     -not -path "./*.stack-work/*" \
+    -not -path "./sketches/*" \
     -not -path "./.git/*")
 }
 
