@@ -126,32 +126,46 @@ boundedFixedLengthUnsignedDecimal length min max =
 
 -- *
 
-validated :: (a -> Maybe String) -> Parser a -> Parser a
-validated validator parser =
+validated :: Validator a -> Parser a -> Parser a
+validated (Validator validator) parser =
   parser >>= \a -> maybe (return a) fail (validator a)
 
--- **
+-- *
 
-notSmallerThanValidator :: (Show a, Ord a) => a -> a -> Maybe String
-notSmallerThanValidator min a =
-  if a < min
-    then
-      Just . mconcat $
-        [ "Decimal is smaller than the expected minimum of ",
-          show min,
-          ": ",
-          show a
-        ]
-    else Nothing
+newtype Validator a = Validator (a -> Maybe String)
 
-notLargerThanValidator :: (Show a, Ord a) => a -> a -> Maybe String
-notLargerThanValidator max a =
-  if a > max
-    then
-      Just . mconcat $
-        [ "Decimal is larger than the expected maximum of ",
-          show max,
-          ": ",
-          show a
-        ]
-    else Nothing
+instance Semigroup (Validator a) where
+  Validator l <> Validator r =
+    Validator $ \input -> case l input of
+      Just err -> Just err
+      Nothing -> r input
+
+instance Monoid (Validator a) where
+  mempty =
+    Validator (const Nothing)
+
+notSmallerThanValidator :: (Show a, Ord a) => a -> Validator a
+notSmallerThanValidator min =
+  Validator $ \a ->
+    if a < min
+      then
+        Just . mconcat $
+          [ "Decimal is smaller than the expected minimum of ",
+            show min,
+            ": ",
+            show a
+          ]
+      else Nothing
+
+notLargerThanValidator :: (Show a, Ord a) => a -> Validator a
+notLargerThanValidator max =
+  Validator $ \a ->
+    if a > max
+      then
+        Just . mconcat $
+          [ "Decimal is larger than the expected maximum of ",
+            show max,
+            ": ",
+            show a
+          ]
+      else Nothing
