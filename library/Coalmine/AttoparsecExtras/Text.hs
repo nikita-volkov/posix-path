@@ -4,9 +4,7 @@ import qualified Coalmine.BaseExtras.Integer as IntegerExtras
 import Coalmine.Prelude
 import Data.Attoparsec.Text
 
-validated :: (a -> Maybe String) -> Parser a -> Parser a
-validated validator parser =
-  parser >>= \a -> maybe (return a) fail (validator a)
+-- *
 
 variableLengthUnsignedDecimal :: (Integral a, Show a) => a -> a -> Parser a
 variableLengthUnsignedDecimal min max =
@@ -125,3 +123,35 @@ boundedFixedLengthUnsignedDecimal length min max =
                   show a
                 ]
           else return a
+
+-- *
+
+validated :: (a -> Maybe String) -> Parser a -> Parser a
+validated validator parser =
+  parser >>= \a -> maybe (return a) fail (validator a)
+
+-- **
+
+notSmallerThanValidator :: (Show a, Ord a) => a -> a -> Maybe String
+notSmallerThanValidator min a =
+  if a < min
+    then
+      Just . mconcat $
+        [ "Decimal is smaller than the expected minimum of ",
+          show min,
+          ": ",
+          show a
+        ]
+    else Nothing
+
+notLargerThanValidator :: (Show a, Ord a) => a -> a -> Maybe String
+notLargerThanValidator max a =
+  if a > max
+    then
+      Just . mconcat $
+        [ "Decimal is larger than the expected maximum of ",
+          show max,
+          ": ",
+          show a
+        ]
+    else Nothing
