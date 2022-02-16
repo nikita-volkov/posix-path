@@ -120,7 +120,7 @@ library
     tasty-quickcheck,
     template-haskell,
     temporary,
-    text-builder,
+    text-builder-dev,
     text-conversions,
     th-lego,
     tostring,

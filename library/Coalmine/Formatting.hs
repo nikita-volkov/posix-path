@@ -5,7 +5,7 @@ import Coalmine.Building
 import qualified Coalmine.Formatting.Rendering as Finalization
 import Coalmine.InternalPrelude hiding (intercalate, null)
 import qualified Data.Text as Text
-import qualified TextBuilder as Tb
+import qualified TextBuilderDev as Tb
 
 data Multiline
 

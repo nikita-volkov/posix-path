@@ -8,8 +8,8 @@ import Coalmine.Prelude
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.Text as Text
 import qualified Text.Megaparsec as Megaparsec
-import TextBuilder (TextBuilder)
-import qualified TextBuilder
+import TextBuilderDev (TextBuilder)
+import qualified TextBuilderDev as TextBuilder
 
 -- |
 -- Case-agnostic name with words separated and consisting only of digits and Latin letters.

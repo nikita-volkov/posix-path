@@ -29,7 +29,7 @@ import GHC.Exts as Exports (IsList (..))
 import Language.Haskell.TH.Quote as Exports (QuasiQuoter (..))
 import Language.Haskell.TH.Syntax as Exports (Lift, Q)
 import Network.IP.Addr as Exports (IP (..), IP4 (..), IP6 (..), InetAddr (..), InetPort (..), NetAddr (..))
-import TextBuilder as Exports (TextBuilder, ToTextBuilder (..), buildText)
+import TextBuilderDev as Exports (TextBuilder, ToTextBuilder (..), buildText)
 import Prelude hiding (Vector, chosen, toList, uncons, (%))
 
 showAsText :: Show a => a -> Text

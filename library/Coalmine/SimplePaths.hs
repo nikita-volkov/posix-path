@@ -10,7 +10,7 @@ import Attoparsec.Data (LenientParser (..))
 import Coalmine.Prelude hiding (FilePath)
 import qualified Coalmine.SimplePaths.AttoparsecHelpers as AttoparsecHelpers
 import qualified Data.Attoparsec.Text as Attoparsec
-import qualified TextBuilder
+import qualified TextBuilderDev as TextBuilder
 
 -- *
 

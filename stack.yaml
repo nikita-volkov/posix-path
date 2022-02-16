@@ -5,9 +5,7 @@ extra-deps:
     commit: f3947e32f8cc3c764ab8ee48581f2e1f35d3bcdb
   - git: https://github.com/nikita-volkov/moore-machines
     commit: 7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290
-  - git: https://github.com/nikita-volkov/text-builder
-    commit: be6fe917e8a8a30823d13ece141b299d4d2e8cee
-  - git: https://github.com/nikita-volkov/yaml-unscrambler
-    commit: f27bcefc76e3e7181ee4b73a4c34407729fa8be5
   - aeson-value-parser-0.19.6
+  - text-builder-dev-0.2
   - vector-extras-0.2.6
+  - yaml-unscrambler-0.1.0.8

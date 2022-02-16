@@ -27,28 +27,6 @@ packages:
     git: https://github.com/nikita-volkov/moore-machines
     commit: 7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290
 - completed:
-    name: text-builder
-    version: '0.7'
-    git: https://github.com/nikita-volkov/text-builder
-    pantry-tree:
-      size: 797
-      sha256: 42b96cd2ac2adb708bb5201d81a78bfc8403c394a64da987381e4258c3f9069c
-    commit: be6fe917e8a8a30823d13ece141b299d4d2e8cee
-  original:
-    git: https://github.com/nikita-volkov/text-builder
-    commit: be6fe917e8a8a30823d13ece141b299d4d2e8cee
-- completed:
-    name: yaml-unscrambler
-    version: 0.1.0.6
-    git: https://github.com/nikita-volkov/yaml-unscrambler
-    pantry-tree:
-      size: 1419
-      sha256: 60db6c0930d2aae503984c44fb7869718aad0a25a6d703b92f689676f6015586
-    commit: f27bcefc76e3e7181ee4b73a4c34407729fa8be5
-  original:
-    git: https://github.com/nikita-volkov/yaml-unscrambler
-    commit: f27bcefc76e3e7181ee4b73a4c34407729fa8be5
-- completed:
     hackage: aeson-value-parser-0.19.6@sha256:ccd8424b17fd5608c3f1f7e51c7d4b77ff64cd409b51387759d27fc0e6e419bc,2054
     pantry-tree:
       size: 454
@@ -56,12 +34,26 @@ packages:
   original:
     hackage: aeson-value-parser-0.19.6
 - completed:
+    hackage: text-builder-dev-0.2@sha256:6f95e04d5f660858535d9edb9a45505636da8d1949e8edcc447f3043c6d51516,2705
+    pantry-tree:
+      size: 506
+      sha256: 29d9920aa4729d9f5042ced8a0e0b388b835aa94cf7be1df0c2572dc1c2c7893
+  original:
+    hackage: text-builder-dev-0.2
+- completed:
     hackage: vector-extras-0.2.6@sha256:695f171936613b45b37de497ab26cba772616e43b09d9c39f0008d168c1f7064,1883
     pantry-tree:
       size: 738
       sha256: 5a6485bf613ec35a3e13674563ddd00920dfb1040ad16af625793bdf665324a3
   original:
     hackage: vector-extras-0.2.6
+- completed:
+    hackage: yaml-unscrambler-0.1.0.8@sha256:4ea1c30834b0fc62008a4431eb32242eb5c0ac2fa720e2ffccb416aad3677f22,3565
+    pantry-tree:
+      size: 1317
+      sha256: 60a3d9460fbe6838eb5208ad7e0cb17aa228f4ee82b66f4ef4acbb7db8998953
+  original:
+    hackage: yaml-unscrambler-0.1.0.8
 snapshots:
 - completed:
     size: 608667
