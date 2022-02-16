@@ -1,15 +1,13 @@
-resolver: nightly-2022-02-07
+resolver: nightly-2022-02-16
 
 extra-deps:
   - git: https://github.com/nikita-volkov/fx
-    commit: a612390cf54c37150c367324b154170921b98318
+    commit: f3947e32f8cc3c764ab8ee48581f2e1f35d3bcdb
   - git: https://github.com/nikita-volkov/moore-machines
     commit: 7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290
   - git: https://github.com/nikita-volkov/text-builder
     commit: 32a9b8a27e7d82848943b8287653b2056f84c063
   - git: https://github.com/nikita-volkov/yaml-unscrambler
-    commit: 630840e20698389f30a75d5af5c0b8ba249f5600
-  - aeson-2.0.3.0
+    commit: f27bcefc76e3e7181ee4b73a4c34407729fa8be5
   - aeson-value-parser-0.19.6
-  - yaml-0.11.7.0
   - vector-extras-0.2.6

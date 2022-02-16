@@ -13,11 +13,11 @@ import Data.DoubleWord as Exports (Word128 (..), Word160 (..), Word192 (..), Wor
 import Data.Functor.Invariant as Exports
 import Data.Group as Exports
 import Data.Groupoid as Exports
-import Data.Hashable.Time as Exports
 import Data.Machine.Mealy as Exports
 import Data.Machine.Moore as Exports
 import Data.String.ToString as Exports
 import Data.Text.Conversions as Exports
+import Data.Time.Compat as Exports ()
 import Data.Tuple.All as Exports hiding (only)
 import Data.Vector.Generic as Exports (Vector)
 import Data.Vector.Instances as Exports
