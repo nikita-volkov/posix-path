@@ -1,12 +1,13 @@
 module Coalmine.TextAppender
   ( -- *
     TextAppender,
-    finalize,
+    init,
     append,
+    finalize,
   )
 where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (init)
 
 -- *
 
@@ -27,6 +28,10 @@ newtype TextAppender
 finalize :: TextAppender -> Text
 finalize (TextAppender builder) =
   buildText builder
+
+init :: TextAppender
+init =
+  TextAppender mempty
 
 append :: Text -> TextAppender -> TextAppender
 append chunk (TextAppender builder) =
