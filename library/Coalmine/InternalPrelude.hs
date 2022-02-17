@@ -8,6 +8,7 @@ where
 import Acc as Exports (Acc)
 import Acc.NeAcc as Exports (NeAcc)
 import Coalmine.InternalPrelude.Function as Exports
+import Coalmine.InternalPrelude.ToText as Exports
 import Control.FromSum as Exports
 import Data.DoubleWord as Exports (Word128 (..), Word160 (..), Word192 (..), Word224 (..), Word256 (..), Word96 (..))
 import Data.Functor.Invariant as Exports
