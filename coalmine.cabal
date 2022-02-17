@@ -74,6 +74,7 @@ library
     Coalmine.SimplePaths
     Coalmine.Streamer
     Coalmine.Tasty
+    Coalmine.TextAppender
     Coalmine.TH
     Coalmine.Types
     Coalmine.VectorExtras.Generic
