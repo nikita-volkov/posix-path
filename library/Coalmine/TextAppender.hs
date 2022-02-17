@@ -6,24 +6,28 @@ module Coalmine.TextAppender
   )
 where
 
-import Prelude
+import Coalmine.InternalPrelude
 
 -- *
+
+-- TODO: reimplement it as
+-- data TextAppender
+--   = TextAppender
+--       !Int
+--       -- ^ Allocation size.
+--       ![Text]
+--       -- ^ Chunks.
 
 -- |
 -- Data structure optimized specifically for collecting text chunk by chunk
 -- via appending.
-data TextAppender
-  = TextAppender
-      !Int
-      -- ^ Allocation size.
-      ![Text]
-      -- ^ Chunks.
+newtype TextAppender
+  = TextAppender TextBuilder
 
 finalize :: TextAppender -> Text
-finalize =
-  error "TODO"
+finalize (TextAppender builder) =
+  buildText builder
 
 append :: Text -> TextAppender -> TextAppender
-append =
-  error "TODO"
+append chunk (TextAppender builder) =
+  TextAppender $ builder <> fromText chunk
