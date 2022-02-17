@@ -6,7 +6,16 @@ import Coalmine.Prelude
 
 newtype PartialEndo a
   = PartialEndo (a -> Either (PartialEndoErr a) a)
-  deriving (Semigroup)
+
+instance Semigroup (PartialEndo a) where
+  PartialEndo l <> PartialEndo r =
+    PartialEndo $ \a -> case l a of
+      Right a -> r a
+      Left err -> Left err
+
+instance Monoid (PartialEndo a) where
+  mempty =
+    PartialEndo Right
 
 -- **
 
