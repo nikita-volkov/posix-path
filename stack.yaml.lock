@@ -34,29 +34,15 @@ packages:
   original:
     hackage: aeson-value-parser-0.19.6
 - completed:
-    hackage: text-builder-dev-0.2@sha256:6f95e04d5f660858535d9edb9a45505636da8d1949e8edcc447f3043c6d51516,2705
-    pantry-tree:
-      size: 506
-      sha256: 29d9920aa4729d9f5042ced8a0e0b388b835aa94cf7be1df0c2572dc1c2c7893
-  original:
-    hackage: text-builder-dev-0.2
-- completed:
     hackage: vector-extras-0.2.6@sha256:695f171936613b45b37de497ab26cba772616e43b09d9c39f0008d168c1f7064,1883
     pantry-tree:
       size: 738
       sha256: 5a6485bf613ec35a3e13674563ddd00920dfb1040ad16af625793bdf665324a3
   original:
     hackage: vector-extras-0.2.6
-- completed:
-    hackage: yaml-unscrambler-0.1.0.8@sha256:4ea1c30834b0fc62008a4431eb32242eb5c0ac2fa720e2ffccb416aad3677f22,3565
-    pantry-tree:
-      size: 1317
-      sha256: 60a3d9460fbe6838eb5208ad7e0cb17aa228f4ee82b66f4ef4acbb7db8998953
-  original:
-    hackage: yaml-unscrambler-0.1.0.8
 snapshots:
 - completed:
-    size: 608667
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/2/16.yaml
-    sha256: 84b803d5d1e8a364b5aa65386a40650d8b2a1df97cb23d51acd82f5d790f69df
-  original: nightly-2022-02-16
+    size: 609309
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/2/17.yaml
+    sha256: d6e20fe068df1aac4d7a910bd61802f8498e897e6224eccf07d13907eb671ee5
+  original: nightly-2022-02-17
