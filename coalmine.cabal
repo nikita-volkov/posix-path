@@ -61,7 +61,7 @@ library
     Coalmine.Inter
     Coalmine.Isomorphisms
     Coalmine.JsonEncoder
-    Coalmine.Megaparsec
+    Coalmine.MegaparsecExtras
     Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder
     Coalmine.Name
