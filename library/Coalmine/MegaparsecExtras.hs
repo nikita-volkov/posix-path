@@ -28,7 +28,7 @@ refine refiner parser =
     case refiner parserResult of
       Right res -> return res
       Left err -> do
-        updateParserState (const initialState)
+        setParserState initialState
         fail . toString $ err
 
 sepUpdate :: (Stream s, Ord e) => state -> Parsec e s sep -> (state -> Parsec e s state) -> Parsec e s state
@@ -64,3 +64,21 @@ sepEndUpdate state sepP endP elemP =
                 ]
          in go state
     ]
+
+-- *
+
+data Located s a
+  = Located
+      !(PosState s)
+      !(PosState s)
+      a
+  deriving (Functor)
+
+-- |
+-- Associate the result of parsing with an input region.
+locate :: (Stream s, Ord e) => Parsec e s res -> Parsec e s (Located s res)
+locate p = do
+  initialPos <- statePosState <$> getParserState
+  res <- p
+  finalPos <- statePosState <$> getParserState
+  return $ Located initialPos finalPos res
