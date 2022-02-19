@@ -15,8 +15,16 @@ import qualified Text.Megaparsec.Char.Lexer as MegaparsecLexer
 
 -- * Executors
 
-run :: (Ord err, VisualStream strm, TraversableStream strm, Megaparsec.ShowErrorComponent err) => HeadedParsec err strm a -> strm -> Either String a
-run p = first Megaparsec.errorBundlePretty . Megaparsec.runParser (toParsec p <* Megaparsec.eof) ""
+-- |
+-- Execute as single input chunk refiner.
+toRefiner ::
+  (Ord err, VisualStream strm, TraversableStream strm, Megaparsec.ShowErrorComponent err) =>
+  HeadedParsec err strm a ->
+  strm ->
+  Either Text a
+toRefiner p =
+  first (fromString . Megaparsec.errorBundlePretty)
+    . Megaparsec.runParser (toParsec p <* Megaparsec.eof) ""
 
 -- * Primitives
 
