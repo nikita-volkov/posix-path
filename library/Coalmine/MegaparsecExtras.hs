@@ -72,7 +72,7 @@ data Located s a
       !(PosState s)
       !(PosState s)
       a
-  deriving (Functor)
+  deriving (Functor, Show, Eq)
 
 -- |
 -- Associate the result of parsing with an input region.
