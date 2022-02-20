@@ -3,6 +3,7 @@
 module Coalmine.HeadedMegaparsecExtras where
 
 import Coalmine.InternalPrelude hiding (bit, expr, filter, head, option, some, sortBy, tail, try)
+import qualified Coalmine.MegaparsecExtras as MegaparsecExtras
 import qualified Coalmine.SimplePaths as Paths
 import Data.CaseInsensitive (CI, FoldCase)
 import qualified Data.Text.IO as TextIO
@@ -172,3 +173,11 @@ sepEndUpdate state sepP endP elemP =
                 ]
          in go state
     ]
+
+-- *
+
+type Located = MegaparsecExtras.Located
+
+locate :: (Stream s, Ord e) => HeadedParsec e s res -> HeadedParsec e s (Located s res)
+locate =
+  parse . MegaparsecExtras.locate . toParsec
