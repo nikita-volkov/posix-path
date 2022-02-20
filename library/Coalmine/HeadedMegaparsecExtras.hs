@@ -148,3 +148,20 @@ sepUpdate1 state sepP elemP = do
             return state
           ]
    in go state
+
+sepEndUpdate :: (Stream s, Ord e) => state -> HeadedParsec e s sep -> (state -> HeadedParsec e s end) -> (state -> HeadedParsec e s state) -> HeadedParsec e s end
+sepEndUpdate state sepP endP elemP =
+  asum
+    [ endP state,
+      do
+        state <- elemP state
+        let go !state =
+              asum
+                [ do
+                    sepP
+                    state <- elemP state
+                    go state,
+                  endP state
+                ]
+         in go state
+    ]
