@@ -3,7 +3,9 @@
 module Coalmine.HeadedMegaparsecExtras where
 
 import Coalmine.InternalPrelude hiding (bit, expr, filter, head, option, some, sortBy, tail, try)
+import qualified Coalmine.SimplePaths as Paths
 import Data.CaseInsensitive (CI, FoldCase)
+import qualified Data.Text.IO as TextIO
 import HeadedMegaparsec hiding (string)
 import Text.Megaparsec (Parsec, Stream, TraversableStream, VisualStream)
 import qualified Text.Megaparsec as Megaparsec
@@ -25,6 +27,11 @@ toRefiner ::
 toRefiner p =
   first (fromString . Megaparsec.errorBundlePretty)
     . Megaparsec.runParser (toParsec p <* Megaparsec.eof) ""
+
+toFileReader :: HeadedParsec Void Text a -> Paths.FilePath -> IO (Either Text a)
+toFileReader parser path =
+  TextIO.readFile (toString path)
+    <&> toRefiner parser
 
 -- * Primitives
 
