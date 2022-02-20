@@ -57,6 +57,7 @@ library
     Coalmine.HashableExtras
     Coalmine.HashSet
     Coalmine.HeadedMegaparsecExtras
+    Coalmine.HeadedMegaparsecExtras.Text
     Coalmine.HCurrying
     Coalmine.Inter
     Coalmine.Isomorphisms
