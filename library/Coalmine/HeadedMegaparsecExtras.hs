@@ -177,8 +177,6 @@ sepEndUpdate state sepP endP elemP =
 
 -- *
 
-type Located = Located.Located
-
-locate :: (Stream s, Ord e) => HeadedParsec e s res -> HeadedParsec e s (Located s res)
+locate :: (Stream s, Ord e) => HeadedParsec e s res -> HeadedParsec e s (Located.Located res)
 locate =
   parse . MegaparsecExtras.locate . toParsec

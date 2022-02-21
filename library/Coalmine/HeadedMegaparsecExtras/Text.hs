@@ -16,11 +16,3 @@ type Parser e = HeadedParsec e Text
 
 eol :: Ord e => Parser e Text
 eol = parse MegaparsecChar.eol
-
--- *
-
-type Located = Located.Located Text
-
-locate :: Ord e => Parser e res -> Parser e (Located res)
-locate =
-  parse . MegaparsecExtras.locate . toParsec
