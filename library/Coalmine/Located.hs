@@ -22,14 +22,16 @@ data Located a
 instance Applicative Located where
   pure =
     Located 0 0
-  Located _ _ lVal <*> Located rStart rEnd rVal =
-    Located rStart rEnd (lVal rVal)
+  Located lStart lEnd lVal <*> Located rStart rEnd rVal =
+    Located (min lStart rStart) (max lEnd rEnd) (lVal rVal)
 
 instance Monad Located where
   return =
     pure
-  Located _ _ lVal >>= k =
-    k lVal
+  Located lStart lEnd lVal >>= k =
+    case k lVal of
+      Located rStart rEnd rVal ->
+        Located (min lStart rStart) (max lEnd rEnd) rVal
 
 -- |
 -- Process using a provided pure refinement function.
