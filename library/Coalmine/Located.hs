@@ -2,6 +2,7 @@ module Coalmine.Located
   ( -- *
     Located (..),
     analyse,
+    render,
   )
 where
 
@@ -36,3 +37,9 @@ instance Monad Located where
 analyse :: Located a -> (a -> Either e b) -> Either (Located e) b
 analyse (Located a b c) mapper =
   first (Located a b) (mapper c)
+
+-- |
+-- Pretty-print an error message, asssociating it with the input.
+render :: Located Text -> Text -> Text
+render =
+  error "TODO"
