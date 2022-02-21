@@ -1,7 +1,7 @@
 module Coalmine.Located
   ( -- *
     Located (..),
-    refine,
+    analyse,
   )
 where
 
@@ -17,10 +17,8 @@ data Located s a
       a
   deriving (Functor, Show, Eq, Foldable, Traversable)
 
-sequenceErr :: Located s (Either e a) -> Either (Located s e) a
-sequenceErr (Located a b c) =
-  first (Located a b) c
-
-refine :: (a -> Either e b) -> Located s a -> Either (Located s e) b
-refine mapper (Located a b c) =
+-- |
+-- Process using a provided pure refinement function.
+analyse :: Located s a -> (a -> Either e b) -> Either (Located s e) b
+analyse (Located a b c) mapper =
   first (Located a b) (mapper c)
