@@ -1,6 +1,7 @@
 module Coalmine.MegaparsecExtras where
 
 import Coalmine.InternalPrelude
+import qualified Coalmine.Located as Located
 import Text.Megaparsec
 
 -- |
@@ -65,20 +66,11 @@ sepEndUpdate state sepP endP elemP =
          in go state
     ]
 
--- *
-
-data Located s a
-  = Located
-      !(PosState s)
-      !(PosState s)
-      a
-  deriving (Functor, Show, Eq, Foldable, Traversable)
-
 -- |
 -- Associate the result of parsing with an input region.
-locate :: (Stream s, Ord e) => Parsec e s res -> Parsec e s (Located s res)
+locate :: (Stream s, Ord e) => Parsec e s res -> Parsec e s (Located.Located s res)
 locate p = do
   initialPos <- statePosState <$> getParserState
   res <- p
   finalPos <- statePosState <$> getParserState
-  return $ Located initialPos finalPos res
+  return $ Located.Located initialPos finalPos res

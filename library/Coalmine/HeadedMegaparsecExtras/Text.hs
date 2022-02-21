@@ -1,6 +1,7 @@
 module Coalmine.HeadedMegaparsecExtras.Text where
 
 import Coalmine.InternalPrelude hiding (bit, expr, filter, head, option, some, sortBy, tail, try)
+import qualified Coalmine.Located as Located
 import qualified Coalmine.MegaparsecExtras as MegaparsecExtras
 import Data.CaseInsensitive (CI, FoldCase)
 import HeadedMegaparsec hiding (string)
@@ -18,7 +19,7 @@ eol = parse MegaparsecChar.eol
 
 -- *
 
-type Located = MegaparsecExtras.Located Text
+type Located = Located.Located Text
 
 locate :: Ord e => Parser e res -> Parser e (Located res)
 locate =

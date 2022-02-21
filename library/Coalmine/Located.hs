@@ -10,17 +10,17 @@ import Text.Megaparsec
 
 -- *
 
-data Located a
+data Located s a
   = Located
-      !(PosState Text)
-      !(PosState Text)
+      !(PosState s)
+      !(PosState s)
       a
   deriving (Functor, Show, Eq, Foldable, Traversable)
 
-sequenceErr :: Located (Either e a) -> Either (Located e) a
+sequenceErr :: Located s (Either e a) -> Either (Located s e) a
 sequenceErr (Located a b c) =
   first (Located a b) c
 
-refine :: (a -> Either e b) -> Located a -> Either (Located e) b
+refine :: (a -> Either e b) -> Located s a -> Either (Located s e) b
 refine mapper (Located a b c) =
   first (Located a b) (mapper c)
