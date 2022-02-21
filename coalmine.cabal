@@ -77,6 +77,7 @@ library
     Coalmine.SimplePaths
     Coalmine.Streamer
     Coalmine.Tasty
+    Coalmine.Tasty.HeadedMegaparsec
     Coalmine.TextAppender
     Coalmine.TH
     Coalmine.Types
