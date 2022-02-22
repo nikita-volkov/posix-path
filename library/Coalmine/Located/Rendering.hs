@@ -168,7 +168,7 @@ select :: Int -> Int -> Int -> [Text] -> [Text]
 select firstLineNum startCol endCol inputLines =
   case inputLines of
     linesHead : linesTail ->
-      contentLine : firstLineCarets : buildTail (succ firstLineNum) linesTail
+      firstLine : contentLine : firstLineCarets : buildTail (succ firstLineNum) linesTail
       where
         contentLine =
           contentLinePrefix firstLineNum <> linesHead
@@ -200,5 +200,6 @@ select firstLineNum startCol endCol inputLines =
     linesTotal = length inputLines
     lastLineNum = firstLineNum + pred linesTotal
     barOffset = Integer.countDigits lastLineNum + 1
+    firstLine = Text.replicate barOffset " " <> "|"
     caretLinePrefix = Text.replicate barOffset " " <> "| "
     contentLinePrefix n = (fromString . show) n <> Text.replicate (barOffset - Integer.countDigits n) " " <> "| "

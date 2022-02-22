@@ -17,6 +17,7 @@ tests =
               actualResult = Text.intercalate "\n" $ Rendering.select 2 19 6 $ Text.lines input
               expectedResult =
                 [i|
+                    |
                   2 | "id" int8 not null null generated always as identity primary key,
                     |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                   3 | "name" text not null unique
@@ -31,6 +32,7 @@ tests =
               actualResult = Text.intercalate "\n" $ Rendering.select 2 19 23 $ Text.lines input
               expectedResult =
                 [i|
+                    |
                   2 | "id" int8 not null null generated always as identity primary key,
                     |                    ^^^^
                 |]
@@ -51,6 +53,7 @@ tests =
               expectedResult =
                 [i|
                   2:22:
+                    |
                   2 |   "id" int8 not null null generated always as identity primary key,
                     |                      ^^^^
                   Details
@@ -70,6 +73,7 @@ tests =
               expectedResult =
                 [i|
                   1:14:
+                    |
                   1 | create table "group" (
                     |              ^^^^^^^
                   Details
@@ -89,6 +93,7 @@ tests =
               expectedResult =
                 [i|
                   1:14:
+                    |
                   1 | create table "group" (
                     |              ^^^^^^^^^
                   2 |   "id" int8 not null null generated always as identity primary key,
@@ -110,6 +115,7 @@ tests =
               expectedResult =
                 [i|
                   1:23:
+                    |
                   1 | create table "group" (
                     |                       
                   2 |   "id" int8 not null null generated always as identity primary key,
@@ -133,6 +139,7 @@ tests =
               expectedResult =
                 [i|
                   2:1:
+                    |
                   2 |   "id" int8 not null null generated always as identity primary key,
                     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                   3 |   "name" text not null unique
@@ -156,6 +163,7 @@ tests =
               expectedResult =
                 [i|
                   2:1:
+                    |
                   2 |   "id" int8 not null null generated always as identity primary key,
                     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                   3 |   "name" text not null unique
