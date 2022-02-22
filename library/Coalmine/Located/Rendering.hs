@@ -15,17 +15,51 @@ import qualified Coalmine.TextAppender as TextAppender
 import qualified Data.Text as Text
 
 render startOffset endOffset input =
-  Text.foldr step finish input [] 0 0 Nothing False
+  Text.foldr step finish input [] 0 0 Nothing False 0 0
   where
-    step char next !collectedLines !currentOffset !currentLineStart !earlyEnd startReached =
+    step char next !collectedLines !currentOffset !currentLineStart !earlyEnd startReached startFirstLineOffset endLastLineOffset =
       if startReached
         then case char of
-          '\r' -> next collectedLines (succ currentOffset) currentLineStart (Just currentOffset) startReached
-          '\n' -> next (line : collectedLines) (succ currentOffset) (succ currentOffset) Nothing startReached
-          _ -> next collectedLines (succ currentOffset) currentLineStart earlyEnd startReached
+          '\r' ->
+            next
+              collectedLines
+              (succ currentOffset)
+              currentLineStart
+              (Just currentOffset)
+              startReached
+              startFirstLineOffset
+              endLastLineOffset
+          '\n' ->
+            next
+              (line : collectedLines)
+              (succ currentOffset)
+              (succ currentOffset)
+              Nothing
+              startReached
+              startFirstLineOffset
+              endLastLineOffset
+          _ ->
+            next
+              collectedLines
+              (succ currentOffset)
+              currentLineStart
+              earlyEnd
+              startReached
+              startFirstLineOffset
+              endLastLineOffset
         else
           if currentOffset >= startOffset
-            then step char next collectedLines currentOffset currentLineStart earlyEnd True
+            then
+              step
+                char
+                next
+                collectedLines
+                currentOffset
+                currentLineStart
+                earlyEnd
+                True
+                currentLineStart
+                endLastLineOffset
             else error "TODO"
       where
         line =
