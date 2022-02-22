@@ -10,8 +10,11 @@ import Optics
 -- *
 
 updateIterator :: Char -> Iterator -> Iterator
-updateIterator char =
-  error "TODO"
+updateIterator char iterator =
+  iterator
+    & over #lineConstructor (updateLineConstructor (iterator ^. #offset) char)
+    & over #offset succ
+    & error "TODO"
 
 updateLineConstructor :: Int -> Char -> LineConstructor -> LineConstructor
 updateLineConstructor offset char = \case
@@ -26,3 +29,16 @@ updateLineConstructor offset char = \case
       else CollectingLineConstructor constructor
   FinishedLineConstructor constructor ->
     FinishedLineConstructor constructor
+
+-- *
+
+finalizeLineConstructor :: Text -> LineConstructor -> (Int, Text)
+finalizeLineConstructor input = \case
+  FinishedLineConstructor constructor ->
+    let text =
+          input
+            & Text.drop (constructor ^. #start)
+            & Text.take (constructor ^. #end - constructor ^. #start)
+        lineNum =
+          constructor ^. #line
+     in (lineNum, text)

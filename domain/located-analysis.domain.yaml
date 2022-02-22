@@ -11,11 +11,14 @@ Selection:
       product:
         currentLineStart: Int
         currentLineNum: Int
+        start: Int
+        end: Int
     startReached:
       product:
         collectedLines: List Text
         startLine: Int
         startCol: Int
+        end: Int
     endReached:
       product:
         collectedLines: List Text
