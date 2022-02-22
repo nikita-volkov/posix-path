@@ -22,5 +22,5 @@ tests =
             [i|
             
             |]
-       in assertEqual "" expectedResult actualResult
+       in assertEqual (toString actualResult) expectedResult actualResult
   ]
