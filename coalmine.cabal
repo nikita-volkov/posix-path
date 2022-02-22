@@ -167,6 +167,7 @@ test-suite test
   other-modules:
     TestSuites.Inter
     TestSuites.Inter.Regressions.FromFormatica
+    TestSuites.LocatedRendering
   build-depends:
     coalmine,
     QuickCheck >=2.8.1 && <3,
