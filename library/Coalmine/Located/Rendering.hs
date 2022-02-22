@@ -41,7 +41,7 @@ render startOffset endOffset input =
                     currentLineStart
                     currentLineNum
                     (Just currentOffset)
-                    startReached
+                    True
                     startLineNum
                     startCol
                     endCol
@@ -52,7 +52,7 @@ render startOffset endOffset input =
                     (succ currentOffset)
                     (succ currentLineNum)
                     Nothing
-                    startReached
+                    True
                     startLineNum
                     startCol
                     endCol
@@ -63,34 +63,38 @@ render startOffset endOffset input =
                     currentLineStart
                     currentLineNum
                     earlyEnd
-                    startReached
+                    True
                     startLineNum
                     startCol
                     endCol
               else
-                if char == '\r' || char == '\n'
-                  then
-                    finish
-                      (line : collectedLines)
-                      (succ currentOffset)
-                      currentLineStart
-                      (succ currentLineNum)
-                      Nothing
-                      startReached
-                      startLineNum
-                      startCol
-                      (currentOffset - currentLineStart)
-                  else
-                    next
-                      collectedLines
-                      (succ currentOffset)
-                      currentLineStart
-                      currentLineNum
-                      Nothing
-                      startReached
-                      startLineNum
-                      startCol
-                      endCol
+                let endCol' =
+                      if currentOffset == endOffset
+                        then currentOffset - currentLineStart
+                        else endCol
+                 in if char == '\r' || char == '\n'
+                      then
+                        finish
+                          collectedLines
+                          (succ currentOffset)
+                          (succ currentOffset)
+                          (succ currentLineNum)
+                          Nothing
+                          True
+                          startLineNum
+                          startCol
+                          endCol'
+                      else
+                        next
+                          collectedLines
+                          (succ currentOffset)
+                          currentLineStart
+                          currentLineNum
+                          Nothing
+                          True
+                          startLineNum
+                          startCol
+                          endCol'
           else
             if currentOffset >= startOffset
               then
@@ -133,10 +137,16 @@ render startOffset endOffset input =
           line =
             input
               & Text.drop currentLineStart
-              & Text.take (fromMaybe currentOffset earlyEnd)
+              & Text.take (fromMaybe currentOffset earlyEnd - currentLineStart)
+
     finish collectedLines currentOffset currentLineStart currentLineNum earlyEnd startReached startLineNum startCol endCol =
-      select (succ startLineNum) startCol endCol (reverse collectedLines)
+      select (succ startLineNum) startCol endCol (reverse (line : collectedLines))
         & Text.intercalate "\n"
+      where
+        line =
+          input
+            & Text.drop currentLineStart
+            & Text.take (fromMaybe currentOffset earlyEnd - currentLineStart)
 
 megaparsecErrorMessageLayout startLine startColumn quote explanation =
   [i|
