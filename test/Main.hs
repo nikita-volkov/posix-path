@@ -1,15 +1,12 @@
 module Main where
 
-import qualified Test.QuickCheck as QuickCheck
-import Test.QuickCheck.Instances
-import qualified Test.QuickCheck.Property as QuickCheck
-import Test.Tasty
-import Test.Tasty.HUnit
-import Test.Tasty.QuickCheck
-import Test.Tasty.Runners
+import Coalmine.Tasty
 import qualified TestSuites.Inter as Inter
+import qualified TestSuites.LocatedRendering as LocatedRendering
 import Prelude
 
 main =
   defaultMain . testGroup "All" $
-    [testGroup "Inter" Inter.tests]
+    [ testGroup "Inter" Inter.tests,
+      testGroup "LocatedRendering" LocatedRendering.tests
+    ]

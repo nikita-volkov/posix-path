@@ -14,6 +14,7 @@ import Coalmine.Prelude
 import qualified Coalmine.TextAppender as TextAppender
 import qualified Data.Text as Text
 
+render :: Int -> Int -> Text -> Text
 render startOffset endOffset input =
   Text.foldr step finish input [] 0 0 0 Nothing False 0 0 0
   where
@@ -121,6 +122,7 @@ megaparsecErrorMessageLayout startLine startColumn quote explanation =
     $explanation
   |]
 
+select :: Int -> Int -> Int -> [Text] -> [Text]
 select firstLineNum startFirstLineOffset endLastLineOffset inputLines =
   case inputLines of
     linesHead : linesTail ->
