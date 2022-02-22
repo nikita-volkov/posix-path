@@ -89,6 +89,67 @@ tests =
                   2 |   "id" int8 not null null generated always as identity primary key,
                     | ^^^^^^
                 |]
+           in assertEqual (toString actualResult) expectedResult actualResult,
+        testCase "4" $
+          let input =
+                [i|
+                  create table "group" (
+                    "id" int8 not null null generated always as identity primary key,
+                    "name" text not null unique
+                  );
+                |]
+              selectionStart = 22
+              selectionEnd = selectionStart + 67 + 29 + 2
+              actualResult = Rendering.render selectionStart selectionEnd input
+              expectedResult =
+                [i|
+                  1 | create table "group" (
+                    |                       
+                  2 |   "id" int8 not null null generated always as identity primary key,
+                    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  3 |   "name" text not null unique
+                    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                |]
+           in assertEqual (toString actualResult) expectedResult actualResult,
+        testCase "5" $
+          let input =
+                [i|
+                  create table "group" (
+                    "id" int8 not null null generated always as identity primary key,
+                    "name" text not null unique
+                  );
+                |]
+              selectionStart = 23
+              selectionEnd = selectionStart + 67 + 29 + 2
+              actualResult = Rendering.render selectionStart selectionEnd input
+              expectedResult =
+                [i|
+                  2 |   "id" int8 not null null generated always as identity primary key,
+                    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  3 |   "name" text not null unique
+                    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  4 | );
+                    | 
+                |]
+           in assertEqual (toString actualResult) expectedResult actualResult,
+        testCase "6" $
+          let input =
+                [i|
+                  create table "group" (
+                    "id" int8 not null null generated always as identity primary key,
+                    "name" text not null unique
+                  );
+                |]
+              selectionStart = 23
+              selectionEnd = selectionStart + 67 + 29 + 1
+              actualResult = Rendering.render selectionStart selectionEnd input
+              expectedResult =
+                [i|
+                  2 |   "id" int8 not null null generated always as identity primary key,
+                    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  3 |   "name" text not null unique
+                    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                |]
            in assertEqual (toString actualResult) expectedResult actualResult
       ]
   ]
