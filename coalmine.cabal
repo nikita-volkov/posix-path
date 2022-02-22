@@ -165,8 +165,8 @@ test-suite test
   main-is:
     Main.hs
   other-modules:
-    Coalmine.Test.Inter
-    Coalmine.Test.Inter.RegressionsFromFormatica
+    TestSuites.Inter
+    TestSuites.Inter.Regressions.FromFormatica
   build-depends:
     coalmine,
     QuickCheck >=2.8.1 && <3,

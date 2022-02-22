@@ -1,4 +1,4 @@
-module Coalmine.Test.Inter.RegressionsFromFormatica where
+module TestSuites.Inter.Regressions.FromFormatica where
 
 import Coalmine.Inter
 import qualified Coalmine.MultilineTextBuilder as B
