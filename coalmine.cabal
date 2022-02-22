@@ -66,8 +66,6 @@ library
     Coalmine.Isomorphisms
     Coalmine.JsonEncoder
     Coalmine.Located
-    Coalmine.Located.InputAnalysis
-    Coalmine.Located.InputAnalysis.Model
     Coalmine.Located.Rendering
     Coalmine.MegaparsecExtras
     Coalmine.MultilineParser
