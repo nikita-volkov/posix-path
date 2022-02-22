@@ -2,12 +2,12 @@ module Coalmine.Located
   ( -- *
     Located (..),
     analyse,
-    render,
+    renderInMegaparsecStyle,
   )
 where
 
 import Coalmine.InternalPrelude
-import Text.Megaparsec
+import qualified Coalmine.Located.Rendering as Rendering
 
 -- *
 
@@ -39,7 +39,8 @@ analyse (Located a b c) mapper =
   first (Located a b) (mapper c)
 
 -- |
--- Pretty-print an error message, asssociating it with the input.
-render :: Located Text -> Text -> Text
-render =
-  error "TODO"
+-- Pretty-print an error message, asssociating it with the input,
+-- Megaparsec-style.
+renderInMegaparsecStyle :: Located Text -> Text -> Text
+renderInMegaparsecStyle (Located start end message) input =
+  Rendering.render input start end message

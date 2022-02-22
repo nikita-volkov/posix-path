@@ -1,8 +1,7 @@
-module Coalmine.Test.Inter where
+module TestSuites.Inter where
 
 import Coalmine.Inter
 import Coalmine.Prelude
-import qualified Coalmine.Test.Inter.RegressionsFromFormatica as RegressionsFromFormatica
 import qualified Data.Text as Text
 import qualified Test.QuickCheck as QuickCheck
 import Test.QuickCheck.Instances
@@ -11,6 +10,7 @@ import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck
 import Test.Tasty.Runners
+import qualified TestSuites.Inter.Regressions.FromFormatica as RegressionsFromFormatica
 
 tests =
   [ testCase "" $
@@ -29,7 +29,7 @@ tests =
               var :: Text
               var = "a\nb\nc"
        in assertEqual "" expected actual,
-    testGroup "Regressions from" $
-      [ testGroup "Formatica" RegressionsFromFormatica.tests
+    testGroup "Regressions" $
+      [ testGroup "From Formatica" RegressionsFromFormatica.tests
       ]
   ]
