@@ -51,8 +51,24 @@ render startOffset endOffset input =
                   endLastLineOffset
             else
               if char == '\r' || char == '\n'
-                then finish (line : collectedLines) (succ currentOffset) currentLineStart Nothing startReached startFirstLineOffset currentOffset
-                else next collectedLines (succ currentOffset) currentLineStart Nothing startReached startFirstLineOffset endLastLineOffset
+                then
+                  finish
+                    (line : collectedLines)
+                    (succ currentOffset)
+                    currentLineStart
+                    Nothing
+                    startReached
+                    startFirstLineOffset
+                    currentOffset
+                else
+                  next
+                    collectedLines
+                    (succ currentOffset)
+                    currentLineStart
+                    Nothing
+                    startReached
+                    startFirstLineOffset
+                    endLastLineOffset
         else
           if currentOffset >= startOffset
             then
