@@ -47,11 +47,13 @@ tests =
                 |]
               selectionStart = 23 + 21
               selectionEnd = selectionStart + 4
-              actualResult = Rendering.render selectionStart selectionEnd input
+              actualResult = Rendering.render input selectionStart selectionEnd "Details"
               expectedResult =
                 [i|
+                  2:22:
                   2 |   "id" int8 not null null generated always as identity primary key,
                     |                      ^^^^
+                  Details
                 |]
            in assertEqual (toString actualResult) expectedResult actualResult,
         testCase "2" $
@@ -64,11 +66,13 @@ tests =
                 |]
               selectionStart = 13
               selectionEnd = selectionStart + 7
-              actualResult = Rendering.render selectionStart selectionEnd input
+              actualResult = Rendering.render input selectionStart selectionEnd "Details"
               expectedResult =
                 [i|
+                  1:14:
                   1 | create table "group" (
                     |              ^^^^^^^
+                  Details
                 |]
            in assertEqual (toString actualResult) expectedResult actualResult,
         testCase "3" $
@@ -81,13 +85,15 @@ tests =
                 |]
               selectionStart = 13
               selectionEnd = selectionStart + 7 + 3 + 2 + 4
-              actualResult = Rendering.render selectionStart selectionEnd input
+              actualResult = Rendering.render input selectionStart selectionEnd "Details"
               expectedResult =
                 [i|
+                  1:14:
                   1 | create table "group" (
                     |              ^^^^^^^^^
                   2 |   "id" int8 not null null generated always as identity primary key,
                     | ^^^^^^
+                  Details
                 |]
            in assertEqual (toString actualResult) expectedResult actualResult,
         testCase "4" $
@@ -100,15 +106,17 @@ tests =
                 |]
               selectionStart = 22
               selectionEnd = selectionStart + 67 + 29 + 2
-              actualResult = Rendering.render selectionStart selectionEnd input
+              actualResult = Rendering.render input selectionStart selectionEnd "Details"
               expectedResult =
                 [i|
+                  1:23:
                   1 | create table "group" (
                     |                       
                   2 |   "id" int8 not null null generated always as identity primary key,
                     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                   3 |   "name" text not null unique
                     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  Details
                 |]
            in assertEqual (toString actualResult) expectedResult actualResult,
         testCase "5" $
@@ -121,15 +129,17 @@ tests =
                 |]
               selectionStart = 23
               selectionEnd = selectionStart + 67 + 29 + 2
-              actualResult = Rendering.render selectionStart selectionEnd input
+              actualResult = Rendering.render input selectionStart selectionEnd "Details"
               expectedResult =
                 [i|
+                  2:1:
                   2 |   "id" int8 not null null generated always as identity primary key,
                     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                   3 |   "name" text not null unique
                     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                   4 | );
                     | 
+                  Details
                 |]
            in assertEqual (toString actualResult) expectedResult actualResult,
         testCase "6" $
@@ -142,13 +152,15 @@ tests =
                 |]
               selectionStart = 23
               selectionEnd = selectionStart + 67 + 29 + 1
-              actualResult = Rendering.render selectionStart selectionEnd input
+              actualResult = Rendering.render input selectionStart selectionEnd "Details"
               expectedResult =
                 [i|
+                  2:1:
                   2 |   "id" int8 not null null generated always as identity primary key,
                     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                   3 |   "name" text not null unique
                     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                  Details
                 |]
            in assertEqual (toString actualResult) expectedResult actualResult
       ]

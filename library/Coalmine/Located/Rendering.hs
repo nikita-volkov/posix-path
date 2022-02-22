@@ -13,9 +13,10 @@ import Coalmine.Inter
 import Coalmine.Prelude hiding (select)
 import qualified Coalmine.TextAppender as TextAppender
 import qualified Data.Text as Text
+import qualified TextBuilderDev as TextBuilder
 
-render :: Int -> Int -> Text -> Text
-render startOffset endOffset input =
+render :: Text -> Int -> Int -> Text -> Text
+render input startOffset endOffset explanation =
   Text.foldr step finish input [] 0 0 1 Nothing False 0 0 0
   where
     step
@@ -140,13 +141,21 @@ render startOffset endOffset input =
               & Text.take (fromMaybe currentOffset earlyEnd - currentLineStart)
 
     finish collectedLines currentOffset currentLineStart currentLineNum earlyEnd startReached startLineNum startCol endCol =
-      select startLineNum startCol endCol (reverse (line : collectedLines))
-        & Text.intercalate "\n"
+      megaparsecErrorMessageLayout
+        (TextBuilder.unsignedDecimal startLineNum)
+        (TextBuilder.unsignedDecimal startColNum)
+        quote
+        explanation
       where
-        line =
-          input
-            & Text.drop currentLineStart
-            & Text.take (fromMaybe currentOffset earlyEnd - currentLineStart)
+        startColNum = succ startCol
+        quote =
+          select startLineNum startCol endCol (reverse (line : collectedLines))
+            & Text.intercalate "\n"
+          where
+            line =
+              input
+                & Text.drop currentLineStart
+                & Text.take (fromMaybe currentOffset earlyEnd - currentLineStart)
 
 megaparsecErrorMessageLayout startLine startColumn quote explanation =
   [i|
