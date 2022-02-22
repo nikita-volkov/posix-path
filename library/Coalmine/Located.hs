@@ -32,6 +32,12 @@ instance Monad Located where
   Located _ _ lVal >>= k =
     k lVal
 
+instance Comonad Located where
+  extract (Located _ _ a) =
+    a
+  duplicate (Located a b c) =
+    Located a b (Located a b c)
+
 -- |
 -- Process using a provided pure refinement function.
 analyse :: Located a -> (a -> Either e b) -> Either (Located e) b
