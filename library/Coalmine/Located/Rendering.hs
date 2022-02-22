@@ -14,6 +14,27 @@ import Coalmine.Prelude
 import qualified Coalmine.TextAppender as TextAppender
 import qualified Data.Text as Text
 
+render startOffset endOffset input =
+  Text.foldr step finish input [] 0 0 Nothing False
+  where
+    step char next !collectedLines !currentOffset !currentLineStart !earlyEnd startReached =
+      if startReached
+        then case char of
+          '\r' -> next collectedLines (succ currentOffset) currentLineStart (Just currentOffset) startReached
+          '\n' -> next (line : collectedLines) (succ currentOffset) (succ currentOffset) Nothing startReached
+          _ -> next collectedLines (succ currentOffset) currentLineStart earlyEnd startReached
+        else
+          if currentOffset >= startOffset
+            then step char next collectedLines currentOffset currentLineStart earlyEnd True
+            else error "TODO"
+      where
+        line =
+          input
+            & Text.drop currentLineStart
+            & Text.take (fromMaybe currentOffset earlyEnd)
+    finish =
+      error "TODO"
+
 megaparsecErrorMessageLayout startLine startColumn quote explanation =
   [i|
     $startLine:$startColumn:
