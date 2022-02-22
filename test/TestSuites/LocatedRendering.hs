@@ -7,7 +7,22 @@ import Coalmine.Tasty
 import qualified Data.Text as Text
 
 tests =
-  [ testCase "single-line" $
+  [ testCase "select" $
+      let input =
+            [i|
+              "id" int8 not null null generated always as identity primary key,
+              "name" text not null unique
+            |]
+          actualResult = Text.intercalate "\n" $ Rendering.select 2 19 6 $ Text.lines input
+          expectedResult =
+            [i|
+              2 | "id" int8 not null null generated always as identity primary key,
+                |                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+              3 | "name" text not null unique
+                | ^^^^^^
+            |]
+       in assertEqual (toString actualResult) expectedResult actualResult,
+    testCase "single-line" $
       let input =
             [i|
               create table "group" (
@@ -20,7 +35,7 @@ tests =
           actualResult = Rendering.render selectionStart selectionEnd input
           expectedResult =
             [i|
-            
+
             |]
        in assertEqual (toString actualResult) expectedResult actualResult
   ]

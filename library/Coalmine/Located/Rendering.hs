@@ -104,7 +104,7 @@ render startOffset endOffset input =
                   earlyEnd
                   True
                   startLineNum
-                  currentLineStart
+                  (currentOffset - currentLineStart)
                   endLastLineOffset
               else case char of
                 '\n' ->
@@ -149,37 +149,37 @@ select :: Int -> Int -> Int -> [Text] -> [Text]
 select firstLineNum startFirstLineOffset endLastLineOffset inputLines =
   case inputLines of
     linesHead : linesTail ->
-      contentLine : firstLineCursors : buildTail (succ firstLineNum) linesTail
+      contentLine : firstLineCarets : buildTail (succ firstLineNum) linesTail
       where
         contentLine =
           contentLinePrefix firstLineNum <> linesHead
-        firstLineCursors =
+        firstLineCarets =
           -- Last line?
           if null linesTail
             then
-              cursorLinePrefix <> Text.replicate startFirstLineOffset " "
+              caretLinePrefix <> Text.replicate startFirstLineOffset " "
                 <> Text.replicate (endLastLineOffset - startFirstLineOffset) "^"
             else
-              cursorLinePrefix <> Text.replicate startFirstLineOffset " "
+              caretLinePrefix <> Text.replicate startFirstLineOffset " "
                 <> Text.replicate (Text.length linesHead - startFirstLineOffset) "^"
         buildTail lineNum = \case
           linesHead : linesTail ->
             -- Last line?
             if null linesTail
-              then contentLine : lastLineCursors : []
-              else contentLine : intermediateLineCursors : buildTail (succ lineNum) linesTail
+              then contentLine : lastLineCarets : []
+              else contentLine : intermediateLineCarets : buildTail (succ lineNum) linesTail
             where
               contentLine =
                 contentLinePrefix lineNum <> linesHead
-              lastLineCursors =
-                cursorLinePrefix <> Text.replicate endLastLineOffset "^"
-              intermediateLineCursors =
-                cursorLinePrefix <> Text.replicate (Text.length linesHead) "^"
+              lastLineCarets =
+                caretLinePrefix <> Text.replicate endLastLineOffset "^"
+              intermediateLineCarets =
+                caretLinePrefix <> Text.replicate (Text.length linesHead) "^"
           [] -> []
     [] -> []
   where
     linesTotal = length inputLines
     lastLineNum = firstLineNum + pred linesTotal
     barOffset = Integer.countDigits lastLineNum + 1
-    cursorLinePrefix = Text.replicate barOffset " " <> "| "
+    caretLinePrefix = Text.replicate barOffset " " <> "| "
     contentLinePrefix n = (fromString . show) n <> Text.replicate (barOffset - Integer.countDigits n) " " <> "| "
