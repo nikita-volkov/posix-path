@@ -1,0 +1,36 @@
+
+Iterator:
+  product:
+    offset: Int
+    selection: Selection
+    lineConstructor: LineConstructor
+
+Selection:
+  sum:
+    startNotReached:
+      product:
+        currentLineStart: Int
+        currentLineNum: Int
+    startReached:
+      product:
+        collectedLines: List Text
+        startLine: Int
+        startCol: Int
+    endReached:
+      product:
+        collectedLines: List Text
+        startLine: Int
+        startCol: Int
+        endCol: Int
+
+LineConstructor:
+  sum:
+    collecting:
+      product:
+        line: Int
+        start: Int
+    finished:
+      product:
+        line: Int
+        start: Int
+        end: Int
