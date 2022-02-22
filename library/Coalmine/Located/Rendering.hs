@@ -15,80 +15,103 @@ import qualified Coalmine.TextAppender as TextAppender
 import qualified Data.Text as Text
 
 render startOffset endOffset input =
-  Text.foldr step finish input [] 0 0 Nothing False 0 0
+  Text.foldr step finish input [] 0 0 0 Nothing False 0 0 0
   where
-    step char next !collectedLines !currentOffset !currentLineStart !earlyEnd startReached startFirstLineOffset endLastLineOffset =
-      if startReached
-        then
-          if currentOffset < endOffset
-            then case char of
-              '\r' ->
-                next
-                  collectedLines
-                  (succ currentOffset)
-                  currentLineStart
-                  (Just currentOffset)
-                  startReached
-                  startFirstLineOffset
-                  endLastLineOffset
-              '\n' ->
-                next
-                  (line : collectedLines)
-                  (succ currentOffset)
-                  (succ currentOffset)
-                  Nothing
-                  startReached
-                  startFirstLineOffset
-                  endLastLineOffset
-              _ ->
-                next
-                  collectedLines
-                  (succ currentOffset)
-                  currentLineStart
-                  earlyEnd
-                  startReached
-                  startFirstLineOffset
-                  endLastLineOffset
-            else
-              if char == '\r' || char == '\n'
-                then
-                  finish
-                    (line : collectedLines)
-                    (succ currentOffset)
-                    currentLineStart
-                    Nothing
-                    startReached
-                    startFirstLineOffset
-                    currentOffset
-                else
+    step
+      char
+      next
+      !collectedLines
+      !currentOffset
+      !currentLineStart
+      !currentLineNum
+      !earlyEnd
+      startReached
+      startLineNum
+      startFirstLineOffset
+      endLastLineOffset =
+        if startReached
+          then
+            if currentOffset < endOffset
+              then case char of
+                '\r' ->
                   next
                     collectedLines
                     (succ currentOffset)
                     currentLineStart
-                    Nothing
+                    currentLineNum
+                    (Just currentOffset)
                     startReached
+                    startLineNum
                     startFirstLineOffset
                     endLastLineOffset
-        else
-          if currentOffset >= startOffset
-            then
-              step
-                char
-                next
-                collectedLines
-                currentOffset
-                currentLineStart
-                earlyEnd
-                True
-                currentLineStart
-                endLastLineOffset
-            else error "TODO"
-      where
-        line =
-          input
-            & Text.drop currentLineStart
-            & Text.take (fromMaybe currentOffset earlyEnd)
-    finish =
+                '\n' ->
+                  next
+                    (line : collectedLines)
+                    (succ currentOffset)
+                    (succ currentOffset)
+                    (succ currentLineNum)
+                    Nothing
+                    startReached
+                    startLineNum
+                    startFirstLineOffset
+                    endLastLineOffset
+                _ ->
+                  next
+                    collectedLines
+                    (succ currentOffset)
+                    currentLineStart
+                    currentLineNum
+                    earlyEnd
+                    startReached
+                    startLineNum
+                    startFirstLineOffset
+                    endLastLineOffset
+              else
+                if char == '\r' || char == '\n'
+                  then
+                    finish
+                      (line : collectedLines)
+                      (succ currentOffset)
+                      currentLineStart
+                      (succ currentLineNum)
+                      Nothing
+                      startReached
+                      startLineNum
+                      startFirstLineOffset
+                      currentOffset
+                  else
+                    next
+                      collectedLines
+                      (succ currentOffset)
+                      currentLineStart
+                      currentLineNum
+                      Nothing
+                      startReached
+                      startLineNum
+                      startFirstLineOffset
+                      endLastLineOffset
+          else
+            if currentOffset >= startOffset
+              then
+                step
+                  char
+                  next
+                  collectedLines
+                  currentOffset
+                  currentLineStart
+                  currentLineNum
+                  earlyEnd
+                  True
+                  startLineNum
+                  currentLineStart
+                  endLastLineOffset
+              else error "TODO"
+        where
+          line =
+            input
+              & Text.drop currentLineStart
+              & Text.take (fromMaybe currentOffset earlyEnd)
+    finish collectedLines currentOffset currentLineStart currentLineNum earlyEnd startReached startLineNum startFirstLineOffset endLastLineOffset =
       error "TODO"
 
 megaparsecErrorMessageLayout startLine startColumn quote explanation =
