@@ -70,7 +70,7 @@ sepEndUpdate state sepP endP elemP =
 -- Associate the result of parsing with an input region.
 locate :: (Stream s, Ord e) => Parsec e s res -> Parsec e s (Located.Located res)
 locate p = do
-  initialPos <- pstateOffset . statePosState <$> getParserState
+  initialPos <- stateOffset <$> getParserState
   res <- p
-  finalPos <- pstateOffset . statePosState <$> getParserState
+  finalPos <- stateOffset <$> getParserState
   return $ Located.Located initialPos finalPos res
