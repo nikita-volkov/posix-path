@@ -168,8 +168,10 @@ test-suite test
     TestSuites.Inter
     TestSuites.Inter.Regressions.FromFormatica
     TestSuites.LocatedRendering
+    TestSuites.MegaparsecExtras
   build-depends:
     coalmine,
+    megaparsec,
     QuickCheck >=2.8.1 && <3,
     quickcheck-instances >=0.3.11 && <0.4,
     rerebase <2,
