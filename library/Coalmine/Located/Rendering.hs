@@ -1,46 +1,60 @@
+-- |
+-- Rendering in the following style:
+--
+-- > 5:1:
+-- > 5 | create type "language" as enum ('c', 'c#', 'c++');
+-- >   | ^
+-- > unexpected 'c'
+-- > expecting "--", "/*", end of input, or white space
 module Coalmine.Located.Rendering where
 
+import qualified Coalmine.BaseExtras.Integer as Integer
 import Coalmine.Inter
 import Coalmine.Prelude
 import qualified Coalmine.TextAppender as TextAppender
 import qualified Data.Text as Text
 
--- 5:1:
--- 5 | create type "language" as enum ('c', 'c#', 'c++');
---   | ^
--- unexpected 'c'
--- expecting "--", "/*", end of input, or white space
-
-megaparsecErrorMessageLayout startLine startColumn =
+megaparsecErrorMessageLayout startLine startColumn quote explanation =
   [i|
     $startLine:$startColumn:
-    $startLine
+    $quote
+    $explanation
   |]
 
-select inputLines startFirstLineOffset endLastLineOffset =
+select firstLineNum startFirstLineOffset endLastLineOffset inputLines =
   case inputLines of
     linesHead : linesTail ->
-      linesHead : firstLineCursors : buildTail linesTail
+      contentLine : firstLineCursors : buildTail (succ firstLineNum) linesTail
       where
+        contentLine =
+          contentLinePrefix firstLineNum <> linesHead
         firstLineCursors =
           -- Last line?
           if null linesTail
             then
-              Text.replicate startFirstLineOffset " "
+              cursorLinePrefix <> Text.replicate startFirstLineOffset " "
                 <> Text.replicate (endLastLineOffset - startFirstLineOffset) "^"
             else
-              Text.replicate startFirstLineOffset " "
+              cursorLinePrefix <> Text.replicate startFirstLineOffset " "
                 <> Text.replicate (Text.length linesHead - startFirstLineOffset) "^"
-        buildTail = \case
+        buildTail lineNum = \case
           linesHead : linesTail ->
             -- Last line?
             if null linesTail
-              then linesHead : lastLineCursors : []
-              else linesHead : intermediateLineCursors : buildTail linesTail
+              then contentLine : lastLineCursors : []
+              else contentLine : intermediateLineCursors : buildTail (succ lineNum) linesTail
             where
+              contentLine =
+                contentLinePrefix lineNum <> linesHead
               lastLineCursors =
-                Text.replicate endLastLineOffset "^"
+                cursorLinePrefix <> Text.replicate endLastLineOffset "^"
               intermediateLineCursors =
-                Text.replicate (Text.length linesHead) "^"
+                cursorLinePrefix <> Text.replicate (Text.length linesHead) "^"
           [] -> []
     [] -> []
+  where
+    linesTotal = length inputLines
+    lastLineNum = firstLineNum + pred linesTotal
+    barOffset = Integer.countDigits lastLineNum + 1
+    cursorLinePrefix = Text.replicate barOffset " " <> "| "
+    contentLinePrefix n = (fromString . show) n <> Text.replicate (barOffset - Integer.countDigits n) " " <> "| "
