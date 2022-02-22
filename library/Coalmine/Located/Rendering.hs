@@ -16,7 +16,7 @@ import qualified Data.Text as Text
 
 render :: Int -> Int -> Text -> Text
 render startOffset endOffset input =
-  Text.foldr step finish input [] 0 0 0 Nothing False 0 0 0
+  Text.foldr step finish input [] 0 0 1 Nothing False 0 0 0
   where
     step
       char
@@ -107,7 +107,7 @@ render startOffset endOffset input =
                   currentLineNum
                   earlyEnd
                   True
-                  startLineNum
+                  currentLineNum
                   (currentOffset - currentLineStart)
                   endCol
               else case char of
@@ -140,7 +140,7 @@ render startOffset endOffset input =
               & Text.take (fromMaybe currentOffset earlyEnd - currentLineStart)
 
     finish collectedLines currentOffset currentLineStart currentLineNum earlyEnd startReached startLineNum startCol endCol =
-      select (succ startLineNum) startCol endCol (reverse (line : collectedLines))
+      select startLineNum startCol endCol (reverse (line : collectedLines))
         & Text.intercalate "\n"
       where
         line =
