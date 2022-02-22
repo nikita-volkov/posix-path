@@ -28,8 +28,8 @@ render startOffset endOffset input =
       !earlyEnd
       startReached
       startLineNum
-      startFirstLineOffset
-      endLastLineOffset =
+      startCol
+      endCol =
         if startReached
           then
             if currentOffset < endOffset
@@ -43,8 +43,8 @@ render startOffset endOffset input =
                     (Just currentOffset)
                     startReached
                     startLineNum
-                    startFirstLineOffset
-                    endLastLineOffset
+                    startCol
+                    endCol
                 '\n' ->
                   next
                     (line : collectedLines)
@@ -54,8 +54,8 @@ render startOffset endOffset input =
                     Nothing
                     startReached
                     startLineNum
-                    startFirstLineOffset
-                    endLastLineOffset
+                    startCol
+                    endCol
                 _ ->
                   next
                     collectedLines
@@ -65,8 +65,8 @@ render startOffset endOffset input =
                     earlyEnd
                     startReached
                     startLineNum
-                    startFirstLineOffset
-                    endLastLineOffset
+                    startCol
+                    endCol
               else
                 if char == '\r' || char == '\n'
                   then
@@ -78,8 +78,8 @@ render startOffset endOffset input =
                       Nothing
                       startReached
                       startLineNum
-                      startFirstLineOffset
-                      currentOffset
+                      startCol
+                      (currentOffset - currentLineStart)
                   else
                     next
                       collectedLines
@@ -89,8 +89,8 @@ render startOffset endOffset input =
                       Nothing
                       startReached
                       startLineNum
-                      startFirstLineOffset
-                      endLastLineOffset
+                      startCol
+                      endCol
           else
             if currentOffset >= startOffset
               then
@@ -105,7 +105,7 @@ render startOffset endOffset input =
                   True
                   startLineNum
                   (currentOffset - currentLineStart)
-                  endLastLineOffset
+                  endCol
               else case char of
                 '\n' ->
                   next
@@ -116,8 +116,8 @@ render startOffset endOffset input =
                     Nothing
                     False
                     startLineNum
-                    startFirstLineOffset
-                    endLastLineOffset
+                    startCol
+                    endCol
                 _ ->
                   next
                     collectedLines
@@ -127,15 +127,15 @@ render startOffset endOffset input =
                     earlyEnd
                     startReached
                     startLineNum
-                    startFirstLineOffset
-                    endLastLineOffset
+                    startCol
+                    endCol
         where
           line =
             input
               & Text.drop currentLineStart
               & Text.take (fromMaybe currentOffset earlyEnd)
-    finish collectedLines currentOffset currentLineStart currentLineNum earlyEnd startReached startLineNum startFirstLineOffset endLastLineOffset =
-      select (succ startLineNum) startFirstLineOffset endLastLineOffset (reverse collectedLines)
+    finish collectedLines currentOffset currentLineStart currentLineNum earlyEnd startReached startLineNum startCol endCol =
+      select (succ startLineNum) startCol endCol (reverse collectedLines)
         & Text.intercalate "\n"
 
 megaparsecErrorMessageLayout startLine startColumn quote explanation =
@@ -146,7 +146,7 @@ megaparsecErrorMessageLayout startLine startColumn quote explanation =
   |]
 
 select :: Int -> Int -> Int -> [Text] -> [Text]
-select firstLineNum startFirstLineOffset endLastLineOffset inputLines =
+select firstLineNum startCol endCol inputLines =
   case inputLines of
     linesHead : linesTail ->
       contentLine : firstLineCarets : buildTail (succ firstLineNum) linesTail
@@ -157,11 +157,11 @@ select firstLineNum startFirstLineOffset endLastLineOffset inputLines =
           -- Last line?
           if null linesTail
             then
-              caretLinePrefix <> Text.replicate startFirstLineOffset " "
-                <> Text.replicate (endLastLineOffset - startFirstLineOffset) "^"
+              caretLinePrefix <> Text.replicate startCol " "
+                <> Text.replicate (endCol - startCol) "^"
             else
-              caretLinePrefix <> Text.replicate startFirstLineOffset " "
-                <> Text.replicate (Text.length linesHead - startFirstLineOffset) "^"
+              caretLinePrefix <> Text.replicate startCol " "
+                <> Text.replicate (Text.length linesHead - startCol) "^"
         buildTail lineNum = \case
           linesHead : linesTail ->
             -- Last line?
@@ -172,7 +172,7 @@ select firstLineNum startFirstLineOffset endLastLineOffset inputLines =
               contentLine =
                 contentLinePrefix lineNum <> linesHead
               lastLineCarets =
-                caretLinePrefix <> Text.replicate endLastLineOffset "^"
+                caretLinePrefix <> Text.replicate endCol "^"
               intermediateLineCarets =
                 caretLinePrefix <> Text.replicate (Text.length linesHead) "^"
           [] -> []
