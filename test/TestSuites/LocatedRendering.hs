@@ -36,20 +36,23 @@ tests =
                 |]
            in assertEqual (toString actualResult) expectedResult actualResult
       ],
-    testCase "single-line" $
-      let input =
-            [i|
-              create table "group" (
-                "id" int8 not null null generated always as identity primary key,
-                "name" text not null unique
-              );
-            |]
-          selectionStart = 22 + 21
-          selectionEnd = selectionStart + 4
-          actualResult = Rendering.render selectionStart selectionEnd input
-          expectedResult =
-            [i|
-
-            |]
-       in assertEqual (toString actualResult) expectedResult actualResult
+    testGroup "render" $
+      [ testCase "single-line" $
+          let input =
+                [i|
+                  create table "group" (
+                    "id" int8 not null null generated always as identity primary key,
+                    "name" text not null unique
+                  );
+                |]
+              selectionStart = 23 + 21
+              selectionEnd = selectionStart + 4
+              actualResult = Rendering.render selectionStart selectionEnd input
+              expectedResult =
+                [i|
+                  2 |   "id" int8 not null null generated always as identity primary key,
+                    |                      ^^^^
+                |]
+           in assertEqual (toString actualResult) expectedResult actualResult
+      ]
   ]

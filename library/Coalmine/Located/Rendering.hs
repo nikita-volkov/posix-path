@@ -76,9 +76,9 @@ render startOffset endOffset input =
                       then
                         finish
                           collectedLines
-                          (succ currentOffset)
-                          (succ currentOffset)
-                          (succ currentLineNum)
+                          currentOffset
+                          currentLineStart
+                          currentLineNum
                           Nothing
                           True
                           startLineNum
@@ -124,7 +124,7 @@ render startOffset endOffset input =
                     endCol
                 _ ->
                   next
-                    collectedLines
+                    []
                     (succ currentOffset)
                     currentLineStart
                     currentLineNum
