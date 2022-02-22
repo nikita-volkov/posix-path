@@ -10,7 +10,7 @@ module Coalmine.Located.Rendering where
 
 import qualified Coalmine.BaseExtras.Integer as Integer
 import Coalmine.Inter
-import Coalmine.Prelude
+import Coalmine.Prelude hiding (select)
 import qualified Coalmine.TextAppender as TextAppender
 import qualified Data.Text as Text
 
@@ -106,14 +106,37 @@ render startOffset endOffset input =
                   startLineNum
                   currentLineStart
                   endLastLineOffset
-              else error "TODO"
+              else case char of
+                '\n' ->
+                  next
+                    []
+                    (succ currentOffset)
+                    (succ currentOffset)
+                    (succ currentLineNum)
+                    Nothing
+                    False
+                    startLineNum
+                    startFirstLineOffset
+                    endLastLineOffset
+                _ ->
+                  next
+                    collectedLines
+                    (succ currentOffset)
+                    currentLineStart
+                    currentLineNum
+                    earlyEnd
+                    startReached
+                    startLineNum
+                    startFirstLineOffset
+                    endLastLineOffset
         where
           line =
             input
               & Text.drop currentLineStart
               & Text.take (fromMaybe currentOffset earlyEnd)
     finish collectedLines currentOffset currentLineStart currentLineNum earlyEnd startReached startLineNum startFirstLineOffset endLastLineOffset =
-      error "TODO"
+      select (succ startLineNum) startFirstLineOffset endLastLineOffset (reverse collectedLines)
+        & Text.intercalate "\n"
 
 megaparsecErrorMessageLayout startLine startColumn quote explanation =
   [i|
