@@ -37,7 +37,7 @@ tests =
            in assertEqual (toString actualResult) expectedResult actualResult
       ],
     testGroup "render" $
-      [ testCase "single-line" $
+      [ testCase "1" $
           let input =
                 [i|
                   create table "group" (
@@ -52,6 +52,42 @@ tests =
                 [i|
                   2 |   "id" int8 not null null generated always as identity primary key,
                     |                      ^^^^
+                |]
+           in assertEqual (toString actualResult) expectedResult actualResult,
+        testCase "2" $
+          let input =
+                [i|
+                  create table "group" (
+                    "id" int8 not null null generated always as identity primary key,
+                    "name" text not null unique
+                  );
+                |]
+              selectionStart = 13
+              selectionEnd = selectionStart + 7
+              actualResult = Rendering.render selectionStart selectionEnd input
+              expectedResult =
+                [i|
+                  1 | create table "group" (
+                    |              ^^^^^^^
+                |]
+           in assertEqual (toString actualResult) expectedResult actualResult,
+        testCase "3" $
+          let input =
+                [i|
+                  create table "group" (
+                    "id" int8 not null null generated always as identity primary key,
+                    "name" text not null unique
+                  );
+                |]
+              selectionStart = 13
+              selectionEnd = selectionStart + 7 + 3 + 2 + 4
+              actualResult = Rendering.render selectionStart selectionEnd input
+              expectedResult =
+                [i|
+                  1 | create table "group" (
+                    |              ^^^^^^^^^
+                  2 |   "id" int8 not null null generated always as identity primary key,
+                    | ^^^^^^
                 |]
            in assertEqual (toString actualResult) expectedResult actualResult
       ]
