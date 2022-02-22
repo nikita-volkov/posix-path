@@ -19,34 +19,40 @@ render startOffset endOffset input =
   where
     step char next !collectedLines !currentOffset !currentLineStart !earlyEnd startReached startFirstLineOffset endLastLineOffset =
       if startReached
-        then case char of
-          '\r' ->
-            next
-              collectedLines
-              (succ currentOffset)
-              currentLineStart
-              (Just currentOffset)
-              startReached
-              startFirstLineOffset
-              endLastLineOffset
-          '\n' ->
-            next
-              (line : collectedLines)
-              (succ currentOffset)
-              (succ currentOffset)
-              Nothing
-              startReached
-              startFirstLineOffset
-              endLastLineOffset
-          _ ->
-            next
-              collectedLines
-              (succ currentOffset)
-              currentLineStart
-              earlyEnd
-              startReached
-              startFirstLineOffset
-              endLastLineOffset
+        then
+          if currentOffset < endOffset
+            then case char of
+              '\r' ->
+                next
+                  collectedLines
+                  (succ currentOffset)
+                  currentLineStart
+                  (Just currentOffset)
+                  startReached
+                  startFirstLineOffset
+                  endLastLineOffset
+              '\n' ->
+                next
+                  (line : collectedLines)
+                  (succ currentOffset)
+                  (succ currentOffset)
+                  Nothing
+                  startReached
+                  startFirstLineOffset
+                  endLastLineOffset
+              _ ->
+                next
+                  collectedLines
+                  (succ currentOffset)
+                  currentLineStart
+                  earlyEnd
+                  startReached
+                  startFirstLineOffset
+                  endLastLineOffset
+            else
+              if char == '\r' || char == '\n'
+                then finish (line : collectedLines) (succ currentOffset) currentLineStart Nothing startReached startFirstLineOffset currentOffset
+                else next collectedLines (succ currentOffset) currentLineStart Nothing startReached startFirstLineOffset endLastLineOffset
         else
           if currentOffset >= startOffset
             then
