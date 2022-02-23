@@ -63,6 +63,7 @@ library
     Coalmine.HeadedMegaparsecExtras
     Coalmine.HeadedMegaparsecExtras.Text
     Coalmine.Inter
+    Coalmine.Interpreter
     Coalmine.Isomorphisms
     Coalmine.JsonEncoder
     Coalmine.Located
@@ -72,7 +73,6 @@ library
     Coalmine.MultilineTextBuilder
     Coalmine.Name
     Coalmine.Optics
-    Coalmine.ParseAndInterpret
     Coalmine.Parsing
     Coalmine.PartialEndo
     Coalmine.Predicates

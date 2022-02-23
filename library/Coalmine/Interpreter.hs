@@ -1,11 +1,11 @@
-module Coalmine.ParseAndInterpret
+module Coalmine.Interpreter
   ( -- *
     parseAndInterpretDoc,
     parseAndInterpretDocFile,
     interpretDoc,
 
     -- *
-    Interpret,
+    Update,
     focusOn,
     fail,
   )
@@ -23,7 +23,7 @@ parseAndInterpretDocFile ::
   -- | Parse text to AST.
   (Text -> Either Text ast) ->
   -- | Interpret the AST.
-  (ast -> Interpret state ()) ->
+  (ast -> Update state ()) ->
   -- | Initial state.
   state ->
   -- | Input file.
@@ -38,7 +38,7 @@ parseAndInterpretDoc ::
   -- | Parse text to AST.
   (Text -> Either Text ast) ->
   -- | Interpret the AST.
-  (ast -> Interpret state ()) ->
+  (ast -> Update state ()) ->
   -- | Initial state.
   state ->
   -- | Input text.
@@ -53,23 +53,23 @@ parseAndInterpretDoc parse interpret state input =
 --
 -- Allows to abstract over the positions in the doc and
 -- avoid manual distribution of input.
-interpretDoc :: Interpret state () -> state -> Text -> Either Text state
-interpretDoc (Interpret update) state input =
+interpretDoc :: Update state () -> state -> Text -> Either Text state
+interpretDoc (Update update) state input =
   case update (0, 0, state) of
     Left err -> Left $ Located.renderInMegaparsecStyle err input
     Right ((), (_, _, state)) -> Right state
 
 -- *
 
-newtype Interpret state res
-  = Interpret
+newtype Update state res
+  = Update
       ((Int, Int, state) -> Either (Located Text) (res, (Int, Int, state)))
   deriving
     (Functor, Applicative, Monad)
     via (StateT (Int, Int, state) (Either (Located Text)))
 
-instance MonadState state (Interpret state) where
-  state f = Interpret $ \(a, b, state) -> Right $ case f state of
+instance MonadState state (Update state) where
+  state f = Update $ \(a, b, state) -> Right $ case f state of
     (res, state) -> (res, (a, b, state))
 
 -- *
@@ -79,10 +79,10 @@ instance MonadState state (Interpret state) where
 --
 -- All following calls to fail will be associated with that location,
 -- until you call 'focusOn' again.
-focusOn :: Located a -> Interpret state a
+focusOn :: Located a -> Update state a
 focusOn (Located.Located start end val) =
-  Interpret $ \(_, _, state) -> Right (val, (start, end, state))
+  Update $ \(_, _, state) -> Right (val, (start, end, state))
 
-fail :: Text -> Interpret state a
+fail :: Text -> Update state a
 fail msg =
-  Interpret $ \(start, end, _) -> Left (Located.Located start end msg)
+  Update $ \(start, end, _) -> Left (Located.Located start end msg)
