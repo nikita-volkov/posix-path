@@ -1,5 +1,6 @@
 module Coalmine.Prelude
   ( module Exports,
+    renderAsYamlText,
   )
 where
 
@@ -11,3 +12,12 @@ import Coalmine.InternalPrelude as Exports
 import Coalmine.MultilineTextBuilder as Exports (ToMultilineTextBuilder (..))
 import Coalmine.Parsing as Exports
 import Coalmine.Types as Exports
+import qualified Data.Aeson
+import qualified Data.Text.Encoding
+import qualified Data.Yaml
+
+renderAsYamlText :: Data.Aeson.ToJSON a => a -> Text
+renderAsYamlText =
+  Data.Text.Encoding.decodeUtf8
+    . Data.Yaml.encode
+    . Data.Aeson.toJSON
