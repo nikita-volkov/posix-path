@@ -1,4 +1,4 @@
-resolver: nightly-2022-02-17
+resolver: nightly-2022-03-15
 
 extra-deps:
   - git: https://github.com/nikita-volkov/fx
