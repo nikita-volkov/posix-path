@@ -52,6 +52,8 @@ library
     Coalmine.ByteArrayArray.Ends
     Coalmine.CharPredicates
     Coalmine.Collector
+    Coalmine.ContainersExtras.IntMap
+    Coalmine.ContainersExtras.Map
     Coalmine.Domain
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
