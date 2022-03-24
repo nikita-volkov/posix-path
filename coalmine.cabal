@@ -45,8 +45,6 @@ library
     Coalmine.AttoparsecExtras.Text
     Coalmine.BaseExtras.Integer
     Coalmine.BaseExtras.List
-    Coalmine.BasePreludes.DataTypes
-    Coalmine.BasePreludes.Operators
     Coalmine.Building
     Coalmine.ByteArrayArray
     Coalmine.ByteArrayArray.Ends
