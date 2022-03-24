@@ -1,4 +1,4 @@
-module Coalmine.Applicative where
+module Coalmine.BaseExtras.Applicative where
 
 import Prelude
 

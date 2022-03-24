@@ -4,7 +4,7 @@ module Coalmine.Prelude
   )
 where
 
-import Coalmine.Applicative as Exports
+import Coalmine.BaseExtras.Applicative as Exports
 import Coalmine.Building as Exports
 import Coalmine.HCurrying as Exports
 import Coalmine.HashableExtras as Exports
