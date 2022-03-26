@@ -87,6 +87,7 @@ library
     Coalmine.Tasty.HeadedMegaparsec
     Coalmine.TextAppender
     Coalmine.TH
+    Coalmine.TransformersExtras.State
     Coalmine.Types
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
