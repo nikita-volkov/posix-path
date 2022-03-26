@@ -9,7 +9,7 @@ tests =
   [ testCase "Discretization" $
       let conduit =
             yieldMany input
-              .| ConduitExtras.discretize 10 fst (const snd)
+              .| ConduitExtras.discretize 10 fst (\ts (_, x) -> (ts, x))
               .| sinkList
           input =
             [ (3, 0),
@@ -20,7 +20,14 @@ tests =
               (63, 7)
             ]
           expectation =
-            [0, 3, 5, 5, 5, 6, 7]
+            [ (13, 0),
+              (23, 3),
+              (33, 5),
+              (43, 5),
+              (53, 5),
+              (63, 6),
+              (73, 7)
+            ]
           reality =
             runConduitPure conduit
        in assertEqual "" expectation reality
