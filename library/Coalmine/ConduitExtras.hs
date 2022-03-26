@@ -30,21 +30,18 @@ mappingMoore (MachinesMoore.Moore emit next) =
 
 -- *
 
-discretize :: (Monad m) => Int -> (i -> Int) -> (i -> o) -> ConduitT i o m ()
+discretize :: (Monad m) => Int -> (i -> Int) -> (Int -> i -> o) -> ConduitT i o m ()
 discretize distance toPosition toOutput =
   await >>= \case
-    Just i ->
-      go
-        (toPosition i + distance)
-        (toOutput i)
-        (toPosition i)
-        (toOutput i)
+    Just sample -> go (toPosition sample + distance) sample (toPosition sample) sample
     Nothing -> return ()
   where
-    go boundaryPosition lastOutput position output =
+    go boundaryPosition lastSample position sample =
       if position < boundaryPosition
         then
           await >>= \case
-            Just i -> go boundaryPosition output (toPosition i) (toOutput i)
-            Nothing -> yield output
-        else yield lastOutput >> go (boundaryPosition + distance) lastOutput position output
+            Just newSample -> go boundaryPosition sample (toPosition newSample) newSample
+            Nothing -> yield (toOutput boundaryPosition sample)
+        else
+          yield (toOutput boundaryPosition lastSample)
+            >> go (boundaryPosition + distance) lastSample position sample

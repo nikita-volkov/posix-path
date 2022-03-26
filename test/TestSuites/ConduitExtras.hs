@@ -9,7 +9,7 @@ tests =
   [ testCase "Discretization" $
       let conduit =
             yieldMany input
-              .| ConduitExtras.discretize 10 fst snd
+              .| ConduitExtras.discretize 10 fst (const snd)
               .| sinkList
           input =
             [ (3, 0),
