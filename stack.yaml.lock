@@ -34,6 +34,13 @@ packages:
   original:
     hackage: aeson-value-parser-0.19.6
 - completed:
+    hackage: domain-optics-0.1.0.3@sha256:8c70c20a5f02782eb97419dc1f48546735ef7c8681f012bf069753dcc5816605,1914
+    pantry-tree:
+      size: 453
+      sha256: eeb35dd2de847dc6075d47da01c930e8b37f9d71de1d244c45d2cbe24c77927a
+  original:
+    hackage: domain-optics-0.1.0.3
+- completed:
     hackage: vector-extras-0.2.6@sha256:695f171936613b45b37de497ab26cba772616e43b09d9c39f0008d168c1f7064,1883
     pantry-tree:
       size: 738
@@ -42,7 +49,7 @@ packages:
     hackage: vector-extras-0.2.6
 snapshots:
 - completed:
-    size: 612342
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/3/15.yaml
-    sha256: 232884e73d79a2c71b64a6e7f23dc840143c573086b2f9adc0579628d323164e
-  original: nightly-2022-03-15
+    size: 520055
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/3/26.yaml
+    sha256: 5b990d61deb188d2b776881dd043abe4b8bab5112942f2809789903a00bd8a7b
+  original: nightly-2022-03-26

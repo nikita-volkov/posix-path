@@ -28,7 +28,7 @@ flag doctest
 
 custom-setup
   setup-depends:
-    Cabal >=1.10 && <3.5,
+    Cabal >=1.10 && <4,
     base >=4.7 && <5,
     cabal-doctest >=1 && <1.1,
     filepath
