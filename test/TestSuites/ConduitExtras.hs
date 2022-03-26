@@ -20,7 +20,7 @@ tests =
               (63, 7)
             ]
           expectation =
-            [0, 3, 5, 5, 5, 6]
+            [0, 3, 5, 5, 5, 6, 7]
           reality =
             runConduitPure conduit
        in assertEqual "" expectation reality
