@@ -27,3 +27,8 @@ mappingMoore (MachinesMoore.Moore emit next) =
   yield emit >> await >>= \case
     Just i -> mappingMoore $ next i
     Nothing -> pure ()
+
+-- *
+
+discretize distance toPosition toOutput =
+  error "TODO"
