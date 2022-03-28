@@ -4,9 +4,14 @@ import Coalmine.InternalPrelude
 import qualified Data.Time.Clock.System as Time
 
 millisecondsSinceEpochUTCTime :: Integer -> UTCTime
-millisecondsSinceEpochUTCTime milliseconds =
-  let (day, dayMilliseconds) = divMod milliseconds 86400000
-   in UTCTime (sinceEpochDay day) (millisecondsDiffTime dayMilliseconds)
+millisecondsSinceEpochUTCTime time =
+  let (day, dayTime) = divMod time 86400000
+   in UTCTime (sinceEpochDay day) (millisecondsDiffTime dayTime)
+
+picosecondsSinceEpochUTCTime :: Integer -> UTCTime
+picosecondsSinceEpochUTCTime time =
+  let (day, dayTime) = divMod time 86400000000000000
+   in UTCTime (sinceEpochDay day) (picosecondsToDiffTime dayTime)
 
 sinceEpochDay :: Integer -> Day
 sinceEpochDay =

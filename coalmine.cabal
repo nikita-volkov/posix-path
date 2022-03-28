@@ -66,6 +66,7 @@ library
     Coalmine.HeadedMegaparsecExtras.Text
     Coalmine.Inter
     Coalmine.Interpreter
+    Coalmine.Interval
     Coalmine.Isomorphisms
     Coalmine.JsonEncoder
     Coalmine.Located
