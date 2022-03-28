@@ -35,7 +35,7 @@ picoseconds = Interval
 -- *
 
 toMilliseconds :: Interval -> Integer
-toMilliseconds = div 1000000000 . coerce
+toMilliseconds = flip div 1000000000 . coerce
 
 toUTCTimeSinceEpoch :: Interval -> UTCTime
 toUTCTimeSinceEpoch = TimeConversions.picosecondsSinceEpochUTCTime . coerce
