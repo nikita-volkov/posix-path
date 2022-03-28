@@ -3,31 +3,31 @@ module Coalmine.TimeExtras.Conversions where
 import Coalmine.InternalPrelude
 import qualified Data.Time.Clock.System as Time
 
-millisSinceEpochUTCTime :: Int -> UTCTime
+millisSinceEpochUTCTime :: Integer -> UTCTime
 millisSinceEpochUTCTime millis =
   let (day, dayMillis) = divMod millis 86400000
    in UTCTime (sinceEpochDay day) (millisDiffTime dayMillis)
 
-sinceEpochDay :: Int -> Day
+sinceEpochDay :: Integer -> Day
 sinceEpochDay =
-  flip addDays systemEpochDay . fromIntegral
+  flip addDays systemEpochDay
 
-millisDiffTime :: Int -> DiffTime
+millisDiffTime :: Integer -> DiffTime
 millisDiffTime =
-  picosecondsToDiffTime . (* 1000000000) . fromIntegral
+  picosecondsToDiffTime . (* 1000000000)
 
-diffTimeMillis :: DiffTime -> Int
+diffTimeMillis :: DiffTime -> Integer
 diffTimeMillis =
-  fromIntegral . flip div 1000000000 . diffTimeToPicoseconds
+  flip div 1000000000 . diffTimeToPicoseconds
 
-daySinceEpoch :: Day -> Int
+daySinceEpoch :: Day -> Integer
 daySinceEpoch =
-  fromIntegral . flip diffDays systemEpochDay
+  flip diffDays systemEpochDay
 
-dayMillisSinceEpoch :: Day -> Int
+dayMillisSinceEpoch :: Day -> Integer
 dayMillisSinceEpoch =
   (* 86400000) . daySinceEpoch
 
-utcTimeMillisSinceEpoch :: UTCTime -> Int
+utcTimeMillisSinceEpoch :: UTCTime -> Integer
 utcTimeMillisSinceEpoch (UTCTime day diffTime) =
   dayMillisSinceEpoch day + diffTimeMillis diffTime
