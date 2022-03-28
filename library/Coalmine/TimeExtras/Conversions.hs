@@ -15,3 +15,19 @@ sinceEpochDay =
 millisDiffTime :: Int -> DiffTime
 millisDiffTime =
   picosecondsToDiffTime . (* 1000000000) . fromIntegral
+
+diffTimeMillis :: DiffTime -> Int
+diffTimeMillis =
+  fromIntegral . flip div 1000000000 . diffTimeToPicoseconds
+
+daySinceEpoch :: Day -> Int
+daySinceEpoch =
+  fromIntegral . flip diffDays systemEpochDay
+
+dayMillisSinceEpoch :: Day -> Int
+dayMillisSinceEpoch =
+  (* 86400000) . daySinceEpoch
+
+utcTimeMillisSinceEpoch :: UTCTime -> Int
+utcTimeMillisSinceEpoch (UTCTime day diffTime) =
+  dayMillisSinceEpoch day + diffTimeMillis diffTime
