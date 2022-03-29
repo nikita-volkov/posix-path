@@ -6,6 +6,7 @@ where
 
 import Coalmine.BaseExtras.Applicative as Exports
 import Coalmine.Building as Exports
+import Coalmine.DecimalExtras.Instances as Exports
 import Coalmine.HCurrying as Exports
 import Coalmine.HashableExtras as Exports
 import Coalmine.InternalPrelude as Exports hiding (FilePath)

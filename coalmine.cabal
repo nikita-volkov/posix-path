@@ -54,6 +54,8 @@ library
     Coalmine.ConduitExtras
     Coalmine.ContainersExtras.IntMap
     Coalmine.ContainersExtras.Map
+    Coalmine.DecimalExtras
+    Coalmine.DecimalExtras.Instances
     Coalmine.Domain
     Coalmine.FoldlExtras.Fold
     Coalmine.Formatting
@@ -113,8 +115,10 @@ library
     attoparsec,
     attoparsec-data,
     case-insensitive,
+    cereal,
     conduit,
     data-dword,
+    Decimal,
     deferred-folds,
     deque,
     directory,

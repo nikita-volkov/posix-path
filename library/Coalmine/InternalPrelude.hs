@@ -3,6 +3,7 @@ module Coalmine.InternalPrelude
     module Exports,
     showAsText,
     traceMap,
+    E8,
   )
 where
 
@@ -43,3 +44,8 @@ showAsText = show >>> fromString
 
 traceMap :: (a -> String) -> a -> a
 traceMap f a = trace (f a) a
+
+data E8
+
+instance HasResolution E8 where
+  resolution _ = 100000000
