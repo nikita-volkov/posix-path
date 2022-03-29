@@ -1,6 +1,6 @@
 module Coalmine.SimplePaths.AttoparsecHelpers where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import Data.Attoparsec.Text
 
 complete parser = parser <* endOfInput

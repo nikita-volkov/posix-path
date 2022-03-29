@@ -8,9 +8,10 @@ import Coalmine.BaseExtras.Applicative as Exports
 import Coalmine.Building as Exports
 import Coalmine.HCurrying as Exports
 import Coalmine.HashableExtras as Exports
-import Coalmine.InternalPrelude as Exports
+import Coalmine.InternalPrelude as Exports hiding (FilePath)
 import Coalmine.MultilineTextBuilder as Exports (ToMultilineTextBuilder (..))
 import Coalmine.Parsing as Exports
+import Coalmine.SimplePaths as Exports (DirPath, FilePath)
 import Coalmine.Types as Exports
 import qualified Data.Aeson
 import qualified Data.Text.Encoding

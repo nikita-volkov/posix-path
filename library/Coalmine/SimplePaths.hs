@@ -3,11 +3,12 @@ module Coalmine.SimplePaths
     FilePath,
     inDir,
     filePathDir,
+    appendFileExtension,
   )
 where
 
 import Attoparsec.Data (LenientParser (..))
-import Coalmine.Prelude hiding (FilePath)
+import Coalmine.InternalPrelude hiding (FilePath)
 import qualified Coalmine.SimplePaths.AttoparsecHelpers as AttoparsecHelpers
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified TextBuilderDev as TextBuilder
@@ -25,6 +26,7 @@ import qualified TextBuilderDev as TextBuilder
 -- "/a/b/"
 data DirPath
   = DirPath !Bool ![Text]
+  deriving (Eq, Ord)
 
 instance Semigroup DirPath where
   DirPath lAbs lDirs <> DirPath rAbs rDirs =
@@ -61,6 +63,12 @@ instance ToTextBuilder DirPath where
 instance Show DirPath where
   show = show . toText
 
+instance ToJSON DirPath where
+  toJSON = toJSON . show
+
+instance ToJSONKey DirPath where
+  toJSONKey = contramap show toJSONKey
+
 -- *
 
 -- |
@@ -80,6 +88,7 @@ data FilePath
       -- ^ File name.
       ![Text]
       -- ^ File extensions.
+  deriving (Eq, Ord)
 
 instance LenientParser FilePath where
   lenientParser =
@@ -107,6 +116,12 @@ instance ToTextBuilder FilePath where
 instance Show FilePath where
   show = show . toText
 
+instance ToJSON FilePath where
+  toJSON = toJSON . show
+
+instance ToJSONKey FilePath where
+  toJSONKey = contramap show toJSONKey
+
 -- *
 
 class InDir path where
@@ -125,10 +140,16 @@ mapFileDir fn (FilePath dir name extensions) =
   FilePath (fn dir) name extensions
 
 mapFileName :: (Text -> Text) -> FilePath -> FilePath
-mapFileName = error "TODO"
+mapFileName fn (FilePath dir name exts) =
+  FilePath dir (fn name) exts
 
 mapFileExtensions :: ([Text] -> [Text]) -> FilePath -> FilePath
-mapFileExtensions = error "TODO"
+mapFileExtensions fn (FilePath dir name exts) =
+  FilePath dir name (fn exts)
 
 filePathDir :: FilePath -> DirPath
 filePathDir (FilePath dir _ _) = dir
+
+appendFileExtension :: Text -> FilePath -> FilePath
+appendFileExtension ext =
+  mapFileExtensions (<> [ext])
