@@ -44,6 +44,7 @@ library
     Coalmine.AttoparsecExtras.Text
     Coalmine.BaseExtras.Applicative
     Coalmine.BaseExtras.Integer
+    Coalmine.BaseExtras.IO
     Coalmine.BaseExtras.List
     Coalmine.Building
     Coalmine.ByteArrayArray
