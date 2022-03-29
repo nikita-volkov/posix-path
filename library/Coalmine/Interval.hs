@@ -2,6 +2,7 @@ module Coalmine.Interval where
 
 import Coalmine.InternalPrelude
 import qualified Coalmine.TimeExtras.Conversions as TimeConversions
+import Data.Ratio ((%))
 
 -- *
 
@@ -12,6 +13,10 @@ instance LenientParser Interval where
   lenientParser =
     Interval . diffTimeToPicoseconds
       <$> lenientParser
+
+instance Show Interval where
+  showsPrec _ (Interval i) =
+    (showFFloat @Double Nothing . realToFrac . (% 1000000000000)) i . showChar 's'
 
 days :: Integer -> Interval
 days = Interval . (*) 86400000000000000
@@ -41,6 +46,9 @@ picoseconds = Interval
 
 toMilliseconds :: Interval -> Integer
 toMilliseconds = flip div 1000000000 . coerce
+
+toPicoseconds :: Interval -> Integer
+toPicoseconds = coerce
 
 toUTCTimeSinceEpoch :: Interval -> UTCTime
 toUTCTimeSinceEpoch = TimeConversions.picosecondsSinceEpochUTCTime . coerce

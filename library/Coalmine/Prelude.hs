@@ -9,6 +9,7 @@ import Coalmine.Building as Exports
 import Coalmine.HCurrying as Exports
 import Coalmine.HashableExtras as Exports
 import Coalmine.InternalPrelude as Exports hiding (FilePath)
+import Coalmine.Interval as Exports (Interval)
 import Coalmine.MultilineTextBuilder as Exports (ToMultilineTextBuilder (..))
 import Coalmine.Parsing as Exports
 import Coalmine.SimplePaths as Exports (DirPath, FilePath)
