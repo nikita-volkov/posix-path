@@ -7,7 +7,6 @@ module Coalmine.SimplePaths
   )
 where
 
-import Attoparsec.Data (LenientParser (..))
 import Coalmine.InternalPrelude hiding (FilePath)
 import qualified Coalmine.SimplePaths.AttoparsecHelpers as AttoparsecHelpers
 import qualified Data.Attoparsec.Text as Attoparsec

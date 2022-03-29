@@ -1,7 +1,6 @@
 module Coalmine.Name where
 
 import qualified AesonValueParser
-import qualified Attoparsec.Data as AttoparsecData
 import qualified Coalmine.Name.Attoparsec as Attoparsec
 import qualified Coalmine.Name.Megaparsec as Megaparsec
 import Coalmine.Prelude
@@ -39,7 +38,7 @@ instance Monoid Name where
   mempty = Name mempty
   mappend = (<>)
 
-instance AttoparsecData.LenientParser Name where
+instance LenientParser Name where
   lenientParser = attoparsec
 
 instance ToString Name where

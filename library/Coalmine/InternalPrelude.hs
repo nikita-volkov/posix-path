@@ -8,6 +8,7 @@ where
 
 import Acc as Exports (Acc)
 import Acc.NeAcc as Exports (NeAcc)
+import Attoparsec.Data as Exports (LenientParser (..))
 import Coalmine.InternalPrelude.Function as Exports
 import Coalmine.InternalPrelude.ToText as Exports
 import Control.FromSum as Exports

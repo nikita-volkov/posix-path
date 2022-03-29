@@ -8,6 +8,11 @@ import qualified Coalmine.TimeExtras.Conversions as TimeConversions
 newtype Interval = Interval Integer
   deriving (Num, Real, Ord, Eq)
 
+instance LenientParser Interval where
+  lenientParser =
+    Interval . diffTimeToPicoseconds
+      <$> lenientParser
+
 days :: Integer -> Interval
 days = Interval . (*) 86400000000000000
 
