@@ -49,6 +49,7 @@ library
     Coalmine.Building
     Coalmine.ByteArrayArray
     Coalmine.ByteArrayArray.Ends
+    Coalmine.CerealExtras.Instances
     Coalmine.CharPredicates
     Coalmine.Collector
     Coalmine.ConduitExtras
@@ -116,6 +117,9 @@ library
     attoparsec-data,
     case-insensitive,
     cereal,
+    cereal-text,
+    cereal-unordered-containers,
+    cereal-vector,
     conduit,
     data-dword,
     Decimal,
