@@ -2,6 +2,7 @@ module Coalmine.InternalPrelude
   ( module Prelude,
     module Exports,
     showAsText,
+    traceMap,
   )
 where
 
@@ -37,3 +38,6 @@ import Prelude hiding (Vector, chosen, toList, uncons, (%))
 
 showAsText :: Show a => a -> Text
 showAsText = show >>> fromString
+
+traceMap :: (a -> String) -> a -> a
+traceMap f a = trace (f a) a
