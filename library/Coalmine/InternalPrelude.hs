@@ -15,6 +15,7 @@ import Coalmine.InternalPrelude.ToText as Exports
 import Control.FromSum as Exports
 import Control.Monad.Morph as Exports
 import Data.Aeson as Exports (FromJSON (..), ToJSON (..), ToJSONKey (..))
+import Data.Decimal as Exports (Decimal)
 import Data.Default as Exports
 import Data.DoubleWord as Exports (Word128 (..), Word160 (..), Word192 (..), Word224 (..), Word256 (..), Word96 (..))
 import Data.Functor.Invariant as Exports
