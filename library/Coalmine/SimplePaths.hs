@@ -3,6 +3,7 @@ module Coalmine.SimplePaths
     FilePath,
     inDir,
     filePathDir,
+    filePathExtensions,
     appendFileExtension,
   )
 where
@@ -148,6 +149,9 @@ mapFileExtensions fn (FilePath dir name exts) =
 
 filePathDir :: FilePath -> DirPath
 filePathDir (FilePath dir _ _) = dir
+
+filePathExtensions :: FilePath -> [Text]
+filePathExtensions (FilePath _ _ x) = x
 
 appendFileExtension :: Text -> FilePath -> FilePath
 appendFileExtension ext =
