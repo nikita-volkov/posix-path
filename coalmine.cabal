@@ -121,6 +121,7 @@ library
     cereal-unordered-containers,
     cereal-vector,
     conduit,
+    data-default,
     data-dword,
     Decimal,
     deferred-folds,
