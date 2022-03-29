@@ -127,6 +127,7 @@ library
     jsonifier,
     machines,
     megaparsec,
+    mmorph,
     moore-machines,
     neat-interpolation,
     network-ip,
