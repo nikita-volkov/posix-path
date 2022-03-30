@@ -191,6 +191,7 @@ test-suite test
     TestSuites.Inter.Regressions.FromFormatica
     TestSuites.LocatedRendering
     TestSuites.MegaparsecExtras
+    TestSuites.SimplePaths
     TestSuites.TimeExtrasConversions
   build-depends:
     coalmine,
