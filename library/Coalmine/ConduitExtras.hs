@@ -16,16 +16,16 @@ fold (Foldl.Fold progress start finish) =
         Just i -> go (progress state i)
         Nothing -> pure $ finish state
 
-reducingMoore :: Monad m => MachinesMoore.Moore i r -> ConduitT i o m r
-reducingMoore (MachinesMoore.Moore terminate next) =
+mooreSink :: Monad m => MachinesMoore.Moore i r -> ConduitT i o m r
+mooreSink (MachinesMoore.Moore terminate next) =
   await >>= \case
-    Just i -> reducingMoore $ next i
+    Just i -> mooreSink $ next i
     Nothing -> pure terminate
 
-mappingMoore :: Monad m => MachinesMoore.Moore i o -> ConduitT i o m ()
-mappingMoore (MachinesMoore.Moore emit next) =
+moorePipe :: Monad m => MachinesMoore.Moore i o -> ConduitT i o m ()
+moorePipe (MachinesMoore.Moore emit next) =
   yield emit >> await >>= \case
-    Just i -> mappingMoore $ next i
+    Just i -> moorePipe $ next i
     Nothing -> pure ()
 
 -- *
