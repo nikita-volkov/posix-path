@@ -3,6 +3,7 @@ module Coalmine.ConduitExtras where
 import Coalmine.Prelude hiding (yield)
 import Conduit
 import qualified Control.Foldl as Foldl
+import qualified Data.Machine.Mealy as MachinesMealy
 import qualified Data.Machine.Moore as MachinesMoore
 
 -- *
@@ -26,6 +27,13 @@ moorePipe :: Monad m => MachinesMoore.Moore i o -> ConduitT i o m ()
 moorePipe (MachinesMoore.Moore emit next) =
   yield emit >> await >>= \case
     Just i -> moorePipe $ next i
+    Nothing -> pure ()
+
+mealyPipe :: Monad m => MachinesMealy.Mealy i o -> ConduitT i o m ()
+mealyPipe (MachinesMealy.Mealy run) =
+  await >>= \case
+    Just i -> case run i of
+      (o, next) -> yield o >> mealyPipe next
     Nothing -> pure ()
 
 -- *
