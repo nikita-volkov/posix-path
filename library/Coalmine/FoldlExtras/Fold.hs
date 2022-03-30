@@ -2,6 +2,7 @@ module Coalmine.FoldlExtras.Fold where
 
 import Coalmine.Prelude
 import Control.Foldl (Fold (..))
+import qualified Data.Machine.Mealy as Mealy
 
 discretize :: Int -> Int -> (a -> Int) -> (a -> b) -> Fold b o -> Fold a o
 discretize distance initEndPosition toPosition toOutput (Fold step init extract) =
@@ -17,3 +18,13 @@ discretize distance initEndPosition toPosition toOutput (Fold step init extract)
           toPosition input
     extract' =
       error "TODO"
+
+transformWithMealy :: Mealy.Mealy i o -> Fold o r -> Fold i r
+transformWithMealy mealy (Fold oProgress oStart oFinish) =
+  Fold iProgress iStart iFinish
+  where
+    iProgress (oState, Mealy.Mealy runMealy) i =
+      case runMealy i of
+        (o, nextMealy) -> (oProgress oState o, nextMealy)
+    iStart = (oStart, mealy)
+    iFinish (oState, _) = oFinish oState
