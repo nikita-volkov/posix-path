@@ -3,6 +3,11 @@ module Coalmine.FoldlExtras.Fold where
 import Coalmine.Prelude
 import Control.Foldl (Fold (..))
 import qualified Data.Machine.Mealy as Mealy
+import qualified Data.Vector.Unboxed as UVec
+
+foldUVec :: Unbox i => Fold i o -> UVec i -> o
+foldUVec (Fold step init extract) vec =
+  UVec.foldl' step init vec & extract
 
 discretize :: Int -> Int -> (a -> Int) -> (a -> b) -> Fold b o -> Fold a o
 discretize distance initEndPosition toPosition toOutput (Fold step init extract) =
