@@ -67,3 +67,7 @@ isLongerThanOne =
 dropFromEnd :: Int -> [a] -> [a]
 dropFromEnd amount =
   reverse . drop amount . reverse
+
+lastMaybe :: [a] -> Maybe a
+lastMaybe =
+  foldl (const Just) Nothing
