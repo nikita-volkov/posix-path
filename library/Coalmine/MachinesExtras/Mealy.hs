@@ -2,6 +2,28 @@ module Coalmine.MachinesExtras.Mealy where
 
 import Coalmine.Prelude hiding (scan, scan1)
 import Data.Machine.Mealy
+import qualified Data.Vector.Generic as GVec
+import qualified Data.Vector.Generic.Mutable as GMVec
+
+-- * Execution
+
+-- |
+-- Run over every element of a vector producing a new vector of the same size.
+scanVector :: (GVec.Vector iv i, GVec.Vector ov o) => Mealy i o -> iv i -> ov o
+scanVector mealy inputVec =
+  runST $ do
+    mVec <- GMVec.unsafeNew (GVec.length inputVec)
+    GVec.ifoldM
+      ( \(Mealy runMealy) idx input ->
+          case runMealy input of
+            (output, nextMealy) ->
+              GMVec.unsafeWrite mVec idx output $> nextMealy
+      )
+      mealy
+      inputVec
+    GVec.unsafeFreeze mVec
+
+-- *
 
 scan :: (acc -> inp -> acc) -> acc -> Mealy inp acc
 scan step =
