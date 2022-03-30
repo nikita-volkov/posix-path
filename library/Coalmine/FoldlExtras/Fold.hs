@@ -19,8 +19,8 @@ discretize distance initEndPosition toPosition toOutput (Fold step init extract)
     extract' =
       error "TODO"
 
-transformWithMealy :: Mealy.Mealy i o -> Fold o r -> Fold i r
-transformWithMealy mealy (Fold oProgress oStart oFinish) =
+applyMealy :: Mealy.Mealy i o -> Fold o r -> Fold i r
+applyMealy mealy (Fold oProgress oStart oFinish) =
   Fold iProgress iStart iFinish
   where
     iProgress (oState, Mealy.Mealy runMealy) i =
