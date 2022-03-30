@@ -45,3 +45,12 @@ discretize distance toPosition toOutput =
         else
           yield (toOutput boundaryPosition lastSample)
             >> go (boundaryPosition + distance) lastSample position sample
+
+droppingPipe :: Monad m => Int -> ConduitT a a m ()
+droppingPipe amount =
+  dropC amount >> transmit
+
+-- | Identity conduit.
+transmit :: Monad m => ConduitT a a m ()
+transmit =
+  mapC id
