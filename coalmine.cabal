@@ -42,8 +42,9 @@ library
   hs-source-dirs: library
   exposed-modules:
     Coalmine.AttoparsecExtras.Text
-    Coalmine.BaseExtras.Applicative
     Coalmine.BaseExtras.Alternative
+    Coalmine.BaseExtras.Applicative
+    Coalmine.BaseExtras.Function
     Coalmine.BaseExtras.Integer
     Coalmine.BaseExtras.IO
     Coalmine.BaseExtras.List
@@ -92,8 +93,9 @@ library
     Coalmine.Tasty
     Coalmine.Tasty.HeadedMegaparsec
     Coalmine.TextAppender
-    Coalmine.TimeExtras.Conversions
+    Coalmine.TextConversionsExtras.Instances
     Coalmine.TH
+    Coalmine.TimeExtras.Conversions
     Coalmine.TransformersExtras.State
     Coalmine.Types
     Coalmine.VectorExtras.Generic
@@ -105,8 +107,6 @@ library
     Coalmine.Inter.Format.Parsers
     Coalmine.Inter.TH
     Coalmine.InternalPrelude
-    Coalmine.InternalPrelude.Function
-    Coalmine.InternalPrelude.ToText
     Coalmine.Name.Attoparsec
     Coalmine.Name.Megaparsec
     Coalmine.SimplePaths.AttoparsecHelpers

@@ -1,4 +1,4 @@
-module Coalmine.InternalPrelude.Function where
+module Coalmine.BaseExtras.Function where
 
 import Prelude
 

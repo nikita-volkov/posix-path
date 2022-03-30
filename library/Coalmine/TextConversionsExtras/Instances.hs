@@ -1,4 +1,4 @@
-module Coalmine.InternalPrelude.ToText where
+module Coalmine.TextConversionsExtras.Instances where
 
 import qualified Data.Text as Text
 import Data.Text.Conversions
