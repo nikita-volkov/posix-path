@@ -43,6 +43,7 @@ library
   exposed-modules:
     Coalmine.AttoparsecExtras.Text
     Coalmine.BaseExtras.Applicative
+    Coalmine.BaseExtras.Alternative
     Coalmine.BaseExtras.Integer
     Coalmine.BaseExtras.IO
     Coalmine.BaseExtras.List
