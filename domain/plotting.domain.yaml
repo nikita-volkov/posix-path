@@ -1,18 +1,19 @@
 
-PairedTimeSeriesDiagram:
-  product:
-    title: Text
-    startTime: UTCTime
-    sampleInterval: DiffTime
-    leftCharts: BVec Chart
-    rightCharts: BVec Chart
-
-TimeSeriesDiagram:
-  product:
-    title: Text
-    startTime: UTCTime
-    sampleInterval: DiffTime
-    charts: BVec Chart
+Diagram:
+  sum:
+    pairedTimeSeries:
+      product:
+        title: Text
+        startTime: UTCTime
+        sampleInterval: DiffTime
+        leftCharts: BVec Chart
+        rightCharts: BVec Chart
+    timeSeries:
+      product:
+        title: Text
+        startTime: UTCTime
+        sampleInterval: DiffTime
+        charts: BVec Chart
 
 Chart:
   product:

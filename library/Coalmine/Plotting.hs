@@ -1,8 +1,7 @@
 -- |
 -- Plotting lib.
 module Coalmine.Plotting
-  ( renderTimeSeriesDiagramToSvgFile,
-    renderPairedTimeSeriesDiagramToSvgFile,
+  ( renderDiagramToSvgFile,
 
     -- * Types
     module Coalmine.Plotting.Types,
@@ -18,17 +17,9 @@ import qualified Data.Vector.Unboxed as UVec
 import qualified Graphics.Rendering.Chart.Backend.Cairo as Chart
 import qualified Graphics.Rendering.Chart.Easy as Chart
 
-renderTimeSeriesDiagramToSvgFile :: FilePath -> TimeSeriesDiagram -> IO ()
-renderTimeSeriesDiagramToSvgFile path values =
-  void $ Chart.renderableToFile options (toString path) (compileTimeSeriesDiagramRenderable values)
-  where
-    options =
-      def
-        & Chart.fo_format .~ Chart.SVG
-
-renderPairedTimeSeriesDiagramToSvgFile :: FilePath -> PairedTimeSeriesDiagram -> IO ()
-renderPairedTimeSeriesDiagramToSvgFile path values =
-  void $ Chart.renderableToFile options (toString path) (compilePairedTimeSeriesDiagramRenderable values)
+renderDiagramToSvgFile :: FilePath -> Diagram -> IO ()
+renderDiagramToSvgFile path diagram =
+  void $ Chart.renderableToFile options (toString path) (compileRenderable diagram)
   where
     options =
       def
@@ -36,15 +27,12 @@ renderPairedTimeSeriesDiagramToSvgFile path values =
 
 -- *
 
-compileTimeSeriesDiagramRenderable :: TimeSeriesDiagram -> Chart.Renderable ()
-compileTimeSeriesDiagramRenderable cfg =
-  Chart.toRenderable (compileLayout cfg)
+compileRenderable :: Diagram -> Chart.Renderable ()
+compileRenderable = \case
+  TimeSeriesDiagram x -> Chart.toRenderable $ compileLayout x
+  PairedTimeSeriesDiagram x -> Chart.toRenderable $ compileLayoutLR x
 
-compilePairedTimeSeriesDiagramRenderable :: PairedTimeSeriesDiagram -> Chart.Renderable ()
-compilePairedTimeSeriesDiagramRenderable cfg =
-  Chart.toRenderable (compileLayoutLR cfg)
-
-compileLayoutLR :: PairedTimeSeriesDiagram -> Chart.LayoutLR UTCTime Double Double
+compileLayoutLR :: DiagramPairedTimeSeries -> Chart.LayoutLR UTCTime Double Double
 compileLayoutLR cfg =
   def
     & Chart.layoutlr_title .~ toString (#title cfg)
@@ -61,7 +49,7 @@ compileLayoutLR cfg =
         right =
           compilePlots (#startTime cfg) (realToFrac (#sampleInterval cfg)) (#rightCharts cfg)
 
-compileLayout :: TimeSeriesDiagram -> Chart.Layout UTCTime Double
+compileLayout :: DiagramTimeSeries -> Chart.Layout UTCTime Double
 compileLayout cfg =
   def
     & Chart.layout_title .~ toString (#title cfg)

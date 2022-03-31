@@ -25,7 +25,11 @@ declare
   )
   =<< loadSchema "domain/plotting.domain.yaml"
 
-instance NFData TimeSeriesDiagram
+instance NFData Diagram
+
+instance NFData DiagramTimeSeries
+
+instance NFData DiagramPairedTimeSeries
 
 instance NFData Chart
 
