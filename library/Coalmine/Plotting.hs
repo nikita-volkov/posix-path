@@ -1,7 +1,8 @@
 -- |
 -- Plotting lib.
 module Coalmine.Plotting
-  ( renderToSvgFile,
+  ( renderTimeSeriesDiagramToSvgFile,
+    renderPairedTimeSeriesDiagramToSvgFile,
 
     -- * Types
     module Coalmine.Plotting.Types,
@@ -17,9 +18,17 @@ import qualified Data.Vector.Unboxed as UVec
 import qualified Graphics.Rendering.Chart.Backend.Cairo as Chart
 import qualified Graphics.Rendering.Chart.Easy as Chart
 
-renderToSvgFile :: FilePath -> TimeSeriesDiagram -> IO ()
-renderToSvgFile path values =
-  void $ Chart.renderableToFile options (toString path) (compileRenderable values)
+renderTimeSeriesDiagramToSvgFile :: FilePath -> TimeSeriesDiagram -> IO ()
+renderTimeSeriesDiagramToSvgFile path values =
+  void $ Chart.renderableToFile options (toString path) (compileTimeSeriesDiagramRenderable values)
+  where
+    options =
+      def
+        & Chart.fo_format .~ Chart.SVG
+
+renderPairedTimeSeriesDiagramToSvgFile :: FilePath -> PairedTimeSeriesDiagram -> IO ()
+renderPairedTimeSeriesDiagramToSvgFile path values =
+  void $ Chart.renderableToFile options (toString path) (compilePairedTimeSeriesDiagramRenderable values)
   where
     options =
       def
@@ -27,9 +36,30 @@ renderToSvgFile path values =
 
 -- *
 
-compileRenderable :: TimeSeriesDiagram -> Chart.Renderable ()
-compileRenderable cfg =
+compileTimeSeriesDiagramRenderable :: TimeSeriesDiagram -> Chart.Renderable ()
+compileTimeSeriesDiagramRenderable cfg =
   Chart.toRenderable (compileLayout cfg)
+
+compilePairedTimeSeriesDiagramRenderable :: PairedTimeSeriesDiagram -> Chart.Renderable ()
+compilePairedTimeSeriesDiagramRenderable cfg =
+  Chart.toRenderable (compileLayoutLR cfg)
+
+compileLayoutLR :: PairedTimeSeriesDiagram -> Chart.LayoutLR UTCTime Double Double
+compileLayoutLR cfg =
+  def
+    & Chart.layoutlr_title .~ toString (#title cfg)
+    & Chart.layoutlr_left_axis . Chart.laxis_override .~ Chart.axisGridHide
+    & Chart.layoutlr_right_axis . Chart.laxis_override .~ Chart.axisGridHide
+    & Chart.layoutlr_x_axis . Chart.laxis_override .~ Chart.axisGridHide
+    & Chart.layoutlr_plots .~ plots
+  where
+    plots =
+      fmap Left left <> fmap Right right
+      where
+        left =
+          compilePlots (#startTime cfg) (realToFrac (#sampleInterval cfg)) (#leftCharts cfg)
+        right =
+          compilePlots (#startTime cfg) (realToFrac (#sampleInterval cfg)) (#rightCharts cfg)
 
 compileLayout :: TimeSeriesDiagram -> Chart.Layout UTCTime Double
 compileLayout cfg =
