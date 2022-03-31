@@ -27,9 +27,13 @@ declare
 
 instance NFData Diagram
 
-instance NFData DiagramTimeSeries
+instance NFData Series
 
-instance NFData DiagramPairedTimeSeries
+instance NFData SeriesTime
+
+instance NFData Charts
+
+instance NFData ChartsBinary
 
 instance NFData Chart
 

@@ -25,18 +25,24 @@ renderDiagramToSvgFile path diagram =
     options =
       def
         & Chart.fo_format .~ Chart.SVG
+        & Chart.fo_size .~ (#width diagram, #height diagram)
 
 -- *
 
 compileRenderable :: Diagram -> Chart.Renderable ()
-compileRenderable = \case
-  TimeSeriesDiagram x -> Chart.toRenderable $ compileLayout x
-  PairedTimeSeriesDiagram x -> Chart.toRenderable $ compileLayoutLR x
+compileRenderable diagram =
+  case #series diagram of
+    TimeSeries timeSeries -> case #charts timeSeries of
+      UnaryCharts charts ->
+        Chart.toRenderable $
+          compileLayout (#title diagram) (#start timeSeries) (realToFrac (#interval timeSeries)) charts
+      BinaryCharts charts ->
+        Chart.toRenderable $
+          compileLayoutLR (#title diagram) (#start timeSeries) (realToFrac (#interval timeSeries)) charts
 
-compileLayoutLR :: DiagramPairedTimeSeries -> Chart.LayoutLR UTCTime Double Double
-compileLayoutLR cfg =
+compileLayoutLR title startTime interval charts =
   def
-    & Chart.layoutlr_title .~ toString (#title cfg)
+    & Chart.layoutlr_title .~ toString title
     & Chart.layoutlr_left_axis . Chart.laxis_override .~ Chart.axisGridHide
     & Chart.layoutlr_right_axis . Chart.laxis_override .~ Chart.axisGridHide
     & Chart.layoutlr_x_axis . Chart.laxis_override .~ Chart.axisGridHide
@@ -46,16 +52,15 @@ compileLayoutLR cfg =
       fmap Left left <> fmap Right right
       where
         left =
-          compilePlots (#startTime cfg) (realToFrac (#sampleInterval cfg)) (#leftCharts cfg)
+          compilePlots startTime interval (#left charts)
         right =
-          compilePlots (#startTime cfg) (realToFrac (#sampleInterval cfg)) (#rightCharts cfg)
+          compilePlots startTime interval (#right charts)
 
-compileLayout :: DiagramTimeSeries -> Chart.Layout UTCTime Double
-compileLayout cfg =
+compileLayout title startTime interval charts =
   def
-    & Chart.layout_title .~ toString (#title cfg)
+    & Chart.layout_title .~ toString title
     & Chart.layout_y_axis . Chart.laxis_override .~ Chart.axisGridHide
-    & Chart.layout_plots .~ compilePlots (#startTime cfg) (realToFrac (#sampleInterval cfg)) (#charts cfg)
+    & Chart.layout_plots .~ compilePlots startTime interval charts
 
 compilePlots :: UTCTime -> NominalDiffTime -> BVec Chart -> [Chart.Plot UTCTime Double]
 compilePlots startTime interval =

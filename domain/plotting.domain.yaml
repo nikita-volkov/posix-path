@@ -1,19 +1,26 @@
 
 Diagram:
+  product:
+    title: Text
+    width: Int
+    height: Int
+    series: Series
+
+Series:
   sum:
-    pairedTimeSeries:
+    time:
       product:
-        title: Text
-        startTime: UTCTime
-        sampleInterval: DiffTime
-        leftCharts: BVec Chart
-        rightCharts: BVec Chart
-    timeSeries:
+        start: UTCTime
+        interval: DiffTime
+        charts: Charts
+
+Charts:
+  sum:
+    unary: BVec Chart
+    binary:
       product:
-        title: Text
-        startTime: UTCTime
-        sampleInterval: DiffTime
-        charts: BVec Chart
+        left: BVec Chart
+        right: BVec Chart
 
 Chart:
   product:
