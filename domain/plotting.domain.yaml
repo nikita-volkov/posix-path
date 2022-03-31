@@ -4,23 +4,29 @@ Diagram:
     title: Text
     width: Int
     height: Int
-    series: Series
+    xScale: Scale
+    chartsLayout: ChartsLayout
 
-Series:
+Scale:
   sum:
     time:
       product:
         start: UTCTime
         interval: DiffTime
-        charts: Charts
 
-Charts:
+ChartsLayout:
   sum:
-    unary: BVec Chart
+    unary: Charts
     binary:
       product:
-        left: BVec Chart
-        right: BVec Chart
+        left: Charts
+        right: Charts
+
+Charts:
+  product:
+    min: Maybe Double
+    max: Maybe Double
+    charts: BVec Chart
 
 Chart:
   product:

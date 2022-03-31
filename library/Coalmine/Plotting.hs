@@ -31,20 +31,29 @@ renderDiagramToSvgFile path diagram =
 
 compileRenderable :: Diagram -> Chart.Renderable ()
 compileRenderable diagram =
-  case #series diagram of
-    TimeSeries timeSeries -> case #charts timeSeries of
-      UnaryCharts charts ->
-        Chart.toRenderable $
-          compileLayout (#title diagram) (#start timeSeries) (realToFrac (#interval timeSeries)) charts
-      BinaryCharts charts ->
-        Chart.toRenderable $
-          compileLayoutLR (#title diagram) (#start timeSeries) (realToFrac (#interval timeSeries)) charts
+  case #chartsLayout diagram of
+    UnaryChartsLayout charts ->
+      case #xScale diagram of
+        TimeScale timeScale ->
+          Chart.toRenderable $
+            compileLayout
+              (#title diagram)
+              (#start timeScale)
+              (realToFrac (#interval timeScale))
+              charts
+    BinaryChartsLayout charts ->
+      case #xScale diagram of
+        TimeScale timeScale ->
+          Chart.toRenderable $
+            compileLayoutLR
+              (#title diagram)
+              (#start timeScale)
+              (realToFrac (#interval timeScale))
+              charts
 
 compileLayoutLR title startTime interval charts =
   def
     & Chart.layoutlr_title .~ toString title
-    & Chart.layoutlr_left_axis . Chart.laxis_override .~ Chart.axisGridHide
-    & Chart.layoutlr_right_axis . Chart.laxis_override .~ Chart.axisGridHide
     & Chart.layoutlr_x_axis . Chart.laxis_override .~ Chart.axisGridHide
     & Chart.layoutlr_plots .~ plots
   where
@@ -62,17 +71,40 @@ compileLayout title startTime interval charts =
     & Chart.layout_y_axis . Chart.laxis_override .~ Chart.axisGridHide
     & Chart.layout_plots .~ compilePlots startTime interval charts
 
-compilePlots :: UTCTime -> NominalDiffTime -> BVec Chart -> [Chart.Plot UTCTime Double]
-compilePlots startTime interval =
-  GVec.foldMap (fmap (Chart.toPlot . compilePlotLines startTime interval) . validate ((> 0) . #alpha))
+compilePlots ::
+  UTCTime ->
+  NominalDiffTime ->
+  Charts ->
+  [Chart.Plot UTCTime Double]
+compilePlots startTime interval charts =
+  GVec.foldMap
+    ( fmap
+        (Chart.toPlot . compilePlotLines startTime interval (#min charts) (#max charts))
+        . validate ((> 0) . #alpha)
+    )
+    (#charts charts)
 
-compilePlotLines :: UTCTime -> NominalDiffTime -> Chart -> Chart.PlotLines UTCTime Double
-compilePlotLines startTime interval cfg =
+compilePlotLines ::
+  UTCTime ->
+  NominalDiffTime ->
+  Maybe Double ->
+  Maybe Double ->
+  Chart ->
+  Chart.PlotLines UTCTime Double
+compilePlotLines startTime interval min max cfg =
   def
     & Chart.plot_lines_title .~ toString (#title cfg)
     & Chart.plot_lines_style . Chart.line_color .~ compileAlphaColour (#alpha cfg) (#color cfg)
     & Chart.plot_lines_style . Chart.line_width .~ #weight cfg
     & Chart.plot_lines_values .~ [compileTimeSeriesValues startTime interval (#data cfg)]
+    & Chart.plot_lines_limit_values .~ limits
+  where
+    limits =
+      foldMap (pure . compileLimit) min
+        <> foldMap (pure . compileLimit) max
+
+compileLimit val =
+  [(Chart.LMin, Chart.LValue val), (Chart.LMax, Chart.LValue val)]
 
 compileTimeSeriesValues :: UTCTime -> NominalDiffTime -> UVec Double -> [(UTCTime, Double)]
 compileTimeSeriesValues startTime diff vec =
