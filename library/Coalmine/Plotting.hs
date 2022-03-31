@@ -13,6 +13,7 @@ import Coalmine.Prelude
 import qualified Coalmine.VectorExtras.Generic as GVec
 import Control.Lens
 import qualified Data.Colour.Names as ColourNames
+import qualified Data.Vector.Generic as GVec
 import qualified Data.Vector.Unboxed as UVec
 import qualified Graphics.Rendering.Chart.Backend.Cairo as Chart
 import qualified Graphics.Rendering.Chart.Easy as Chart
@@ -58,7 +59,7 @@ compileLayout cfg =
 
 compilePlots :: UTCTime -> NominalDiffTime -> BVec Chart -> [Chart.Plot UTCTime Double]
 compilePlots startTime interval =
-  GVec.mapToList (Chart.toPlot . compilePlotLines startTime interval)
+  GVec.foldMap (fmap (Chart.toPlot . compilePlotLines startTime interval) . validate ((> 0) . #alpha))
 
 compilePlotLines :: UTCTime -> NominalDiffTime -> Chart -> Chart.PlotLines UTCTime Double
 compilePlotLines startTime interval cfg =
