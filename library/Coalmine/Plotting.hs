@@ -55,6 +55,7 @@ compileLayoutLR title startTime interval charts =
   def
     & Chart.layoutlr_title .~ toString title
     & Chart.layoutlr_x_axis . Chart.laxis_override .~ Chart.axisGridHide
+    & Chart.layoutlr_left_axis . Chart.laxis_override .~ Chart.axisGridHide
     & Chart.layoutlr_plots .~ plots
   where
     plots =
