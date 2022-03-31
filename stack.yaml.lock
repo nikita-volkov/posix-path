@@ -34,6 +34,13 @@ packages:
   original:
     hackage: aeson-value-parser-0.19.6
 - completed:
+    hackage: cereal-unordered-containers-0.1@sha256:e47c65f76633248fccdea1f38de952473edf7a28cf05af38e64b681a47305c92,1544
+    pantry-tree:
+      size: 604
+      sha256: 1240e61d89fa70c65636995919674b5bc55bc33a719e555fa4ec8950a91eb6e5
+  original:
+    hackage: cereal-unordered-containers-0.1
+- completed:
     hackage: vector-extras-0.2.6@sha256:695f171936613b45b37de497ab26cba772616e43b09d9c39f0008d168c1f7064,1883
     pantry-tree:
       size: 738
