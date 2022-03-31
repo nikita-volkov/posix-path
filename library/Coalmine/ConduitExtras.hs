@@ -8,8 +8,8 @@ import qualified Data.Machine.Moore as MachinesMoore
 
 -- *
 
-fold :: Monad m => Foldl.Fold i r -> ConduitT i o m r
-fold (Foldl.Fold progress start finish) =
+foldSink :: Monad m => Foldl.Fold i r -> ConduitT i o m r
+foldSink (Foldl.Fold progress start finish) =
   go start
   where
     go !state =
