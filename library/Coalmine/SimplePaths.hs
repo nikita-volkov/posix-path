@@ -64,10 +64,10 @@ instance Show DirPath where
   show = show . toText
 
 instance ToJSON DirPath where
-  toJSON = toJSON . show
+  toJSON = toJSON . toText
 
 instance ToJSONKey DirPath where
-  toJSONKey = contramap show toJSONKey
+  toJSONKey = contramap toText toJSONKey
 
 -- *
 
@@ -117,10 +117,10 @@ instance Show FilePath where
   show = show . toText
 
 instance ToJSON FilePath where
-  toJSON = toJSON . show
+  toJSON = toJSON . toText
 
 instance ToJSONKey FilePath where
-  toJSONKey = contramap show toJSONKey
+  toJSONKey = contramap toText toJSONKey
 
 -- *
 
