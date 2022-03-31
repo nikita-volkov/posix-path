@@ -62,3 +62,21 @@ droppingPipe amount =
 transmit :: Monad m => ConduitT a a m ()
 transmit =
   mapC id
+
+-- |
+-- Skip every N inputs.
+--
+-- Useful for downsampling.
+skipEvery :: Monad m => Int -> ConduitT a a m ()
+skipEvery amount =
+  if amount <= 0
+    then mapC id
+    else go amount
+  where
+    go !currentAmount =
+      await >>= \case
+        Nothing -> return ()
+        Just i ->
+          if currentAmount == 0
+            then yield i >> go amount
+            else go (pred currentAmount)
