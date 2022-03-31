@@ -27,6 +27,32 @@ packages:
     git: https://github.com/nikita-volkov/moore-machines
     commit: 7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290
 - completed:
+    subdir: chart
+    name: Chart
+    version: 1.9.3
+    git: https://github.com/nikita-volkov/haskell-chart
+    pantry-tree:
+      size: 3031
+      sha256: a0dd4789536ef4d083148bd602b0c4882d6b95f832040c1a6c3de9a4db668894
+    commit: 362a9108d9b762723266aee69ab3358aaadd6da6
+  original:
+    subdir: chart
+    git: https://github.com/nikita-volkov/haskell-chart
+    commit: 362a9108d9b762723266aee69ab3358aaadd6da6
+- completed:
+    subdir: chart-cairo
+    name: Chart-cairo
+    version: 1.9.3
+    git: https://github.com/nikita-volkov/haskell-chart
+    pantry-tree:
+      size: 238
+      sha256: 5b2a00078214d0a4ee067f5eaca18255abed1a2fe38996b1d983b6557816623c
+    commit: 362a9108d9b762723266aee69ab3358aaadd6da6
+  original:
+    subdir: chart-cairo
+    git: https://github.com/nikita-volkov/haskell-chart
+    commit: 362a9108d9b762723266aee69ab3358aaadd6da6
+- completed:
     hackage: aeson-value-parser-0.19.6@sha256:ccd8424b17fd5608c3f1f7e51c7d4b77ff64cd409b51387759d27fc0e6e419bc,2054
     pantry-tree:
       size: 454
@@ -40,6 +66,27 @@ packages:
       sha256: 1240e61d89fa70c65636995919674b5bc55bc33a719e555fa4ec8950a91eb6e5
   original:
     hackage: cereal-unordered-containers-0.1
+- completed:
+    hackage: domain-aeson-0.1@sha256:8337de97b765b535cf8c252ca051c7f1573ad03b21774a09dcb6673ad7269ad1,1897
+    pantry-tree:
+      size: 446
+      sha256: b95775b15664193c3301f10233f26ff43f60327f700c15e439cbed7f615c401c
+  original:
+    hackage: domain-aeson-0.1
+- completed:
+    hackage: domain-cereal-0.1@sha256:db6fe7980ee3f9834a9e2c7cbe577354406286fecfb18477aac712cc008a83ce,1879
+    pantry-tree:
+      size: 366
+      sha256: babc92fb6290d5d7b59cf6a07c8abb51a1a176824371f5cbf2a916259a337915
+  original:
+    hackage: domain-cereal-0.1
+- completed:
+    hackage: leb128-cereal-1.2@sha256:ba8770629aa1fa8524cbbea3b4065b21def815a766ab6c74174aa57f8c124ead,1883
+    pantry-tree:
+      size: 402
+      sha256: af6a4af7b400a4891918a0d3b60d16cbf90a4d5d0a101223f920d684d435754c
+  original:
+    hackage: leb128-cereal-1.2
 - completed:
     hackage: vector-extras-0.2.6@sha256:695f171936613b45b37de497ab26cba772616e43b09d9c39f0008d168c1f7064,1883
     pantry-tree:

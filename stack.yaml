@@ -5,6 +5,14 @@ extra-deps:
     commit: f3947e32f8cc3c764ab8ee48581f2e1f35d3bcdb
   - git: https://github.com/nikita-volkov/moore-machines
     commit: 7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290
+  - git: https://github.com/nikita-volkov/haskell-chart
+    commit: 362a9108d9b762723266aee69ab3358aaadd6da6
+    subdirs:
+      - chart
+      - chart-cairo
   - aeson-value-parser-0.19.6
   - cereal-unordered-containers-0.1
+  - domain-aeson-0.1
+  - domain-cereal-0.1
+  - leb128-cereal-1.2
   - vector-extras-0.2.6
