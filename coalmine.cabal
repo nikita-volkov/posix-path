@@ -90,6 +90,7 @@ library
     Coalmine.Prelude
     Coalmine.Range
     Coalmine.S3
+    Coalmine.ScientificExtras
     Coalmine.SimplePaths
     Coalmine.Streamer
     Coalmine.Tasty
