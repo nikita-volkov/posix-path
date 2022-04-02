@@ -68,6 +68,13 @@ dropFromEnd :: Int -> [a] -> [a]
 dropFromEnd amount =
   reverse . drop amount . reverse
 
+headMaybe :: [a] -> Maybe a
+headMaybe =
+  listToMaybe
+
 lastMaybe :: [a] -> Maybe a
 lastMaybe =
   foldl (const Just) Nothing
+
+findMap :: (a -> Maybe b) -> [a] -> Maybe b
+findMap f = headMaybe . mapMaybe f
