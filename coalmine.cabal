@@ -51,7 +51,10 @@ library
     Coalmine.Building
     Coalmine.ByteArrayArray
     Coalmine.ByteArrayArray.Ends
+    Coalmine.CerealExtras.Compact
+    Coalmine.CerealExtras.Get
     Coalmine.CerealExtras.Instances
+    Coalmine.CerealExtras.Put
     Coalmine.CharPredicates
     Coalmine.Collector
     Coalmine.ConduitExtras
@@ -145,6 +148,7 @@ library
     fx,
     headed-megaparsec,
     jsonifier,
+    leb128-cereal,
     lens,
     machines,
     megaparsec,
