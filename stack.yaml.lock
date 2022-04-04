@@ -30,28 +30,28 @@ packages:
     subdir: chart
     name: Chart
     version: 1.9.3
-    git: https://github.com/nikita-volkov/haskell-chart
+    git: https://github.com/timbod7/haskell-chart
     pantry-tree:
       size: 3031
       sha256: a0dd4789536ef4d083148bd602b0c4882d6b95f832040c1a6c3de9a4db668894
-    commit: 362a9108d9b762723266aee69ab3358aaadd6da6
+    commit: 51b1bc25822e54fee6927f7f56da2b8c1c01bd82
   original:
     subdir: chart
-    git: https://github.com/nikita-volkov/haskell-chart
-    commit: 362a9108d9b762723266aee69ab3358aaadd6da6
+    git: https://github.com/timbod7/haskell-chart
+    commit: 51b1bc25822e54fee6927f7f56da2b8c1c01bd82
 - completed:
     subdir: chart-cairo
     name: Chart-cairo
     version: 1.9.3
-    git: https://github.com/nikita-volkov/haskell-chart
+    git: https://github.com/timbod7/haskell-chart
     pantry-tree:
       size: 238
       sha256: 5b2a00078214d0a4ee067f5eaca18255abed1a2fe38996b1d983b6557816623c
-    commit: 362a9108d9b762723266aee69ab3358aaadd6da6
+    commit: 51b1bc25822e54fee6927f7f56da2b8c1c01bd82
   original:
     subdir: chart-cairo
-    git: https://github.com/nikita-volkov/haskell-chart
-    commit: 362a9108d9b762723266aee69ab3358aaadd6da6
+    git: https://github.com/timbod7/haskell-chart
+    commit: 51b1bc25822e54fee6927f7f56da2b8c1c01bd82
 - completed:
     hackage: aeson-value-parser-0.19.6@sha256:ccd8424b17fd5608c3f1f7e51c7d4b77ff64cd409b51387759d27fc0e6e419bc,2054
     pantry-tree:
