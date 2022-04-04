@@ -88,7 +88,6 @@ library
     Coalmine.Optics
     Coalmine.Parsing
     Coalmine.PartialEndo
-    Coalmine.Plotting
     Coalmine.Predicates
     Coalmine.Prelude
     Coalmine.Range
@@ -115,7 +114,6 @@ library
     Coalmine.InternalPrelude
     Coalmine.Name.Attoparsec
     Coalmine.Name.Megaparsec
-    Coalmine.Plotting.Types
     Coalmine.SimplePaths.AttoparsecHelpers
   build-depends:
     acc,
@@ -128,9 +126,6 @@ library
     cereal-text,
     cereal-unordered-containers,
     cereal-vector,
-    Chart,
-    Chart-cairo,
-    colour,
     conduit,
     data-default,
     data-dword,
