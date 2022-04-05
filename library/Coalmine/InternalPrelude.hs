@@ -2,6 +2,7 @@ module Coalmine.InternalPrelude
   ( module Prelude,
     module Exports,
     showAsText,
+    showAsTextBuilder,
     traceMap,
     E8,
   )
@@ -44,6 +45,9 @@ import Prelude hiding (Vector, chosen, toList, uncons, (%))
 
 showAsText :: Show a => a -> Text
 showAsText = show >>> fromString
+
+showAsTextBuilder :: Show a => a -> TextBuilder
+showAsTextBuilder = show >>> fromString
 
 traceMap :: (a -> String) -> a -> a
 traceMap f a = trace (f a) a
