@@ -18,6 +18,7 @@ import Coalmine.Interval as Exports (Interval)
 import Coalmine.MultilineTextBuilder as Exports (ToMultilineTextBuilder (..))
 import Coalmine.Parsing as Exports
 import Coalmine.SimplePaths as Exports (DirPath, FilePath)
+import Coalmine.TextConversionsExtras.Instances as Exports
 import Coalmine.Types as Exports
 import qualified Data.Aeson
 import qualified Data.Text.Encoding
