@@ -3,8 +3,11 @@ module Coalmine.ContainersExtras.Map where
 import Coalmine.Prelude
 import Data.Map.Strict
 
--- |
--- Or @insertLookup@.
+insertLookup :: Ord k => (v -> v -> v) -> k -> v -> Map k v -> (Maybe v, Map k v)
+insertLookup f k v = insertLookupWithKey f' k v
+  where
+    f' _ new old = f new old
+
 replace :: Ord k => k -> v -> Map k v -> (Maybe v, Map k v)
 replace k v = insertLookupWithKey f k v
   where
