@@ -11,8 +11,6 @@ where
 import Acc as Exports (Acc)
 import Acc.NeAcc as Exports (NeAcc)
 import Attoparsec.Data as Exports (LenientParser (..))
-import Coalmine.BaseExtras.Alternative as Exports
-import Coalmine.BaseExtras.Function as Exports
 import Coalmine.TextConversionsExtras.Instances as Exports
 import Control.FromSum as Exports
 import Control.Monad.Morph as Exports
