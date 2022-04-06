@@ -1,7 +1,7 @@
 module Coalmine.BaseExtras.List where
 
+import Coalmine.InternalPrelude
 import qualified Data.Map.Strict as Map
-import Prelude
 
 nubSort :: Ord a => [a] -> [a]
 nubSort = nubSortOn id
@@ -78,3 +78,9 @@ lastMaybe =
 
 findMap :: (a -> Maybe b) -> [a] -> Maybe b
 findMap f = headMaybe . mapMaybe f
+
+ifNotNull :: ([a] -> b) -> [a] -> Maybe b
+ifNotNull k a =
+  if null a
+    then Nothing
+    else Just (k a)

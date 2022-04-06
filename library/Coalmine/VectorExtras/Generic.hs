@@ -1,6 +1,6 @@
 module Coalmine.VectorExtras.Generic where
 
-import Coalmine.Prelude hiding (Vector, foldMap, foldl', foldr, length)
+import Coalmine.Prelude hiding (Vector, foldMap, foldl', foldr, length, null)
 import qualified Coalmine.VectorExtras.Generic.Mutable as Mut
 import Data.Vector.Generic
 import qualified Data.Vector.Generic.Mutable as Mut
@@ -48,3 +48,9 @@ lastMaybe v = v !? pred (length v)
 mapToList :: Vector v a => (a -> b) -> v a -> [b]
 mapToList mapper =
   foldr (\l r -> mapper l : r) []
+
+ifNotNull :: Vector v a => (v a -> b) -> v a -> Maybe b
+ifNotNull k a =
+  if null a
+    then Nothing
+    else Just (k a)
