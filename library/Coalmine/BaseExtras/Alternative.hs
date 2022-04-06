@@ -1,6 +1,6 @@
 module Coalmine.BaseExtras.Alternative where
 
-import Prelude
+import Coalmine.InternalPrelude
 
 validate :: Alternative m => (a -> Bool) -> a -> m a
 validate predicate value =

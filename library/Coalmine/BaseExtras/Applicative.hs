@@ -1,6 +1,6 @@
 module Coalmine.BaseExtras.Applicative where
 
-import Prelude
+import Coalmine.InternalPrelude
 
 zipLifting2 :: Applicative f => (forall x. g x -> f x) -> g a1 -> g a2 -> f (a1, a2)
 zipLifting2 fn a b = (,) <$> fn a <*> fn b
