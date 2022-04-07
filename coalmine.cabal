@@ -93,6 +93,7 @@ library
     Coalmine.Predicates
     Coalmine.Prelude
     Coalmine.Range
+    Coalmine.Res
     Coalmine.S3
     Coalmine.ScientificExtras
     Coalmine.SimplePaths
