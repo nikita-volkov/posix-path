@@ -5,6 +5,8 @@ import Control.Foldl (Fold (..))
 import qualified Data.Machine.Mealy as Mealy
 import qualified Data.Vector.Unboxed as UVec
 
+-- |
+-- Apply to unboxed vector.
 foldUVec :: Unbox i => Fold i o -> UVec i -> o
 foldUVec (Fold step init extract) vec =
   UVec.foldl' step init vec & extract
