@@ -1,6 +1,7 @@
 module Coalmine.Prelude
   ( module Exports,
     renderAsYamlText,
+    parseTextLeniently,
   )
 where
 
@@ -29,3 +30,7 @@ renderAsYamlText =
   Data.Text.Encoding.decodeUtf8
     . Data.Yaml.encode
     . Data.Aeson.toJSON
+
+parseTextLeniently :: LenientParser a => Text -> Either Text a
+parseTextLeniently =
+  parse lenientParser
