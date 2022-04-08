@@ -1,8 +1,8 @@
 module Main where
 
 import qualified Build_doctests as Bd
+import Coalmine.InternalPrelude
 import Test.DocTest
-import Prelude
 
 main :: IO ()
 main =

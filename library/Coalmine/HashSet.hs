@@ -1,7 +1,7 @@
 module Coalmine.HashSet where
 
+import Coalmine.InternalPrelude as Prelude hiding (empty, insert)
 import Data.HashSet
-import Prelude hiding (empty, insert)
 
 fromFoldable :: (Foldable f, Eq a, Hashable a) => f a -> HashSet a
 fromFoldable =

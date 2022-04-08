@@ -1,7 +1,7 @@
 module Coalmine.HashableExtras where
 
+import Coalmine.InternalPrelude hiding (empty, insert)
 import Data.Hashable
-import Prelude hiding (empty, insert)
 
 extendHash :: Hashable a => a -> Int -> Int
 extendHash =

@@ -1,5 +1,6 @@
 module Main where
 
+import Coalmine.Prelude
 import Coalmine.Tasty
 import qualified TestSuites.ConduitExtras as ConduitExtras
 import qualified TestSuites.Inter as Inter
@@ -7,7 +8,6 @@ import qualified TestSuites.LocatedRendering as LocatedRendering
 import qualified TestSuites.MegaparsecExtras as MegaparsecExtras
 import qualified TestSuites.SimplePaths as SimplePaths
 import qualified TestSuites.TimeExtrasConversions as TimeExtrasConversions
-import Prelude
 
 main =
   defaultMain . testGroup "All" $

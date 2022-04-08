@@ -1,6 +1,6 @@
 module Coalmine.Name.Megaparsec where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import Text.Megaparsec hiding (sepBy)
 import qualified Text.Megaparsec.Char as MegaparsecChar
 import VectorBuilder.MonadPlus

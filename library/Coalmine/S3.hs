@@ -1,9 +1,9 @@
 module Coalmine.S3 where
 
 import qualified Coalmine.Fx as Fx
+import Coalmine.InternalPrelude
 import Fx
 import NeatInterpolation
-import Prelude
 
 data StorageClass
   = StandardStorageClass

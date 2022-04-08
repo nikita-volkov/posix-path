@@ -2,6 +2,9 @@ module Coalmine.Prelude
   ( module Exports,
     renderAsYamlText,
     parseTextLeniently,
+
+    -- *
+    MultilineTextBuilder,
   )
 where
 
@@ -17,10 +20,10 @@ import Coalmine.HashableExtras as Exports
 import Coalmine.InternalPrelude as Exports hiding (FilePath)
 import Coalmine.Interval as Exports (Interval)
 import Coalmine.MultilineTextBuilder as Exports (ToMultilineTextBuilder (..))
+import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 import Coalmine.Parsing as Exports
 import Coalmine.SimplePaths as Exports (DirPath, FilePath)
 import Coalmine.TextConversionsExtras.Instances as Exports
-import Coalmine.Types as Exports
 import qualified Data.Aeson
 import qualified Data.Text.Encoding
 import qualified Data.Yaml
@@ -34,3 +37,5 @@ renderAsYamlText =
 parseTextLeniently :: LenientParser a => Text -> Either Text a
 parseTextLeniently =
   parse lenientParser
+
+type MultilineTextBuilder = MultilineTextBuilder.Builder

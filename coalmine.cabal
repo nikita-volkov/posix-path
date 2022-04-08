@@ -104,7 +104,6 @@ library
     Coalmine.TH
     Coalmine.TimeExtras.Conversions
     Coalmine.TransformersExtras.State
-    Coalmine.Types
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml

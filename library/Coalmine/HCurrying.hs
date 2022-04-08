@@ -1,6 +1,6 @@
 module Coalmine.HCurrying where
 
-import Prelude
+import Coalmine.InternalPrelude
 
 class HCurrying a b | a -> b where
   curryH :: a -> b

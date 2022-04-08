@@ -1,6 +1,6 @@
 module Coalmine.Name.Attoparsec where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import Data.Attoparsec.Text hiding (sepBy)
 import VectorBuilder.MonadPlus
 

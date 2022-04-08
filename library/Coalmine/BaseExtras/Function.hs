@@ -1,6 +1,6 @@
 module Coalmine.BaseExtras.Function where
 
-import Prelude
+import Coalmine.InternalPrelude
 
 apply :: a -> (a -> b) -> b
 apply arg fn =

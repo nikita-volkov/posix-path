@@ -1,18 +1,17 @@
 module Coalmine.Name where
 
 import qualified AesonValueParser
+import Coalmine.InternalPrelude
 import qualified Coalmine.Name.Attoparsec as Attoparsec
 import qualified Coalmine.Name.Megaparsec as Megaparsec
-import Coalmine.Prelude
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.Text as Text
 import qualified Text.Megaparsec as Megaparsec
-import TextBuilderDev (TextBuilder)
 import qualified TextBuilderDev as TextBuilder
 
 -- |
 -- Case-agnostic name with words separated and consisting only of digits and Latin letters.
-newtype Name = Name (Vec Text)
+newtype Name = Name (BVec Text)
 
 -- * Instances
 

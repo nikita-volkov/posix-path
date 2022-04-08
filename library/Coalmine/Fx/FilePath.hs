@@ -1,10 +1,10 @@
 module Coalmine.Fx.FilePath where
 
+import Coalmine.InternalPrelude
 import qualified Data.Text.IO as Text
 import Fx
 import qualified System.Directory as Directory
 import qualified System.IO.Temp as Temporary
-import Prelude
 
 -- * Providers
 

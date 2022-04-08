@@ -1,10 +1,20 @@
 module Coalmine.InternalPrelude
   ( module Prelude,
     module Exports,
+
+    -- *
     showAsText,
     showAsTextBuilder,
+
+    -- *
     traceMap,
+
+    -- *
     E8,
+
+    -- *
+    BVec,
+    UVec,
   )
 where
 
@@ -27,9 +37,11 @@ import Data.String.ToString as Exports
 import Data.Text.Conversions as Exports
 import Data.Time.Compat as Exports ()
 import Data.Tuple.All as Exports hiding (only)
+import qualified Data.Vector
 import Data.Vector.Generic as Exports (Vector)
 import Data.Vector.Instances as Exports
 import Data.Vector.Unboxed as Exports (Unbox)
+import qualified Data.Vector.Unboxed
 import Data.Vector.Unboxed.Deriving as Exports (derivingUnbox)
 import DeferredFolds.Unfoldr as Exports (Unfoldr (..))
 import Deque.Strict as Exports (Deque)
@@ -54,3 +66,7 @@ data E8
 
 instance HasResolution E8 where
   resolution _ = 100000000
+
+type BVec = Data.Vector.Vector
+
+type UVec = Data.Vector.Unboxed.Vector

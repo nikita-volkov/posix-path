@@ -1,7 +1,7 @@
 module Coalmine.Parsing where
 
+import Coalmine.InternalPrelude
 import qualified Data.Attoparsec.Text
-import Prelude
 
 class Parsing parser where
   type ParserInput parser
