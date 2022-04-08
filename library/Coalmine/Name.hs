@@ -99,22 +99,22 @@ refineText = Megaparsec.refineText megaparsec
 
 -- *
 
-class FromSpinalCaseName a where
-  fromSpinalCaseName :: Name -> a
+class FromNameInSpinalCase a where
+  fromNameInSpinalCase :: Name -> a
 
-instance FromSpinalCaseName Text where
-  fromSpinalCaseName = toSpinalCaseText
+instance FromNameInSpinalCase Text where
+  fromNameInSpinalCase = toSpinalCaseText
 
-instance FromSpinalCaseName TextBuilder where
-  fromSpinalCaseName = toSpinalCaseTextBuilder
+instance FromNameInSpinalCase TextBuilder where
+  fromNameInSpinalCase = toSpinalCaseTextBuilder
 
 -- *
 
-class FromUpperCamelCaseName a where
-  fromUpperCamelCaseName :: Name -> a
+class FromNameInUpperCamelCase a where
+  fromNameInUpperCamelCase :: Name -> a
 
-instance FromUpperCamelCaseName Text where
-  fromUpperCamelCaseName = toUpperCamelCaseText
+instance FromNameInUpperCamelCase Text where
+  fromNameInUpperCamelCase = toUpperCamelCaseText
 
-instance FromUpperCamelCaseName TextBuilder where
-  fromUpperCamelCaseName = toUpperCamelCaseTextBuilder
+instance FromNameInUpperCamelCase TextBuilder where
+  fromNameInUpperCamelCase = toUpperCamelCaseTextBuilder

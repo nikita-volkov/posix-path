@@ -9,7 +9,7 @@ module Coalmine.SimplePaths
 where
 
 import Coalmine.InternalPrelude hiding (FilePath)
-import Coalmine.Name (FromSpinalCaseName (..), FromUpperCamelCaseName (..))
+import Coalmine.Name (FromNameInSpinalCase (..), FromNameInUpperCamelCase (..))
 import qualified Coalmine.SimplePaths.AttoparsecHelpers as AttoparsecHelpers
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified TextBuilderDev as TextBuilder
@@ -70,13 +70,13 @@ instance ToJSON DirPath where
 instance ToJSONKey DirPath where
   toJSONKey = contramap toText toJSONKey
 
-instance FromSpinalCaseName DirPath where
-  fromSpinalCaseName _name =
-    DirPath False [fromSpinalCaseName _name]
+instance FromNameInSpinalCase DirPath where
+  fromNameInSpinalCase _name =
+    DirPath False [fromNameInSpinalCase _name]
 
-instance FromUpperCamelCaseName DirPath where
-  fromUpperCamelCaseName _name =
-    DirPath False [fromUpperCamelCaseName _name]
+instance FromNameInUpperCamelCase DirPath where
+  fromNameInUpperCamelCase _name =
+    DirPath False [fromNameInUpperCamelCase _name]
 
 -- *
 
@@ -131,13 +131,13 @@ instance ToJSON FilePath where
 instance ToJSONKey FilePath where
   toJSONKey = contramap toText toJSONKey
 
-instance FromSpinalCaseName FilePath where
-  fromSpinalCaseName _name =
-    FilePath mempty (fromSpinalCaseName _name) []
+instance FromNameInSpinalCase FilePath where
+  fromNameInSpinalCase _name =
+    FilePath mempty (fromNameInSpinalCase _name) []
 
-instance FromUpperCamelCaseName FilePath where
-  fromUpperCamelCaseName _name =
-    FilePath mempty (fromUpperCamelCaseName _name) []
+instance FromNameInUpperCamelCase FilePath where
+  fromNameInUpperCamelCase _name =
+    FilePath mempty (fromNameInUpperCamelCase _name) []
 
 -- *
 
