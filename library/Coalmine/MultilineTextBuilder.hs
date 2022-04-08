@@ -20,7 +20,7 @@ where
 import qualified Coalmine.BaseExtras.List as List
 import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
-import Coalmine.Name (FromSpinalCaseName (..))
+import Coalmine.Name (FromSpinalCaseName (..), FromUpperCamelCaseName (..))
 import qualified Data.Text as Text
 import qualified TextBuilderDev as Tb
 
@@ -100,6 +100,10 @@ instance Eq Builder where
 instance FromSpinalCaseName Builder where
   fromSpinalCaseName =
     toMultilineTextBuilder @TextBuilder . fromSpinalCaseName
+
+instance FromUpperCamelCaseName Builder where
+  fromUpperCamelCaseName =
+    toMultilineTextBuilder @TextBuilder . fromUpperCamelCaseName
 
 -- * Execution
 

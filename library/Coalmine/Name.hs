@@ -107,3 +107,14 @@ instance FromSpinalCaseName Text where
 
 instance FromSpinalCaseName TextBuilder where
   fromSpinalCaseName = toSpinalCaseTextBuilder
+
+-- *
+
+class FromUpperCamelCaseName a where
+  fromUpperCamelCaseName :: Name -> a
+
+instance FromUpperCamelCaseName Text where
+  fromUpperCamelCaseName = toUpperCamelCaseText
+
+instance FromUpperCamelCaseName TextBuilder where
+  fromUpperCamelCaseName = toUpperCamelCaseTextBuilder
