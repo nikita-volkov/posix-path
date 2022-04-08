@@ -96,3 +96,14 @@ toSnakeCaseTextBuilder (Name vec) = TextBuilder.intercalate "_" (fmap TextBuilde
 
 refineText :: Text -> Either Text Name
 refineText = Megaparsec.refineText megaparsec
+
+-- *
+
+class FromSpinalCaseName a where
+  fromSpinalCaseName :: Name -> a
+
+instance FromSpinalCaseName Text where
+  fromSpinalCaseName = toSpinalCaseText
+
+instance FromSpinalCaseName TextBuilder where
+  fromSpinalCaseName = toSpinalCaseTextBuilder
