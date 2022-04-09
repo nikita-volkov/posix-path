@@ -3,6 +3,7 @@ module Coalmine.SimplePaths
     FilePath,
     inDir,
     filePathDir,
+    filePathName,
     filePathExtensions,
     appendFileExtension,
   )
@@ -166,6 +167,9 @@ mapFileExtensions fn (FilePath dir name exts) =
 
 filePathDir :: FilePath -> DirPath
 filePathDir (FilePath dir _ _) = dir
+
+filePathName :: FilePath -> Text
+filePathName (FilePath _ name _) = name
 
 filePathExtensions :: FilePath -> [Text]
 filePathExtensions (FilePath _ _ x) = x
