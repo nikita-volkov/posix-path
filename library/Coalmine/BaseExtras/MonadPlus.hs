@@ -10,4 +10,13 @@ recurseExtending base suffix = do
   _base <- base
   mplus
     (recurseExtending (suffix _base) suffix)
-    (pure _base)
+    (return _base)
+
+foldlMany :: MonadPlus m => (s -> a -> s) -> s -> m a -> m s
+foldlMany _step _acc _get =
+  _go _acc
+  where
+    _go !_acc =
+      mplus
+        (_get >>= _go . _step _acc)
+        (return _acc)
