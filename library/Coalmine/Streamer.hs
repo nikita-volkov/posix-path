@@ -1,6 +1,6 @@
 module Coalmine.Streamer where
 
-import Coalmine.Prelude hiding (State)
+import Coalmine.InternalPrelude hiding (State)
 import qualified Jsonifier
 
 -- |

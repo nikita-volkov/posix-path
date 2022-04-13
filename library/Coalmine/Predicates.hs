@@ -1,6 +1,6 @@
 module Coalmine.Predicates where
 
-import Coalmine.Prelude hiding (all, both, either)
+import Coalmine.InternalPrelude hiding (all, both, either)
 
 -- * Combinators
 

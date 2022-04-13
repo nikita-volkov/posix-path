@@ -1,6 +1,6 @@
 module Coalmine.PartialEndo where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 
 -- *
 

@@ -1,6 +1,6 @@
 module Coalmine.ByteArrayArray.Ends where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import qualified Coalmine.VectorExtras.Generic as GVecExtras
 import qualified Data.Vector.Unboxed as UVec
 import qualified Data.Vector.Unboxed.Mutable as MUVec

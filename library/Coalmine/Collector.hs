@@ -1,6 +1,6 @@
 module Coalmine.Collector where
 
-import Coalmine.Prelude hiding (init)
+import Coalmine.InternalPrelude hiding (init)
 import Control.Foldl (Fold (..))
 
 -- *

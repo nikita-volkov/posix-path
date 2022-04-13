@@ -9,7 +9,7 @@ module Coalmine.CerealExtras.Compact where
 
 import qualified Coalmine.CerealExtras.Get as Get
 import qualified Coalmine.CerealExtras.Put as Put
-import Coalmine.Prelude hiding (get, put)
+import Coalmine.InternalPrelude hiding (get, put)
 import qualified Data.Map.Strict as Map
 import Data.Serialize (Serialize (..))
 import qualified Data.Serialize as Cereal

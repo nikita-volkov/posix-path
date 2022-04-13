@@ -1,6 +1,6 @@
 module Coalmine.FoldlExtras.Fold where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import Control.Foldl (Fold (..))
 import qualified Data.Machine.Mealy as Mealy
 import qualified Data.Vector.Unboxed as UVec

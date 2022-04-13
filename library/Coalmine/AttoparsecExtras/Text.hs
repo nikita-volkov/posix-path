@@ -7,7 +7,7 @@ module Coalmine.AttoparsecExtras.Text
 where
 
 import qualified Coalmine.BaseExtras.Integer as IntegerExtras
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import Data.Attoparsec.Text
 
 -- *

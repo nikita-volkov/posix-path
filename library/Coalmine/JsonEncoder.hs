@@ -1,6 +1,6 @@
 module Coalmine.JsonEncoder where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import qualified Jsonifier
 
 -- |

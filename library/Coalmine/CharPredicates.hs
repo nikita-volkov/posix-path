@@ -1,7 +1,7 @@
 module Coalmine.CharPredicates where
 
+import Coalmine.InternalPrelude hiding (both, either)
 import Coalmine.Predicates
-import Coalmine.Prelude hiding (both, either)
 
 isSpaceOrTab :: Char -> Bool
 isSpaceOrTab = either (== ' ') (== '\t')

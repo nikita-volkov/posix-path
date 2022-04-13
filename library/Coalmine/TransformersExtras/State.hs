@@ -1,6 +1,6 @@
 module Coalmine.TransformersExtras.State where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 
 liftModifyM :: Functor m => (s -> m s) -> StateT s m ()
 liftModifyM modify =

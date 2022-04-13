@@ -1,6 +1,6 @@
 module Coalmine.VectorExtras.Generic.Mutable where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import Data.Vector.Generic.Mutable hiding (forM_)
 
 {-# INLINE writeListInReverseOrderStartingFrom #-}

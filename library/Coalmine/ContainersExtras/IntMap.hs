@@ -1,6 +1,6 @@
 module Coalmine.ContainersExtras.IntMap where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import Data.IntMap.Strict
 
 -- |

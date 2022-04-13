@@ -3,7 +3,7 @@
 module Coalmine.MultilineParser where
 
 import qualified Coalmine.CharPredicates as CharPredicates
-import Coalmine.Prelude hiding (maybe)
+import Coalmine.InternalPrelude hiding (maybe)
 import qualified Coalmine.VectorExtras.Generic as Vec
 import qualified Data.Attoparsec.Text as A
 import qualified Data.Text as Text

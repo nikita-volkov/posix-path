@@ -1,6 +1,6 @@
 module Coalmine.Yaml where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import qualified Data.Aeson as Aeson
 import qualified Data.Yaml as Yaml
 

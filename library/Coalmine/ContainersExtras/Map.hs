@@ -1,6 +1,6 @@
 module Coalmine.ContainersExtras.Map where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import Data.Map.Strict
 
 insertLookup :: Ord k => (v -> v -> v) -> k -> v -> Map k v -> (Maybe v, Map k v)

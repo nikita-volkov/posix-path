@@ -1,7 +1,7 @@
 module Coalmine.Tasty.HeadedMegaparsec where
 
 import qualified Coalmine.HeadedMegaparsecExtras as P
-import Coalmine.Prelude hiding (FilePath)
+import Coalmine.InternalPrelude hiding (FilePath)
 import Coalmine.SimplePaths (FilePath)
 import HeadedMegaparsec
 import Test.QuickCheck.Instances

@@ -1,6 +1,6 @@
 module Coalmine.ByteArrayArray where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import Data.Primitive.ByteArray (ByteArray (..))
 import qualified Data.Primitive.ByteArray as ByteArray
 import qualified Data.Text as Text

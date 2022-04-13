@@ -1,6 +1,6 @@
 module Coalmine.Isomorphisms where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import Data.Isomorphism
 import qualified Data.Map.Strict as Map
 

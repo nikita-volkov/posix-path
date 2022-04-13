@@ -1,6 +1,6 @@
 module Coalmine.CerealExtras.Get where
 
-import Coalmine.Prelude hiding (get, map, put)
+import Coalmine.InternalPrelude hiding (get, map, put)
 import qualified Data.IntMap.Strict as IntMap
 import qualified Data.Map.Strict as Map
 import Data.Serialize.Get

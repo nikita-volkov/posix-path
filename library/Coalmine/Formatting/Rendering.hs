@@ -2,7 +2,7 @@ module Coalmine.Formatting.Rendering where
 
 import qualified Coalmine.BaseExtras.List as List
 import Coalmine.Building
-import Coalmine.Prelude hiding (intercalate, null)
+import Coalmine.InternalPrelude hiding (intercalate, null)
 import qualified Data.Text as Text
 import qualified TextBuilderDev as Tb
 

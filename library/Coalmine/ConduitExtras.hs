@@ -1,6 +1,6 @@
 module Coalmine.ConduitExtras where
 
-import Coalmine.Prelude hiding (yield)
+import Coalmine.InternalPrelude hiding (yield)
 import Conduit
 import qualified Control.Foldl as Foldl
 import qualified Data.Machine.Mealy as MachinesMealy
