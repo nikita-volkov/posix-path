@@ -12,6 +12,12 @@ recurseExtending base suffix = do
     (recurseExtending (suffix _base) suffix)
     (return _base)
 
+buildUp :: MonadPlus m => (a -> m a) -> a -> m a
+buildUp k = go
+  where
+    go !a =
+      join (mplus (go <$> k a) (pure (pure a)))
+
 foldlMany :: MonadPlus m => (s -> a -> s) -> s -> m a -> m s
 foldlMany _step _acc _get =
   _go _acc
