@@ -10,7 +10,7 @@ module Coalmine.Located.Rendering where
 
 import qualified Coalmine.BaseExtras.Integer as Integer
 import Coalmine.Inter
-import Coalmine.Prelude hiding (select)
+import Coalmine.InternalPrelude hiding (select)
 import qualified Coalmine.TextAppender as TextAppender
 import qualified Data.Text as Text
 import qualified TextBuilderDev as TextBuilder

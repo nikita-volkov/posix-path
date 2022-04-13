@@ -10,7 +10,7 @@ module Coalmine.Inter.Deindentation
 where
 
 import qualified Coalmine.Inter.Format.Model as M
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import qualified Data.Vector as BVec
 
 spacesIndentation :: BVec M.Space -> Int

@@ -1,6 +1,6 @@
 module Coalmine.BaseExtras.Integer where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 
 countDigits :: Integral a => a -> Int
 countDigits = go 1 . abs

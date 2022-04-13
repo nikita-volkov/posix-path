@@ -1,8 +1,8 @@
 module Coalmine.Inter.TH where
 
 import qualified Coalmine.Inter.Deindentation as D
+import Coalmine.InternalPrelude
 import qualified Coalmine.MultilineTextBuilder as B
-import Coalmine.Prelude
 import Coalmine.TH
 import qualified Data.Text as Text
 import Language.Haskell.TH.Syntax

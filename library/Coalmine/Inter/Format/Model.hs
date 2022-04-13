@@ -1,6 +1,6 @@
 module Coalmine.Inter.Format.Model where
 
-import Coalmine.Prelude
+import Coalmine.InternalPrelude
 import qualified Domain
 import qualified DomainOptics
 

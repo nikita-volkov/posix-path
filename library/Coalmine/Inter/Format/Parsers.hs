@@ -1,7 +1,8 @@
 module Coalmine.Inter.Format.Parsers where
 
+import Coalmine.BaseExtras.Function
 import Coalmine.Inter.Format.Model
-import Coalmine.Prelude hiding (takeWhile)
+import Coalmine.InternalPrelude hiding (takeWhile)
 import Data.Attoparsec.Text
 import qualified VectorExtras.Combinators as VectorCombinators
 
