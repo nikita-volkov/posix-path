@@ -1,6 +1,6 @@
 module Coalmine.MegaparsecExtras where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (try)
 import qualified Coalmine.Located as Located
 import Text.Megaparsec
 
@@ -74,3 +74,13 @@ locate p = do
   res <- p
   finalPos <- stateOffset <$> getParserState
   return $ Located.Located initialPos finalPos res
+
+-- *
+
+-- |
+-- A grouping of the head-tail pattern.
+-- Where there is a parser that determines the choice producing a continuation
+-- which does not participate in the choice.
+altTry :: MonadParsec e s m => [m (m a)] -> m a
+altTry =
+  join . msum . fmap try
