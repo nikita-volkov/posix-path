@@ -49,6 +49,7 @@ library
     Coalmine.BaseExtras.IO
     Coalmine.BaseExtras.List
     Coalmine.BaseExtras.MonadPlus
+    Coalmine.BaseExtras.Monoid
     Coalmine.BaseExtras.NonEmpty
     Coalmine.Building
     Coalmine.ByteArrayArray
