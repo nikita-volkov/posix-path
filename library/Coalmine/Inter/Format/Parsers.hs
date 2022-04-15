@@ -52,5 +52,6 @@ name :: Parser Name
 name =
   Name <$> head <*> tail
   where
-    head = satisfy $ and . applyAll [isAlpha, isLower]
+    head = satisfy $ \a ->
+      isAlpha a && isLower a || a == '_'
     tail = takeWhile $ or . applyAll [isAlphaNum, (== '_'), (== '\'')]
