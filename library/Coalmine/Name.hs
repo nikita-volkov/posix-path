@@ -49,6 +49,12 @@ instance ToText Name where
 instance ToTextBuilder Name where
   toTextBuilder = toSpinalCaseTextBuilder
 
+instance ToJSON Name where
+  toJSON = toJSON . toText
+
+instance ToJSONKey Name where
+  toJSONKey = contramap toText toJSONKey
+
 -- *
 
 attoparsec :: Attoparsec.Parser Name
