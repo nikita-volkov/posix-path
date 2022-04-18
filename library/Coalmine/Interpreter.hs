@@ -8,6 +8,7 @@ module Coalmine.Interpreter
     Update,
     focusOn,
     fail,
+    getsFailing,
   )
 where
 
@@ -86,3 +87,8 @@ focusOn (Located.Located start end val) =
 fail :: Text -> Update state a
 fail msg =
   Update $ \(start, end, _) -> Left (Located.Located start end msg)
+
+getsFailing :: (state -> Either Text a) -> Update state a
+getsFailing fn =
+  Update $ \(start, end, state) ->
+    bimap (Located.Located start end) (,(start, end, state)) $ fn state
