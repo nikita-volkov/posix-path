@@ -14,3 +14,10 @@ unlessMissing missingErr m =
       return (r, Just x)
     Nothing ->
       throwError missingErr
+
+instance (Semigroup a, Monad m) => Semigroup (StateT s m a) where
+  l <> r =
+    (<>) <$> l <*> r
+
+instance (Monoid a, Monad m) => Monoid (StateT s m a) where
+  mempty = pure mempty

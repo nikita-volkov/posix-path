@@ -105,6 +105,7 @@ library
     Coalmine.TextConversionsExtras.Instances
     Coalmine.TH
     Coalmine.TimeExtras.Conversions
+    Coalmine.TransformersExtras.Reader
     Coalmine.TransformersExtras.State
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable

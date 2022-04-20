@@ -25,6 +25,8 @@ import Coalmine.Name as Exports (FromNameInSpinalCase (..), FromNameInUpperCamel
 import Coalmine.Parsing as Exports
 import Coalmine.SimplePaths as Exports (DirPath, FilePath)
 import Coalmine.TextConversionsExtras.Instances as Exports
+import Coalmine.TransformersExtras.Reader as Exports ()
+import Coalmine.TransformersExtras.State as Exports ()
 import qualified Data.Aeson
 import qualified Data.Text.Encoding
 import qualified Data.Yaml
