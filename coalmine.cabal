@@ -66,6 +66,7 @@ library
     Coalmine.DecimalExtras
     Coalmine.DecimalExtras.Instances
     Coalmine.Domain
+    Coalmine.EvenSimplerPaths
     Coalmine.FoldlExtras.Fold
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
@@ -97,7 +98,6 @@ library
     Coalmine.S3
     Coalmine.ScientificExtras
     Coalmine.SimplePaths
-    Coalmine.EvenSimplerPaths
     Coalmine.Streamer
     Coalmine.Tasty
     Coalmine.Tasty.HeadedMegaparsec
