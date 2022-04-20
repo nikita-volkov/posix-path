@@ -5,7 +5,7 @@ module Coalmine.EvenSimplerPaths
 where
 
 import Coalmine.BaseExtras.MonadPlus
-import Coalmine.InternalPrelude hiding (FilePath)
+import Coalmine.InternalPrelude hiding (FilePath, Name)
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified System.Directory as Directory
 import qualified TextBuilderDev as TextBuilderDev
@@ -16,11 +16,13 @@ data Path
   = Path
       !Bool
       -- ^ Is it absolute?
-      ![Node]
-      -- ^ Nodes in reverse order.
+      ![Name]
+      -- ^ Components in reverse order.
 
-data Node
-  = Node
+-- |
+-- Structured name of a single component of a path.
+data Name
+  = Name
       !Text
       -- ^ Name.
       ![Text]
@@ -29,10 +31,10 @@ data Node
 -- *
 
 instance Semigroup Path where
-  Path _lAbs _lNodes <> Path _rAbs _rNodes =
+  Path _lAbs _lNames <> Path _rAbs _rNames =
     if _rAbs
-      then Path _rAbs _rNodes
-      else Path _lAbs $ _rNodes <> _lNodes
+      then Path _rAbs _rNames
+      else Path _lAbs $ _rNames <> _lNames
 
 instance Monoid Path where
   mempty =
@@ -45,8 +47,8 @@ instance ToTextBuilder Path where
       else _relative
     where
       _relative =
-        TextBuilderDev.intercalate "/" . fmap _fromNode $ _nodes
-      _fromNode (Node _name _extensions) =
+        TextBuilderDev.intercalate "/" . fmap _fromName $ _nodes
+      _fromName (Name _name _extensions) =
         foldl'
           (\_output _extension -> _output <> "." <> fromText _extension)
           (fromText _name)
