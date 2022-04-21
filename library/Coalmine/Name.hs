@@ -100,6 +100,12 @@ toSnakeCaseTextBuilder (Name vec) = TextBuilder.intercalate "_" (fmap TextBuilde
 
 -- *
 
+fromTextListUnchecked :: [Text] -> Name
+fromTextListUnchecked =
+  Name . fromList
+
+-- *
+
 refineText :: Text -> Either Text Name
 refineText = Megaparsec.refineText megaparsec
 
