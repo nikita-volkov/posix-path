@@ -33,8 +33,6 @@ import Data.Group as Exports
 import Data.Groupoid as Exports
 import Data.Machine.Mealy as Exports
 import Data.Machine.Moore as Exports
-import Data.String.ToString as Exports
-import Data.Text.Conversions as Exports
 import Data.Time.Compat as Exports ()
 import Data.Tuple.All as Exports hiding (only)
 import qualified Data.Vector
@@ -50,7 +48,7 @@ import Language.Haskell.TH.Quote as Exports (QuasiQuoter (..))
 import Language.Haskell.TH.Syntax as Exports (Lift, Q)
 import Network.IP.Addr as Exports (IP (..), IP4 (..), IP6 (..), InetAddr (..), InetPort (..), NetAddr (..))
 import System.IO as Exports
-import TextBuilderDev as Exports (TextBuilder, ToTextBuilder (..), buildText)
+import TextBuilderDev as Exports (IsomorphicToTextBuilder (..), TextBuilder, buildText)
 import Prelude hiding (Vector, chosen, toList, uncons, (%))
 
 showAsText :: Show a => a -> Text

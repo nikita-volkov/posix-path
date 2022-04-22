@@ -23,8 +23,10 @@ import Coalmine.MultilineTextBuilder as Exports (ToMultilineTextBuilder (..))
 import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 import Coalmine.Name as Exports (FromNameInSpinalCase (..), FromNameInUpperCamelCase (..))
 import Coalmine.Parsing as Exports
+import Coalmine.Printing as Exports
 import Coalmine.SimplePaths as Exports (DirPath, FilePath)
-import Coalmine.TextConversionsExtras.Instances as Exports
+import Coalmine.StringIsomorphism as Exports
+import Coalmine.TextIsomorphism as Exports
 import Coalmine.TransformersExtras.Reader as Exports ()
 import Coalmine.TransformersExtras.State as Exports ()
 import qualified Data.Aeson

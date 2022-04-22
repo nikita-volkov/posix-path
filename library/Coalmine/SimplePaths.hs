@@ -11,7 +11,10 @@ where
 
 import Coalmine.InternalPrelude hiding (FilePath)
 import Coalmine.Name (FromNameInSpinalCase (..), FromNameInUpperCamelCase (..))
+import Coalmine.Printing
 import qualified Coalmine.SimplePaths.AttoparsecHelpers as AttoparsecHelpers
+import Coalmine.StringIsomorphism
+import Coalmine.TextIsomorphism
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified TextBuilderDev as TextBuilder
 
@@ -50,26 +53,20 @@ instance IsString DirPath where
       . Attoparsec.parseOnly (AttoparsecHelpers.complete lenientParser)
       . fromString
 
-instance ToString DirPath where
-  toString = toString . toText
-
-instance ToText DirPath where
-  toText = toText . toTextBuilder
-
-instance ToTextBuilder DirPath where
-  toTextBuilder (DirPath abs dirs) =
+instance CompactPrinting DirPath where
+  toCompactBuilder (DirPath abs dirs) =
     if abs
       then "/" <> foldMap (flip mappend "/" . fromText) dirs
       else foldMap (flip mappend "/" . fromText) dirs
 
 instance Show DirPath where
-  show = show . toText
+  show = show . printCompactAsText
 
 instance ToJSON DirPath where
-  toJSON = toJSON . toText
+  toJSON = toJSON . printCompactAsText
 
 instance ToJSONKey DirPath where
-  toJSONKey = contramap toText toJSONKey
+  toJSONKey = contramap printCompactAsText toJSONKey
 
 instance FromNameInSpinalCase DirPath where
   fromNameInSpinalCase _name =
@@ -112,25 +109,19 @@ instance IsString FilePath where
       . Attoparsec.parseOnly (AttoparsecHelpers.complete lenientParser)
       . fromString
 
-instance ToString FilePath where
-  toString = toString . toText
-
-instance ToText FilePath where
-  toText = toText . toTextBuilder
-
-instance ToTextBuilder FilePath where
-  toTextBuilder (FilePath dir name extensions) =
-    toTextBuilder dir <> toTextBuilder name
-      <> foldMap (mappend "." . toTextBuilder) extensions
+instance CompactPrinting FilePath where
+  toCompactBuilder (FilePath dir name extensions) =
+    toCompactBuilder dir <> fromText name
+      <> foldMap (mappend "." . fromText) extensions
 
 instance Show FilePath where
-  show = show . toText
+  show = show . printCompactAsText
 
 instance ToJSON FilePath where
-  toJSON = toJSON . toText
+  toJSON = toJSON . toText . toCompactBuilder
 
 instance ToJSONKey FilePath where
-  toJSONKey = contramap toText toJSONKey
+  toJSONKey = contramap (toText . toCompactBuilder) toJSONKey
 
 instance FromNameInSpinalCase FilePath where
   fromNameInSpinalCase _name =

@@ -2,6 +2,7 @@ module Coalmine.MegaparsecExtras where
 
 import Coalmine.InternalPrelude hiding (try)
 import qualified Coalmine.Located as Located
+import Coalmine.StringIsomorphism
 import Text.Megaparsec
 
 -- |

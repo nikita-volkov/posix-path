@@ -2,8 +2,12 @@ module Coalmine.Name where
 
 import qualified AesonValueParser
 import Coalmine.InternalPrelude
+import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 import qualified Coalmine.Name.Attoparsec as Attoparsec
 import qualified Coalmine.Name.Megaparsec as Megaparsec
+import Coalmine.Printing
+import Coalmine.StringIsomorphism
+import Coalmine.TextIsomorphism
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.Text as Text
 import qualified Text.Megaparsec as Megaparsec
@@ -40,20 +44,17 @@ instance Monoid Name where
 instance LenientParser Name where
   lenientParser = attoparsec
 
-instance ToString Name where
-  toString = toString . toText
-
-instance ToText Name where
-  toText = toText . toTextBuilder
-
-instance ToTextBuilder Name where
-  toTextBuilder = toSpinalCaseTextBuilder
-
 instance ToJSON Name where
-  toJSON = toJSON . toText
+  toJSON = toJSON . toText . toCompactBuilder
 
 instance ToJSONKey Name where
-  toJSONKey = contramap toText toJSONKey
+  toJSONKey = contramap (toText . toCompactBuilder) toJSONKey
+
+instance CompactPrinting Name where
+  toCompactBuilder = toSpinalCaseTextBuilder
+
+instance PrettyPrinting Name where
+  toPrettyBuilder = fromTextBuilder . toCompactBuilder
 
 -- *
 
@@ -120,6 +121,10 @@ instance FromNameInSpinalCase Text where
 instance FromNameInSpinalCase TextBuilder where
   fromNameInSpinalCase = toSpinalCaseTextBuilder
 
+instance FromNameInSpinalCase MultilineTextBuilder.Builder where
+  fromNameInSpinalCase =
+    MultilineTextBuilder.toMultilineTextBuilder @TextBuilder . fromNameInSpinalCase
+
 -- *
 
 class FromNameInUpperCamelCase a where
@@ -130,3 +135,7 @@ instance FromNameInUpperCamelCase Text where
 
 instance FromNameInUpperCamelCase TextBuilder where
   fromNameInUpperCamelCase = toUpperCamelCaseTextBuilder
+
+instance FromNameInUpperCamelCase MultilineTextBuilder.Builder where
+  fromNameInUpperCamelCase =
+    MultilineTextBuilder.toMultilineTextBuilder @TextBuilder . fromNameInUpperCamelCase

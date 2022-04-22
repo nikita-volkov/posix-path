@@ -2,7 +2,10 @@ module Coalmine.Tasty.HeadedMegaparsec where
 
 import qualified Coalmine.HeadedMegaparsecExtras as P
 import Coalmine.InternalPrelude hiding (FilePath)
+import Coalmine.Printing
 import Coalmine.SimplePaths (FilePath)
+import Coalmine.StringIsomorphism
+import Coalmine.TextIsomorphism
 import HeadedMegaparsec
 import Test.QuickCheck.Instances
 import Test.Tasty

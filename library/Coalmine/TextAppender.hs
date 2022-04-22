@@ -35,4 +35,4 @@ init =
 
 append :: Text -> TextAppender -> TextAppender
 append chunk (TextAppender builder) =
-  TextAppender $ builder <> fromText chunk
+  TextAppender $ builder <> toTextBuilder chunk

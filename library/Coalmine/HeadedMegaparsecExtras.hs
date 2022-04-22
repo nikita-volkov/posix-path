@@ -5,7 +5,10 @@ module Coalmine.HeadedMegaparsecExtras where
 import Coalmine.InternalPrelude hiding (bit, expr, filter, head, option, some, sortBy, tail, try)
 import qualified Coalmine.Located as Located
 import qualified Coalmine.MegaparsecExtras as MegaparsecExtras
+import Coalmine.Printing
 import qualified Coalmine.SimplePaths as Paths
+import Coalmine.StringIsomorphism
+import Coalmine.TextIsomorphism
 import Data.CaseInsensitive (CI, FoldCase)
 import qualified Data.Text.IO as TextIO
 import HeadedMegaparsec hiding (string)
@@ -32,7 +35,7 @@ toRefiner p =
 
 toFileReader :: HeadedParsec Void Text a -> Paths.FilePath -> IO (Either Text a)
 toFileReader parser path =
-  TextIO.readFile (toString path)
+  TextIO.readFile (printCompactAsString path)
     <&> toRefiner parser
 
 -- * Primitives

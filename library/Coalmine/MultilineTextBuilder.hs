@@ -20,7 +20,8 @@ where
 import qualified Coalmine.BaseExtras.List as List
 import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
-import Coalmine.Name (FromNameInSpinalCase (..), FromNameInUpperCamelCase (..))
+import Coalmine.StringIsomorphism
+import Coalmine.TextIsomorphism
 import qualified Data.Text as Text
 import qualified TextBuilderDev as Tb
 
@@ -80,30 +81,22 @@ instance Show Builder where
 instance IsString Builder where
   fromString = text . fromString
 
-instance ToString Builder where
+instance IsomorphicToString Builder where
   toString = toString . toTextBuilder
 
-instance FromText Builder where
+instance IsomorphicToText Builder where
   fromText = text
-
-instance ToText Builder where
   toText = toText . toTextBuilder
 
-instance ToTextBuilder Builder where
+instance IsomorphicToTextBuilder Builder where
   toTextBuilder (Builder _ builder) =
     builder 0
+  fromTextBuilder =
+    text . fromTextBuilder
 
 instance Eq Builder where
   Builder _ l == Builder _ r =
     toText (l 0) == toText (r 0)
-
-instance FromNameInSpinalCase Builder where
-  fromNameInSpinalCase =
-    toMultilineTextBuilder @TextBuilder . fromNameInSpinalCase
-
-instance FromNameInUpperCamelCase Builder where
-  fromNameInUpperCamelCase =
-    toMultilineTextBuilder @TextBuilder . fromNameInUpperCamelCase
 
 -- * Execution
 

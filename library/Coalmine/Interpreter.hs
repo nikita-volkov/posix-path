@@ -15,7 +15,10 @@ where
 import Coalmine.InternalPrelude hiding (fail)
 import Coalmine.Located (Located)
 import qualified Coalmine.Located as Located
+import Coalmine.Printing
 import qualified Coalmine.SimplePaths as Paths
+import Coalmine.StringIsomorphism
+import Coalmine.TextIsomorphism
 import qualified Data.Text.IO as TextIO
 
 -- *
@@ -32,7 +35,7 @@ parseAndInterpretDocFile ::
   -- | Fail or produce an updated state.
   IO (Either Text state)
 parseAndInterpretDocFile parse interpret state filePath = do
-  TextIO.readFile (toString filePath)
+  TextIO.readFile (printCompactAsString filePath)
     <&> parseAndInterpretDoc parse interpret state
 
 parseAndInterpretDoc ::

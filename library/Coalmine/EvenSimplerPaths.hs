@@ -6,6 +6,9 @@ where
 
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.InternalPrelude hiding (FilePath, Name)
+import Coalmine.Printing
+import Coalmine.StringIsomorphism
+import Coalmine.TextIsomorphism
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified System.Directory as Directory
 import qualified TextBuilderDev as TextBuilderDev
@@ -40,8 +43,8 @@ instance Monoid Path where
   mempty =
     Path False []
 
-instance ToTextBuilder Path where
-  toTextBuilder (Path _abs _nodes) =
+instance CompactPrinting Path where
+  toCompactBuilder (Path _abs _nodes) =
     if _abs
       then "/" <> _relative
       else _relative
@@ -54,20 +57,14 @@ instance ToTextBuilder Path where
           (fromText _name)
           _extensions
 
-instance ToString Path where
-  toString = toString . toText
-
-instance ToText Path where
-  toText = toText . toTextBuilder
-
 instance ToJSON Path where
-  toJSON = toJSON . toText
+  toJSON = toJSON . printCompactAsText
 
 instance ToJSONKey Path where
-  toJSONKey = contramap toText toJSONKey
+  toJSONKey = contramap printCompactAsText toJSONKey
 
 instance Show Path where
-  show = show . toText
+  show = show . printCompactAsText
 
 instance LenientParser Path where
   lenientParser = do

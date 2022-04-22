@@ -68,9 +68,23 @@ packages:
       sha256: 5a6485bf613ec35a3e13674563ddd00920dfb1040ad16af625793bdf665324a3
   original:
     hackage: vector-extras-0.2.6
+- completed:
+    hackage: text-builder-dev-0.3@sha256:2ad5599ebb8ef13402a07f84eb50b9990f2ded747a1bc956c0d49fc94323186f,2693
+    pantry-tree:
+      size: 649
+      sha256: eb8395376c9ec1bdcef8d980862df4e3629ca1fc6b07dfd6d624f8754516cbe9
+  original:
+    hackage: text-builder-dev-0.3
+- completed:
+    hackage: yaml-unscrambler-0.1.0.10@sha256:0d266ae7c310b4184c1ded51da2edc58ca86fdcb2d7dce825596ae87d36fedda,3575
+    pantry-tree:
+      size: 1317
+      sha256: 9d495d9bc05d12df8ecd301cb77129b265907f1b66d001f7f112ae1e9add4f80
+  original:
+    hackage: yaml-unscrambler-0.1.0.10
 snapshots:
 - completed:
-    size: 548065
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/4/8.yaml
-    sha256: dd28c1c94ae54041b4631193a071738ac8849f406478d7188c724521f19391dc
-  original: nightly-2022-04-08
+    size: 554667
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/4/21.yaml
+    sha256: c1eab787a04ee119fc611d04a5e58517b32c170c4576388fea36c515c4e754fb
+  original: nightly-2022-04-21

@@ -94,15 +94,17 @@ library
     Coalmine.PartialEndo
     Coalmine.Predicates
     Coalmine.Prelude
+    Coalmine.Printing
     Coalmine.Res
     Coalmine.S3
     Coalmine.ScientificExtras
     Coalmine.SimplePaths
     Coalmine.Streamer
+    Coalmine.StringIsomorphism
     Coalmine.Tasty
     Coalmine.Tasty.HeadedMegaparsec
     Coalmine.TextAppender
-    Coalmine.TextConversionsExtras.Instances
+    Coalmine.TextIsomorphism
     Coalmine.TH
     Coalmine.TimeExtras.Conversions
     Coalmine.TransformersExtras.Reader
@@ -166,10 +168,8 @@ library
     template-haskell,
     temporary,
     text-builder-dev,
-    text-conversions,
     th-lego,
     time,
-    tostring,
     tuple,
     turtle,
     vector-builder,
