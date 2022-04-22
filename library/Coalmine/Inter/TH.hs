@@ -3,6 +3,7 @@ module Coalmine.Inter.TH where
 import qualified Coalmine.Inter.Deindentation as D
 import Coalmine.InternalPrelude
 import qualified Coalmine.MultilineTextBuilder as B
+import Coalmine.Printing
 import Coalmine.StringIsomorphism
 import Coalmine.TH
 import Coalmine.TextIsomorphism
@@ -75,5 +76,5 @@ indent indent =
 
 placeholder :: D.Name -> Exp
 placeholder name =
-  AppE (VarE 'B.toMultilineTextBuilder) $
+  AppE (VarE 'toPrettyBuilder) $
     VarE $ mkName $ #head name : toString (#tail name)
