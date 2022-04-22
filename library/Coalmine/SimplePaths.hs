@@ -59,6 +59,10 @@ instance CompactPrinting DirPath where
       then "/" <> foldMap (flip mappend "/" . fromText) dirs
       else foldMap (flip mappend "/" . fromText) dirs
 
+instance PrettyPrinting DirPath where
+  toPrettyBuilder =
+    fromTextBuilder . toCompactBuilder
+
 instance Show DirPath where
   show = show . printCompactAsText
 
@@ -113,6 +117,10 @@ instance CompactPrinting FilePath where
   toCompactBuilder (FilePath dir name extensions) =
     toCompactBuilder dir <> fromText name
       <> foldMap (mappend "." . fromText) extensions
+
+instance PrettyPrinting FilePath where
+  toPrettyBuilder =
+    fromTextBuilder . toCompactBuilder
 
 instance Show FilePath where
   show = show . printCompactAsText
