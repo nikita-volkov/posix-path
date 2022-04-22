@@ -1,12 +1,9 @@
 module Coalmine.MultilineTextBuilder
   ( -- *
+    IsomorphicToMultilineTextBuilder (..),
+
+    -- *
     Builder,
-
-    -- *
-    ToMultilineTextBuilder (..),
-
-    -- *
-    FromMultilineTextBuilder (..),
 
     -- *
     null,
@@ -23,41 +20,39 @@ import Coalmine.InternalPrelude hiding (intercalate, null)
 import Coalmine.StringIsomorphism
 import Coalmine.TextIsomorphism
 import qualified Data.Text as Text
+import qualified Data.Text.Lazy as TextLazy
+import qualified Data.Text.Lazy.Builder as TextLazyBuilder
 import qualified TextBuilderDev as Tb
 
 -- *
 
-class ToMultilineTextBuilder a where
+class IsomorphicToMultilineTextBuilder a where
   toMultilineTextBuilder :: a -> Builder
-
-instance ToMultilineTextBuilder Builder where
-  toMultilineTextBuilder = id
-
-instance ToMultilineTextBuilder TextBuilder where
-  toMultilineTextBuilder = text . fromBuilder
-
-instance ToMultilineTextBuilder Text where
-  toMultilineTextBuilder = text
-
-instance ToMultilineTextBuilder String where
-  toMultilineTextBuilder = fromString
-
--- *
-
-class FromMultilineTextBuilder a where
   fromMultilineTextBuilder :: Builder -> a
 
-instance FromMultilineTextBuilder Builder where
+instance IsomorphicToMultilineTextBuilder Builder where
+  toMultilineTextBuilder = id
   fromMultilineTextBuilder = id
 
-instance FromMultilineTextBuilder TextBuilder where
-  fromMultilineTextBuilder = toTextBuilder
+instance IsomorphicToMultilineTextBuilder String where
+  toMultilineTextBuilder = fromString
+  fromMultilineTextBuilder = toString
 
-instance FromMultilineTextBuilder Text where
+instance IsomorphicToMultilineTextBuilder Text where
+  toMultilineTextBuilder = fromText
   fromMultilineTextBuilder = toText
 
-instance FromMultilineTextBuilder String where
-  fromMultilineTextBuilder = toString
+instance IsomorphicToMultilineTextBuilder TextBuilder where
+  toMultilineTextBuilder = fromTextBuilder
+  fromMultilineTextBuilder = toTextBuilder
+
+instance IsomorphicToMultilineTextBuilder TextLazy.Text where
+  toMultilineTextBuilder = fromText . TextLazy.toStrict
+  fromMultilineTextBuilder = TextLazy.fromStrict . toText
+
+instance IsomorphicToMultilineTextBuilder TextLazyBuilder.Builder where
+  toMultilineTextBuilder = fromText . TextLazy.toStrict . TextLazyBuilder.toLazyText
+  fromMultilineTextBuilder = TextLazyBuilder.fromText . toText
 
 -- *
 

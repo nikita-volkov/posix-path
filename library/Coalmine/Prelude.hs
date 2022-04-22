@@ -19,7 +19,7 @@ import Coalmine.HCurrying as Exports
 import Coalmine.HashableExtras as Exports
 import Coalmine.InternalPrelude as Exports hiding (FilePath)
 import Coalmine.Interval as Exports (Interval)
-import Coalmine.MultilineTextBuilder as Exports (ToMultilineTextBuilder (..))
+import Coalmine.MultilineTextBuilder as Exports (IsomorphicToMultilineTextBuilder (..))
 import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 import Coalmine.Name as Exports (FromNameInSpinalCase (..), FromNameInUpperCamelCase (..))
 import Coalmine.Parsing as Exports
