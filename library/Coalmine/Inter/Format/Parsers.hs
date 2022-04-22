@@ -8,16 +8,20 @@ import qualified VectorExtras.Combinators as VectorCombinators
 
 quasiQuote :: Parser QuasiQuote
 quasiQuote =
-  do
-    spaces
-    endOfLine
-    QuasiQuote <$> content
+  multiline <|> uniline
   where
-    content =
-      VectorCombinators.sepEnd sep end line
+    multiline = do
+      spaces
+      endOfLine
+      MultilineQuasiQuote <$> content
       where
-        sep = endOfLine
-        end = endOfLine >> spaces >> endOfInput
+        content =
+          VectorCombinators.sepEnd sep end line
+          where
+            sep = endOfLine
+            end = endOfLine >> spaces >> endOfInput
+    uniline =
+      UnilineQuasiQuote <$> line <* endOfInput
 
 spaces :: Parser (BVec Space)
 spaces =

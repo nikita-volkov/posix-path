@@ -29,6 +29,8 @@ tests =
               var :: Text
               var = "a\nb\nc"
        in assertEqual "" expected actual,
+    testCase "Single-line parses fine" $
+      assertEqual "" " a " ([i| a |] :: Text),
     testGroup "Regressions" $
       [ testGroup "From Formatica" RegressionsFromFormatica.tests
       ]

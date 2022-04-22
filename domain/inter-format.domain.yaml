@@ -1,7 +1,8 @@
 
 QuasiQuote:
-  product:
-    content: BVec Line
+  sum:
+    multiline: BVec Line
+    uniline: Line
 
 Line:
   product:

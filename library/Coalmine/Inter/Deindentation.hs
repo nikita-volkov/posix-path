@@ -21,14 +21,6 @@ spaceIndentation = \case
   M.SpaceSpace -> 1
   M.TabSpace -> 2
 
-lineIndentedSegments :: M.Line -> (Int, BVec M.ContentSegment)
-lineIndentedSegments =
-  (,) <$> spacesIndentation . #indentation <*> #content
-
-quasiQuoteIndentedSegments :: M.QuasiQuote -> BVec (Int, BVec M.ContentSegment)
-quasiQuoteIndentedSegments =
-  fmap lineIndentedSegments . #content
-
 -- *
 
 line :: M.Line -> Line
@@ -63,7 +55,9 @@ content fmt =
       minimalIndent -> reduceIndent minimalIndent lines
 
 quasiQuote :: M.QuasiQuote -> BVec Line
-quasiQuote = content . #content
+quasiQuote = \case
+  M.MultilineQuasiQuote lines -> content lines
+  M.UnilineQuasiQuote parsedLine -> pure $ line parsedLine
 
 -- *
 
