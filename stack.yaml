@@ -1,4 +1,4 @@
-resolver: nightly-2022-04-21
+resolver: nightly-2022-04-24
 
 extra-deps:
   - git: https://github.com/nikita-volkov/fx
@@ -11,5 +11,3 @@ extra-deps:
   - domain-cereal-0.1
   - leb128-cereal-1.2
   - vector-extras-0.2.6
-  - text-builder-dev-0.3
-  - yaml-unscrambler-0.1.0.10
