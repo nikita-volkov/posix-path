@@ -63,6 +63,7 @@ library
     Coalmine.ConduitExtras
     Coalmine.ContainersExtras.IntMap
     Coalmine.ContainersExtras.Map
+    Coalmine.ContainersExtras.Set
     Coalmine.DecimalExtras
     Coalmine.DecimalExtras.Instances
     Coalmine.Domain
