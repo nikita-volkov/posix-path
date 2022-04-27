@@ -108,6 +108,7 @@ library
     Coalmine.TextIsomorphism
     Coalmine.TH
     Coalmine.TimeExtras.Conversions
+    Coalmine.TransformersExtras.Cont
     Coalmine.TransformersExtras.Reader
     Coalmine.TransformersExtras.State
     Coalmine.VectorExtras.Generic
