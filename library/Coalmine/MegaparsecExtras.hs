@@ -2,6 +2,7 @@ module Coalmine.MegaparsecExtras where
 
 import Coalmine.InternalPrelude hiding (try)
 import qualified Coalmine.Located as Located
+import qualified Coalmine.Parsed as Parsed
 import Coalmine.StringIsomorphism
 import Text.Megaparsec
 
@@ -75,6 +76,14 @@ locate p = do
   res <- p
   finalPos <- stateOffset <$> getParserState
   return $ Located.Located initialPos finalPos res
+
+-- |
+-- Associate the result of parsing with an input region.
+locate' :: (Ord e) => Parsec e Text res -> Parsec e Text (Parsed.Parsed res)
+locate' p = do
+  location <- locate p
+  input <- getInput
+  return $ Parsed.Parsed input location
 
 -- *
 
