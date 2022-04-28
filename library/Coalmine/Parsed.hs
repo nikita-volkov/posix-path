@@ -57,6 +57,9 @@ newtype Scoping e m a
   = Scoping (ExceptT e (StateT (Parsed ()) m) a)
   deriving (Functor, Applicative, Monad, MonadError e)
 
+instance MonadTrans (Scoping e) where
+  lift = Scoping . lift . lift
+
 runScoping :: Functor m => Scoping e m a -> m (Either (Parsed e) a)
 runScoping (Scoping m) =
   runStateT (runExceptT m) (pure ())
