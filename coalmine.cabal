@@ -91,6 +91,7 @@ library
     Coalmine.MultilineTextBuilder
     Coalmine.Name
     Coalmine.Optics
+    Coalmine.Parsed
     Coalmine.Parsing
     Coalmine.PartialEndo
     Coalmine.Predicates
@@ -135,6 +136,7 @@ library
     cereal-unordered-containers,
     cereal-vector,
     conduit,
+    comonad,
     data-default,
     data-dword,
     Decimal,
