@@ -13,9 +13,9 @@ import qualified Coalmine.Located as Located
 
 -- |
 -- Value accompanied by a reference to a snipped of source code.
--- 
+--
 -- Useful for reference-maintaining code analysis.
--- 
+--
 -- A more complete abstraction than 'Located.Located'.
 data Parsed a
   = Parsed
