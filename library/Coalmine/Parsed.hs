@@ -12,7 +12,7 @@ import qualified Coalmine.Located as Located
 -- *
 
 -- |
--- Value accompanied by a reference to a snipped of source code.
+-- Value associated with a snippet of source code.
 --
 -- Useful for reference-maintaining code analysis.
 --
