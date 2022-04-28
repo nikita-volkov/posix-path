@@ -3,6 +3,11 @@ module Coalmine.Parsed
     Parsed (..),
     analyse,
     renderInMegaparsecStyle,
+
+    -- *
+    Scoping,
+    runScoping,
+    scope,
   )
 where
 
@@ -48,15 +53,15 @@ renderInMegaparsecStyle (Parsed input located) =
 
 -- *
 
-newtype ParsedExceptT e m a
-  = ParsedExceptT (ExceptT e (StateT (Parsed ()) m) a)
+newtype Scoping e m a
+  = Scoping (ExceptT e (StateT (Parsed ()) m) a)
   deriving (Functor, Applicative, Monad, MonadError e)
 
-runParsedExceptT :: Functor m => ParsedExceptT e m a -> m (Either (Parsed e) a)
-runParsedExceptT (ParsedExceptT m) =
+runScoping :: Functor m => Scoping e m a -> m (Either (Parsed e) a)
+runScoping (Scoping m) =
   runStateT (runExceptT m) (pure ())
     <&> \(either, parsed) -> first (parsed $>) either
 
-scope :: Monad m => Parsed a -> ParsedExceptT e m a
+scope :: Monad m => Parsed a -> Scoping e m a
 scope parsed =
-  ParsedExceptT $ put (void parsed) $> extract parsed
+  Scoping $ put (void parsed) $> extract parsed
