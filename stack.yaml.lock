@@ -70,7 +70,7 @@ packages:
     hackage: vector-extras-0.2.6
 snapshots:
 - completed:
-    size: 554666
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/4/24.yaml
-    sha256: da53a13f9bc564a93de5b9b39453514c4e386de0dadf648bfe376b04c486c891
-  original: nightly-2022-04-24
+    size: 554661
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/4/28.yaml
+    sha256: eb778a9c971802e22068265fb7b14d357c3eb7d76229402b9444a3db1a2bc153
+  original: nightly-2022-04-28
