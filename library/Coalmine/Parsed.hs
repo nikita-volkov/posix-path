@@ -45,3 +45,18 @@ analyse (Parsed src loc) mapper =
 renderInMegaparsecStyle :: Parsed Text -> Text
 renderInMegaparsecStyle (Parsed input located) =
   Located.renderInMegaparsecStyle located input
+
+-- *
+
+newtype ParsedExceptT e m a
+  = ParsedExceptT (ExceptT e (StateT (Parsed ()) m) a)
+  deriving (Functor, Applicative, Monad, MonadError e)
+
+runParsedExceptT :: Functor m => ParsedExceptT e m a -> m (Either (Parsed e) a)
+runParsedExceptT (ParsedExceptT m) =
+  runStateT (runExceptT m) (pure ())
+    <&> \(either, parsed) -> first (parsed $>) either
+
+scope :: Monad m => Parsed a -> ParsedExceptT e m a
+scope parsed =
+  ParsedExceptT $ put (void parsed) $> extract parsed
