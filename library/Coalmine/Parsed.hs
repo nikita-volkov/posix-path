@@ -6,6 +6,7 @@ module Coalmine.Parsed
 
     -- *
     Scoping,
+    runScopingText,
     runScoping,
     scope,
   )
@@ -59,6 +60,10 @@ newtype Scoping e m a
 
 instance MonadTrans (Scoping e) where
   lift = Scoping . lift . lift
+
+runScopingText :: Functor m => Scoping Text m a -> m (Either Text a)
+runScopingText =
+  fmap (first renderInMegaparsecStyle) . runScoping
 
 runScoping :: Functor m => Scoping e m a -> m (Either (Parsed e) a)
 runScoping (Scoping m) =
