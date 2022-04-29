@@ -1,6 +1,6 @@
 module Coalmine.TH.QuasiQuoter where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (exp)
 import qualified Data.Attoparsec.Text as Atto
 import Language.Haskell.TH.Quote
 import Language.Haskell.TH.Syntax
@@ -13,17 +13,25 @@ flatMapExp :: (Exp -> Q Exp) -> QuasiQuoter -> QuasiQuoter
 flatMapExp mapper qq =
   qq {quoteExp = quoteExp qq >=> mapper}
 
-fromExp :: (String -> Q Exp) -> QuasiQuoter
-fromExp fromExp =
+exp :: (String -> Q Exp) -> QuasiQuoter
+exp exp =
   QuasiQuoter
-    fromExp
+    exp
     (const (fail "Context unsupported"))
     (const (fail "Context unsupported"))
     (const (fail "Context unsupported"))
 
+dec :: (String -> Q [Dec]) -> QuasiQuoter
+dec dec =
+  QuasiQuoter
+    (const (fail "Context unsupported"))
+    (const (fail "Context unsupported"))
+    (const (fail "Context unsupported"))
+    dec
+
 pureAttoparsedExp :: Atto.Parser Exp -> QuasiQuoter
 pureAttoparsedExp parser =
-  fromExp
+  exp
     (either fail pure . Atto.parseOnly parser' . fromString)
   where
     parser' = parser <* Atto.endOfInput
