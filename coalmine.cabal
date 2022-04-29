@@ -89,6 +89,7 @@ library
     Coalmine.MegaparsecExtras
     Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder
+    Coalmine.MtlExtras
     Coalmine.Name
     Coalmine.Optics
     Coalmine.Parsed
