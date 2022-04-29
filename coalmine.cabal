@@ -107,7 +107,8 @@ library
     Coalmine.Tasty.HeadedMegaparsec
     Coalmine.TextAppender
     Coalmine.TextIsomorphism
-    Coalmine.TH
+    Coalmine.TH.Exp
+    Coalmine.TH.QuasiQuoter
     Coalmine.TimeExtras.Conversions
     Coalmine.TransformersExtras.Cont
     Coalmine.TransformersExtras.Reader

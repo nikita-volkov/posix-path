@@ -5,7 +5,7 @@ import Coalmine.InternalPrelude
 import qualified Coalmine.MultilineTextBuilder as B
 import Coalmine.Printing
 import Coalmine.StringIsomorphism
-import Coalmine.TH
+import Coalmine.TH.Exp
 import Coalmine.TextIsomorphism
 import qualified Data.Text as Text
 import Language.Haskell.TH.Syntax
