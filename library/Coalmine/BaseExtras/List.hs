@@ -109,3 +109,13 @@ zipFoldSharing leftRemainder rightRemainder pair nil =
     (foldr rightRemainder nil)
     pair
     nil
+
+zipWithTotally :: (a -> b -> c) -> [a] -> [b] -> Either (Int, Int) [c]
+zipWithTotally pair left right =
+  zipFold leftRemainder rightRemainder pair' nil left right 0 []
+  where
+    leftRemainder remainder sharedSize _ = Left (sharedSize + length remainder, sharedSize)
+    rightRemainder remainder sharedSize _ = Left (sharedSize, sharedSize + length remainder)
+    pair' a b deeper !sharedSize !revList =
+      deeper (succ sharedSize) (pair a b : revList)
+    nil _ revList = Right (reverse revList)
