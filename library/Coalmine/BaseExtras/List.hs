@@ -94,10 +94,18 @@ ifNotNull k a =
 -- >   = Pair a b (ZipFolding a b)
 -- >   | LeftRemainder [a]
 -- >   | RightRemainder [b]
-zipFold :: (a -> r -> r) -> (b -> r -> r) -> (a -> b -> r -> r) -> r -> [a] -> [b] -> r
+zipFold :: ([a] -> c) -> ([b] -> c) -> (a -> b -> c -> c) -> c -> [a] -> [b] -> c
 zipFold leftRemainder rightRemainder pair nil = f
   where
     f (x : xs) (y : ys) = pair x y (f xs ys)
     f [] [] = nil
-    f [] right = foldr rightRemainder nil right
-    f left [] = foldr leftRemainder nil left
+    f [] right = rightRemainder right
+    f left [] = leftRemainder left
+
+zipFoldSharing :: (a -> c -> c) -> (b -> c -> c) -> (a -> b -> c -> c) -> c -> [a] -> [b] -> c
+zipFoldSharing leftRemainder rightRemainder pair nil =
+  zipFold
+    (foldr leftRemainder nil)
+    (foldr rightRemainder nil)
+    pair
+    nil
