@@ -84,3 +84,20 @@ ifNotNull k a =
   if null a
     then Nothing
     else Just (k a)
+
+-- |
+-- Destructure two lists in the most generic way.
+--
+-- You can think of it as of destructuring the following data-structure:
+--
+-- > data ZipFolding a b
+-- >   = Pair a b (ZipFolding a b)
+-- >   | LeftRemainder [a]
+-- >   | RightRemainder [b]
+zipFold :: (a -> r -> r) -> (b -> r -> r) -> (a -> b -> r -> r) -> r -> [a] -> [b] -> r
+zipFold leftRemainder rightRemainder pair nil = f
+  where
+    f (x : xs) (y : ys) = pair x y (f xs ys)
+    f [] [] = nil
+    f [] right = foldr rightRemainder nil right
+    f left [] = foldr leftRemainder nil left
