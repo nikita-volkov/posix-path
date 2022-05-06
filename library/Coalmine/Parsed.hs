@@ -9,6 +9,10 @@ module Coalmine.Parsed
     runScopingText,
     runScoping,
     scope,
+    associate,
+    associateEither,
+    scopeAndAssociateEither,
+    scopeAndAssociateEitherK,
   )
 where
 
@@ -73,3 +77,21 @@ runScoping (Scoping m) =
 scope :: Monad m => Parsed a -> Scoping e m a
 scope parsed =
   Scoping $ put (void parsed) $> extract parsed
+
+-- |
+-- Associate a value with the current context
+-- by putting it in an associated Parsed.
+associate :: Monad m => a -> Scoping e m (Parsed a)
+associate =
+  Scoping . gets . fmap . const
+
+associateEither :: Monad m => Either e r -> Scoping e m (Parsed r)
+associateEither = either throwError associate
+
+scopeAndAssociateEither :: Monad m => Parsed (Either e r) -> Scoping e m (Parsed r)
+scopeAndAssociateEither parsed =
+  scope parsed >>= associateEither
+
+scopeAndAssociateEitherK :: Monad m => Parsed a -> (a -> Either e b) -> Scoping e m (Parsed b)
+scopeAndAssociateEitherK parsed cont =
+  scopeAndAssociateEither $ fmap cont parsed
