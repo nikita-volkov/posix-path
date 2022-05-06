@@ -82,8 +82,7 @@ scope parsed =
 -- Associate a value with the current context
 -- by putting it in an associated Parsed.
 associate :: Monad m => a -> Scoping e m (Parsed a)
-associate =
-  Scoping . gets . fmap . const
+associate = Scoping . gets . fmap . const
 
 associateEither :: Monad m => Either e r -> Scoping e m (Parsed r)
 associateEither = either throwError associate
