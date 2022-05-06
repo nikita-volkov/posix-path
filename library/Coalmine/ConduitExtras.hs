@@ -6,7 +6,7 @@ import qualified Control.Foldl as Foldl
 import qualified Data.Machine.Mealy as MachinesMealy
 import qualified Data.Machine.Moore as MachinesMoore
 
--- *
+-- * --
 
 foldSink :: Monad m => Foldl.Fold i r -> ConduitT i o m r
 foldSink (Foldl.Fold progress start finish) =
@@ -36,7 +36,7 @@ mealyPipe (MachinesMealy.Mealy run) =
       (o, next) -> yield o >> mealyPipe next
     Nothing -> pure ()
 
--- *
+-- * --
 
 discretize :: (Monad m) => Int -> (i -> Int) -> (Int -> i -> o) -> ConduitT i o m ()
 discretize distance toPosition toOutput =

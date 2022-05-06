@@ -9,7 +9,7 @@ import qualified Data.Text.Internal as TextInternal
 import qualified Data.Vector.Unboxed as UVec
 import GHC.Exts
 
--- *
+-- * --
 
 -- |
 -- A space-efficient representation of an array of byte-arrays.
@@ -22,7 +22,7 @@ data ByteArrayArray = ByteArrayArray
     ends :: !(UVec Int)
   }
 
--- *
+-- * --
 
 {-# INLINE toTextList #-}
 toTextList :: ByteArrayArray -> [Text]

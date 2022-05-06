@@ -1,10 +1,10 @@
 module Coalmine.Interpreter
-  ( -- *
+  ( -- * --
     parseAndInterpretDoc,
     parseAndInterpretDocFile,
     interpretDoc,
 
-    -- *
+    -- * --
     Update,
     focusOn,
     fail,
@@ -21,7 +21,7 @@ import Coalmine.StringIsomorphism
 import Coalmine.TextIsomorphism
 import qualified Data.Text.IO as TextIO
 
--- *
+-- * --
 
 parseAndInterpretDocFile ::
   -- | Parse text to AST.
@@ -63,7 +63,7 @@ interpretDoc (Update update) state input =
     Left err -> Left $ Located.renderInMegaparsecStyle err input
     Right ((), (_, _, state)) -> Right state
 
--- *
+-- * --
 
 newtype Update state res
   = Update
@@ -76,7 +76,7 @@ instance MonadState state (Update state) where
   state f = Update $ \(a, b, state) -> Right $ case f state of
     (res, state) -> (res, (a, b, state))
 
--- *
+-- * --
 
 -- |
 -- Focus on the provided value associated with location.

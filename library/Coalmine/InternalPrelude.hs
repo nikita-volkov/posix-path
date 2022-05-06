@@ -2,17 +2,17 @@ module Coalmine.InternalPrelude
   ( module Prelude,
     module Exports,
 
-    -- *
+    -- * --
     showAsText,
     showAsTextBuilder,
 
-    -- *
+    -- * --
     traceMap,
 
-    -- *
+    -- * --
     E8,
 
-    -- *
+    -- * --
     BVec,
     UVec,
   )

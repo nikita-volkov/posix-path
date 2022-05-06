@@ -3,7 +3,7 @@ module Coalmine.Prelude
     renderAsYamlText,
     parseTextLeniently,
 
-    -- *
+    -- * --
     MultilineTextBuilder,
   )
 where

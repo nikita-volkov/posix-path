@@ -11,7 +11,7 @@ import Text.Megaparsec
 toTextRefiner :: Parsec Void Text a -> Text -> Either Text a
 toTextRefiner p = left (fromString . errorBundlePretty) . runParser (p <* eof) ""
 
--- *
+-- * --
 
 liftEither :: Stream s => Either Text a -> Parsec e s a
 liftEither = \case
@@ -85,7 +85,7 @@ locate' p = do
   input <- getInput
   return $ Parsed.Parsed input location
 
--- *
+-- * --
 
 -- |
 -- A grouping of the head-tail pattern.

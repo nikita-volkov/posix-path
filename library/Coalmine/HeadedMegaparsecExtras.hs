@@ -128,7 +128,7 @@ sepEnd1 sepP endP elP = do
 notFollowedBy :: (Ord err, Stream strm) => HeadedParsec err strm a -> HeadedParsec err strm ()
 notFollowedBy a = parse (Megaparsec.notFollowedBy (toParsec a))
 
--- *
+-- * --
 
 liftEither :: (Stream s, Ord e) => Either Text a -> HeadedParsec e s a
 liftEither = \case
@@ -185,7 +185,7 @@ sepEndUpdate state sepP endP elemP =
          in go state
     ]
 
--- *
+-- * --
 
 locate :: (Stream s, Ord e) => HeadedParsec e s res -> HeadedParsec e s (Located.Located res)
 locate =

@@ -27,7 +27,7 @@ printLnCompactToStdOut :: CompactPrinting a => a -> IO ()
 printLnCompactToStdOut =
   TextIO.putStrLn . printCompactAsText
 
--- **
+-- ** --
 
 -- |
 -- Textual rendering intended for logs and etc.
@@ -67,7 +67,7 @@ printLnPrettyToStdOut :: PrettyPrinting a => a -> IO ()
 printLnPrettyToStdOut =
   TextIO.putStrLn . printPrettyAsText
 
--- **
+-- ** --
 
 class PrettyPrinting a where
   toPrettyBuilder :: a -> Mb.Builder

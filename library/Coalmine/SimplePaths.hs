@@ -18,7 +18,7 @@ import Coalmine.TextIsomorphism
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified TextBuilderDev as TextBuilder
 
--- *
+-- * --
 
 -- |
 -- >>> "a/b" :: DirPath
@@ -80,7 +80,7 @@ instance FromNameInUpperCamelCase DirPath where
   fromNameInUpperCamelCase _name =
     DirPath False [fromNameInUpperCamelCase _name]
 
--- *
+-- * --
 
 -- |
 -- >>> inDir "a/b" ("c/d/e" :: FilePath)
@@ -139,7 +139,7 @@ instance FromNameInUpperCamelCase FilePath where
   fromNameInUpperCamelCase _name =
     FilePath mempty (fromNameInUpperCamelCase _name) []
 
--- *
+-- * --
 
 class InDir path where
   inDir :: DirPath -> path -> path
@@ -150,7 +150,7 @@ instance InDir FilePath where
 instance InDir DirPath where
   inDir = (<>)
 
--- *
+-- * --
 
 mapFileDir :: (DirPath -> DirPath) -> FilePath -> FilePath
 mapFileDir fn (FilePath dir name extensions) =

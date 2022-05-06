@@ -4,7 +4,7 @@ import Coalmine.InternalPrelude
 import Data.Isomorphism
 import qualified Data.Map.Strict as Map
 
--- *
+-- * --
 
 type EndoPartialIso a = PartialIso a a
 
@@ -26,7 +26,7 @@ instance Category PartialIso where
   id = PartialIso pure pure
   (.) = o
 
--- **
+-- ** --
 
 totalPartialIso :: (a -> b) -> (b -> a) -> PartialIso a b
 totalPartialIso forw back =

@@ -23,7 +23,7 @@ scanVector mealy inputVec =
       inputVec
     GVec.unsafeFreeze mVec
 
--- *
+-- * --
 
 scan :: (acc -> inp -> acc) -> acc -> Mealy inp acc
 scan step =

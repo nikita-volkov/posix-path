@@ -1,11 +1,11 @@
 module Coalmine.MultilineTextBuilder
-  ( -- *
+  ( -- * --
     IsomorphicToMultilineTextBuilder (..),
 
-    -- *
+    -- * --
     Builder,
 
-    -- *
+    -- * --
     null,
     indent,
     intercalate,
@@ -24,7 +24,7 @@ import qualified Data.Text.Lazy as TextLazy
 import qualified Data.Text.Lazy.Builder as TextLazyBuilder
 import qualified TextBuilderDev as Tb
 
--- *
+-- * --
 
 class IsomorphicToMultilineTextBuilder a where
   toMultilineTextBuilder :: a -> Builder
@@ -54,7 +54,7 @@ instance IsomorphicToMultilineTextBuilder TextLazyBuilder.Builder where
   toMultilineTextBuilder = fromText . TextLazy.toStrict . TextLazyBuilder.toLazyText
   fromMultilineTextBuilder = TextLazyBuilder.fromText . toText
 
--- *
+-- * --
 
 data Builder
   = Builder Bool (Int -> Tb.TextBuilder)

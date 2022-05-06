@@ -1,5 +1,5 @@
 module Coalmine.AttoparsecExtras.Text
-  ( -- *
+  ( -- * --
     variableLengthUnsignedDecimal,
     unboundedFixedLengthUnsignedDecimal,
     boundedFixedLengthUnsignedDecimal,
@@ -10,7 +10,7 @@ import qualified Coalmine.BaseExtras.Integer as IntegerExtras
 import Coalmine.InternalPrelude
 import Data.Attoparsec.Text
 
--- *
+-- * --
 
 variableLengthUnsignedDecimal :: (Integral a, Show a) => a -> a -> Parser a
 variableLengthUnsignedDecimal min max =
@@ -130,13 +130,13 @@ boundedFixedLengthUnsignedDecimal length min max =
             ]
       else return a
 
--- *
+-- * --
 
 validated :: Validator a -> Parser a -> Parser a
 validated (Validator validator) parser =
   parser >>= \a -> maybe (return a) fail (validator a)
 
--- *
+-- * --
 
 newtype Validator a = Validator (a -> Maybe String)
 

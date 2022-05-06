@@ -1,5 +1,5 @@
 module Coalmine.TextAppender
-  ( -- *
+  ( -- * --
     TextAppender,
     init,
     append,
@@ -9,7 +9,7 @@ where
 
 import Coalmine.InternalPrelude hiding (init)
 
--- *
+-- * --
 
 -- TODO: reimplement it as
 -- data TextAppender

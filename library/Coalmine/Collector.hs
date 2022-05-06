@@ -3,7 +3,7 @@ module Coalmine.Collector where
 import Coalmine.InternalPrelude hiding (init)
 import Control.Foldl (Fold (..))
 
--- *
+-- * --
 
 -- |
 -- A data-structure that knows how to consume an input
@@ -21,19 +21,19 @@ class Collector c where
   feed :: Input c -> c -> c
   burn :: c -> Output c
 
--- *
+-- * --
 
 collect :: (Collector c, Foldable f) => c -> f (Input c) -> Output c
 collect collector =
   burn . foldl' (flip feed) collector
 
--- *
+-- * --
 
 feedMany :: (Collector c, Foldable f) => f (Input c) -> c -> c
 feedMany foldable collector =
   foldl' (flip feed) collector foldable
 
--- *
+-- * --
 
 toFold :: Collector c => c -> Fold (Input c) (Output c)
 toFold init =

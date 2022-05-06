@@ -11,7 +11,7 @@ import qualified Text.Megaparsec as M
 import qualified Text.Megaparsec.Char as M
 import qualified Text.Megaparsec.Char.Lexer as M
 
--- *
+-- * --
 
 data BlockState
   = BlockState
@@ -24,7 +24,7 @@ data BlockState
       !Text
       -- ^ Specific chars used for indentation.
 
--- *
+-- * --
 
 parseBlock :: Block a -> Text -> Either Text a
 parseBlock =
@@ -36,7 +36,7 @@ newtype Block a
     (Functor, Applicative, Alternative, Monad, MonadPlus)
     via (StateT BlockState A.Parser)
 
--- *
+-- * --
 
 -- |
 -- Detects the extra indentation on the current line
@@ -86,7 +86,7 @@ line (Line runLine) =
     eolP =
       void (A.char '\n') <|> (A.char '\r' *> (void (A.char '\n') <|> pure ()))
 
--- *
+-- * --
 
 -- |
 -- Parser in the context of a single line with indentation of the scope applied.
@@ -108,7 +108,7 @@ newtype Line a
     (Functor, Applicative, Monad)
     via (ReaderT Int (StateT Int A.Parser))
 
--- *
+-- * --
 
 -- |
 -- Run an attoparsec parser on the remaining content of this line.
@@ -296,7 +296,7 @@ vecSepBy1 sep elem =
     extract (n, list) =
       Vec.fromReverseListN n list
 
--- *
+-- * --
 
 -- |
 -- Location pointing to a chunk of data

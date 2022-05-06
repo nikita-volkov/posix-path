@@ -1,10 +1,10 @@
 module Coalmine.Parsed
-  ( -- *
+  ( -- * --
     Parsed (..),
     analyse,
     renderInMegaparsecStyle,
 
-    -- *
+    -- * --
     Scoping,
     runScopingText,
     runScoping,
@@ -15,7 +15,7 @@ where
 import Coalmine.InternalPrelude
 import qualified Coalmine.Located as Located
 
--- *
+-- * --
 
 -- |
 -- Value associated with a snippet of source code.
@@ -52,7 +52,7 @@ renderInMegaparsecStyle :: Parsed Text -> Text
 renderInMegaparsecStyle (Parsed input located) =
   Located.renderInMegaparsecStyle located input
 
--- *
+-- * --
 
 newtype Scoping e m a
   = Scoping (ExceptT e (StateT (Parsed ()) m) a)

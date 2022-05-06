@@ -11,7 +11,7 @@ import qualified Data.Text as Text
 import Language.Haskell.TH.Syntax
 import qualified THLego.Helpers as Helpers
 
--- *
+-- * --
 
 linesExp :: BVec D.Line -> Exp
 linesExp =
@@ -25,7 +25,7 @@ linesExp =
         <> lineExps line
         <> next False
 
--- *
+-- * --
 
 lineExps = \case
   D.BlankLine ->
@@ -54,7 +54,7 @@ lineExps = \case
         where
           text = toText lit
 
--- *
+-- * --
 
 litBuilder :: Text -> Exp
 litBuilder text =

@@ -2,7 +2,7 @@ module Coalmine.PartialEndo where
 
 import Coalmine.InternalPrelude
 
--- *
+-- * --
 
 newtype PartialEndo a
   = PartialEndo (a -> Either (PartialEndoErr a) a)
@@ -17,6 +17,6 @@ instance Monoid (PartialEndo a) where
   mempty =
     PartialEndo Right
 
--- **
+-- ** --
 
 data family PartialEndoErr a

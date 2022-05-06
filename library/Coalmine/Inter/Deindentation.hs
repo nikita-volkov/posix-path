@@ -1,10 +1,10 @@
 module Coalmine.Inter.Deindentation
-  ( -- *
+  ( -- * --
     Line (..),
     M.ContentSegment (..),
     M.Name (..),
 
-    -- *
+    -- * --
     quasiQuote,
   )
 where
@@ -21,7 +21,7 @@ spaceIndentation = \case
   M.SpaceSpace -> 1
   M.TabSpace -> 2
 
--- *
+-- * --
 
 line :: M.Line -> Line
 line fmt =
@@ -29,7 +29,7 @@ line fmt =
     then BlankLine
     else ContentLine (spacesIndentation (#indentation fmt)) (#content fmt)
 
--- *
+-- * --
 
 minimalIndent :: BVec Line -> Int
 minimalIndent =
@@ -46,7 +46,7 @@ reduceIndent minimalIndent =
     BlankLine -> BlankLine
     ContentLine indent content -> ContentLine (indent - minimalIndent) content
 
--- *
+-- * --
 
 content :: BVec M.Line -> BVec Line
 content fmt =
@@ -59,7 +59,7 @@ quasiQuote = \case
   M.MultilineQuasiQuote lines -> content lines
   M.UnilineQuasiQuote parsedLine -> pure $ line parsedLine
 
--- *
+-- * --
 
 data Line
   = BlankLine

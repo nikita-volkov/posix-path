@@ -4,7 +4,7 @@ import Coalmine.InternalPrelude
 import qualified Coalmine.TimeExtras.Conversions as TimeConversions
 import Data.Ratio ((%))
 
--- *
+-- * --
 
 newtype Interval = Interval Integer
   deriving (Num, Real, Ord, Eq)
@@ -42,7 +42,7 @@ nanoseconds = Interval . (*) 1000
 picoseconds :: Integer -> Interval
 picoseconds = Interval
 
--- *
+-- * --
 
 toMilliseconds :: Interval -> Integer
 toMilliseconds = flip div 1000000000 . coerce

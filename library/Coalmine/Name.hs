@@ -56,7 +56,7 @@ instance CompactPrinting Name where
 instance PrettyPrinting Name where
   toPrettyBuilder = fromTextBuilder . toCompactBuilder
 
--- *
+-- * --
 
 attoparsec :: Attoparsec.Parser Name
 attoparsec = Attoparsec.nameWords <&> Name
@@ -67,7 +67,7 @@ megaparsec = Megaparsec.nameWords <&> Name
 stringAesonValueParser :: AesonValueParser.String Name
 stringAesonValueParser = AesonValueParser.megaparsedText megaparsec
 
--- *
+-- * --
 
 toLowerCamelCaseText :: Name -> Text
 toLowerCamelCaseText (Name vec) = case toList vec of
@@ -83,7 +83,7 @@ toSpinalCaseText (Name vec) = Text.intercalate "-" (toList vec)
 toSnakeCaseText :: Name -> Text
 toSnakeCaseText (Name vec) = Text.intercalate "_" (toList vec)
 
--- *
+-- * --
 
 toLowerCamelCaseTextBuilder :: Name -> TextBuilder
 toLowerCamelCaseTextBuilder (Name vec) = case toList vec of
@@ -99,18 +99,18 @@ toSpinalCaseTextBuilder (Name vec) = TextBuilder.intercalate "-" (fmap TextBuild
 toSnakeCaseTextBuilder :: Name -> TextBuilder
 toSnakeCaseTextBuilder (Name vec) = TextBuilder.intercalate "_" (fmap TextBuilder.text vec)
 
--- *
+-- * --
 
 fromTextListUnchecked :: [Text] -> Name
 fromTextListUnchecked =
   Name . fromList
 
--- *
+-- * --
 
 refineText :: Text -> Either Text Name
 refineText = Megaparsec.refineText megaparsec
 
--- *
+-- * --
 
 class FromNameInSpinalCase a where
   fromNameInSpinalCase :: Name -> a
@@ -125,7 +125,7 @@ instance FromNameInSpinalCase MultilineTextBuilder.Builder where
   fromNameInSpinalCase =
     MultilineTextBuilder.toMultilineTextBuilder @TextBuilder . fromNameInSpinalCase
 
--- *
+-- * --
 
 class FromNameInUpperCamelCase a where
   fromNameInUpperCamelCase :: Name -> a

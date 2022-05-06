@@ -1,5 +1,5 @@
 module Coalmine.Located
-  ( -- *
+  ( -- * --
     Located (..),
     analyse,
     renderInMegaparsecStyle,
@@ -9,7 +9,7 @@ where
 import Coalmine.InternalPrelude
 import qualified Coalmine.Located.Rendering as Rendering
 
--- *
+-- * --
 
 data Located a
   = Located

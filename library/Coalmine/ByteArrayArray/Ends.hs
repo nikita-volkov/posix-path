@@ -6,7 +6,7 @@ import qualified Data.Vector.Unboxed as UVec
 import qualified Data.Vector.Unboxed.Mutable as MUVec
 import GHC.Exts
 
--- *
+-- * --
 
 newtype Ends = Ends (UVec Int)
 

@@ -1,5 +1,5 @@
 module Coalmine.EvenSimplerPaths
-  ( -- *
+  ( -- * --
     Path,
   )
 where
@@ -13,7 +13,7 @@ import qualified Data.Attoparsec.Text as Attoparsec
 import qualified System.Directory as Directory
 import qualified TextBuilderDev as TextBuilderDev
 
--- *
+-- * --
 
 data Path
   = Path
@@ -31,7 +31,7 @@ data Name
       ![Text]
       -- ^ Extensions in reverse order.
 
--- *
+-- * --
 
 instance Semigroup Path where
   Path _lAbs _lNames <> Path _rAbs _rNames =
