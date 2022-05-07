@@ -8,8 +8,6 @@ import qualified Data.Text as Text
 import qualified Data.Text.Lazy as TextLazy
 import qualified Data.Text.Lazy.Builder as TextLazyBuilder
 
--- * --
-
 -- |
 -- Bidirectional conversion between two types with no loss of information.
 --
