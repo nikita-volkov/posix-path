@@ -19,6 +19,7 @@ import Coalmine.HCurrying as Exports
 import Coalmine.HashableExtras as Exports
 import Coalmine.InternalPrelude as Exports hiding (FilePath)
 import Coalmine.Interval as Exports (Interval)
+import Coalmine.IsomorphismClass as Exports
 import Coalmine.MtlExtras as Exports
 import Coalmine.MultilineTextBuilder as Exports (IsomorphicToMultilineTextBuilder (..))
 import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
