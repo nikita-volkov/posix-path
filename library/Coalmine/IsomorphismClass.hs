@@ -1,3 +1,32 @@
+-- |
+-- The ultimate solution to the Conversion Problem.
+--
+-- By Conversion Problem we mean occasionally having to go thru a repetitive
+-- chain of brainless actions to be able to go from one representation of some
+-- information into its other form in such a way that no information gets lost?
+-- How often do you do that in your code? It's likely hourly.
+--
+-- How often do you use the `toList` function? How about importing `Data.Text`
+-- only to be able to call 'Data.Text.unpack'? How about going thru the always
+-- fun sequence of importing `Data.Text.Lazy.Builder` to be able to call its
+-- `toLazyText` and then importing `Data.Text.Lazy` only to call its
+-- `toStrict`?
+--
+-- Those all are instances of one pattern. They are conversions of
+-- representations of data, which lose no information. The loss of no
+-- information can be proven by being able to restore data identical to the
+-- original from its transformed representation.
+--
+-- Turns out there can only be one way of defining such an instance. So when it
+-- doesn't make it evident what happens during conversions, like from `String`
+-- to `Text` and back, it at least makes it very easy to remember what each
+-- instance is doing.
+--
+-- Why another conversion library? No conversion library has become standard for
+-- a reason. I think it's because they are lawless. Which means that there are
+-- millions of ways of defining a lawless conversion. No help for library
+-- authors to ensure whether they define something that makes sense. And no
+-- insight for the users about what the conversions do.
 module Coalmine.IsomorphismClass where
 
 import Coalmine.InternalPrelude
@@ -15,9 +44,13 @@ import qualified Data.Vector.Unboxed as VectorUnboxed
 --
 -- You can read the signature @IsomorphicTo a b@ as \"B is isomorphic to A\".
 --
--- This class is lawful. The law is:
+-- This class is lawful. The laws are:
 --
--- @'from' . 'to' = 'id'@
+-- - @'from' . 'to' = 'id'@ - Converting to a type and back from it should
+-- produce a value that is identical to the original.
+--
+-- - @'to' . 'from' = 'id'@ - Converting from a type and back to it should too
+-- produce a value that is identical to the orignal.
 --
 -- This class is particularly easy to use in combination with the @TypeApplications@ extension
 -- making it clear to the reader what sort of conversion he sees. E.g.,
@@ -33,6 +66,10 @@ import qualified Data.Vector.Unboxed as VectorUnboxed
 --
 -- > > :t to @Text
 -- > to @Text :: IsomorphicTo Text b => b -> Text
+--
+-- One problem with this class is that there is a lot of instances of it.
+-- So much is it common. So it's a lot of instances to define for
+-- the library authors.
 class IsomorphicTo a b where
   to :: b -> a
   from :: a -> b
