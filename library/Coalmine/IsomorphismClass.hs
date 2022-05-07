@@ -33,7 +33,11 @@
 -- >renderNameAndSurname :: Text -> Text -> Text
 -- >renderNameAndSurname name surname =
 -- >  from @Builder $ to name <> " " <> to surname
-module Coalmine.IsomorphismClass where
+module Coalmine.IsomorphismClass
+  ( -- * Typeclass
+    IsomorphicTo (..),
+  )
+where
 
 import Coalmine.InternalPrelude
 import Coalmine.TextIsomorphism
@@ -116,6 +120,10 @@ instance IsomorphicTo Text TextLazyBuilder.Builder where
   to = toText
   from = fromText
 
+instance IsomorphicTo Text (UVec Char) where
+  to = from @[Char] . to
+  from = from @[Char] . to
+
 instance IsomorphicTo TextBuilder TextBuilder where
   to = id
   from = id
@@ -180,6 +188,10 @@ instance Unbox a => IsomorphicTo (BVec a) (UVec a) where
   to = VectorGeneric.unstreamR . VectorGeneric.streamR
   from = VectorGeneric.unstreamR . VectorGeneric.streamR
 
+instance IsomorphicTo (BVec a) (Deque a) where
+  to = from @[a] . to
+  from = from @[a] . to
+
 instance (IsomorphicTo a b, Unbox a, Unbox b) => IsomorphicTo (UVec a) (UVec b) where
   to = VectorUnboxed.map to
   from = VectorUnboxed.map from
@@ -192,6 +204,14 @@ instance Unbox a => IsomorphicTo (UVec a) (BVec a) where
   to = from @(BVec a)
   from = to @(BVec a)
 
+instance Unbox a => IsomorphicTo (UVec a) (Deque a) where
+  to = from @[a] . to
+  from = from @[a] . to
+
+instance IsomorphicTo (UVec Char) Text where
+  to = from @[Char] . to
+  from = from @[Char] . to
+
 instance IsomorphicTo a b => IsomorphicTo (Deque a) (Deque b) where
   to = fmap to
   from = fmap from
@@ -199,3 +219,30 @@ instance IsomorphicTo a b => IsomorphicTo (Deque a) (Deque b) where
 instance IsomorphicTo (Deque a) [a] where
   to = from @[a]
   from = to @[a]
+
+instance IsomorphicTo (Deque a) (BVec a) where
+  to = from @[a] . to
+  from = from @[a] . to
+
+instance Unbox a => IsomorphicTo (Deque a) (UVec a) where
+  to = from @[a] . to
+  from = from @[a] . to
+
+-- |
+-- Ideally there should be a direct instance and this function
+-- should merely serve as a helper for defining instances
+-- by merely composing from other instances.
+--
+-- E.g.,
+--
+-- > thru @String Proxy
+--
+-- captures the following pattern:
+--
+-- > from @String . to
+--
+-- However it is advised to use the conversion functions directly,
+-- since it makes the intent clearer and is actually shorter.
+{-# INLINE thru #-}
+thru :: (IsomorphicTo a b, IsomorphicTo a c) => Proxy a -> b -> c
+thru proxy = from . flip asProxyTypeOf proxy . to
