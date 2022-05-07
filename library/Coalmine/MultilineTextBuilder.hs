@@ -119,24 +119,24 @@ instance IsomorphicTo Builder TextLazyBuilder.Builder where
   from = TextLazyBuilder.fromText . toText
 
 instance IsomorphicTo String Builder where
-  to = from @Builder
-  from = to @Builder
+  to = from
+  from = to
 
 instance IsomorphicTo Text Builder where
-  to = from @Builder
-  from = to @Builder
+  to = from
+  from = to
 
 instance IsomorphicTo TextBuilder Builder where
-  to = from @Builder
-  from = to @Builder
+  to = from
+  from = to
 
 instance IsomorphicTo TextLazy.Text Builder where
-  to = from @Builder
-  from = to @Builder
+  to = from
+  from = to
 
 instance IsomorphicTo TextLazyBuilder.Builder Builder where
-  to = from @Builder
-  from = to @Builder
+  to = from
+  from = to
 
 -- * Execution
 
