@@ -115,6 +115,7 @@ library
     Coalmine.TransformersExtras.Cont
     Coalmine.TransformersExtras.Reader
     Coalmine.TransformersExtras.State
+    Coalmine.UnorderedContainersExtras.HashMap
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml

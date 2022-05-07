@@ -6,71 +6,71 @@
 packages:
 - completed:
     name: fx
-    version: '0.5'
-    git: https://github.com/nikita-volkov/fx
     pantry-tree:
-      size: 481
       sha256: c7e3247e7aaefa9a0d400868ecccabb3b381f5d15dd349a4124e6aff7344c1d8
+      size: 481
     commit: f3947e32f8cc3c764ab8ee48581f2e1f35d3bcdb
-  original:
     git: https://github.com/nikita-volkov/fx
+    version: '0.5'
+  original:
     commit: f3947e32f8cc3c764ab8ee48581f2e1f35d3bcdb
+    git: https://github.com/nikita-volkov/fx
 - completed:
     name: moore-machines
-    version: '0.1'
-    git: https://github.com/nikita-volkov/moore-machines
     pantry-tree:
-      size: 887
       sha256: 3d1505067d5c8599e9843ed45ec2bc587fa5100c448f558ca5db2c97fb55706f
+      size: 887
     commit: 7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290
-  original:
     git: https://github.com/nikita-volkov/moore-machines
+    version: '0.1'
+  original:
     commit: 7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290
+    git: https://github.com/nikita-volkov/moore-machines
 - completed:
-    hackage: aeson-value-parser-0.19.6@sha256:ccd8424b17fd5608c3f1f7e51c7d4b77ff64cd409b51387759d27fc0e6e419bc,2054
     pantry-tree:
-      size: 454
       sha256: a2fa5c7577470e6472dcc9f9c3826486bfabce337149555a5297c11807bfe993
+      size: 454
+    hackage: aeson-value-parser-0.19.6@sha256:ccd8424b17fd5608c3f1f7e51c7d4b77ff64cd409b51387759d27fc0e6e419bc,2054
   original:
     hackage: aeson-value-parser-0.19.6
 - completed:
-    hackage: cereal-unordered-containers-0.1@sha256:e47c65f76633248fccdea1f38de952473edf7a28cf05af38e64b681a47305c92,1544
     pantry-tree:
-      size: 604
       sha256: 1240e61d89fa70c65636995919674b5bc55bc33a719e555fa4ec8950a91eb6e5
+      size: 604
+    hackage: cereal-unordered-containers-0.1@sha256:e47c65f76633248fccdea1f38de952473edf7a28cf05af38e64b681a47305c92,1544
   original:
     hackage: cereal-unordered-containers-0.1
 - completed:
-    hackage: domain-aeson-0.1@sha256:8337de97b765b535cf8c252ca051c7f1573ad03b21774a09dcb6673ad7269ad1,1897
     pantry-tree:
-      size: 446
       sha256: b95775b15664193c3301f10233f26ff43f60327f700c15e439cbed7f615c401c
+      size: 446
+    hackage: domain-aeson-0.1@sha256:8337de97b765b535cf8c252ca051c7f1573ad03b21774a09dcb6673ad7269ad1,1897
   original:
     hackage: domain-aeson-0.1
 - completed:
-    hackage: domain-cereal-0.1@sha256:db6fe7980ee3f9834a9e2c7cbe577354406286fecfb18477aac712cc008a83ce,1879
     pantry-tree:
-      size: 366
       sha256: babc92fb6290d5d7b59cf6a07c8abb51a1a176824371f5cbf2a916259a337915
+      size: 366
+    hackage: domain-cereal-0.1@sha256:db6fe7980ee3f9834a9e2c7cbe577354406286fecfb18477aac712cc008a83ce,1879
   original:
     hackage: domain-cereal-0.1
 - completed:
-    hackage: leb128-cereal-1.2@sha256:ba8770629aa1fa8524cbbea3b4065b21def815a766ab6c74174aa57f8c124ead,1883
     pantry-tree:
-      size: 402
       sha256: af6a4af7b400a4891918a0d3b60d16cbf90a4d5d0a101223f920d684d435754c
+      size: 402
+    hackage: leb128-cereal-1.2@sha256:ba8770629aa1fa8524cbbea3b4065b21def815a766ab6c74174aa57f8c124ead,1883
   original:
     hackage: leb128-cereal-1.2
 - completed:
-    hackage: vector-extras-0.2.6@sha256:695f171936613b45b37de497ab26cba772616e43b09d9c39f0008d168c1f7064,1883
     pantry-tree:
-      size: 738
       sha256: 5a6485bf613ec35a3e13674563ddd00920dfb1040ad16af625793bdf665324a3
+      size: 738
+    hackage: vector-extras-0.2.6@sha256:695f171936613b45b37de497ab26cba772616e43b09d9c39f0008d168c1f7064,1883
   original:
     hackage: vector-extras-0.2.6
 snapshots:
 - completed:
-    size: 554661
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/4/28.yaml
-    sha256: eb778a9c971802e22068265fb7b14d357c3eb7d76229402b9444a3db1a2bc153
-  original: nightly-2022-04-28
+    sha256: 42b5030fc96fe064d61c662330df4d0369c0ab48648ca2a51705cf26b32550a0
+    size: 572782
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/5/5.yaml
+  original: nightly-2022-05-05

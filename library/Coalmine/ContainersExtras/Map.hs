@@ -1,6 +1,6 @@
 module Coalmine.ContainersExtras.Map where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (empty, insert)
 import Data.Map.Strict
 
 insertLookup :: Ord k => (v -> v -> v) -> k -> v -> Map k v -> (Maybe v, Map k v)
@@ -31,3 +31,22 @@ insertOrUpdate updater key defaultVal =
     alterer = \case
       Just oldVal -> Just (updater oldVal)
       Nothing -> Just defaultVal
+
+{-# INLINE traverse_ #-}
+traverse_ :: Applicative m => (k -> v -> m ()) -> Map k v -> m ()
+traverse_ m =
+  foldrWithKey step init
+  where
+    init = pure ()
+    step k v acc = m k v *> acc
+
+{-# INLINE replicateM #-}
+replicateM :: (Monad m, Ord k) => Int -> m (k, v) -> m (Map k v)
+replicateM amount m =
+  let iterate index !state =
+        if index < amount
+          then do
+            (k, v) <- m
+            iterate (succ index) (insert k v state)
+          else return state
+   in iterate 0 empty
