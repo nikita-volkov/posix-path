@@ -11,8 +11,7 @@ import qualified Data.Text.Lazy.Builder as TextLazyBuilder
 -- |
 -- Bidirectional conversion between two types with no loss of information.
 --
--- Unlike conversion classes from other libs this class is lawful.
--- The law is:
+-- This class is lawful. The law is:
 --
 -- @'from' . 'to' = 'id'@
 --
