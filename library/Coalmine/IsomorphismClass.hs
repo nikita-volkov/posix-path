@@ -108,3 +108,7 @@ instance IsomorphicTo TextLazyBuilder.Builder String where
 instance IsomorphicTo TextLazyBuilder.Builder Text where
   to = fromText
   from = toText
+
+instance IsomorphicTo a b => IsomorphicTo [a] [b] where
+  to = fmap to
+  from = fmap from
