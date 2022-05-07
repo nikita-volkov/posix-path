@@ -7,9 +7,13 @@ import Data.Ratio ((%))
 import qualified Data.Text as Text
 import qualified Data.Text.Lazy as TextLazy
 import qualified Data.Text.Lazy.Builder as TextLazyBuilder
+import qualified Data.Vector.Generic as VectorGeneric
+import qualified Data.Vector.Unboxed as VectorUnboxed
 
 -- |
 -- Bidirectional conversion between two types with no loss of information.
+--
+-- You can read the signature @IsomorphicTo a b@ as \"B is isomorphic to A\".
 --
 -- This class is lawful. The law is:
 --
@@ -112,3 +116,35 @@ instance IsomorphicTo TextLazyBuilder.Builder Text where
 instance IsomorphicTo a b => IsomorphicTo [a] [b] where
   to = fmap to
   from = fmap from
+
+instance IsomorphicTo [a] (BVec a) where
+  to = toList
+  from = fromList
+
+instance Unbox a => IsomorphicTo [a] (UVec a) where
+  to = toList
+  from = fromList
+
+instance IsomorphicTo a b => IsomorphicTo (BVec a) (BVec b) where
+  to = fmap to
+  from = fmap from
+
+instance IsomorphicTo (BVec a) [a] where
+  to = from @[a]
+  from = to @[a]
+
+instance Unbox a => IsomorphicTo (BVec a) (UVec a) where
+  to = VectorGeneric.unstreamR . VectorGeneric.streamR
+  from = VectorGeneric.unstreamR . VectorGeneric.streamR
+
+instance (IsomorphicTo a b, Unbox a, Unbox b) => IsomorphicTo (UVec a) (UVec b) where
+  to = VectorUnboxed.map to
+  from = VectorUnboxed.map from
+
+instance Unbox a => IsomorphicTo (UVec a) [a] where
+  to = from @[a]
+  from = to @[a]
+
+instance Unbox a => IsomorphicTo (UVec a) (BVec a) where
+  to = from @(BVec a)
+  from = to @(BVec a)
