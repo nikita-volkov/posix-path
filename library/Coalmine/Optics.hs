@@ -1,7 +1,7 @@
 module Coalmine.Optics where
 
-import qualified Coalmine.HashSet as HashSet
 import Coalmine.InternalPrelude
+import qualified Coalmine.UnorderedContainersExtras.HashSet as HashSet
 import qualified Data.HashMap.Strict as HashMap
 import qualified Data.Map.Strict as Map
 import Data.Set.Optics

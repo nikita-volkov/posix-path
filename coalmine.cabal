@@ -74,7 +74,6 @@ library
     Coalmine.Fx
     Coalmine.Fx.FilePath
     Coalmine.HashableExtras
-    Coalmine.HashSet
     Coalmine.HCurrying
     Coalmine.HeadedMegaparsecExtras
     Coalmine.HeadedMegaparsecExtras.Text
@@ -116,6 +115,7 @@ library
     Coalmine.TransformersExtras.Reader
     Coalmine.TransformersExtras.State
     Coalmine.UnorderedContainersExtras.HashMap
+    Coalmine.UnorderedContainersExtras.HashSet
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml

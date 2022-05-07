@@ -1,4 +1,4 @@
-module Coalmine.HashSet where
+module Coalmine.UnorderedContainersExtras.HashSet where
 
 import Coalmine.InternalPrelude as Prelude hiding (empty, insert)
 import Data.HashSet
