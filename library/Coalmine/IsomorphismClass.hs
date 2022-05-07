@@ -125,6 +125,10 @@ instance Unbox a => IsomorphicTo [a] (UVec a) where
   to = toList
   from = fromList
 
+instance IsomorphicTo [a] (Deque a) where
+  to = toList
+  from = fromList
+
 instance IsomorphicTo a b => IsomorphicTo (BVec a) (BVec b) where
   to = fmap to
   from = fmap from
@@ -148,3 +152,11 @@ instance Unbox a => IsomorphicTo (UVec a) [a] where
 instance Unbox a => IsomorphicTo (UVec a) (BVec a) where
   to = from @(BVec a)
   from = to @(BVec a)
+
+instance IsomorphicTo a b => IsomorphicTo (Deque a) (Deque b) where
+  to = fmap to
+  from = fmap from
+
+instance IsomorphicTo (Deque a) [a] where
+  to = from @[a]
+  from = to @[a]
