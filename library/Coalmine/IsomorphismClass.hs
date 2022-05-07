@@ -17,38 +17,38 @@ import qualified Data.Text.Lazy.Builder as TextLazyBuilder
 -- The law is:
 --
 -- @'from' . 'to' = 'id'@
-class IsomophicTo a b where
-  to :: a -> b
-  from :: b -> a
+class IsomorphicTo a b where
+  to :: b -> a
+  from :: a -> b
 
-instance IsomophicTo String Text where
-  to = toText
-  from = fromText
-
-instance IsomophicTo Text String where
+instance IsomorphicTo String Text where
   to = fromText
   from = toText
 
-instance IsomophicTo Text TextBuilder where
-  to = fromText
-  from = toText
-
-instance IsomophicTo Text TextLazy.Text where
-  to = fromText
-  from = toText
-
-instance IsomophicTo Text TextLazyBuilder.Builder where
-  to = fromText
-  from = toText
-
-instance IsomophicTo TextBuilder Text where
+instance IsomorphicTo Text String where
   to = toText
   from = fromText
 
-instance IsomophicTo TextLazy.Text Text where
+instance IsomorphicTo Text TextBuilder where
   to = toText
   from = fromText
 
-instance IsomophicTo TextLazyBuilder.Builder Text where
+instance IsomorphicTo Text TextLazy.Text where
   to = toText
   from = fromText
+
+instance IsomorphicTo Text TextLazyBuilder.Builder where
+  to = toText
+  from = fromText
+
+instance IsomorphicTo TextBuilder Text where
+  to = fromText
+  from = toText
+
+instance IsomorphicTo TextLazy.Text Text where
+  to = fromText
+  from = toText
+
+instance IsomorphicTo TextLazyBuilder.Builder Text where
+  to = fromText
+  from = toText
