@@ -118,6 +118,26 @@ instance IsomorphicTo Builder TextLazyBuilder.Builder where
   to = fromText . TextLazy.toStrict . TextLazyBuilder.toLazyText
   from = TextLazyBuilder.fromText . toText
 
+instance IsomorphicTo String Builder where
+  to = from @Builder
+  from = to @Builder
+
+instance IsomorphicTo Text Builder where
+  to = from @Builder
+  from = to @Builder
+
+instance IsomorphicTo TextBuilder Builder where
+  to = from @Builder
+  from = to @Builder
+
+instance IsomorphicTo TextLazy.Text Builder where
+  to = from @Builder
+  from = to @Builder
+
+instance IsomorphicTo TextLazyBuilder.Builder Builder where
+  to = from @Builder
+  from = to @Builder
+
 -- * Execution
 
 null :: Builder -> Bool
