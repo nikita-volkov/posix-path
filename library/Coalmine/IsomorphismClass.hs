@@ -4,11 +4,11 @@
 -- By Conversion Problem we mean occasionally having to go thru a repetitive
 -- chain of brainless actions to be able to go from one representation of some
 -- information into its other form in such a way that no information gets lost?
--- How often do you do that in your code? It's likely hourly.
+-- It's likely that you do that hourly.
 --
 -- How often do you use the `toList` function? How about importing `Data.Text`
--- only to be able to call 'Data.Text.unpack'? How about going thru the always
--- fun sequence of importing `Data.Text.Lazy.Builder` to be able to call its
+-- only to be able to call its 'unpack'? How about going thru the always
+-- fun sequence of importing `Data.Text.Lazy.Builder` only to be able to call its
 -- `toLazyText` and then importing `Data.Text.Lazy` only to call its
 -- `toStrict`?
 --
@@ -27,6 +27,12 @@
 -- millions of ways of defining a lawless conversion. No help for library
 -- authors to ensure whether they define something that makes sense. And no
 -- insight for the users about what the conversions do.
+--
+-- Here's an example of what this library lets you do:
+--
+-- >renderNameAndSurname :: Text -> Text -> Text
+-- >renderNameAndSurname name surname =
+-- >  from @Builder $ to name <> " " <> to surname
 module Coalmine.IsomorphismClass where
 
 import Coalmine.InternalPrelude
@@ -66,10 +72,6 @@ import qualified Data.Vector.Unboxed as VectorUnboxed
 --
 -- > > :t to @Text
 -- > to @Text :: IsomorphicTo Text b => b -> Text
---
--- One problem with this class is that there is a lot of instances of it.
--- So much is it common. So it's a lot of instances to define for
--- the library authors.
 class IsomorphicTo a b where
   to :: b -> a
   from :: a -> b
