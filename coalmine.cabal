@@ -88,9 +88,9 @@ library
     Coalmine.Located.Rendering
     Coalmine.MachinesExtras.Mealy
     Coalmine.MegaparsecExtras
+    Coalmine.MtlExtras
     Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder
-    Coalmine.MtlExtras
     Coalmine.Name
     Coalmine.Optics
     Coalmine.Parsed
