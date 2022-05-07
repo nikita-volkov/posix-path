@@ -10,6 +10,13 @@ import qualified Data.Text.Lazy.Builder as TextLazyBuilder
 
 -- * --
 
+-- |
+-- Bidirectional conversion between two types with no loss of information.
+--
+-- Unlike conversion classes from other libs this class is lawful.
+-- The law is:
+--
+-- @'from' . 'to' = 'id'@
 class IsomophicTo a b where
   to :: a -> b
   from :: b -> a
