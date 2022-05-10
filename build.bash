@@ -30,9 +30,20 @@ function build {
   --fast
 }
 
+function fork_haddock {
+  mkdir -p ".haddock.stack-work"
+
+  stack haddock \
+  --work-dir ".haddock.stack-work" \
+  --ghc-options "-j +RTS -A128m -n2m -RTS -fwarn-incomplete-patterns" \
+  --fast \
+  &> .haddock.stack-work/log &
+}
+
 function demo {
   stack exec demo
 }
 
 format
+fork_haddock
 build_and_test

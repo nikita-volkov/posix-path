@@ -27,6 +27,17 @@ packages:
     commit: 7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290
     git: https://github.com/nikita-volkov/moore-machines
 - completed:
+    name: isomorphism-class
+    pantry-tree:
+      sha256: 7b95578025f92e7a9a3ca27dc98bac98054caf74b48cf81750f8cd246ead5743
+      size: 414
+    commit: 2fba4a58757b3cf71c78be56adc0678dae9aa289
+    git: https://github.com/nikita-volkov/isomorphism-class
+    version: '0.1'
+  original:
+    commit: 2fba4a58757b3cf71c78be56adc0678dae9aa289
+    git: https://github.com/nikita-volkov/isomorphism-class
+- completed:
     pantry-tree:
       sha256: a2fa5c7577470e6472dcc9f9c3826486bfabce337149555a5297c11807bfe993
       size: 454

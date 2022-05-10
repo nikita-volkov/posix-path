@@ -3,10 +3,6 @@ module Coalmine.InternalPrelude
     module Exports,
 
     -- * --
-    showAsText,
-    showAsTextBuilder,
-
-    -- * --
     traceMap,
 
     -- * --
@@ -15,6 +11,7 @@ module Coalmine.InternalPrelude
     -- * --
     BVec,
     UVec,
+    SVec,
   )
 where
 
@@ -38,24 +35,20 @@ import Data.Tuple.All as Exports hiding (only)
 import qualified Data.Vector
 import Data.Vector.Generic as Exports (Vector)
 import Data.Vector.Instances as Exports
+import qualified Data.Vector.Storable
 import Data.Vector.Unboxed as Exports (Unbox)
 import qualified Data.Vector.Unboxed
 import Data.Vector.Unboxed.Deriving as Exports (derivingUnbox)
 import DeferredFolds.Unfoldr as Exports (Unfoldr (..))
 import Deque.Strict as Exports (Deque)
 import GHC.Exts as Exports (IsList (..))
+import IsomorphismClass as Exports
 import Language.Haskell.TH.Quote as Exports (QuasiQuoter (..))
 import Language.Haskell.TH.Syntax as Exports (Lift, Q)
 import Network.IP.Addr as Exports (IP (..), IP4 (..), IP6 (..), InetAddr (..), InetPort (..), NetAddr (..))
 import System.IO as Exports
 import TextBuilderDev as Exports (IsomorphicToTextBuilder (..), TextBuilder, buildText)
 import Prelude hiding (Vector, chosen, toList, uncons, (%))
-
-showAsText :: Show a => a -> Text
-showAsText = show >>> fromString
-
-showAsTextBuilder :: Show a => a -> TextBuilder
-showAsTextBuilder = show >>> fromString
 
 traceMap :: (a -> String) -> a -> a
 traceMap f a = trace (f a) a
@@ -68,3 +61,5 @@ instance HasResolution E8 where
 type BVec = Data.Vector.Vector
 
 type UVec = Data.Vector.Unboxed.Vector
+
+type SVec = Data.Vector.Storable.Vector

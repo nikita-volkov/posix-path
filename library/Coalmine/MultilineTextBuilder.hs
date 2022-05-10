@@ -17,7 +17,7 @@ where
 import qualified Coalmine.BaseExtras.List as List
 import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
-import Coalmine.IsomorphismClass
+import Coalmine.IsomorphismClassInstances
 import Coalmine.StringIsomorphism
 import Coalmine.TextIsomorphism
 import qualified Data.Text as Text
@@ -94,49 +94,37 @@ instance Eq Builder where
   Builder _ l == Builder _ r =
     toText (l 0) == toText (r 0)
 
-instance IsomorphicTo Builder Builder where
-  to = id
-  from = id
+--
 
 instance IsomorphicTo Builder String where
   to = fromString
-  from = toString
 
 instance IsomorphicTo Builder Text where
-  to = fromText
-  from = toText
+  to = text
 
 instance IsomorphicTo Builder TextBuilder where
-  to = fromTextBuilder
-  from = toTextBuilder
+  to = to . to @Text
 
 instance IsomorphicTo Builder TextLazy.Text where
-  to = fromText . TextLazy.toStrict
-  from = TextLazy.fromStrict . toText
+  to = to . to @TextBuilder
 
 instance IsomorphicTo Builder TextLazyBuilder.Builder where
-  to = fromText . TextLazy.toStrict . TextLazyBuilder.toLazyText
-  from = TextLazyBuilder.fromText . toText
+  to = to . to @TextBuilder
 
 instance IsomorphicTo String Builder where
-  to = from
-  from = to
+  to = to . to @TextBuilder
 
 instance IsomorphicTo Text Builder where
-  to = from
-  from = to
+  to = to . to @TextBuilder
 
 instance IsomorphicTo TextBuilder Builder where
-  to = from
-  from = to
+  to (Builder _ builder) = builder 0
 
 instance IsomorphicTo TextLazy.Text Builder where
-  to = from
-  from = to
+  to = to . to @TextBuilder
 
 instance IsomorphicTo TextLazyBuilder.Builder Builder where
-  to = from
-  from = to
+  to = to . to @TextBuilder
 
 -- * Execution
 
