@@ -21,14 +21,11 @@ import Coalmine.InternalPrelude as Exports hiding (FilePath)
 import Coalmine.Interval as Exports (Interval)
 import Coalmine.IsomorphismClassInstances as Exports ()
 import Coalmine.MtlExtras as Exports
-import Coalmine.MultilineTextBuilder as Exports (IsomorphicToMultilineTextBuilder (..))
 import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 import Coalmine.Name as Exports (FromNameInSpinalCase (..), FromNameInUpperCamelCase (..))
 import Coalmine.Parsing as Exports
 import Coalmine.Printing as Exports
 import Coalmine.SimplePaths as Exports (DirPath, FilePath)
-import Coalmine.StringIsomorphism as Exports
-import Coalmine.TextIsomorphism as Exports
 import Coalmine.TransformersExtras.Reader as Exports ()
 import Coalmine.TransformersExtras.State as Exports ()
 import qualified Data.Aeson

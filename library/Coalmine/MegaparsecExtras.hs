@@ -3,7 +3,6 @@ module Coalmine.MegaparsecExtras where
 import Coalmine.InternalPrelude hiding (try)
 import qualified Coalmine.Located as Located
 import qualified Coalmine.Parsed as Parsed
-import Coalmine.StringIsomorphism
 import Text.Megaparsec
 
 -- |
@@ -15,7 +14,7 @@ toTextRefiner p = left (fromString . errorBundlePretty) . runParser (p <* eof) "
 
 liftEither :: Stream s => Either Text a -> Parsec e s a
 liftEither = \case
-  Left err -> fail . toString $ err
+  Left err -> fail . to $ err
   Right res -> return res
 
 -- |
@@ -32,7 +31,7 @@ refine refiner parser =
       Right res -> return res
       Left err -> do
         setParserState initialState
-        fail . toString $ err
+        fail . to $ err
 
 sepUpdate :: (Stream s, Ord e) => state -> Parsec e s sep -> (state -> Parsec e s state) -> Parsec e s state
 sepUpdate state sepP elemP =

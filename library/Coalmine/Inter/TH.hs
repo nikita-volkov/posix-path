@@ -4,9 +4,7 @@ import qualified Coalmine.Inter.Deindentation as D
 import Coalmine.InternalPrelude
 import qualified Coalmine.MultilineTextBuilder as B
 import Coalmine.Printing
-import Coalmine.StringIsomorphism
 import Coalmine.TH.Exp
-import Coalmine.TextIsomorphism
 import qualified Data.Text as Text
 import Language.Haskell.TH.Syntax
 import qualified THLego.Helpers as Helpers
@@ -15,7 +13,7 @@ import qualified THLego.Helpers as Helpers
 
 linesExp :: BVec D.Line -> Exp
 linesExp =
-  AppE (VarE 'B.fromMultilineTextBuilder)
+  AppE (VarE 'from)
     . mconcatExp
     . build
   where
@@ -34,7 +32,7 @@ lineExps = \case
     foldr progress finish segments prefix
     where
       prefix =
-        fromText (Text.replicate indentation " ")
+        Text.replicate indentation " "
       progress segment next lit =
         case segment of
           D.PlainContentSegment content ->
@@ -48,11 +46,9 @@ lineExps = \case
       finish lit =
         prependLitIfNeeded lit []
       prependLitIfNeeded lit =
-        if Text.null text
+        if Text.null lit
           then id
-          else (unilineBuilder text :)
-        where
-          text = toText lit
+          else (unilineBuilder lit :)
 
 -- * --
 
@@ -77,4 +73,4 @@ indent indent =
 placeholder :: D.Name -> Exp
 placeholder name =
   AppE (VarE 'toPrettyBuilder) $
-    VarE $ mkName $ #head name : toString (#tail name)
+    VarE $ mkName $ #head name : to @String (#tail name)

@@ -19,5 +19,5 @@ tests =
             char 'a' *> space *> locate (string "bcd") <* space <* char 'e'
        in case toTextRefiner parser input of
             Right res -> assertEqual "" (Located.Located 2 5 "bcd") res
-            Left err -> assertFailure $ toString err
+            Left err -> assertFailure $ to err
   ]

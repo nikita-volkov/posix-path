@@ -17,8 +17,6 @@ import Coalmine.Located (Located)
 import qualified Coalmine.Located as Located
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths as Paths
-import Coalmine.StringIsomorphism
-import Coalmine.TextIsomorphism
 import qualified Data.Text.IO as TextIO
 
 -- * --

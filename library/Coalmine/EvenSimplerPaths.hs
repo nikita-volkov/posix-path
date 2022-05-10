@@ -7,8 +7,6 @@ where
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.InternalPrelude hiding (FilePath, Name)
 import Coalmine.Printing
-import Coalmine.StringIsomorphism
-import Coalmine.TextIsomorphism
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified System.Directory as Directory
 import qualified TextBuilderDev as TextBuilderDev
@@ -53,8 +51,8 @@ instance CompactPrinting Path where
         TextBuilderDev.intercalate "/" . fmap _fromName $ _nodes
       _fromName (Name _name _extensions) =
         foldl'
-          (\_output _extension -> _output <> "." <> fromText _extension)
-          (fromText _name)
+          (\_output _extension -> _output <> "." <> to _extension)
+          (to _name)
           _extensions
 
 instance ToJSON Path where

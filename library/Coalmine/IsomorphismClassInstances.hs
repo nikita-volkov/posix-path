@@ -31,6 +31,9 @@ instance Storable a => IsomorphicTo (Deque a) (SVec a) where
 
 --
 
+instance IsomorphicTo TextBuilder TextBuilder where
+  to = id
+
 instance IsomorphicTo TextBuilder String where
   to = TextBuilderDev.string
 

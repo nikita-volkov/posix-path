@@ -13,8 +13,6 @@ import Coalmine.InternalPrelude hiding (FilePath)
 import Coalmine.Name (FromNameInSpinalCase (..), FromNameInUpperCamelCase (..))
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths.AttoparsecHelpers as AttoparsecHelpers
-import Coalmine.StringIsomorphism
-import Coalmine.TextIsomorphism
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified TextBuilderDev as TextBuilder
 
@@ -56,8 +54,8 @@ instance IsString DirPath where
 instance CompactPrinting DirPath where
   toCompactBuilder (DirPath abs dirs) =
     if abs
-      then "/" <> foldMap (flip mappend "/" . fromText) dirs
-      else foldMap (flip mappend "/" . fromText) dirs
+      then "/" <> foldMap (flip mappend "/" . to) dirs
+      else foldMap (flip mappend "/" . to) dirs
 
 instance PrettyPrinting DirPath where
   toPrettyBuilder =
@@ -115,8 +113,8 @@ instance IsString FilePath where
 
 instance CompactPrinting FilePath where
   toCompactBuilder (FilePath dir name extensions) =
-    toCompactBuilder dir <> fromText name
-      <> foldMap (mappend "." . fromText) extensions
+    toCompactBuilder dir <> from name
+      <> foldMap (mappend "." . from) extensions
 
 instance PrettyPrinting FilePath where
   toPrettyBuilder =
@@ -126,10 +124,10 @@ instance Show FilePath where
   show = show . printCompactAsText
 
 instance ToJSON FilePath where
-  toJSON = toJSON . toText . toCompactBuilder
+  toJSON = toJSON . to @Text . toCompactBuilder
 
 instance ToJSONKey FilePath where
-  toJSONKey = contramap (toText . toCompactBuilder) toJSONKey
+  toJSONKey = contramap (to @Text . toCompactBuilder) toJSONKey
 
 instance FromNameInSpinalCase FilePath where
   fromNameInSpinalCase _name =

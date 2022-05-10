@@ -4,8 +4,6 @@ import qualified Coalmine.HeadedMegaparsecExtras as P
 import Coalmine.InternalPrelude hiding (FilePath)
 import Coalmine.Printing
 import Coalmine.SimplePaths (FilePath)
-import Coalmine.StringIsomorphism
-import Coalmine.TextIsomorphism
 import HeadedMegaparsec
 import Test.QuickCheck.Instances
 import Test.Tasty
@@ -23,7 +21,7 @@ testParserToSucceed ::
 testParserToSucceed name expectation parser input =
   testCase name $ case P.toRefiner parser input of
     Right res -> assertEqual "" expectation res
-    Left err -> assertFailure . toString $ err
+    Left err -> assertFailure . to $ err
 
 testParserToFail ::
   (Eq a, Show a, Megaparsec.VisualStream i, Megaparsec.TraversableStream i, Megaparsec.ShowErrorComponent e) =>
@@ -48,4 +46,4 @@ testFileParserToSucceed name path parser expectation =
   testCase name $
     P.toFileReader parser path >>= \case
       Right res -> assertEqual "" expectation res
-      Left err -> assertFailure . toString $ err
+      Left err -> assertFailure . to $ err

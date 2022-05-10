@@ -23,7 +23,7 @@ tests =
                   3 | "name" text not null unique
                     | ^^^^^^
                 |]
-           in assertEqual (toString actualResult) expectedResult actualResult,
+           in assertEqual (to actualResult) expectedResult actualResult,
         testCase "single-line" $
           let input =
                 [i|
@@ -36,7 +36,7 @@ tests =
                   2 | "id" int8 not null null generated always as identity primary key,
                     |                    ^^^^
                 |]
-           in assertEqual (toString actualResult) expectedResult actualResult
+           in assertEqual (to actualResult) expectedResult actualResult
       ],
     testGroup "render" $
       [ testCase "1" $
@@ -58,7 +58,7 @@ tests =
                     |                      ^^^^
                   Details
                 |]
-           in assertEqual (toString actualResult) expectedResult actualResult,
+           in assertEqual (to actualResult) expectedResult actualResult,
         testCase "2" $
           let input =
                 [i|
@@ -78,7 +78,7 @@ tests =
                     |              ^^^^^^^
                   Details
                 |]
-           in assertEqual (toString actualResult) expectedResult actualResult,
+           in assertEqual (to actualResult) expectedResult actualResult,
         testCase "3" $
           let input =
                 [i|
@@ -100,7 +100,7 @@ tests =
                     | ^^^^^^
                   Details
                 |]
-           in assertEqual (toString actualResult) expectedResult actualResult,
+           in assertEqual (to actualResult) expectedResult actualResult,
         testCase "4" $
           let input =
                 [i|
@@ -124,7 +124,7 @@ tests =
                     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                   Details
                 |]
-           in assertEqual (toString actualResult) expectedResult actualResult,
+           in assertEqual (to actualResult) expectedResult actualResult,
         testCase "5" $
           let input =
                 [i|
@@ -148,7 +148,7 @@ tests =
                     | 
                   Details
                 |]
-           in assertEqual (toString actualResult) expectedResult actualResult,
+           in assertEqual (to actualResult) expectedResult actualResult,
         testCase "6" $
           let input =
                 [i|
@@ -170,6 +170,6 @@ tests =
                     | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
                   Details
                 |]
-           in assertEqual (toString actualResult) expectedResult actualResult
+           in assertEqual (to actualResult) expectedResult actualResult
       ]
   ]

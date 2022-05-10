@@ -6,8 +6,6 @@ import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 import qualified Coalmine.Name.Attoparsec as Attoparsec
 import qualified Coalmine.Name.Megaparsec as Megaparsec
 import Coalmine.Printing
-import Coalmine.StringIsomorphism
-import Coalmine.TextIsomorphism
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.Text as Text
 import qualified Text.Megaparsec as Megaparsec
@@ -26,7 +24,7 @@ deriving instance Ord Name
 deriving instance Hashable Name
 
 instance Show Name where
-  show (Name parts) = parts & toList & fmap toString & intercalate "-"
+  show (Name parts) = parts & toList & fmap to & intercalate "-"
 
 instance IsString Name where
   fromString =
@@ -45,10 +43,10 @@ instance LenientParser Name where
   lenientParser = attoparsec
 
 instance ToJSON Name where
-  toJSON = toJSON . toText . toCompactBuilder
+  toJSON = toJSON . to @Text . toCompactBuilder
 
 instance ToJSONKey Name where
-  toJSONKey = contramap (toText . toCompactBuilder) toJSONKey
+  toJSONKey = contramap (to @Text . toCompactBuilder) toJSONKey
 
 instance CompactPrinting Name where
   toCompactBuilder = toSpinalCaseTextBuilder
@@ -122,8 +120,7 @@ instance FromNameInSpinalCase TextBuilder where
   fromNameInSpinalCase = toSpinalCaseTextBuilder
 
 instance FromNameInSpinalCase MultilineTextBuilder.Builder where
-  fromNameInSpinalCase =
-    MultilineTextBuilder.toMultilineTextBuilder @TextBuilder . fromNameInSpinalCase
+  fromNameInSpinalCase = to . fromNameInSpinalCase @TextBuilder
 
 -- * --
 
@@ -137,5 +134,4 @@ instance FromNameInUpperCamelCase TextBuilder where
   fromNameInUpperCamelCase = toUpperCamelCaseTextBuilder
 
 instance FromNameInUpperCamelCase MultilineTextBuilder.Builder where
-  fromNameInUpperCamelCase =
-    MultilineTextBuilder.toMultilineTextBuilder @TextBuilder . fromNameInUpperCamelCase
+  fromNameInUpperCamelCase = to . fromNameInUpperCamelCase @TextBuilder

@@ -29,13 +29,13 @@ packages:
 - completed:
     name: isomorphism-class
     pantry-tree:
-      sha256: 7b95578025f92e7a9a3ca27dc98bac98054caf74b48cf81750f8cd246ead5743
+      sha256: e1a301cfd9c800700e57992326c6e7b86dafa3dea177b52cf8ba78dd7bee9a29
       size: 414
-    commit: 2fba4a58757b3cf71c78be56adc0678dae9aa289
+    commit: b46450c37aa488498301beafa6a148477cb70753
     git: https://github.com/nikita-volkov/isomorphism-class
     version: '0.1'
   original:
-    commit: 2fba4a58757b3cf71c78be56adc0678dae9aa289
+    commit: b46450c37aa488498301beafa6a148477cb70753
     git: https://github.com/nikita-volkov/isomorphism-class
 - completed:
     pantry-tree:

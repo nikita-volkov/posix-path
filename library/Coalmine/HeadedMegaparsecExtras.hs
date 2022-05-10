@@ -7,8 +7,6 @@ import qualified Coalmine.Located as Located
 import qualified Coalmine.MegaparsecExtras as MegaparsecExtras
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths as Paths
-import Coalmine.StringIsomorphism
-import Coalmine.TextIsomorphism
 import Data.CaseInsensitive (CI, FoldCase)
 import qualified Data.Text.IO as TextIO
 import HeadedMegaparsec hiding (string)
@@ -132,7 +130,7 @@ notFollowedBy a = parse (Megaparsec.notFollowedBy (toParsec a))
 
 liftEither :: (Stream s, Ord e) => Either Text a -> HeadedParsec e s a
 liftEither = \case
-  Left err -> fail . toString $ err
+  Left err -> fail . to $ err
   Right res -> return res
 
 -- |
@@ -149,7 +147,7 @@ refine refiner parser =
       Right res -> return res
       Left err -> do
         parse $ Megaparsec.updateParserState (const initialState)
-        fail . toString $ err
+        fail . to $ err
 
 sepUpdate :: (Stream s, Ord e) => state -> HeadedParsec e s sep -> (state -> HeadedParsec e s state) -> HeadedParsec e s state
 sepUpdate state sepP elemP =

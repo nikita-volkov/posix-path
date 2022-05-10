@@ -1,8 +1,5 @@
 module Coalmine.MultilineTextBuilder
   ( -- * --
-    IsomorphicToMultilineTextBuilder (..),
-
-    -- * --
     Builder,
 
     -- * --
@@ -18,42 +15,10 @@ import qualified Coalmine.BaseExtras.List as List
 import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
 import Coalmine.IsomorphismClassInstances
-import Coalmine.StringIsomorphism
-import Coalmine.TextIsomorphism
 import qualified Data.Text as Text
 import qualified Data.Text.Lazy as TextLazy
 import qualified Data.Text.Lazy.Builder as TextLazyBuilder
 import qualified TextBuilderDev as Tb
-
--- * --
-
-class IsomorphicToMultilineTextBuilder a where
-  toMultilineTextBuilder :: a -> Builder
-  fromMultilineTextBuilder :: Builder -> a
-
-instance IsomorphicToMultilineTextBuilder Builder where
-  toMultilineTextBuilder = id
-  fromMultilineTextBuilder = id
-
-instance IsomorphicToMultilineTextBuilder String where
-  toMultilineTextBuilder = fromString
-  fromMultilineTextBuilder = toString
-
-instance IsomorphicToMultilineTextBuilder Text where
-  toMultilineTextBuilder = fromText
-  fromMultilineTextBuilder = toText
-
-instance IsomorphicToMultilineTextBuilder TextBuilder where
-  toMultilineTextBuilder = fromTextBuilder
-  fromMultilineTextBuilder = toTextBuilder
-
-instance IsomorphicToMultilineTextBuilder TextLazy.Text where
-  toMultilineTextBuilder = fromText . TextLazy.toStrict
-  fromMultilineTextBuilder = TextLazy.fromStrict . toText
-
-instance IsomorphicToMultilineTextBuilder TextLazyBuilder.Builder where
-  toMultilineTextBuilder = fromText . TextLazy.toStrict . TextLazyBuilder.toLazyText
-  fromMultilineTextBuilder = TextLazyBuilder.fromText . toText
 
 -- * --
 
@@ -77,13 +42,6 @@ instance Show Builder where
 instance IsString Builder where
   fromString = text . fromString
 
-instance IsomorphicToString Builder where
-  toString = toString . toTextBuilder
-
-instance IsomorphicToText Builder where
-  fromText = text
-  toText = toText . toTextBuilder
-
 instance IsomorphicToTextBuilder Builder where
   toTextBuilder (Builder _ builder) =
     builder 0
@@ -92,9 +50,12 @@ instance IsomorphicToTextBuilder Builder where
 
 instance Eq Builder where
   Builder _ l == Builder _ r =
-    toText (l 0) == toText (r 0)
+    on (==) (to @Text) (l 0) (r 0)
 
 --
+
+instance IsomorphicTo Builder Builder where
+  to = id
 
 instance IsomorphicTo Builder String where
   to = fromString

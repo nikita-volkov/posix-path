@@ -103,11 +103,9 @@ library
     Coalmine.ScientificExtras
     Coalmine.SimplePaths
     Coalmine.Streamer
-    Coalmine.StringIsomorphism
     Coalmine.Tasty
     Coalmine.Tasty.HeadedMegaparsec
     Coalmine.TextAppender
-    Coalmine.TextIsomorphism
     Coalmine.TH.Exp
     Coalmine.TH.QuasiQuoter
     Coalmine.TimeExtras.Conversions
