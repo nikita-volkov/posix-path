@@ -19,3 +19,9 @@ evalRight stage =
 
 printYaml :: ToJSON a => a -> IO ()
 printYaml = ByteStringChar8.putStrLn . Yaml.encode
+
+disableBuffering :: IO ()
+disableBuffering = do
+  hSetBuffering stdin NoBuffering
+  hSetBuffering stdout NoBuffering
+  hSetBuffering stderr NoBuffering
