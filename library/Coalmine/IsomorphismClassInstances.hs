@@ -23,12 +23,6 @@ instance IsomorphicTo (Deque a) [a] where
 instance IsomorphicTo (Deque a) (BVec a) where
   to = from @[a] . to
 
-instance Unbox a => IsomorphicTo (Deque a) (UVec a) where
-  to = from @[a] . to
-
-instance Storable a => IsomorphicTo (Deque a) (SVec a) where
-  to = from @[a] . to
-
 --
 
 instance IsomorphicTo TextBuilder TextBuilder where
@@ -58,16 +52,6 @@ instance IsomorphicTo [a] (Deque a) where
 
 instance IsomorphicTo (BVec a) (Deque a) where
   to = to . to @[a]
-
---
-
-instance Unbox a => IsomorphicTo (UVec a) (Deque a) where
-  to = from @[a] . to
-
---
-
-instance Storable a => IsomorphicTo (SVec a) (Deque a) where
-  to = from @[a] . to
 
 --
 

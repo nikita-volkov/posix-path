@@ -1,4 +1,4 @@
-resolver: nightly-2022-05-05
+resolver: nightly-2022-05-14
 
 extra-deps:
   - git: https://github.com/nikita-volkov/fx
@@ -6,7 +6,7 @@ extra-deps:
   - git: https://github.com/nikita-volkov/moore-machines
     commit: 7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290
   - git: https://github.com/nikita-volkov/isomorphism-class
-    commit: 79554a88b5c4f63cf2146ff511b69f70b4b4b7b4
+    commit: 6030243b4e2c28ab3c010b5f06cb6514d70f9c35
   - aeson-value-parser-0.19.6
   - cereal-unordered-containers-0.1
   - domain-aeson-0.1
