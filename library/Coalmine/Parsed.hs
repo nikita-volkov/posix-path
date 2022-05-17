@@ -5,14 +5,18 @@ module Coalmine.Parsed
     renderInMegaparsecStyle,
 
     -- * --
-    Scoping,
-    runScopingText,
-    runScoping,
+    Interpreting,
+    runInterpretingWithTextErr,
+    runInterpreting,
     scope,
     associate,
     associateEither,
     scopeAndAssociateEither,
     scopeAndAssociateEitherK,
+
+    -- * --
+    Interpreted,
+    runInterpretedWithTextErr,
   )
 where
 
@@ -58,39 +62,48 @@ renderInMegaparsecStyle (Parsed input located) =
 
 -- * --
 
-newtype Scoping e m a
-  = Scoping (ExceptT e (StateT (Parsed ()) m) a)
+newtype Interpreting e m a
+  = Interpreting (ExceptT e (StateT (Parsed ()) m) a)
   deriving (Functor, Applicative, Monad, MonadError e)
 
-instance MonadTrans (Scoping e) where
-  lift = Scoping . lift . lift
+instance MonadTrans (Interpreting e) where
+  lift = Interpreting . lift . lift
 
-runScopingText :: Functor m => Scoping Text m a -> m (Either Text a)
-runScopingText =
-  fmap (first renderInMegaparsecStyle) . runScoping
+runInterpretingWithTextErr :: Functor m => Interpreting Text m a -> m (Either Text a)
+runInterpretingWithTextErr =
+  fmap (first renderInMegaparsecStyle) . runInterpreting
 
-runScoping :: Functor m => Scoping e m a -> m (Either (Parsed e) a)
-runScoping (Scoping m) =
+runInterpreting :: Functor m => Interpreting e m a -> m (Either (Parsed e) a)
+runInterpreting (Interpreting m) =
   runStateT (runExceptT m) (pure ())
     <&> \(either, parsed) -> first (parsed $>) either
 
-scope :: Monad m => Parsed a -> Scoping e m a
+scope :: Monad m => Parsed a -> Interpreting e m a
 scope parsed =
-  Scoping $ put (void parsed) $> extract parsed
+  Interpreting $ put (void parsed) $> extract parsed
 
 -- |
 -- Associate a value with the current context
 -- by putting it in an associated Parsed.
-associate :: Monad m => a -> Scoping e m (Parsed a)
-associate = Scoping . gets . fmap . const
+associate :: Monad m => a -> Interpreting e m (Parsed a)
+associate = Interpreting . gets . fmap . const
 
-associateEither :: Monad m => Either e r -> Scoping e m (Parsed r)
+associateEither :: Monad m => Either e r -> Interpreting e m (Parsed r)
 associateEither = either throwError associate
 
-scopeAndAssociateEither :: Monad m => Parsed (Either e r) -> Scoping e m (Parsed r)
+scopeAndAssociateEither :: Monad m => Parsed (Either e r) -> Interpreting e m (Parsed r)
 scopeAndAssociateEither parsed =
   scope parsed >>= associateEither
 
-scopeAndAssociateEitherK :: Monad m => Parsed a -> (a -> Either e b) -> Scoping e m (Parsed b)
+scopeAndAssociateEitherK :: Monad m => Parsed a -> (a -> Either e b) -> Interpreting e m (Parsed b)
 scopeAndAssociateEitherK parsed cont =
   scopeAndAssociateEither $ fmap cont parsed
+
+-- * --
+
+type Interpreted e =
+  Interpreting e Identity
+
+runInterpretedWithTextErr :: Interpreted Text a -> Either Text a
+runInterpretedWithTextErr m =
+  runInterpretingWithTextErr m & runIdentity
