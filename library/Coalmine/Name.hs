@@ -51,8 +51,8 @@ instance ToJSONKey Name where
 instance CompactPrinting Name where
   toCompactBuilder = toSpinalCaseTextBuilder
 
-instance PrettyPrinting Name where
-  toPrettyBuilder = fromTextBuilder . toCompactBuilder
+instance BroadPrinting Name where
+  toBroadBuilder = fromTextBuilder . toCompactBuilder
 
 -- * --
 

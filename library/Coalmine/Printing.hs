@@ -46,42 +46,42 @@ instance CompactPrinting Int where
 instance CompactPrinting Word where
   toCompactBuilder = Ub.unsignedDecimal
 
--- * Pretty
+-- * Broad
 
-printPrettyAs :: (IsomorphicTo b Mb.Builder, PrettyPrinting a) => a -> b
-printPrettyAs = to . toPrettyBuilder
+printBroadAs :: (IsomorphicTo b Mb.Builder, BroadPrinting a) => a -> b
+printBroadAs = to . toBroadBuilder
 
-printPrettyAsText :: PrettyPrinting a => a -> Text
-printPrettyAsText = printPrettyAs
+printBroadAsText :: BroadPrinting a => a -> Text
+printBroadAsText = printBroadAs
 
-printPrettyAsString :: PrettyPrinting a => a -> String
-printPrettyAsString = printPrettyAs
+printBroadAsString :: BroadPrinting a => a -> String
+printBroadAsString = printBroadAs
 
-printPrettyToStdOut :: PrettyPrinting a => a -> IO ()
-printPrettyToStdOut = TextIO.putStr . printPrettyAs
+printBroadToStdOut :: BroadPrinting a => a -> IO ()
+printBroadToStdOut = TextIO.putStr . printBroadAs
 
-printLnPrettyToStdOut :: PrettyPrinting a => a -> IO ()
-printLnPrettyToStdOut = TextIO.putStrLn . printPrettyAs
+printLnBroadToStdOut :: BroadPrinting a => a -> IO ()
+printLnBroadToStdOut = TextIO.putStrLn . printBroadAs
 
 -- ** --
 
-class PrettyPrinting a where
-  toPrettyBuilder :: a -> Mb.Builder
+class BroadPrinting a where
+  toBroadBuilder :: a -> Mb.Builder
 
-instance PrettyPrinting Mb.Builder where
-  toPrettyBuilder = id
+instance BroadPrinting Mb.Builder where
+  toBroadBuilder = id
 
-instance PrettyPrinting Text where
-  toPrettyBuilder = to
+instance BroadPrinting Text where
+  toBroadBuilder = to
 
-instance PrettyPrinting String where
-  toPrettyBuilder = to
+instance BroadPrinting String where
+  toBroadBuilder = to
 
-instance PrettyPrinting TextBuilder where
-  toPrettyBuilder = to
+instance BroadPrinting TextBuilder where
+  toBroadBuilder = to
 
-instance PrettyPrinting Int where
-  toPrettyBuilder = toPrettyBuilder . Ub.decimal
+instance BroadPrinting Int where
+  toBroadBuilder = toBroadBuilder . Ub.decimal
 
-instance PrettyPrinting Word where
-  toPrettyBuilder = toPrettyBuilder . Ub.unsignedDecimal
+instance BroadPrinting Word where
+  toBroadBuilder = toBroadBuilder . Ub.unsignedDecimal

@@ -72,5 +72,5 @@ indent indent =
 
 placeholder :: D.Name -> Exp
 placeholder name =
-  AppE (VarE 'toPrettyBuilder) $
+  AppE (VarE 'toBroadBuilder) $
     VarE $ mkName $ #head name : to @String (#tail name)
