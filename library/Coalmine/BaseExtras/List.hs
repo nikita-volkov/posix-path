@@ -119,3 +119,15 @@ zipWithTotally pair left right =
     pair' a b deeper !sharedSize !revList =
       deeper (succ sharedSize) (pair a b : revList)
     nil _ revList = Right (reverse revList)
+
+intercalate :: Monoid a => a -> [a] -> a
+intercalate separator = \case
+  [] -> mempty
+  head : tail ->
+    foldr (\element next -> separator <> element <> next) head tail
+
+intercalateMap :: Monoid m => m -> (a -> m) -> [a] -> m
+intercalateMap separator proj = \case
+  [] -> mempty
+  head : tail ->
+    foldr (\element next -> separator <> proj element <> next) (proj head) tail
