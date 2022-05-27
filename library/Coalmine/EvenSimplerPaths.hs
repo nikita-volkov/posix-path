@@ -44,18 +44,18 @@ instance Monoid Path where
     Path False []
 
 instance CompactPrinting Path where
-  toCompactBuilder (Path _abs _nodes) =
+  toCompactBuilder (Path _abs _components) =
     if _abs
       then "/" <> _relative
       else _relative
     where
       _relative =
-        TextBuilderDev.intercalate "/" . fmap _fromName $ _nodes
-      _fromName (Component _name _extensions) =
+        TextBuilderDev.intercalate "/" . fmap _fromComponent . reverse $ _components
+      _fromComponent (Component _name _extensions) =
         foldl'
           (\_output _extension -> _output <> "." <> to _extension)
           (to _name)
-          _extensions
+          (reverse _extensions)
 
 instance ToJSON Path where
   toJSON = toJSON . printCompactAsText
