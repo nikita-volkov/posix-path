@@ -7,6 +7,7 @@ where
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.InternalPrelude hiding (FilePath, Name)
 import Coalmine.Printing
+import qualified Coalmine.SimplePaths as SimplePaths
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified System.Directory as Directory
 import qualified TextBuilderDev as TextBuilderDev
@@ -77,3 +78,21 @@ instance IsString Path where
     either error id
       . Attoparsec.parseOnly (lenientParser <* Attoparsec.endOfInput)
       . fromString
+
+instance IsomorphicTo SimplePaths.DirPath Path where
+  to = thruText
+
+instance IsomorphicTo Path SimplePaths.DirPath where
+  to = thruText
+
+instance IsomorphicTo SimplePaths.FilePath Path where
+  to = thruText
+
+instance IsomorphicTo Path SimplePaths.FilePath where
+  to = thruText
+
+thruText :: (CompactPrinting a, LenientParser b) => a -> b
+thruText =
+  fromRight (error "Oops! Unparsable path has crawled in")
+    . parseTextLeniently
+    . printCompactAsText
