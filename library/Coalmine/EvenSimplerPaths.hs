@@ -5,6 +5,7 @@ module Coalmine.EvenSimplerPaths
 where
 
 import Coalmine.BaseExtras.MonadPlus
+import qualified Coalmine.EvenSimplerPaths.AttoparsecHelpers as AttoparsecHelpers
 import Coalmine.InternalPrelude hiding (FilePath, Name)
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths as SimplePaths
@@ -18,13 +19,13 @@ data Path
   = Path
       !Bool
       -- ^ Is it absolute?
-      ![Name]
+      ![Component]
       -- ^ Components in reverse order.
 
 -- |
 -- Structured name of a single component of a path.
-data Name
-  = Name
+data Component
+  = Component
       !Text
       -- ^ Name.
       ![Text]
@@ -50,7 +51,7 @@ instance CompactPrinting Path where
     where
       _relative =
         TextBuilderDev.intercalate "/" . fmap _fromName $ _nodes
-      _fromName (Name _name _extensions) =
+      _fromName (Component _name _extensions) =
         foldl'
           (\_output _extension -> _output <> "." <> to _extension)
           (to _name)
@@ -68,10 +69,14 @@ instance Show Path where
 instance LenientParser Path where
   lenientParser = do
     _abs <- Attoparsec.char '/' $> True <|> pure False
-    _parents <- foldlMany (flip (:)) [] _node
-    error "TODO"
+    _components <- reverseSepBy _component (Attoparsec.char '/')
+    optional $ Attoparsec.char '/'
+    return $ Path _abs _components
     where
-      _node = error "TODO"
+      _component =
+        Component
+          <$> AttoparsecHelpers.fileName
+          <*> reverseMany AttoparsecHelpers.extension
 
 instance IsString Path where
   fromString =

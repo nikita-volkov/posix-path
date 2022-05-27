@@ -68,6 +68,7 @@ library
     Coalmine.DecimalExtras.Instances
     Coalmine.Domain
     Coalmine.EvenSimplerPaths
+    Coalmine.EvenSimplerPaths.AttoparsecHelpers
     Coalmine.FoldlExtras.Fold
     Coalmine.Formatting
     Coalmine.Formatting.Rendering

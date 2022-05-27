@@ -26,3 +26,25 @@ foldlMany _step _acc _get =
       mplus
         (_get >>= _go . _step _acc)
         (return _acc)
+
+reverseMany :: MonadPlus m => m a -> m [a]
+reverseMany element = go []
+  where
+    go !acc =
+      mplus
+        (element >>= go . (: acc))
+        (return acc)
+
+reverseSepBy :: MonadPlus m => m a -> m b -> m [a]
+reverseSepBy element sep =
+  reverseSepBy1 element sep <|> pure []
+
+reverseSepBy1 :: MonadPlus m => m a -> m b -> m [a]
+reverseSepBy1 element sep =
+  element >>= go . pure
+  where
+    go !acc =
+      join $
+        mplus
+          (sep $> (element >>= go . (: acc)))
+          (return (return acc))
