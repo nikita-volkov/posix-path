@@ -3,12 +3,18 @@ module Coalmine.AttoparsecExtras.Text
     variableLengthUnsignedDecimal,
     unboundedFixedLengthUnsignedDecimal,
     boundedFixedLengthUnsignedDecimal,
+
+    -- * --
+    charOfCharset,
+    textOfCharset,
+    textOfCharset1,
   )
 where
 
 import qualified Coalmine.BaseExtras.Integer as IntegerExtras
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (takeWhile)
 import Data.Attoparsec.Text
+import qualified StructureKit.Charset as Charset
 
 -- * --
 
@@ -175,3 +181,14 @@ notLargerThanValidator max =
             show a
           ]
       else Nothing
+
+-- * --
+
+charOfCharset :: Charset.Charset -> Parser Char
+charOfCharset = satisfy . Charset.toCharPredicate
+
+textOfCharset :: Charset.Charset -> Parser Text
+textOfCharset = takeWhile . Charset.toCharPredicate
+
+textOfCharset1 :: Charset.Charset -> Parser Text
+textOfCharset1 = takeWhile1 . Charset.toCharPredicate
