@@ -135,3 +135,17 @@ instance FromNameInUpperCamelCase TextBuilder where
 
 instance FromNameInUpperCamelCase MultilineTextBuilder.Builder where
   fromNameInUpperCamelCase = to . fromNameInUpperCamelCase @TextBuilder
+
+-- * --
+
+class FromNameInLowerCamelCase a where
+  fromNameInLowerCamelCase :: Name -> a
+
+instance FromNameInLowerCamelCase Text where
+  fromNameInLowerCamelCase = toLowerCamelCaseText
+
+instance FromNameInLowerCamelCase TextBuilder where
+  fromNameInLowerCamelCase = toLowerCamelCaseTextBuilder
+
+instance FromNameInLowerCamelCase MultilineTextBuilder.Builder where
+  fromNameInLowerCamelCase = to . fromNameInLowerCamelCase @TextBuilder
