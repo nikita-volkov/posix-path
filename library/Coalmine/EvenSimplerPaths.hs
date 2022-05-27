@@ -1,6 +1,11 @@
 module Coalmine.EvenSimplerPaths
   ( -- * --
     Path,
+
+    -- * --
+    toString,
+    parent,
+    createDirsTo,
   )
 where
 
@@ -101,3 +106,20 @@ thruText =
   fromRight (error "Oops! Unparsable path has crawled in")
     . parseTextLeniently
     . printCompactAsText
+
+-- * --
+
+toString :: Path -> String
+toString = to . toCompactBuilder
+
+parent :: Path -> Maybe Path
+parent (Path abs components) =
+  case components of
+    h : t -> Just $ Path abs t
+    _ -> Nothing
+
+createDirsTo :: Path -> IO ()
+createDirsTo =
+  traverse_
+    (Directory.createDirectoryIfMissing True . toString)
+    . parent
