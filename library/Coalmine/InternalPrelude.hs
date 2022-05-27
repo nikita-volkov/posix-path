@@ -12,6 +12,10 @@ module Coalmine.InternalPrelude
     BVec,
     UVec,
     SVec,
+
+    -- * --
+    renderAsYamlText,
+    parseTextLeniently,
   )
 where
 
@@ -22,6 +26,8 @@ import Control.Foldl as Exports (EndoM (..))
 import Control.FromSum as Exports
 import Control.Monad.Morph as Exports
 import Data.Aeson as Exports (FromJSON (..), ToJSON (..), ToJSONKey (..))
+import qualified Data.Aeson
+import qualified Data.Attoparsec.Text
 import Data.Decimal as Exports (Decimal)
 import Data.Default as Exports
 import Data.DoubleWord as Exports (Word128 (..), Word160 (..), Word192 (..), Word224 (..), Word256 (..), Word96 (..))
@@ -30,6 +36,7 @@ import Data.Group as Exports
 import Data.Groupoid as Exports
 import Data.Machine.Mealy as Exports
 import Data.Machine.Moore as Exports
+import qualified Data.Text.Encoding
 import Data.Time.Compat as Exports ()
 import Data.Tuple.All as Exports hiding (only)
 import qualified Data.Vector
@@ -39,6 +46,7 @@ import qualified Data.Vector.Storable
 import Data.Vector.Unboxed as Exports (Unbox)
 import qualified Data.Vector.Unboxed
 import Data.Vector.Unboxed.Deriving as Exports (derivingUnbox)
+import qualified Data.Yaml
 import DeferredFolds.Unfoldr as Exports (Unfoldr (..))
 import Deque.Strict as Exports (Deque)
 import GHC.Exts as Exports (IsList (..))
@@ -50,16 +58,35 @@ import System.IO as Exports
 import TextBuilderDev as Exports (IsomorphicToTextBuilder (..), TextBuilder, buildText)
 import Prelude hiding (Vector, chosen, toList, uncons, (%))
 
+-- * --
+
 traceMap :: (a -> String) -> a -> a
 traceMap f a = trace (f a) a
+
+-- * --
 
 data E8
 
 instance HasResolution E8 where
   resolution _ = 100000000
 
+-- * --
+
 type BVec = Data.Vector.Vector
 
 type UVec = Data.Vector.Unboxed.Vector
 
 type SVec = Data.Vector.Storable.Vector
+
+-- * --
+
+parseTextLeniently :: LenientParser a => Text -> Either Text a
+parseTextLeniently =
+  first fromString
+    . Data.Attoparsec.Text.parseOnly (lenientParser <* Data.Attoparsec.Text.endOfInput)
+
+renderAsYamlText :: Data.Aeson.ToJSON a => a -> Text
+renderAsYamlText =
+  Data.Text.Encoding.decodeUtf8
+    . Data.Yaml.encode
+    . Data.Aeson.toJSON

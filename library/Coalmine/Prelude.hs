@@ -1,7 +1,5 @@
 module Coalmine.Prelude
   ( module Exports,
-    renderAsYamlText,
-    parseTextLeniently,
 
     -- * --
     MultilineTextBuilder,
@@ -28,18 +26,5 @@ import Coalmine.Printing as Exports
 import Coalmine.SimplePaths as Exports (DirPath, FilePath)
 import Coalmine.TransformersExtras.Reader as Exports ()
 import Coalmine.TransformersExtras.State as Exports ()
-import qualified Data.Aeson
-import qualified Data.Text.Encoding
-import qualified Data.Yaml
-
-renderAsYamlText :: Data.Aeson.ToJSON a => a -> Text
-renderAsYamlText =
-  Data.Text.Encoding.decodeUtf8
-    . Data.Yaml.encode
-    . Data.Aeson.toJSON
-
-parseTextLeniently :: LenientParser a => Text -> Either Text a
-parseTextLeniently =
-  parse lenientParser
 
 type MultilineTextBuilder = MultilineTextBuilder.Builder
