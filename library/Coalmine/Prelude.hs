@@ -20,6 +20,7 @@ import Coalmine.Interval as Exports (Interval)
 import Coalmine.IsomorphismClassInstances as Exports ()
 import Coalmine.MtlExtras as Exports
 import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
+import Coalmine.NameConversion as Exports
 import Coalmine.Parsing as Exports
 import Coalmine.Printing as Exports
 import Coalmine.SimplePaths as Exports (DirPath, FilePath)
