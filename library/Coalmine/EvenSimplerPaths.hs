@@ -93,19 +93,19 @@ instance IsString Path where
       . fromString
 
 instance IsomorphicTo SimplePaths.DirPath Path where
-  to = thruText
+  to = forceMorphThruText
 
 instance IsomorphicTo Path SimplePaths.DirPath where
-  to = thruText
+  to = forceMorphThruText
 
 instance IsomorphicTo SimplePaths.FilePath Path where
-  to = thruText
+  to = forceMorphThruText
 
 instance IsomorphicTo Path SimplePaths.FilePath where
-  to = thruText
+  to = forceMorphThruText
 
-thruText :: (CompactPrinting a, LenientParser b) => a -> b
-thruText =
+forceMorphThruText :: (CompactPrinting a, LenientParser b) => a -> b
+forceMorphThruText =
   fromRight (error "Oops! Unparsable path has crawled in")
     . parseTextLeniently
     . printCompactAsText
