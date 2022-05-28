@@ -11,6 +11,7 @@ where
 
 import Coalmine.InternalPrelude hiding (FilePath)
 import Coalmine.Name (FromNameInSpinalCase (..), FromNameInUpperCamelCase (..))
+import Coalmine.NameConversion
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths.AttoparsecHelpers as AttoparsecHelpers
 import qualified Data.Attoparsec.Text as Attoparsec
@@ -78,6 +79,10 @@ instance FromNameInUpperCamelCase DirPath where
   fromNameInUpperCamelCase _name =
     DirPath False [fromNameInUpperCamelCase _name]
 
+instance FromName DirPath where
+  fromName casing name =
+    DirPath False [fromName casing name]
+
 -- * --
 
 -- |
@@ -136,6 +141,10 @@ instance FromNameInSpinalCase FilePath where
 instance FromNameInUpperCamelCase FilePath where
   fromNameInUpperCamelCase _name =
     FilePath mempty (fromNameInUpperCamelCase _name) []
+
+instance FromName FilePath where
+  fromName casing name =
+    FilePath mempty (fromName casing name) []
 
 -- * --
 
