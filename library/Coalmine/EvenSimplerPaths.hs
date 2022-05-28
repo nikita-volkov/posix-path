@@ -14,6 +14,7 @@ where
 
 import Coalmine.BaseExtras.MonadPlus
 import qualified Coalmine.EvenSimplerPaths.AttoparsecHelpers as AttoparsecHelpers
+import qualified Coalmine.EvenSimplerPaths.IsomorphismClassHelpers as IsomorphismClassHelpers
 import Coalmine.InternalPrelude hiding (FilePath, Name)
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths as SimplePaths
@@ -93,22 +94,16 @@ instance IsString Path where
       . fromString
 
 instance IsomorphicTo SimplePaths.DirPath Path where
-  to = forceMorphThruText
+  to = IsomorphismClassHelpers.thruText
 
 instance IsomorphicTo Path SimplePaths.DirPath where
-  to = forceMorphThruText
+  to = IsomorphismClassHelpers.thruText
 
 instance IsomorphicTo SimplePaths.FilePath Path where
-  to = forceMorphThruText
+  to = IsomorphismClassHelpers.thruText
 
 instance IsomorphicTo Path SimplePaths.FilePath where
-  to = forceMorphThruText
-
-forceMorphThruText :: (CompactPrinting a, LenientParser b) => a -> b
-forceMorphThruText =
-  fromRight (error "Oops! Unparsable path has crawled in")
-    . parseTextLeniently
-    . printCompactAsText
+  to = IsomorphismClassHelpers.thruText
 
 -- * --
 

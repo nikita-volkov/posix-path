@@ -69,6 +69,7 @@ library
     Coalmine.Domain
     Coalmine.EvenSimplerPaths
     Coalmine.EvenSimplerPaths.AttoparsecHelpers
+    Coalmine.EvenSimplerPaths.IsomorphismClassHelpers
     Coalmine.FoldlExtras.Fold
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
