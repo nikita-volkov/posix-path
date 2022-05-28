@@ -6,6 +6,9 @@ module Coalmine.EvenSimplerPaths
     toString,
     parent,
     createDirsTo,
+
+    -- * --
+    addExtension,
   )
 where
 
@@ -123,3 +126,29 @@ createDirsTo =
   traverse_
     (Directory.createDirectoryIfMissing True . toString)
     . parent
+
+-- * Traversers (or Van Laarhoven lenses)
+
+traverseLastComponent :: Functor f => (Component -> f Component) -> Path -> f Path
+traverseLastComponent traverser (Path abs components) =
+  case components of
+    h : t -> traverser h <&> \h -> Path abs (h : t)
+    _ -> traverser (Component "" []) <&> \h -> Path abs [h]
+
+traverseExtensions :: Functor f => ([Text] -> f [Text]) -> Path -> f Path
+traverseExtensions traverser =
+  traverseLastComponent $ \(Component name extensions) ->
+    traverser extensions <&> \extensions ->
+      Component name extensions
+
+-- * Mappers
+
+mapExtensions :: ([Text] -> [Text]) -> Path -> Path
+mapExtensions mapper =
+  runIdentity . traverseExtensions (Identity . mapper)
+
+-- * Editors
+
+-- | Add file extension to the last component of the path.
+addExtension :: Text -> Path -> Path
+addExtension ext = mapExtensions (ext :)
