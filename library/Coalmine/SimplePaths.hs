@@ -80,8 +80,8 @@ instance FromNameInUpperCamelCase DirPath where
     DirPath False [fromNameInUpperCamelCase _name]
 
 instance FromName DirPath where
-  fromName casing name =
-    DirPath False [fromName casing name]
+  fromNameIn casing name =
+    DirPath False [fromNameIn casing name]
 
 -- * --
 
@@ -143,8 +143,8 @@ instance FromNameInUpperCamelCase FilePath where
     FilePath mempty (fromNameInUpperCamelCase _name) []
 
 instance FromName FilePath where
-  fromName casing name =
-    FilePath mempty (fromName casing name) []
+  fromNameIn casing name =
+    FilePath mempty (fromNameIn casing name) []
 
 -- * --
 

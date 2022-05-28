@@ -112,8 +112,8 @@ instance Name.FromNameInSpinalCase Path where
     Path False [Component (Name.fromNameInSpinalCase name) []]
 
 instance FromName Path where
-  fromName casing name =
-    Path False [Component (fromName casing name) []]
+  fromNameIn casing name =
+    Path False [Component (fromNameIn casing name) []]
 
 -- * --
 

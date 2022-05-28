@@ -28,21 +28,21 @@ instance IsLabel "lowerCamel" FromNameCase where
 -- * --
 
 class FromName a where
-  fromName :: FromNameCase -> Name -> a
+  fromNameIn :: FromNameCase -> Name -> a
 
 instance FromName Text where
-  fromName = \case
+  fromNameIn = \case
     SpinalFromNameCase -> toSpinalCaseText
     SnakeFromNameCase -> toSnakeCaseText
     UpperCamelFromNameCase -> toUpperCamelCaseText
     LowerCamelFromNameCase -> toLowerCamelCaseText
 
 instance FromName TextBuilder where
-  fromName = \case
+  fromNameIn = \case
     SpinalFromNameCase -> toSpinalCaseTextBuilder
     SnakeFromNameCase -> toSnakeCaseTextBuilder
     UpperCamelFromNameCase -> toUpperCamelCaseTextBuilder
     LowerCamelFromNameCase -> toLowerCamelCaseTextBuilder
 
 instance FromName MultilineTextBuilder.Builder where
-  fromName casing = from @TextBuilder . fromName casing
+  fromNameIn casing = from @TextBuilder . fromNameIn casing
