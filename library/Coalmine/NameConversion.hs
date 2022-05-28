@@ -5,23 +5,28 @@ import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 import Coalmine.Name
 
 -- | Name rendering letter case.
-data NameCase
-  = LowerSpinalNameCase
-  | LowerSnakeNameCase
-  | UpperCamelNameCase
-  | LowerCamelNameCase
+data FromNameCase
+  = SpinalFromNameCase
+  | SnakeFromNameCase
+  | UpperCamelFromNameCase
+  | LowerCamelFromNameCase
 
-class RenderNameTo a where
-  renderNameTo :: NameCase -> Name -> a
+class FromName a where
+  fromName :: FromNameCase -> Name -> a
 
-instance RenderNameTo Text where
-  renderNameTo = \case
-    LowerSpinalNameCase -> toSpinalCaseText
+instance FromName Text where
+  fromName = \case
+    SpinalFromNameCase -> toSpinalCaseText
+    SnakeFromNameCase -> toSnakeCaseText
+    UpperCamelFromNameCase -> toUpperCamelCaseText
+    LowerCamelFromNameCase -> toLowerCamelCaseText
 
-instance RenderNameTo TextBuilder where
-  renderNameTo = \case
-    LowerSpinalNameCase -> toSpinalCaseTextBuilder
+instance FromName TextBuilder where
+  fromName = \case
+    SpinalFromNameCase -> toSpinalCaseTextBuilder
+    SnakeFromNameCase -> toSnakeCaseTextBuilder
+    UpperCamelFromNameCase -> toUpperCamelCaseTextBuilder
+    LowerCamelFromNameCase -> toLowerCamelCaseTextBuilder
 
-instance RenderNameTo MultilineTextBuilder.Builder where
-  renderNameTo = \case
-    LowerSpinalNameCase -> to . toSpinalCaseTextBuilder
+instance FromName MultilineTextBuilder.Builder where
+  fromName casing = from @TextBuilder . fromName casing
