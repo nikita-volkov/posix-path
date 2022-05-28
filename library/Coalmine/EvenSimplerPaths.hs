@@ -15,7 +15,7 @@ where
 import Coalmine.BaseExtras.MonadPlus
 import qualified Coalmine.EvenSimplerPaths.AttoparsecHelpers as AttoparsecHelpers
 import qualified Coalmine.EvenSimplerPaths.IsomorphismClassHelpers as IsomorphismClassHelpers
-import Coalmine.InternalPrelude hiding (FilePath, Name)
+import Coalmine.InternalPrelude
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths as SimplePaths
 import qualified Data.Attoparsec.Text as Attoparsec
