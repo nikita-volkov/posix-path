@@ -17,6 +17,7 @@ import qualified Coalmine.EvenSimplerPaths.AttoparsecHelpers as AttoparsecHelper
 import qualified Coalmine.EvenSimplerPaths.IsomorphismClassHelpers as IsomorphismClassHelpers
 import Coalmine.InternalPrelude
 import qualified Coalmine.Name as Name
+import Coalmine.NameConversion
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths as SimplePaths
 import qualified Data.Attoparsec.Text as Attoparsec
@@ -109,6 +110,10 @@ instance IsomorphicTo Path SimplePaths.FilePath where
 instance Name.FromNameInSpinalCase Path where
   fromNameInSpinalCase name =
     Path False [Component (Name.fromNameInSpinalCase name) []]
+
+instance FromName Path where
+  fromName casing name =
+    Path False [Component (fromName casing name) []]
 
 -- * --
 
