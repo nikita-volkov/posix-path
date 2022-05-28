@@ -13,4 +13,11 @@ i = QuasiQuoter.pureAttoparsedExp parser
   where
     parser =
       Parsers.quasiQuote
+        <&> InterTH.fromLinesExp . Deindentation.quasiQuote
+
+i' :: QuasiQuoter
+i' = QuasiQuoter.pureAttoparsedExp parser
+  where
+    parser =
+      Parsers.quasiQuote
         <&> InterTH.linesExp . Deindentation.quasiQuote

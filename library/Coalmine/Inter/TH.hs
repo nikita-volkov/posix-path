@@ -11,10 +11,13 @@ import qualified THLego.Helpers as Helpers
 
 -- * --
 
+fromLinesExp :: BVec D.Line -> Exp
+fromLinesExp =
+  AppE (VarE 'from) . linesExp
+
 linesExp :: BVec D.Line -> Exp
 linesExp =
-  AppE (VarE 'from)
-    . mconcatExp
+  mconcatExp
     . build
   where
     build vec = foldr step (const []) vec True
