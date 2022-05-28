@@ -16,6 +16,7 @@ import Coalmine.BaseExtras.MonadPlus
 import qualified Coalmine.EvenSimplerPaths.AttoparsecHelpers as AttoparsecHelpers
 import qualified Coalmine.EvenSimplerPaths.IsomorphismClassHelpers as IsomorphismClassHelpers
 import Coalmine.InternalPrelude
+import qualified Coalmine.Name as Name
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths as SimplePaths
 import qualified Data.Attoparsec.Text as Attoparsec
@@ -104,6 +105,10 @@ instance IsomorphicTo SimplePaths.FilePath Path where
 
 instance IsomorphicTo Path SimplePaths.FilePath where
   to = IsomorphismClassHelpers.thruText
+
+instance Name.FromNameInSpinalCase Path where
+  fromNameInSpinalCase name =
+    Path False [Component (Name.fromNameInSpinalCase name) []]
 
 -- * --
 
