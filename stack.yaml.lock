@@ -5,17 +5,6 @@
 
 packages:
 - completed:
-    name: fx
-    pantry-tree:
-      sha256: c7e3247e7aaefa9a0d400868ecccabb3b381f5d15dd349a4124e6aff7344c1d8
-      size: 481
-    commit: f3947e32f8cc3c764ab8ee48581f2e1f35d3bcdb
-    git: https://github.com/nikita-volkov/fx
-    version: '0.5'
-  original:
-    commit: f3947e32f8cc3c764ab8ee48581f2e1f35d3bcdb
-    git: https://github.com/nikita-volkov/fx
-- completed:
     name: moore-machines
     pantry-tree:
       sha256: 3d1505067d5c8599e9843ed45ec2bc587fa5100c448f558ca5db2c97fb55706f
@@ -92,7 +81,7 @@ packages:
     hackage: vector-extras-0.2.6
 snapshots:
 - completed:
-    sha256: 5955badf83941fb44f6ee27d37111f95a8c5ec455a5c4dcfc8ef11e436a0612b
-    size: 590825
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/5/27.yaml
-  original: nightly-2022-05-27
+    sha256: 1b1fbecac3fc9c8efb60b85fd7ce635c8278d0080a66c2ba0d6e4c03773f5f64
+    size: 590824
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/5/28.yaml
+  original: nightly-2022-05-28

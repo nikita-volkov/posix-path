@@ -73,8 +73,6 @@ library
     Coalmine.FoldlExtras.Fold
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
-    Coalmine.Fx
-    Coalmine.Fx.FilePath
     Coalmine.HashableExtras
     Coalmine.HCurrying
     Coalmine.HeadedMegaparsecExtras
@@ -102,7 +100,6 @@ library
     Coalmine.Prelude
     Coalmine.Printing
     Coalmine.Res
-    Coalmine.S3
     Coalmine.ScientificExtras
     Coalmine.SimplePaths
     Coalmine.Streamer
@@ -155,7 +152,6 @@ library
     filepath,
     foldl,
     from-sum,
-    fx,
     headed-megaparsec,
     isomorphism-class,
     jsonifier,
@@ -182,7 +178,6 @@ library
     th-lego,
     time,
     tuple,
-    turtle,
     vector-builder,
     vector-extras,
     vector-th-unbox,
