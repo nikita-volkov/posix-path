@@ -109,11 +109,7 @@ insecurePostRoute :: [RequestBody req] -> (req -> IO Response) -> Route
 insecurePostRoute =
   error "TODO"
 
-securePostRoute' :: SecurityPolicy sess -> [RequestBody req] -> (req -> StateT sess IO Response) -> Route
-securePostRoute' =
-  error "TODO"
-
-securePostRoute :: SecurityPolicy sess -> [RequestBody (StateT sess IO Response)] -> Route
+securePostRoute :: SecurityPolicy sess -> [RequestBody req] -> (req -> StateT sess IO Response) -> Route
 securePostRoute =
   error "TODO"
 

@@ -13,26 +13,28 @@ main =
 
 api ::
   SecurityPolicy sess ->
-  (M.QuizConfig -> StateT sess IO M.PostQuizesJsonResponse) ->
+  (M.QuizesPostRequestBody -> StateT sess IO M.QuizesPostResponse) ->
   (M.TokensPostRequestBody -> IO M.TokensPostResponse) ->
   [Route]
 api securityPolicy postQuizesHandler tokensPostHandler =
   [ specificSegmentRoute "quizes" $
       [ securePostRoute
           securityPolicy
-          [ let renderResponse = \case
-                  M.CreatedPostQuizesJsonResponse a ->
+          [ fmap M.JsonQuizesPostRequestBody . jsonRequestBody . schemaDecoder $
+              quizConfigSchema
+          ]
+          ( let renderResponse = \case
+                  M.Status201QuizesPostResponse a ->
                     response 201 "Created" $
                       [ jsonResponseContent $
                           objectJson
                             [ requiredJsonField
                                 "id"
-                                (schemaJson uuidSchema (M.postQuizesJsonResponseCreatedId a))
+                                (schemaJson uuidSchema (M.quizesPostResponseStatus201JsonId a))
                             ]
                       ]
-             in jsonRequestBody (schemaDecoder quizConfigSchema)
-                  & fmap (fmap renderResponse . postQuizesHandler)
-          ]
+             in fmap renderResponse . postQuizesHandler
+          )
       ],
     specificSegmentRoute "tokens" $
       [ insecurePostRoute
