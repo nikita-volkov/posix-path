@@ -52,10 +52,6 @@ validatedSchema :: [Validator a] -> Schema a -> Schema a
 validatedSchema =
   error "TODO"
 
-codecSchema :: (a -> Json) -> JsonDecoder a -> Schema a
-codecSchema =
-  error "TODO"
-
 objectSchema :: ObjectSchema a a -> Schema a
 objectSchema =
   error "TODO"
@@ -92,15 +88,7 @@ data RequestBody i
 
 instance Functor RequestBody
 
-data JsonDecoder i
-
-instance Functor JsonDecoder
-
-schemaDecoder :: Schema i -> JsonDecoder i
-schemaDecoder =
-  error "TODO"
-
-jsonRequestBody :: JsonDecoder i -> RequestBody i
+jsonRequestBody :: Schema i -> RequestBody i
 jsonRequestBody =
   error "TODO"
 
@@ -142,26 +130,6 @@ response =
 
 data ResponseContent
 
-jsonResponseContent :: Json -> ResponseContent
+jsonResponseContent :: Schema a -> a -> ResponseContent
 jsonResponseContent =
-  error "TODO"
-
-data Json
-
-schemaJson :: Schema a -> a -> Json
-schemaJson =
-  error "TODO"
-
-objectJson :: [JsonField] -> Json
-objectJson =
-  error "TODO"
-
-data JsonField
-
-requiredJsonField :: Text -> Json -> JsonField
-requiredJsonField =
-  error "TODO"
-
-unrequiredJsonField :: Text -> Maybe Json -> JsonField
-unrequiredJsonField =
   error "TODO"

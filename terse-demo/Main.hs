@@ -23,18 +23,20 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
   [ staticSegmentRoute "quizes" $
       [ securePostRoute
           securityPolicy
-          [ fmap M.JsonQuizesPostRequestBody . jsonRequestBody . schemaDecoder $
+          [ fmap M.JsonQuizesPostRequestBody . jsonRequestBody $
               quizConfigSchema
           ]
           $ let responseAdapter = \case
                   M.Status201QuizesPostResponse a ->
                     response 201 "Created" $
-                      [ jsonResponseContent $
-                          objectJson
-                            [ requiredJsonField
-                                "id"
-                                (schemaJson uuidSchema (M.quizesPostResponseStatus201JsonId a))
-                            ]
+                      [ jsonResponseContent
+                          ( objectSchema $
+                              M.QuizesPostResponseStatus201Json
+                                <$> lmap
+                                  M.quizesPostResponseStatus201JsonId
+                                  (requiredSchemaField "id" uuidSchema)
+                          )
+                          a
                       ]
              in fmap responseAdapter . quizesPostHandler,
         dynamicSegmentRoute uuidSchema $ \quizId ->
@@ -42,7 +44,7 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
               let responseAdapter = \case
                     M.Status200QuizesParamGetResponse a ->
                       response 200 "Quiz config" $
-                        [ jsonResponseContent $ schemaJson quizConfigSchema a
+                        [ jsonResponseContent quizConfigSchema a
                         ]
                in fmap responseAdapter (quizesParamGetHandler quizId),
             securePutRoute securityPolicy [] $
@@ -58,7 +60,7 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
       ],
     staticSegmentRoute "users" $
       [ insecurePostRoute
-          [ fmap M.JsonUsersPostRequestBody . jsonRequestBody . schemaDecoder . objectSchema $
+          [ fmap M.JsonUsersPostRequestBody . jsonRequestBody . objectSchema $
               M.UsersPostRequestBodyJson
                 <$> lmap
                   M.usersPostRequestBodyJsonEmail
@@ -77,7 +79,7 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
       ],
     staticSegmentRoute "tokens" $
       [ insecurePostRoute
-          [ fmap M.JsonTokensPostRequestBody . jsonRequestBody . schemaDecoder . objectSchema $
+          [ fmap M.JsonTokensPostRequestBody . jsonRequestBody . objectSchema $
               M.TokensPostRequestBodyJson
                 <$> lmap
                   M.tokensPostRequestBodyJsonEmail
@@ -89,8 +91,7 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
           $ let responseAdapter = \case
                   M.Status200TokensPostResponse token ->
                     response 200 "Authenticated" $
-                      [ jsonResponseContent $
-                          schemaJson stringSchema token
+                      [ jsonResponseContent stringSchema token
                       ]
                   M.Status401TokensPostResponse ->
                     response 401 "Unauthorized" []
