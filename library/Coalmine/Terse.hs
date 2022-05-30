@@ -121,6 +121,10 @@ specificSegmentRoute :: Text -> [Route] -> Route
 specificSegmentRoute =
   error "TODO"
 
+intArgSegmentRoute :: [Int -> Route] -> Route
+intArgSegmentRoute =
+  error "TODO"
+
 data Response
 
 response :: Int -> Text -> [ResponseContent] -> Response
