@@ -25,3 +25,11 @@ data QuizesQuizIdGetResponse
 data TokensPostResponse
   = Status200TokensPostResponse !Text
   | Status401TokensPostResponse
+
+data TokensPostRequestBody
+  = JsonTokensPostRequestBody !TokensPostRequestBodyJson
+
+data TokensPostRequestBodyJson = TokensPostRequestBodyJson
+  { tokensPostRequestBodyJsonEmail :: !Text,
+    tokensPostRequestBodyJsonPassword :: !Text
+  }

@@ -87,9 +87,9 @@ unrequiredSchemaField :: Text -> Schema a -> ObjectSchema (Maybe a) (Maybe a)
 unrequiredSchemaField =
   error "TODO"
 
-data ByContent i
+data RequestBody i
 
-instance Functor ByContent
+instance Functor RequestBody
 
 data JsonDecoder i
 
@@ -99,22 +99,26 @@ schemaDecoder :: Schema i -> JsonDecoder i
 schemaDecoder =
   error "TODO"
 
-byJsonContent :: JsonDecoder i -> ByContent i
-byJsonContent =
+jsonRequestBody :: JsonDecoder i -> RequestBody i
+jsonRequestBody =
   error "TODO"
 
 data Route
 
-insecurePostRoute :: [ByContent (IO Response)] -> Route
+insecurePostRoute :: [RequestBody req] -> (req -> IO Response) -> Route
 insecurePostRoute =
   error "TODO"
 
-authPostRoute :: SecurityPolicy sess -> [ByContent (IO (Maybe sess))] -> Route
-authPostRoute =
+securePostRoute' :: SecurityPolicy sess -> [RequestBody req] -> (req -> StateT sess IO Response) -> Route
+securePostRoute' =
   error "TODO"
 
-securePostRoute :: SecurityPolicy sess -> [ByContent (StateT sess IO Response)] -> Route
+securePostRoute :: SecurityPolicy sess -> [RequestBody (StateT sess IO Response)] -> Route
 securePostRoute =
+  error "TODO"
+
+authPostRoute :: SecurityPolicy sess -> [RequestBody (IO (Maybe sess))] -> Route
+authPostRoute =
   error "TODO"
 
 specificSegmentRoute :: Text -> [Route] -> Route

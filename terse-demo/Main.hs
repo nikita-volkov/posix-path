@@ -14,8 +14,9 @@ main =
 api ::
   SecurityPolicy sess ->
   (M.QuizConfig -> StateT sess IO M.PostQuizesJsonResponse) ->
+  (M.TokensPostRequestBody -> IO M.TokensPostResponse) ->
   [Route]
-api securityPolicy postQuizesHandler =
+api securityPolicy postQuizesHandler tokensPostHandler =
   [ specificSegmentRoute "quizes" $
       [ securePostRoute
           securityPolicy
@@ -29,21 +30,35 @@ api securityPolicy postQuizesHandler =
                                 (schemaJson uuidSchema (M.postQuizesJsonResponseCreatedId a))
                             ]
                       ]
-             in byJsonContent (schemaDecoder quizConfigSchema)
+             in jsonRequestBody (schemaDecoder quizConfigSchema)
                   & fmap (fmap renderResponse . postQuizesHandler)
           ]
       ],
     specificSegmentRoute "tokens" $
       [ insecurePostRoute
-          [ let renderResponse = \case
+          [ fmap M.JsonTokensPostRequestBody . jsonRequestBody . schemaDecoder . objectSchema $
+              M.TokensPostRequestBodyJson
+                <$> lmap
+                  M.tokensPostRequestBodyJsonEmail
+                  (requiredSchemaField "email" emailSchema)
+                <*> lmap
+                  M.tokensPostRequestBodyJsonPassword
+                  (requiredSchemaField "password" passwordSchema)
+          ]
+          ( let renderResponse = \case
                   M.Status200TokensPostResponse token ->
-                    error "TODO"
+                    response 200 "Authenticated" $
+                      [ jsonResponseContent $
+                          schemaJson stringSchema token
+                      ]
                   M.Status401TokensPostResponse ->
                     response 401 "Unauthorized" []
-             in error "TODO"
-          ]
+             in fmap renderResponse . tokensPostHandler
+          )
       ]
   ]
+
+-- * Schemas
 
 quizConfigSchema :: Schema M.QuizConfig
 quizConfigSchema =
@@ -67,4 +82,12 @@ quizConfigSchema =
 
 questionConfigSchema :: Schema M.QuestionConfig
 questionConfigSchema =
+  error "TODO"
+
+emailSchema :: Schema Text
+emailSchema =
+  error "TODO"
+
+passwordSchema :: Schema Text
+passwordSchema =
   error "TODO"
