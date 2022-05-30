@@ -1,6 +1,6 @@
 module Coalmine.Terse where
 
-import Coalmine.InternalPrelude hiding (Arg)
+import Coalmine.InternalPrelude
 import Coalmine.Parsing
 
 -- * Execution
@@ -106,6 +106,10 @@ jsonRequestBody =
 
 data Route
 
+secureGetRoute :: SecurityPolicy sess -> StateT sess IO Response -> Route
+secureGetRoute =
+  error "TODO"
+
 insecurePostRoute :: [RequestBody req] -> (req -> IO Response) -> Route
 insecurePostRoute =
   error "TODO"
@@ -114,30 +118,20 @@ securePostRoute :: SecurityPolicy sess -> [RequestBody req] -> (req -> StateT se
 securePostRoute =
   error "TODO"
 
+securePutRoute :: SecurityPolicy sess -> [RequestBody req] -> (req -> StateT sess IO Response) -> Route
+securePutRoute =
+  error "TODO"
+
 authPostRoute :: SecurityPolicy sess -> [RequestBody (IO (Maybe sess))] -> Route
 authPostRoute =
   error "TODO"
 
-specificSegmentRoute :: Text -> [Route] -> Route
-specificSegmentRoute =
+staticSegmentRoute :: Text -> [Route] -> Route
+staticSegmentRoute =
   error "TODO"
 
-argSegmentRoute :: Arg a -> [a -> Route] -> Route
-argSegmentRoute =
-  error "TODO"
-
-data Arg a
-  = Arg
-      !Text
-      -- ^ Format name.
-      !(TextParser a)
-
-intArg :: Arg Int
-intArg =
-  error "TODO"
-
-textArg :: Arg Text
-textArg =
+dynamicSegmentRoute :: Schema a -> (a -> [Route]) -> Route
+dynamicSegmentRoute =
   error "TODO"
 
 data Response

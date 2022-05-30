@@ -14,19 +14,35 @@ main =
 api ::
   SecurityPolicy sess ->
   (M.QuizesPostRequestBody -> StateT sess IO M.QuizesPostResponse) ->
+  (UUID -> StateT sess IO M.QuizesParamGetResponse) ->
+  (UUID -> M.QuizesParamPutRequestBody -> StateT sess IO M.QuizesParamPutResponse) ->
   (M.UsersPostRequestBody -> IO M.UsersPostResponse) ->
   (M.TokensPostRequestBody -> IO M.TokensPostResponse) ->
   [Route]
-api securityPolicy quizesPostHandler usersPostHandler tokensPostHandler =
-  [ specificSegmentRoute "quizes" $
+api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler usersPostHandler tokensPostHandler =
+  [ staticSegmentRoute "quizes" $
       [ securePostRoute
           securityPolicy
           [ fmap M.JsonQuizesPostRequestBody . jsonRequestBody . schemaDecoder $
               quizConfigSchema
           ]
-          (fmap adaptQuizesPostResponse . quizesPostHandler)
+          (fmap adaptQuizesPostResponse . quizesPostHandler),
+        dynamicSegmentRoute uuidSchema $ \quizId ->
+          [ secureGetRoute
+              securityPolicy
+              (fmap adaptQuizesParamGetResponse (quizesParamGetHandler quizId)),
+            securePutRoute securityPolicy [] $
+              let responseAdapter = \case
+                    M.Status204QuizesParamPutResponse ->
+                      response 204 "Replaced" []
+                    M.Status403QuizesParamPutResponse ->
+                      response 403 "Not your quiz" []
+                    M.Status404QuizesParamPutResponse ->
+                      response 404 "Not found" []
+               in fmap responseAdapter . quizesParamPutHandler quizId
+          ]
       ],
-    specificSegmentRoute "users" $
+    staticSegmentRoute "users" $
       [ insecurePostRoute
           [ fmap M.JsonUsersPostRequestBody . jsonRequestBody . schemaDecoder . objectSchema $
               M.UsersPostRequestBodyJson
@@ -39,7 +55,7 @@ api securityPolicy quizesPostHandler usersPostHandler tokensPostHandler =
           ]
           (fmap adaptUsersPostResponse . usersPostHandler)
       ],
-    specificSegmentRoute "tokens" $
+    staticSegmentRoute "tokens" $
       [ insecurePostRoute
           [ fmap M.JsonTokensPostRequestBody . jsonRequestBody . schemaDecoder . objectSchema $
               M.TokensPostRequestBodyJson
@@ -89,6 +105,13 @@ passwordSchema =
   error "TODO"
 
 -- * Response adapters
+
+adaptQuizesParamGetResponse :: M.QuizesParamGetResponse -> Response
+adaptQuizesParamGetResponse = \case
+  M.Status200QuizesParamGetResponse a ->
+    response 200 "Quiz config" $
+      [ jsonResponseContent $ schemaJson quizConfigSchema a
+      ]
 
 adaptQuizesPostResponse :: M.QuizesPostResponse -> Response
 adaptQuizesPostResponse = \case

@@ -13,6 +13,23 @@ data QuestionConfig
 
 -- * --
 
+data QuizesParamGetResponse
+  = Status200QuizesParamGetResponse QuizConfig
+  | Status403QuizesParamGetResponse
+  | Status404QuizesParamGetResponse
+
+-- * --
+
+data QuizesParamPutRequestBody
+  = JsonQuizesParamPutRequestBody !QuizConfig
+
+data QuizesParamPutResponse
+  = Status204QuizesParamPutResponse
+  | Status403QuizesParamPutResponse
+  | Status404QuizesParamPutResponse
+
+-- * --
+
 data QuizesPostRequestBody
   = JsonQuizesPostRequestBody !QuizConfig
 
