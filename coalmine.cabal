@@ -230,5 +230,6 @@ test-suite terse-demo
   main-is:
     Main.hs
   other-modules:
+    TerseDemo.Model
   build-depends:
     coalmine,

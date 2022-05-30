@@ -1,7 +1,8 @@
 module Main where
 
 import Coalmine.Prelude
-import qualified Coalmine.Terse as T
+import Coalmine.Terse
+import qualified TerseDemo.Model as M
 
 -- * --
 
@@ -11,63 +12,49 @@ main =
 -- * --
 
 api ::
-  T.SecurityPolicy sess ->
-  (QuizConfig -> StateT sess IO PostQuizesJsonResponse) ->
-  [T.Route]
+  SecurityPolicy sess ->
+  (M.QuizConfig -> StateT sess IO M.PostQuizesJsonResponse) ->
+  [Route]
 api securityPolicy postQuizesHandler =
-  [ T.specificSegmentRoute "quizes" $
-      [ T.securePostRoute
+  [ specificSegmentRoute "quizes" $
+      [ securePostRoute
           securityPolicy
           [ let renderResponse = \case
-                  CreatedPostQuizesJsonResponse a ->
-                    T.jsonResponse
+                  M.CreatedPostQuizesJsonResponse a ->
+                    jsonResponse
                       201
                       "Created"
-                      ( T.objectJson
-                          [ T.requiredJsonField
+                      ( objectJson
+                          [ requiredJsonField
                               "id"
-                              (T.schemaJson T.uuidSchema (postQuizesJsonResponseCreatedId a))
+                              (schemaJson uuidSchema (M.postQuizesJsonResponseCreatedId a))
                           ]
                       )
-             in T.byJsonContent (T.schemaDecoder quizConfigSchema)
+             in byJsonContent (schemaDecoder quizConfigSchema)
                   & fmap (fmap renderResponse . postQuizesHandler)
           ]
       ]
   ]
 
-quizConfigSchema :: T.Schema QuizConfig
+quizConfigSchema :: Schema M.QuizConfig
 quizConfigSchema =
-  T.objectSchema $
-    QuizConfig
+  objectSchema $
+    M.QuizConfig
       <$> lmap
-        quizConfigTitle
-        (T.requiredSchemaField "title" T.stringSchema)
+        M.quizConfigTitle
+        (requiredSchemaField "title" stringSchema)
       <*> lmap
-        quizConfigQuestions
-        ( T.requiredSchemaField
+        M.quizConfigQuestions
+        ( requiredSchemaField
             "questions"
-            ( T.validatedSchema
-                [ T.minItemsArrayValidator 1,
-                  T.maxItemsArrayValidator 10
+            ( validatedSchema
+                [ minItemsArrayValidator 1,
+                  maxItemsArrayValidator 10
                 ]
-                (T.arraySchema questionConfigSchema)
+                (arraySchema questionConfigSchema)
             )
         )
 
-questionConfigSchema :: T.Schema QuestionConfig
+questionConfigSchema :: Schema M.QuestionConfig
 questionConfigSchema =
   error "TODO"
-
-data QuizConfig = QuizConfig
-  { quizConfigTitle :: !Text,
-    quizConfigQuestions :: ![QuestionConfig]
-  }
-
-data QuestionConfig
-
-data PostQuizesJsonResponse
-  = CreatedPostQuizesJsonResponse PostQuizesJsonResponseCreated
-
-data PostQuizesJsonResponseCreated = PostQuizesJsonResponseCreated
-  { postQuizesJsonResponseCreatedId :: !UUID
-  }
