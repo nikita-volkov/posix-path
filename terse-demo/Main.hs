@@ -18,8 +18,19 @@ api securityPolicy postQuizesHandler =
   [ T.specificSegmentRoute "quizes" $
       [ T.securePostRoute
           securityPolicy
-          [ T.byJsonContent (T.schemaDecoder quizConfigSchema)
-              & fmap (fmap T.generalizeResponse . postQuizesHandler)
+          [ let renderResponse = \case
+                  CreatedPostQuizesJsonResponse a ->
+                    T.jsonResponse
+                      201
+                      "Created"
+                      ( T.objectJson
+                          [ T.requiredJsonField
+                              "id"
+                              (T.schemaJson T.uuidSchema (postQuizesJsonResponseCreatedId a))
+                          ]
+                      )
+             in T.byJsonContent (T.schemaDecoder quizConfigSchema)
+                  & fmap (fmap renderResponse . postQuizesHandler)
           ]
       ]
   ]
@@ -55,21 +66,8 @@ data QuizConfig = QuizConfig
 data QuestionConfig
 
 data PostQuizesJsonResponse
-  = JsonPostQuizesJsonResponse PostQuizesJsonResponseJson
+  = CreatedPostQuizesJsonResponse PostQuizesJsonResponseCreated
 
-instance T.SpecificResponse PostQuizesJsonResponse where
-  generalizeResponse = \case
-    JsonPostQuizesJsonResponse a ->
-      T.jsonResponse
-        201
-        "Created"
-        ( T.objectJson
-            [ T.requiredJsonField
-                "id"
-                (T.schemaJson T.uuidSchema (postQuizesJsonResponseJsonId a))
-            ]
-        )
-
-data PostQuizesJsonResponseJson = PostQuizesJsonResponseJson
-  { postQuizesJsonResponseJsonId :: !UUID
+data PostQuizesJsonResponseCreated = PostQuizesJsonResponseCreated
+  { postQuizesJsonResponseCreatedId :: !UUID
   }

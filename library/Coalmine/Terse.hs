@@ -113,9 +113,6 @@ specificSegmentRoute =
 
 data Response
 
-class SpecificResponse response where
-  generalizeResponse :: response -> Response
-
 data Json
 
 schemaJson :: Schema a -> a -> Json
