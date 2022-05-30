@@ -14,27 +14,30 @@ main =
 api ::
   SecurityPolicy sess ->
   (M.QuizesPostRequestBody -> StateT sess IO M.QuizesPostResponse) ->
+  (M.UsersPostRequestBody -> IO M.UsersPostResponse) ->
   (M.TokensPostRequestBody -> IO M.TokensPostResponse) ->
   [Route]
-api securityPolicy postQuizesHandler tokensPostHandler =
+api securityPolicy quizesPostHandler usersPostHandler tokensPostHandler =
   [ specificSegmentRoute "quizes" $
       [ securePostRoute
           securityPolicy
           [ fmap M.JsonQuizesPostRequestBody . jsonRequestBody . schemaDecoder $
               quizConfigSchema
           ]
-          ( let renderResponse = \case
-                  M.Status201QuizesPostResponse a ->
-                    response 201 "Created" $
-                      [ jsonResponseContent $
-                          objectJson
-                            [ requiredJsonField
-                                "id"
-                                (schemaJson uuidSchema (M.quizesPostResponseStatus201JsonId a))
-                            ]
-                      ]
-             in fmap renderResponse . postQuizesHandler
-          )
+          (fmap adaptQuizesPostResponse . quizesPostHandler)
+      ],
+    specificSegmentRoute "users" $
+      [ insecurePostRoute
+          [ fmap M.JsonUsersPostRequestBody . jsonRequestBody . schemaDecoder . objectSchema $
+              M.UsersPostRequestBodyJson
+                <$> lmap
+                  M.usersPostRequestBodyJsonEmail
+                  (requiredSchemaField "email" emailSchema)
+                <*> lmap
+                  M.usersPostRequestBodyJsonPassword
+                  (requiredSchemaField "password" passwordSchema)
+          ]
+          (fmap adaptUsersPostResponse . usersPostHandler)
       ],
     specificSegmentRoute "tokens" $
       [ insecurePostRoute
@@ -47,16 +50,7 @@ api securityPolicy postQuizesHandler tokensPostHandler =
                   M.tokensPostRequestBodyJsonPassword
                   (requiredSchemaField "password" passwordSchema)
           ]
-          ( let renderResponse = \case
-                  M.Status200TokensPostResponse token ->
-                    response 200 "Authenticated" $
-                      [ jsonResponseContent $
-                          schemaJson stringSchema token
-                      ]
-                  M.Status401TokensPostResponse ->
-                    response 401 "Unauthorized" []
-             in fmap renderResponse . tokensPostHandler
-          )
+          (fmap adaptTokensPostResponse . tokensPostHandler)
       ]
   ]
 
@@ -93,3 +87,34 @@ emailSchema =
 passwordSchema :: Schema Text
 passwordSchema =
   error "TODO"
+
+-- * Response adapters
+
+adaptQuizesPostResponse :: M.QuizesPostResponse -> Response
+adaptQuizesPostResponse = \case
+  M.Status201QuizesPostResponse a ->
+    response 201 "Created" $
+      [ jsonResponseContent $
+          objectJson
+            [ requiredJsonField
+                "id"
+                (schemaJson uuidSchema (M.quizesPostResponseStatus201JsonId a))
+            ]
+      ]
+
+adaptUsersPostResponse :: M.UsersPostResponse -> Response
+adaptUsersPostResponse = \case
+  M.Status204UsersPostResponse ->
+    response 204 "User registered" []
+  M.Status403UsersPostResponse ->
+    response 403 "Email already registered" []
+
+adaptTokensPostResponse :: M.TokensPostResponse -> Response
+adaptTokensPostResponse = \case
+  M.Status200TokensPostResponse token ->
+    response 200 "Authenticated" $
+      [ jsonResponseContent $
+          schemaJson stringSchema token
+      ]
+  M.Status401TokensPostResponse ->
+    response 401 "Unauthorized" []

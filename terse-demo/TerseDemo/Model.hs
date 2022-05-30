@@ -37,6 +37,22 @@ data QuizesQuizIdGetResponse
 
 -- * --
 
+data UsersPostRequestBody
+  = JsonUsersPostRequestBody !UsersPostRequestBodyJson
+
+data UsersPostRequestBodyJson = UsersPostRequestBodyJson
+  { usersPostRequestBodyJsonEmail :: !Text,
+    usersPostRequestBodyJsonPassword :: !Text
+  }
+
+data UsersPostResponse
+  = -- | User registered.
+    Status204UsersPostResponse
+  | -- | Email already registered.
+    Status403UsersPostResponse
+
+-- * --
+
 data TokensPostRequestBody
   = JsonTokensPostRequestBody !TokensPostRequestBodyJson
 
