@@ -103,10 +103,6 @@ byJsonContent :: JsonDecoder i -> ByContent i
 byJsonContent =
   error "TODO"
 
-jsonResponse :: Int -> Text -> Json -> Response
-jsonResponse =
-  error "TODO"
-
 data Route
 
 insecurePostRoute :: [ByContent (IO Response)] -> Route
@@ -126,6 +122,16 @@ specificSegmentRoute =
   error "TODO"
 
 data Response
+
+response :: Int -> Text -> [ResponseContent] -> Response
+response =
+  error "TODO"
+
+data ResponseContent
+
+jsonResponseContent :: Json -> ResponseContent
+jsonResponseContent =
+  error "TODO"
 
 data Json
 

@@ -21,17 +21,26 @@ api securityPolicy postQuizesHandler =
           securityPolicy
           [ let renderResponse = \case
                   M.CreatedPostQuizesJsonResponse a ->
-                    jsonResponse
-                      201
-                      "Created"
-                      ( objectJson
-                          [ requiredJsonField
-                              "id"
-                              (schemaJson uuidSchema (M.postQuizesJsonResponseCreatedId a))
-                          ]
-                      )
+                    response 201 "Created" $
+                      [ jsonResponseContent $
+                          objectJson
+                            [ requiredJsonField
+                                "id"
+                                (schemaJson uuidSchema (M.postQuizesJsonResponseCreatedId a))
+                            ]
+                      ]
              in byJsonContent (schemaDecoder quizConfigSchema)
                   & fmap (fmap renderResponse . postQuizesHandler)
+          ]
+      ],
+    specificSegmentRoute "tokens" $
+      [ insecurePostRoute
+          [ let renderResponse = \case
+                  M.Status200TokensPostResponse token ->
+                    error "TODO"
+                  M.Status401TokensPostResponse ->
+                    response 401 "Unauthorized" []
+             in error "TODO"
           ]
       ]
   ]
@@ -42,7 +51,8 @@ quizConfigSchema =
     M.QuizConfig
       <$> lmap
         M.quizConfigTitle
-        (requiredSchemaField "title" stringSchema)
+        ( requiredSchemaField "title" stringSchema
+        )
       <*> lmap
         M.quizConfigQuestions
         ( requiredSchemaField

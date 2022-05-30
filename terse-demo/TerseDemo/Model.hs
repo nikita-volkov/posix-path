@@ -10,8 +10,18 @@ data QuizConfig = QuizConfig
 data QuestionConfig
 
 data PostQuizesJsonResponse
-  = CreatedPostQuizesJsonResponse PostQuizesJsonResponseCreated
+  = CreatedPostQuizesJsonResponse !PostQuizesJsonResponseCreated
 
 data PostQuizesJsonResponseCreated = PostQuizesJsonResponseCreated
   { postQuizesJsonResponseCreatedId :: !UUID
   }
+
+data QuizesQuizIdGetResponse
+  = NotPublishedAndNotOwnedQuizesQuizIdGetResponse
+  | NotFoundQuizesQuizIdGetResponse
+  | QuizConfigQuizesQuizIdGetResponse
+      !QuizConfig
+
+data TokensPostResponse
+  = Status200TokensPostResponse !Text
+  | Status401TokensPostResponse
