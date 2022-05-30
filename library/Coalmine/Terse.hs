@@ -2,6 +2,20 @@ module Coalmine.Terse where
 
 import Coalmine.InternalPrelude
 
+-- * Execution
+
+-- |
+-- Compile routes into a server and run it.
+serve ::
+  -- | Port.
+  Int ->
+  [Route] ->
+  IO ()
+serve =
+  error "TODO"
+
+-- * --
+
 data Authenticated request = Authenticated
   { authenticatedToken :: !ByteString,
     authenicatedRequest :: !request
