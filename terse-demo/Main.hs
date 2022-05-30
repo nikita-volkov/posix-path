@@ -26,11 +26,25 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
           [ fmap M.JsonQuizesPostRequestBody . jsonRequestBody . schemaDecoder $
               quizConfigSchema
           ]
-          (fmap adaptQuizesPostResponse . quizesPostHandler),
+          $ let responseAdapter = \case
+                  M.Status201QuizesPostResponse a ->
+                    response 201 "Created" $
+                      [ jsonResponseContent $
+                          objectJson
+                            [ requiredJsonField
+                                "id"
+                                (schemaJson uuidSchema (M.quizesPostResponseStatus201JsonId a))
+                            ]
+                      ]
+             in fmap responseAdapter . quizesPostHandler,
         dynamicSegmentRoute uuidSchema $ \quizId ->
-          [ secureGetRoute
-              securityPolicy
-              (fmap adaptQuizesParamGetResponse (quizesParamGetHandler quizId)),
+          [ secureGetRoute securityPolicy $
+              let responseAdapter = \case
+                    M.Status200QuizesParamGetResponse a ->
+                      response 200 "Quiz config" $
+                        [ jsonResponseContent $ schemaJson quizConfigSchema a
+                        ]
+               in fmap responseAdapter (quizesParamGetHandler quizId),
             securePutRoute securityPolicy [] $
               let responseAdapter = \case
                     M.Status204QuizesParamPutResponse ->
@@ -53,7 +67,13 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
                   M.usersPostRequestBodyJsonPassword
                   (requiredSchemaField "password" passwordSchema)
           ]
-          (fmap adaptUsersPostResponse . usersPostHandler)
+          $ let responseAdapter =
+                  \case
+                    M.Status204UsersPostResponse ->
+                      response 204 "User registered" []
+                    M.Status403UsersPostResponse ->
+                      response 403 "Email already registered" []
+             in fmap responseAdapter . usersPostHandler
       ],
     staticSegmentRoute "tokens" $
       [ insecurePostRoute
@@ -66,7 +86,15 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
                   M.tokensPostRequestBodyJsonPassword
                   (requiredSchemaField "password" passwordSchema)
           ]
-          (fmap adaptTokensPostResponse . tokensPostHandler)
+          $ let responseAdapter = \case
+                  M.Status200TokensPostResponse token ->
+                    response 200 "Authenticated" $
+                      [ jsonResponseContent $
+                          schemaJson stringSchema token
+                      ]
+                  M.Status401TokensPostResponse ->
+                    response 401 "Unauthorized" []
+             in fmap responseAdapter . tokensPostHandler
       ]
   ]
 
@@ -103,41 +131,3 @@ emailSchema =
 passwordSchema :: Schema Text
 passwordSchema =
   error "TODO"
-
--- * Response adapters
-
-adaptQuizesParamGetResponse :: M.QuizesParamGetResponse -> Response
-adaptQuizesParamGetResponse = \case
-  M.Status200QuizesParamGetResponse a ->
-    response 200 "Quiz config" $
-      [ jsonResponseContent $ schemaJson quizConfigSchema a
-      ]
-
-adaptQuizesPostResponse :: M.QuizesPostResponse -> Response
-adaptQuizesPostResponse = \case
-  M.Status201QuizesPostResponse a ->
-    response 201 "Created" $
-      [ jsonResponseContent $
-          objectJson
-            [ requiredJsonField
-                "id"
-                (schemaJson uuidSchema (M.quizesPostResponseStatus201JsonId a))
-            ]
-      ]
-
-adaptUsersPostResponse :: M.UsersPostResponse -> Response
-adaptUsersPostResponse = \case
-  M.Status204UsersPostResponse ->
-    response 204 "User registered" []
-  M.Status403UsersPostResponse ->
-    response 403 "Email already registered" []
-
-adaptTokensPostResponse :: M.TokensPostResponse -> Response
-adaptTokensPostResponse = \case
-  M.Status200TokensPostResponse token ->
-    response 200 "Authenticated" $
-      [ jsonResponseContent $
-          schemaJson stringSchema token
-      ]
-  M.Status401TokensPostResponse ->
-    response 401 "Unauthorized" []
