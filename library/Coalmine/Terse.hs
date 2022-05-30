@@ -1,6 +1,7 @@
 module Coalmine.Terse where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (Arg)
+import Coalmine.Parsing
 
 -- * Execution
 
@@ -121,8 +122,22 @@ specificSegmentRoute :: Text -> [Route] -> Route
 specificSegmentRoute =
   error "TODO"
 
-intArgSegmentRoute :: [Int -> Route] -> Route
-intArgSegmentRoute =
+argSegmentRoute :: Arg a -> [a -> Route] -> Route
+argSegmentRoute =
+  error "TODO"
+
+data Arg a
+  = Arg
+      !Text
+      -- ^ Format name.
+      !(TextParser a)
+
+intArg :: Arg Int
+intArg =
+  error "TODO"
+
+textArg :: Arg Text
+textArg =
   error "TODO"
 
 data Response
