@@ -46,6 +46,10 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
                       response 200 "Quiz config" $
                         [ jsonResponseContent quizConfigSchema a
                         ]
+                    M.Status403QuizesParamGetResponse ->
+                      response 403 "Not published and not owned" []
+                    M.Status404QuizesParamGetResponse ->
+                      response 404 "Not found" []
                in fmap responseAdapter (quizesParamGetHandler quizId),
             securePutRoute securityPolicy [] $
               let responseAdapter = \case
