@@ -4,6 +4,7 @@ import qualified AesonValueParser
 import qualified Coalmine.BaseExtras.List as List
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
+import qualified Data.Vector as BVec
 import qualified Jsonifier
 
 -- * Execution
@@ -53,18 +54,6 @@ authenticator :: (cred -> IO (Maybe sess)) -> Authenticator cred sess
 authenticator =
   error "TODO"
 
-newtype Validator a
-  = Validator (a -> Maybe Text)
-
-minItemsArrayValidator :: Int -> Validator [a]
-minItemsArrayValidator min = Validator $ \val ->
-  if List.isNotShorterThan min val
-    then Nothing
-    else Just $ "Shorter than " <> showAs min
-
-maxItemsArrayValidator :: Int -> Validator [a]
-maxItemsArrayValidator = error "TODO"
-
 -- * Schema
 
 data Schema value
@@ -80,19 +69,11 @@ instance Invariant Schema where
   invmap f g (Schema name enc dec) =
     Schema name (enc . g) (fmap f dec)
 
--- | Apply validators to a schema. Only has effect on decoding, since it is
--- assumed that the application will produce valid values. Even if it does
--- not, it is the output consumer's responsibility to validate regardless.
--- The input we cannot trust on the other hand, so we do validate.
-validatedSchema :: [Validator a] -> Schema a -> Schema a
-validatedSchema =
-  error "TODO"
-
 objectSchema :: ObjectSchema a a -> Schema a
 objectSchema =
   error "TODO"
 
-arraySchema :: Schema a -> Schema [a]
+arraySchema :: [ArrayValidator a] -> Schema a -> Schema (BVec a)
 arraySchema =
   error "TODO"
 
@@ -151,6 +132,20 @@ requiredSchemaField =
 unrequiredSchemaField :: Text -> Schema a -> ObjectSchema (Maybe a) (Maybe a)
 unrequiredSchemaField =
   error "TODO"
+
+-- ** Validation
+
+newtype ArrayValidator a
+  = ArrayValidator (BVec a -> Maybe Text)
+
+minItemsArrayValidator :: Int -> ArrayValidator a
+minItemsArrayValidator min = ArrayValidator $ \val ->
+  if BVec.length val >= min
+    then Nothing
+    else Just $ "Shorter than " <> showAs min
+
+maxItemsArrayValidator :: Int -> ArrayValidator a
+maxItemsArrayValidator = error "TODO"
 
 -- * --
 

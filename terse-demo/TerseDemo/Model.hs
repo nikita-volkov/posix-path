@@ -6,7 +6,7 @@ import Coalmine.Prelude
 
 data QuizConfig = QuizConfig
   { quizConfigTitle :: !Text,
-    quizConfigQuestions :: ![QuestionConfig]
+    quizConfigQuestions :: !(BVec QuestionConfig)
   }
 
 data QuestionConfig

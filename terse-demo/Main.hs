@@ -113,11 +113,11 @@ quizConfigSchema =
         M.quizConfigQuestions
         ( requiredSchemaField
             "questions"
-            ( validatedSchema
+            ( arraySchema
                 [ minItemsArrayValidator 1,
                   maxItemsArrayValidator 10
                 ]
-                (arraySchema questionConfigSchema)
+                questionConfigSchema
             )
         )
 
