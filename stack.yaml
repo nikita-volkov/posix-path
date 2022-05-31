@@ -11,5 +11,6 @@ extra-deps:
   - cereal-unordered-containers-0.1
   - domain-aeson-0.1
   - domain-cereal-0.1
+  - jsonifier-0.2.1.1
   - leb128-cereal-1.2
   - vector-extras-0.2.6

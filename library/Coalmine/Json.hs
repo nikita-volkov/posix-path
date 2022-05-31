@@ -25,6 +25,6 @@ toJsonifier = \case
   ArrayJson a -> Jf.array (fmap toJsonifier a)
   StringJson a -> Jf.textString a
   NumberJson a -> Jf.scientificNumber a
-  TrueJson -> Jf.bool True
-  FalseJson -> Jf.bool False
+  TrueJson -> Jf.true
+  FalseJson -> Jf.false
   NullJson -> Jf.null

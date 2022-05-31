@@ -67,6 +67,13 @@ packages:
     hackage: domain-cereal-0.1
 - completed:
     pantry-tree:
+      sha256: 97f8e9346d1f5dac49b1c1a3e23b9dad1f0adb42e869937ecded9aee35b496e3
+      size: 1409
+    hackage: jsonifier-0.2.1.1@sha256:9aac2704fff1facef7ae201d87a33267e865e8817ac2e18c130f85017dd79bc9,4157
+  original:
+    hackage: jsonifier-0.2.1.1
+- completed:
+    pantry-tree:
       sha256: af6a4af7b400a4891918a0d3b60d16cbf90a4d5d0a101223f920d684d435754c
       size: 402
     hackage: leb128-cereal-1.2@sha256:ba8770629aa1fa8524cbbea3b4065b21def815a766ab6c74174aa57f8c124ead,1883
