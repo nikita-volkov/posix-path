@@ -1,7 +1,9 @@
 module Coalmine.Terse where
 
+import qualified AesonValueParser
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
+import qualified Jsonifier
 
 -- * Execution
 
@@ -61,11 +63,26 @@ maxItemsArrayValidator = error "TODO"
 -- * Schema
 
 data Schema value
+  = Schema
+      !Text
+      -- ^ Name of the format.
+      -- Empty means no name.
+      (value -> Jsonifier.Json)
+      -- ^ Projection into a composable representation directly renderable to JSON string.
+      (AesonValueParser.Value value)
 
 instance Invariant Schema where
-  invmap f g =
-    error "TODO"
+  invmap f g (Schema name enc dec) =
+    Schema name (enc . g) (fmap f dec)
 
+-- |
+-- Apply validators to a schema.
+-- Only has effect on decoding, since it is assumed that
+-- the application will produce valid values.
+-- Even if it does not, it is the output consumer's responsibility to validate
+-- either way.
+-- The input we cannot trust on the other hand,
+-- so we validate.
 validatedSchema :: [Validator a] -> Schema a -> Schema a
 validatedSchema =
   error "TODO"
