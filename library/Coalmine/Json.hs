@@ -1,6 +1,7 @@
 module Coalmine.Json where
 
 import Coalmine.InternalPrelude
+import qualified Jsonifier as Jf
 
 -- |
 -- JSON literal.
@@ -14,3 +15,16 @@ data Json
   | TrueJson
   | FalseJson
   | NullJson
+
+toUtf8ByteString :: Json -> ByteString
+toUtf8ByteString = Jf.toByteString . toJsonifier
+
+toJsonifier :: Json -> Jf.Json
+toJsonifier = \case
+  ObjectJson a -> Jf.object (fmap (second toJsonifier) a)
+  ArrayJson a -> Jf.array (fmap toJsonifier a)
+  StringJson a -> Jf.textString a
+  NumberJson a -> Jf.scientificNumber a
+  TrueJson -> Jf.bool True
+  FalseJson -> Jf.bool False
+  NullJson -> Jf.null
