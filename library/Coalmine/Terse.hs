@@ -1,6 +1,7 @@
 module Coalmine.Terse where
 
 import qualified AesonValueParser
+import qualified Coalmine.BaseExtras.List as List
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
 import qualified Jsonifier
@@ -52,10 +53,14 @@ authenticator :: (cred -> IO (Maybe sess)) -> Authenticator cred sess
 authenticator =
   error "TODO"
 
-data Validator a
+newtype Validator a
+  = Validator (a -> Maybe Text)
 
 minItemsArrayValidator :: Int -> Validator [a]
-minItemsArrayValidator = error "TODO"
+minItemsArrayValidator min = Validator $ \val ->
+  if List.isNotShorterThan min val
+    then Nothing
+    else Just $ "Shorter than " <> showAs min
 
 maxItemsArrayValidator :: Int -> Validator [a]
 maxItemsArrayValidator = error "TODO"
@@ -75,14 +80,10 @@ instance Invariant Schema where
   invmap f g (Schema name enc dec) =
     Schema name (enc . g) (fmap f dec)
 
--- |
--- Apply validators to a schema.
--- Only has effect on decoding, since it is assumed that
--- the application will produce valid values.
--- Even if it does not, it is the output consumer's responsibility to validate
--- either way.
--- The input we cannot trust on the other hand,
--- so we validate.
+-- | Apply validators to a schema. Only has effect on decoding, since it is
+-- assumed that the application will produce valid values. Even if it does
+-- not, it is the output consumer's responsibility to validate regardless.
+-- The input we cannot trust on the other hand, so we do validate.
 validatedSchema :: [Validator a] -> Schema a -> Schema a
 validatedSchema =
   error "TODO"
