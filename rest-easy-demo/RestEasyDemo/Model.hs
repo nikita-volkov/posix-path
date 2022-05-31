@@ -1,4 +1,4 @@
-module TerseDemo.Model where
+module RestEasyDemo.Model where
 
 import Coalmine.Prelude
 

@@ -1,4 +1,4 @@
-module Coalmine.Terse where
+module Coalmine.RestEasy where
 
 import qualified AesonValueParser
 import qualified Coalmine.BaseExtras.List as List

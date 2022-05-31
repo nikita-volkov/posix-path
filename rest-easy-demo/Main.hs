@@ -1,8 +1,8 @@
 module Main where
 
 import Coalmine.Prelude
-import Coalmine.Terse
-import qualified TerseDemo.Model as M
+import Coalmine.RestEasy
+import qualified RestEasyDemo.Model as M
 
 -- * --
 

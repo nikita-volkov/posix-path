@@ -100,12 +100,12 @@ library
     Coalmine.Prelude
     Coalmine.Printing
     Coalmine.Res
+    Coalmine.RestEasy
     Coalmine.ScientificExtras
     Coalmine.SimplePaths
     Coalmine.Streamer
     Coalmine.Tasty
     Coalmine.Tasty.HeadedMegaparsec
-    Coalmine.Terse
     Coalmine.TextAppender
     Coalmine.TH.Exp
     Coalmine.TH.QuasiQuoter
@@ -223,13 +223,13 @@ test-suite test
     tasty-hunit >=0.9 && <0.11,
     tasty-quickcheck >=0.9 && <0.11,
 
-test-suite terse-demo
+test-suite rest-easy-demo
   import: language-settings
   type: exitcode-stdio-1.0
-  hs-source-dirs: terse-demo
+  hs-source-dirs: rest-easy-demo
   main-is:
     Main.hs
   other-modules:
-    TerseDemo.Model
+    RestEasyDemo.Model
   build-depends:
     coalmine,
