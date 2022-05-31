@@ -91,7 +91,7 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
           $ let responseAdapter = \case
                   M.Status200TokensPostResponse token ->
                     response 200 "Authenticated" $
-                      [ jsonResponseContent stringSchema token
+                      [ jsonResponseContent (stringSchema 1 100) token
                       ]
                   M.Status401TokensPostResponse ->
                     response 401 "Unauthorized" []
@@ -107,18 +107,15 @@ quizConfigSchema =
     M.QuizConfig
       <$> lmap
         M.quizConfigTitle
-        ( requiredSchemaField "title" stringSchema
+        ( requiredSchemaField
+            "title"
+            (stringSchema 1 100)
         )
       <*> lmap
         M.quizConfigQuestions
         ( requiredSchemaField
             "questions"
-            ( arraySchema
-                [ minItemsArrayValidator 1,
-                  maxItemsArrayValidator 10
-                ]
-                questionConfigSchema
-            )
+            (arraySchema 1 10 questionConfigSchema)
         )
 
 questionConfigSchema :: Schema M.QuestionConfig

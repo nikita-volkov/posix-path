@@ -73,20 +73,33 @@ objectSchema :: ObjectSchema a a -> Schema a
 objectSchema =
   error "TODO"
 
-arraySchema :: [ArrayValidator a] -> Schema a -> Schema (BVec a)
+arraySchema ::
+  -- | Min size.
+  Int ->
+  -- | Max size. It is a good practice to specify a reasonable amount for
+  -- security reasons.
+  Int ->
+  Schema a ->
+  Schema (BVec a)
 arraySchema =
   error "TODO"
 
-uuidSchema :: Schema UUID
-uuidSchema =
-  error "TODO"
-
-stringSchema :: Schema Text
+stringSchema ::
+  -- | Min length.
+  Int ->
+  -- | Max length. It is a good practice to specify a reasonable length for
+  -- security reasons.
+  Int ->
+  Schema Text
 stringSchema =
   error "TODO"
 
 oneOfSchema :: [OneOfSchemaVariant a] -> Schema a
 oneOfSchema =
+  error "TODO"
+
+uuidSchema :: Schema UUID
+uuidSchema =
   error "TODO"
 
 -- ** One Of Schema
