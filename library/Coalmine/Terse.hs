@@ -8,11 +8,23 @@ import Coalmine.Parsing
 -- |
 -- Compile routes into a server and run it.
 serve ::
+  [Route] ->
   -- | Port.
   Int ->
-  [Route] ->
   IO ()
 serve =
+  error "TODO"
+
+-- |
+-- Use a schema to parse some JSON input.
+parseJson :: Schema a -> ByteString -> Maybe a
+parseJson =
+  error "TODO"
+
+-- |
+-- Use a schema to render some value as JSON.
+renderJson :: Schema a -> a -> ByteString
+renderJson =
   error "TODO"
 
 -- * --
