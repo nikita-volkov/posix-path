@@ -62,6 +62,10 @@ maxItemsArrayValidator = error "TODO"
 
 data Schema value
 
+instance Invariant Schema where
+  invmap f g =
+    error "TODO"
+
 validatedSchema :: [Validator a] -> Schema a -> Schema a
 validatedSchema =
   error "TODO"
@@ -88,12 +92,19 @@ oneOfSchema =
 
 -- ** One Of Schema
 
-data OneOfSchemaVariant a
-  = forall b.
+data OneOfSchemaVariant sum
+  = forall variant.
     OneOfSchemaVariant
-      (a -> Maybe b)
-      (b -> a)
-      (Schema b)
+      (sum -> Maybe variant)
+      -- ^ Narrow from the sum.
+      (variant -> sum)
+      -- ^ Broaden to the sum.
+      (Schema variant)
+      -- ^ Variant schema
+
+instance Invariant OneOfSchemaVariant where
+  invmap f g (OneOfSchemaVariant narrow broaden schema) =
+    OneOfSchemaVariant (narrow . g) (f . broaden) schema
 
 oneOfSchemaVariant ::
   -- | Attempt to extract the variant from the sum.
