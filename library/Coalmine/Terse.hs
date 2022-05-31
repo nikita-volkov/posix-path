@@ -46,6 +46,8 @@ minItemsArrayValidator = error "TODO"
 maxItemsArrayValidator :: Int -> Validator [a]
 maxItemsArrayValidator = error "TODO"
 
+-- * Schema
+
 data Schema value
 
 validatedSchema :: [Validator a] -> Schema a -> Schema a
@@ -68,6 +70,31 @@ stringSchema :: Schema Text
 stringSchema =
   error "TODO"
 
+oneOfSchema :: [OneOfSchemaVariant a] -> Schema a
+oneOfSchema =
+  error "TODO"
+
+-- ** One Of Schema
+
+data OneOfSchemaVariant a
+  = forall b.
+    OneOfSchemaVariant
+      (a -> Maybe b)
+      (b -> a)
+      (Schema b)
+
+oneOfSchemaVariant ::
+  -- | Attempt to extract the variant from the sum.
+  (sum -> Maybe variant) ->
+  -- | Map the variant to the sum.
+  (variant -> sum) ->
+  -- | Schema of the variant.
+  Schema variant ->
+  OneOfSchemaVariant sum
+oneOfSchemaVariant = OneOfSchemaVariant
+
+-- ** Object Schema
+
 data ObjectSchema i o
 
 instance Profunctor ObjectSchema
@@ -83,6 +110,8 @@ requiredSchemaField =
 unrequiredSchemaField :: Text -> Schema a -> ObjectSchema (Maybe a) (Maybe a)
 unrequiredSchemaField =
   error "TODO"
+
+-- * --
 
 data RequestBody i
 
