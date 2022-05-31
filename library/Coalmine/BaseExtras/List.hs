@@ -128,3 +128,65 @@ intercalateMap proj separator = \case
   [] -> mempty
   head : tail ->
     foldl' (\acc element -> acc <> separator <> proj element) (proj head) tail
+
+-- * --
+
+-- | @atLength atLen atEnd n ls@ unravels list @ls@ to position @n@. Precisely:
+--
+-- @
+--  atLength atLenPred atEndPred n ls
+--   | n < 0         = atLenPred ls
+--   | length ls < n = atEndPred (n - length ls)
+--   | otherwise     = atLenPred (drop n ls)
+-- @
+atLength ::
+  ([a] -> b) -> -- Called when length ls >= n, passed (drop n ls)
+  --    NB: arg passed to this function may be []
+  b -> -- Called when length ls <  n
+  Int ->
+  [a] ->
+  b
+atLength atLenPred atEnd n0 ls0
+  | n0 < 0 = atLenPred ls0
+  | otherwise = go n0 ls0
+  where
+    -- go's first arg n >= 0
+    go 0 ls = atLenPred ls
+    go _ [] = atEnd -- n > 0 here
+    go n (_ : xs) = go (n - 1) xs
+
+-- ** Some special cases of atLength
+
+-- | @(isLongerThan n xs) = (length xs > n)@
+isLongerThan :: Int -> [a] -> Bool
+isLongerThan n lst
+  | n < 0 = True
+  | otherwise = atLength (not . null) False n lst
+
+-- | @(isNotShorterThan n xs) = (length xs >= n)@
+isNotShorterThan :: Int -> [a] -> Bool
+isNotShorterThan = atLength (const True) False
+
+-- | @(hasLength n xs) = (length xs == n)@
+hasLength :: Int -> [a] -> Bool
+hasLength n
+  | n < 0 = const False
+  | otherwise = atLength null False n
+
+-- | @(isNotAsLong n xs) = (length xs /= n)@
+isNotAsLong :: Int -> [a] -> Bool
+isNotAsLong n lst
+  | n < 0 = True
+  | otherwise = atLength (not . null) True n lst
+
+-- | @(isNotLongerThan n xs) = (length xs <= n)@
+isNotLongerThan :: Int -> [a] -> Bool
+isNotLongerThan n lst
+  | n < 0 =
+      False
+  | otherwise =
+      atLength null True n lst
+
+-- | @(isShorterThan n xs) == (length xs < n)@
+isShorterThan :: Int -> [a] -> Bool
+isShorterThan = atLength (const False) True
