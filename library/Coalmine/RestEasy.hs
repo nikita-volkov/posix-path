@@ -4,6 +4,7 @@ import qualified AesonValueParser
 import qualified Coalmine.BaseExtras.List as List
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
+import qualified Data.Text as Text
 import qualified Data.Vector as BVec
 import qualified Jsonifier
 
@@ -91,8 +92,19 @@ stringSchema ::
   -- security reasons.
   Int ->
   Schema Text
-stringSchema =
-  error "TODO"
+stringSchema minLength maxLength =
+  Schema
+    "String"
+    Jsonifier.textString
+    ( AesonValueParser.string . AesonValueParser.matchedText $ \text ->
+        let length = Text.length text
+         in if length < minLength
+              then Left $ "Shorter than " <> showAs minLength
+              else
+                if length > maxLength
+                  then Left $ "Longer than " <> showAs maxLength
+                  else Right text
+    )
 
 oneOfSchema :: [OneOfSchemaVariant a] -> Schema a
 oneOfSchema =
