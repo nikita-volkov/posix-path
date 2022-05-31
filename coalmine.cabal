@@ -82,6 +82,7 @@ library
     Coalmine.Interval
     Coalmine.IsomorphismClassInstances
     Coalmine.Isomorphisms
+    Coalmine.Json
     Coalmine.JsonEncoder
     Coalmine.Located
     Coalmine.Located.Rendering
