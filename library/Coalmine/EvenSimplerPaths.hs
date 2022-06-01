@@ -32,6 +32,7 @@ data Path
       -- ^ Is it absolute?
       ![Component]
       -- ^ Components in reverse order.
+  deriving (Eq)
 
 -- |
 -- Structured name of a single component of a path.
@@ -41,6 +42,7 @@ data Component
       -- ^ Name.
       ![Text]
       -- ^ Extensions in reverse order.
+  deriving (Eq)
 
 -- * --
 

@@ -3,6 +3,7 @@ module Main where
 import Coalmine.Prelude
 import Coalmine.Tasty
 import qualified TestSuites.ConduitExtras as ConduitExtras
+import qualified TestSuites.EvenSimplerPaths as EvenSimplerPaths
 import qualified TestSuites.Inter as Inter
 import qualified TestSuites.LocatedRendering as LocatedRendering
 import qualified TestSuites.MegaparsecExtras as MegaparsecExtras
@@ -15,6 +16,7 @@ main =
       testGroup "LocatedRendering" LocatedRendering.tests,
       testGroup "MegaparsecExtras" MegaparsecExtras.tests,
       testGroup "TimeExtrasConversions" TimeExtrasConversions.tests,
+      testGroup "EvenSimplerPaths" EvenSimplerPaths.tests,
       testGroup "SimplePaths" SimplePaths.tests,
       testGroup "ConduitExtras" ConduitExtras.tests
     ]
