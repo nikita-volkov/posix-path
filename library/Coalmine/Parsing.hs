@@ -23,3 +23,5 @@ instance
   type ParserInput (HeadedMegaparsec.HeadedParsec Void strm) = strm
   parse =
     HeadedMegaparsecExtras.toRefiner
+
+type TextParser = Data.Attoparsec.Text.Parser
