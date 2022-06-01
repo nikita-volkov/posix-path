@@ -15,8 +15,10 @@ dir = takeWhile1 $ \a -> a /= '/' && a /= '\\'
 
 filePathDirs = many $ dir <* char '/'
 
-fileName = takeWhile $ \a -> a /= '.'
+fileName = takeWhile $ \a -> a /= '.' && a /= '/' && a /= '\\'
 
-extension = char '.' *> takeWhile1 (\a -> a /= '.')
+fileName1 = takeWhile1 $ \a -> a /= '.' && a /= '/' && a /= '\\'
+
+extension = char '.' *> takeWhile1 (\a -> a /= '.' && a /= '/' && a /= '\\')
 
 abs = char '/' $> True <|> pure False
