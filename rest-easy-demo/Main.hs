@@ -7,7 +7,7 @@ import qualified RestEasyDemo.Model as M
 -- * --
 
 main =
-  error "TODO"
+  return ()
 
 -- * --
 
