@@ -21,6 +21,7 @@ import Coalmine.NameConversion
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths as SimplePaths
 import qualified Data.Attoparsec.Text as Attoparsec
+import qualified Data.Text as Text
 import qualified System.Directory as Directory
 import qualified TextBuilderDev as TextBuilderDev
 
@@ -32,6 +33,7 @@ data Path
       -- ^ Is it absolute?
       ![Component]
       -- ^ Components in reverse order.
+  deriving (Eq)
 
 -- |
 -- Structured name of a single component of a path.
@@ -41,6 +43,7 @@ data Component
       -- ^ Name.
       ![Text]
       -- ^ Extensions in reverse order.
+  deriving (Eq)
 
 -- * --
 
@@ -91,10 +94,12 @@ instance LenientParser Path where
     where
       _componentOrDot =
         Just <$> _component <|> Nothing <$ _dot
-      _component =
-        Component
-          <$> AttoparsecHelpers.fileName
-          <*> reverseMany AttoparsecHelpers.extension
+      _component = do
+        _baseName <- AttoparsecHelpers.fileName
+        _extensions <- reverseMany AttoparsecHelpers.extension
+        if Text.null _baseName && null _extensions
+          then empty
+          else return $ Component _baseName _extensions
       _dot =
         Attoparsec.char '.'
 

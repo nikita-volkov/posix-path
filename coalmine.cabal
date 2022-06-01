@@ -207,6 +207,7 @@ test-suite test
     Main.hs
   other-modules:
     TestSuites.ConduitExtras
+    TestSuites.EvenSimplerPaths
     TestSuites.Inter
     TestSuites.Inter.Regressions.FromFormatica
     TestSuites.LocatedRendering
