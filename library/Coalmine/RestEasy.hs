@@ -158,20 +158,6 @@ unrequiredSchemaField :: Text -> Schema a -> ObjectSchema (Maybe a) (Maybe a)
 unrequiredSchemaField =
   error "TODO"
 
--- ** Validation
-
-newtype ArrayValidator a
-  = ArrayValidator (BVec a -> Maybe Text)
-
-minItemsArrayValidator :: Int -> ArrayValidator a
-minItemsArrayValidator min = ArrayValidator $ \val ->
-  if BVec.length val >= min
-    then Nothing
-    else Just $ "Shorter than " <> showAs min
-
-maxItemsArrayValidator :: Int -> ArrayValidator a
-maxItemsArrayValidator = error "TODO"
-
 -- * --
 
 data RequestBody i
