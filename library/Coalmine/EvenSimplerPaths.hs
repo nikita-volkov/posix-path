@@ -83,14 +83,20 @@ instance Show Path where
 instance LenientParser Path where
   lenientParser = do
     _abs <- Attoparsec.char '/' $> True <|> pure False
-    _components <- reverseSepBy _component (Attoparsec.char '/')
+    _components <-
+      catMaybes
+        <$> reverseSepBy _componentOrDot (Attoparsec.char '/')
     optional $ Attoparsec.char '/'
     return $ Path _abs _components
     where
+      _componentOrDot =
+        Just <$> _component <|> Nothing <$ _dot
       _component =
         Component
           <$> AttoparsecHelpers.fileName
           <*> reverseMany AttoparsecHelpers.extension
+      _dot =
+        Attoparsec.char '.'
 
 instance IsString Path where
   fromString =
