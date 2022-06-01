@@ -68,6 +68,9 @@ instance CompactPrinting Path where
           (to _name)
           (reverse _extensions)
 
+instance BroadPrinting Path where
+  toBroadBuilder = to . toCompactBuilder
+
 instance ToJSON Path where
   toJSON = toJSON . printCompactAsText
 
