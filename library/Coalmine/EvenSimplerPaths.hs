@@ -93,16 +93,12 @@ instance LenientParser Path where
     optional $ Attoparsec.char '/'
     return $ Path _abs _components
     where
-      _componentOrDot =
-        Just <$> _component <|> Nothing <$ _dot
-      _component = do
+      _componentOrDot = do
         _baseName <- AttoparsecHelpers.fileName
         _extensions <- reverseMany AttoparsecHelpers.extension
         if Text.null _baseName && null _extensions
-          then empty
-          else return $ Component _baseName _extensions
-      _dot =
-        Attoparsec.char '.'
+          then Nothing <$ Attoparsec.char '.' <|> pure Nothing
+          else return $ Just $ Component _baseName _extensions
 
 instance IsString Path where
   fromString =
