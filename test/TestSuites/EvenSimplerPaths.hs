@@ -7,5 +7,8 @@ import Coalmine.Tasty
 tests =
   [ testCase ". is the same as empty" $
       assertEqual "" mempty $
-        fromString @Path "."
+        fromString @Path ".",
+    testCase "Trailing slash" $
+      assertEqual "" (Right "src/main/java") $
+        parseTextLeniently @Path "src/main/java/"
   ]
