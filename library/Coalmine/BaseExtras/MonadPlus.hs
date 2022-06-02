@@ -44,7 +44,6 @@ reverseSepBy1 element sep =
   element >>= go . pure
   where
     go !acc =
-      join $
-        mplus
-          (sep $> (element >>= go . (: acc)))
-          (return (return acc))
+      mplus
+        (sep >> element >>= go . (: acc))
+        (return acc)
