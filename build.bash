@@ -24,6 +24,13 @@ function build_and_test_with_doctest {
   --flag coalmine:doctest
 }
 
+function build_and_test_by_pattern {
+  stack build \
+  --fast --test \
+  --ghc-options "-j +RTS -A128m -n2m -RTS -fwarn-incomplete-patterns" \
+  --ta "-p \"$1\""
+}
+
 function build {
   stack build \
   --ghc-options "-j +RTS -A128m -n2m -RTS -fwarn-incomplete-patterns" \
