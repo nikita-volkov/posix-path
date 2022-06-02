@@ -5,6 +5,7 @@ module Coalmine.EvenSimplerPaths
     -- * --
     toString,
     parent,
+    components,
     createDirsTo,
 
     -- * --
@@ -139,6 +140,22 @@ parent (Path abs components) =
   case components of
     h : t -> Just $ Path abs t
     _ -> Nothing
+
+-- | Decompose into components.
+components :: Path -> [Path]
+components (Path abs components) =
+  if abs
+    then case revComponents of
+      h : t -> Path True [h] : nonAbsFromComponents t
+      _ -> [Path True []]
+    else nonAbsFromComponents revComponents
+  where
+    revComponents = reverse components
+    nonAbsFromComponents = \case
+      h : t -> Path False [h] : nonAbsFromComponents t
+      _ -> []
+
+-- * --
 
 createDirsTo :: Path -> IO ()
 createDirsTo =
