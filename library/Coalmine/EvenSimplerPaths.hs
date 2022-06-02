@@ -5,6 +5,7 @@ module Coalmine.EvenSimplerPaths
     -- * --
     toString,
     parent,
+    components,
     createDirsTo,
 
     -- * --
@@ -92,16 +93,12 @@ instance LenientParser Path where
     optional $ Attoparsec.char '/'
     return $ Path _abs _components
     where
-      _componentOrDot =
-        Just <$> _component <|> Nothing <$ _dot
-      _component = do
+      _componentOrDot = do
         _baseName <- AttoparsecHelpers.fileName
         _extensions <- reverseMany AttoparsecHelpers.extension
         if Text.null _baseName && null _extensions
-          then empty
-          else return $ Component _baseName _extensions
-      _dot =
-        Attoparsec.char '.'
+          then Nothing <$ Attoparsec.char '.' <|> pure Nothing
+          else return $ Just $ Component _baseName _extensions
 
 instance IsString Path where
   fromString =
@@ -139,6 +136,22 @@ parent (Path abs components) =
   case components of
     h : t -> Just $ Path abs t
     _ -> Nothing
+
+-- | Decompose into components.
+components :: Path -> [Path]
+components (Path abs components) =
+  if abs
+    then case revComponents of
+      h : t -> Path True [h] : nonAbsFromComponents t
+      _ -> [Path True []]
+    else nonAbsFromComponents revComponents
+  where
+    revComponents = reverse components
+    nonAbsFromComponents = \case
+      h : t -> Path False [h] : nonAbsFromComponents t
+      _ -> []
+
+-- * --
 
 createDirsTo :: Path -> IO ()
 createDirsTo =
