@@ -93,6 +93,7 @@ library
     Coalmine.MultilineTextBuilder
     Coalmine.Name
     Coalmine.NameConversion
+    Coalmine.OneWayIO
     Coalmine.Optics
     Coalmine.Parsed
     Coalmine.Parsing
