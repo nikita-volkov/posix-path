@@ -21,17 +21,16 @@ readOneOf = go []
   where
     go !errs = \case
       path : tail ->
-        catch
+        catch @SomeException
           (ByteString.readFile (printCompactAsString path))
           (\e -> go ((e, path) : errs) tail)
       [] ->
         die (from @TextBuilder report)
         where
           report =
-            "Failed to read from the following files for the following reasons:\n"
+            "Failed to read from any of the following files:\n"
               <> list
             where
               list = List.intercalateMap errReport "\n" errs
               errReport (err, path) =
-                "- " <> printCompactAs path <> ": "
-                  <> (to . displayException @IOException) err
+                "- " <> printCompactAs path
