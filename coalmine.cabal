@@ -108,6 +108,7 @@ library
     Coalmine.Streamer
     Coalmine.Tasty
     Coalmine.Tasty.HeadedMegaparsec
+    Coalmine.Tasty.TestTrees
     Coalmine.TextAppender
     Coalmine.TH.Exp
     Coalmine.TH.QuasiQuoter
