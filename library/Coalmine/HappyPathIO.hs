@@ -4,7 +4,7 @@
 -- IOW, the actions here are not meant to be caught exceptions from.
 --
 -- This perspective lets us completely avoid exceptions.
-module Coalmine.OneWayIO where
+module Coalmine.HappyPathIO where
 
 import qualified Coalmine.BaseExtras.List as List
 import Coalmine.EvenSimplerPaths (Path)

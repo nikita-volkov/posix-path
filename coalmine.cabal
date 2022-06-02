@@ -73,6 +73,7 @@ library
     Coalmine.FoldlExtras.Fold
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
+    Coalmine.HappyPathIO
     Coalmine.HashableExtras
     Coalmine.HCurrying
     Coalmine.HeadedMegaparsecExtras
@@ -93,7 +94,6 @@ library
     Coalmine.MultilineTextBuilder
     Coalmine.Name
     Coalmine.NameConversion
-    Coalmine.OneWayIO
     Coalmine.Optics
     Coalmine.Parsed
     Coalmine.Parsing
