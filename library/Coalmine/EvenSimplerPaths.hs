@@ -6,7 +6,11 @@ module Coalmine.EvenSimplerPaths
     toString,
     parent,
     components,
+    extensions,
+
+    -- * --
     createDirsTo,
+    listDirectory,
 
     -- * --
     addExtension,
@@ -159,6 +163,12 @@ components (Path abs components) =
       h : t -> Path False [h] : nonAbsFromComponents t
       _ -> []
 
+extensions :: Path -> [Text]
+extensions (Path _ components) =
+  case components of
+    Component _ extensions : _ -> reverse extensions
+    [] -> []
+
 -- * --
 
 createDirsTo :: Path -> IO ()
@@ -166,6 +176,11 @@ createDirsTo =
   traverse_
     (Directory.createDirectoryIfMissing True . toString)
     . parent
+
+listDirectory :: Path -> IO [Path]
+listDirectory dir =
+  Directory.listDirectory (printCompactAs dir)
+    <&> fmap (mappend dir . fromString)
 
 -- * Traversers (or Van Laarhoven lenses)
 
