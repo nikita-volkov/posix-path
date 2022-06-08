@@ -28,14 +28,6 @@ import qualified TextBuilderDev as TextBuilderDev
 
 -- * --
 
-data Path
-  = Path
-      !Bool
-      -- ^ Is it absolute?
-      ![Component]
-      -- ^ Components in reverse order.
-  deriving (Eq)
-
 -- |
 -- Structured name of a single component of a path.
 data Component
@@ -46,7 +38,23 @@ data Component
       -- ^ Extensions in reverse order.
   deriving (Eq)
 
+instance Ord Component where
+  Component la lb <= Component ra rb =
+    la <= ra || reverse lb <= reverse rb
+
 -- * --
+
+data Path
+  = Path
+      !Bool
+      -- ^ Is it absolute?
+      ![Component]
+      -- ^ Components in reverse order.
+  deriving (Eq)
+
+instance Ord Path where
+  Path la lb <= Path ra rb =
+    la <= ra || reverse lb <= reverse rb
 
 instance Semigroup Path where
   Path _lAbs _lNames <> Path _rAbs _rNames =
