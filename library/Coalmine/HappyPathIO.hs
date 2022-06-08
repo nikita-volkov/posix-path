@@ -4,6 +4,9 @@
 -- IOW, the actions here are not meant to be caught exceptions from.
 --
 -- This perspective lets us completely avoid exceptions.
+--
+-- This is achieved by delegating it to the action to terminate the application.
+-- E.g., outputting something before exiting and etc.
 module Coalmine.HappyPathIO where
 
 import qualified Coalmine.BaseExtras.List as List
