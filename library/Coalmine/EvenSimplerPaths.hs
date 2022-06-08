@@ -7,6 +7,7 @@ module Coalmine.EvenSimplerPaths
     parent,
     components,
     createDirsTo,
+    writeAt,
 
     -- * --
     addExtension,
@@ -23,6 +24,8 @@ import Coalmine.Printing
 import qualified Coalmine.SimplePaths as SimplePaths
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.Text as Text
+import qualified Data.Text.Lazy as TextLazy
+import qualified Data.Text.Lazy.IO as TextLazyIO
 import qualified System.Directory as Directory
 import qualified TextBuilderDev as TextBuilderDev
 
@@ -166,6 +169,10 @@ createDirsTo =
   traverse_
     (Directory.createDirectoryIfMissing True . toString)
     . parent
+
+writeAt :: Path -> TextLazy.Text -> IO ()
+writeAt path =
+  TextLazyIO.writeFile (toString path)
 
 -- * Traversers (or Van Laarhoven lenses)
 
