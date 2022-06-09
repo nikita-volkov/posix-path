@@ -16,7 +16,7 @@ parts = do
 
 part :: Gen Text
 part = do
-  partSize <- chooseInt (0, Constants.maxBytesInPart)
+  partSize <- chooseInt (1, Constants.maxBytesInPart)
   text <- Text.pack <$> replicateM partSize partChar
   if ByteString.length (TextEncoding.encodeUtf8 text) > Constants.maxBytesInPart
     then part
