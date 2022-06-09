@@ -66,3 +66,11 @@ instance Serialize a => Serialize (Compact (BVec.Vector a)) where
 instance (Serialize a, UVec.Unbox a) => Serialize (Compact (UVec.Vector a)) where
   put (Compact vec) = Put.vec put vec
   get = Get.vec get <&> Compact
+
+instance (Serialize a) => Serialize (Compact [a]) where
+  put (Compact list) = do
+    put $ Compact $ length list
+    forM_ list put
+  get = do
+    Compact length <- get
+    Compact <$> replicateM length get
