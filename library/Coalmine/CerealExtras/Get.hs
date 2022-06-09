@@ -41,34 +41,34 @@ intMap = map IntMap.fromDistinctAscList
 failWithException :: Exception e => e -> Get any
 failWithException = fail . displayException
 
-secureVec ::
+secureCompactVec ::
   GVec.Vector v a =>
   -- | Max size.
   Int ->
   Get a ->
   Get (v a)
-secureVec maxSize element = do
+secureCompactVec maxSize element = do
   sizeVal <- size
   if sizeVal > maxSize
     then fail "Size is too large"
     else GVec.replicateM sizeVal element
 
-secureByteString ::
+secureCompactByteString ::
   -- | Max size.
   Int ->
   Get ByteString
-secureByteString maxSize = do
+secureCompactByteString maxSize = do
   sizeVal <- size
   if sizeVal > maxSize
     then fail "Size is too large"
     else getBytes sizeVal
 
-secureText ::
+secureCompactText ::
   -- | Max UTF8-encoded size.
   Int ->
   Get Text
-secureText maxSize = do
-  byteString <- secureByteString maxSize
+secureCompactText maxSize = do
+  byteString <- secureCompactByteString maxSize
   case TextEncoding.decodeUtf8' byteString of
     Right res -> return res
     Left exc -> failWithException exc

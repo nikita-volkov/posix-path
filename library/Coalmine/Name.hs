@@ -30,10 +30,10 @@ instance QuickCheckArbitrary.Arbitrary Name where
 
 instance Cereal.Serialize Name where
   put (Name parts) = do
-    CerealExtrasPut.vec (Cereal.put . CerealExtrasCompact.Compact) parts
+    CerealExtrasPut.vec CerealExtrasPut.compactText parts
   get =
-    fmap Name . CerealExtrasGet.secureVec Constants.maxParts $ do
-      text <- CerealExtrasGet.secureText Constants.maxPartSize
+    fmap Name . CerealExtrasGet.secureCompactVec Constants.maxParts $ do
+      text <- CerealExtrasGet.secureCompactText Constants.maxPartSize
       case parse Attoparsec.part text of
         Right word -> return word
         Left err -> fail $ to err

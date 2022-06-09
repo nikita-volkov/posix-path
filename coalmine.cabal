@@ -130,8 +130,8 @@ library
     Coalmine.Inter.TH
     Coalmine.InternalPrelude
     Coalmine.Name.Attoparsec
-    Coalmine.Name.Constants
     Coalmine.Name.Charsets
+    Coalmine.Name.Constants
     Coalmine.Name.Gens
     Coalmine.Name.Megaparsec
     Coalmine.SimplePaths.AttoparsecHelpers
