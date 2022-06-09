@@ -13,7 +13,8 @@ function build_and_test {
   stack build \
   --ghc-options "-j +RTS -A128m -n2m -RTS -fwarn-incomplete-patterns" \
   --test \
-  --fast
+  --fast \
+  --ta "--quickcheck-verbose -p \"/Encode-decode equals original/\""
 }
 
 function build_and_test_with_doctest {
@@ -52,5 +53,4 @@ function demo {
 }
 
 format
-fork_haddock
 build_and_test
