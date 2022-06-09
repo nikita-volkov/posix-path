@@ -7,12 +7,15 @@ import qualified Coalmine.CerealExtras.Put as CerealExtrasPut
 import Coalmine.InternalPrelude
 import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 import qualified Coalmine.Name.Attoparsec as Attoparsec
+import qualified Coalmine.Name.Constants as Constants
+import qualified Coalmine.Name.Gens as Gens
 import qualified Coalmine.Name.Megaparsec as Megaparsec
 import Coalmine.Parsing
 import Coalmine.Printing
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.Serialize as Cereal
 import qualified Data.Text as Text
+import qualified Test.QuickCheck.Arbitrary as QuickCheckArbitrary
 import qualified Text.Megaparsec as Megaparsec
 import qualified TextBuilderDev as TextBuilder
 
@@ -22,12 +25,15 @@ newtype Name = Name {nameParts :: BVec Text}
 
 -- * Instances
 
+instance QuickCheckArbitrary.Arbitrary Name where
+  arbitrary = Name <$> Gens.parts
+
 instance Cereal.Serialize Name where
   put (Name parts) = do
     CerealExtrasPut.vec (Cereal.put . CerealExtrasCompact.Compact) parts
   get =
-    fmap Name . CerealExtrasGet.secureVec 100 $ do
-      text <- CerealExtrasGet.secureText 100
+    fmap Name . CerealExtrasGet.secureVec Constants.maxParts $ do
+      text <- CerealExtrasGet.secureText Constants.maxPartSize
       case parse Attoparsec.nameWord text of
         Right word -> return word
         Left err -> fail $ to err

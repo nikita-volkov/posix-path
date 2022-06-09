@@ -1,4 +1,4 @@
-module Coalmine.Tasty.HeadedMegaparsec where
+module Coalmine.Tasty.TestTrees.HeadedMegaparsec where
 
 import qualified Coalmine.HeadedMegaparsecExtras as P
 import Coalmine.InternalPrelude hiding (FilePath)
