@@ -18,6 +18,7 @@ module Coalmine.EvenSimplerPaths
 where
 
 import Coalmine.BaseExtras.MonadPlus
+import qualified Coalmine.CerealExtras.Compact as CerealExtrasCompact
 import qualified Coalmine.EvenSimplerPaths.AttoparsecHelpers as AttoparsecHelpers
 import qualified Coalmine.EvenSimplerPaths.IsomorphismClassHelpers as IsomorphismClassHelpers
 import Coalmine.InternalPrelude
@@ -26,6 +27,7 @@ import Coalmine.NameConversion
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths as SimplePaths
 import qualified Data.Attoparsec.Text as Attoparsec
+import qualified Data.Serialize as Cereal
 import qualified Data.Text as Text
 import qualified System.Directory as Directory
 import qualified TextBuilderDev as TextBuilderDev
@@ -42,6 +44,15 @@ data Component
       -- ^ Extensions in reverse order.
   deriving (Eq)
 
+instance Cereal.Serialize Component where
+  put (Component name extensions) = do
+    Cereal.put $ CerealExtrasCompact.Compact name
+    Cereal.put $ CerealExtrasCompact.Compact $ fmap CerealExtrasCompact.Compact extensions
+  get = do
+    CerealExtrasCompact.Compact name <- Cereal.get
+    CerealExtrasCompact.Compact extensions <- Cereal.get
+    return $ Component name (fmap CerealExtrasCompact.unwrap extensions)
+
 instance Ord Component where
   Component la lb <= Component ra rb =
     la <= ra || reverse lb <= reverse rb
@@ -55,6 +66,15 @@ data Path
       ![Component]
       -- ^ Components in reverse order.
   deriving (Eq)
+
+instance Cereal.Serialize Path where
+  put (Path abs components) = do
+    Cereal.put abs
+    Cereal.put $ CerealExtrasCompact.Compact components
+  get = do
+    abs <- Cereal.get
+    CerealExtrasCompact.Compact components <- Cereal.get
+    return $ Path abs components
 
 instance Ord Path where
   Path la lb <= Path ra rb =
