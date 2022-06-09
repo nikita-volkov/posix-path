@@ -1,17 +1,19 @@
 module Coalmine.CerealExtras.Put where
 
 import Coalmine.InternalPrelude hiding (get, map, put)
+import qualified Data.ByteString as ByteString
 import qualified Data.IntMap.Strict as IntMap
 import qualified Data.Map.Strict as Map
-import qualified Data.Serialize.LEB128 as Leb128
+import Data.Serialize.LEB128 (putLEB128)
 import Data.Serialize.Put
+import qualified Data.Text.Encoding as TextEncoding
 import qualified Data.Vector as BVec
 import qualified Data.Vector.Generic as GVec
 
 -- * Helpers
 
 size :: Int -> Put
-size = Leb128.putLEB128 @Word64 . fromIntegral
+size = putLEB128 @Word64 . fromIntegral
 
 sized ::
   (a -> Int) ->
@@ -55,3 +57,12 @@ ordMap = map Map.size Map.foldMapWithKey
 
 intMap :: (Int -> Put) -> (v -> Put) -> IntMap v -> Put
 intMap = map IntMap.size IntMap.foldMapWithKey
+
+compactByteString :: ByteString -> Put
+compactByteString a = do
+  putLEB128 @Word64 $ fromIntegral $ ByteString.length a
+  putByteString a
+
+compactText :: Text -> Put
+compactText =
+  compactByteString . TextEncoding.encodeUtf8
