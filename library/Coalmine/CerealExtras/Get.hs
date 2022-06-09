@@ -36,3 +36,6 @@ ordMap = map Map.fromDistinctAscList
 
 intMap :: Get Int -> Get v -> Get (IntMap.IntMap v)
 intMap = map IntMap.fromDistinctAscList
+
+failWithException :: Exception e => e -> Get any
+failWithException = fail . displayException

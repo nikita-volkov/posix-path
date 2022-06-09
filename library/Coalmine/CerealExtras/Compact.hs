@@ -10,14 +10,16 @@ module Coalmine.CerealExtras.Compact where
 import qualified Coalmine.CerealExtras.Get as Get
 import qualified Coalmine.CerealExtras.Put as Put
 import Coalmine.InternalPrelude hiding (get, put)
+import qualified Data.ByteString as ByteString
 import qualified Data.Map.Strict as Map
 import Data.Serialize (Serialize (..))
 import qualified Data.Serialize as Cereal
 import qualified Data.Serialize.LEB128 as Leb128
+import qualified Data.Text.Encoding as TextEncoding
 import qualified Data.Vector as BVec
 import qualified Data.Vector.Unboxed as UVec
 
-newtype Compact a = Compact a
+newtype Compact a = Compact {unwrap :: a}
   deriving (Show, Eq, Ord, Integral, Num, Real, Enum, FromJSON, ToJSON, ToJSONKey)
 
 instance Serialize (Compact Int) where
@@ -36,9 +38,22 @@ instance Serialize (Compact Natural) where
   put (Compact a) = Leb128.putLEB128 a
   get = Leb128.getLEB128 @Natural & coerce
 
+instance Serialize (Compact ByteString) where
+  put (Compact a) = do
+    Leb128.putLEB128 @Word64 $ fromIntegral $ ByteString.length a
+    Cereal.putByteString a
+  get = do
+    length <- Leb128.getLEB128 @Word64
+    byteString <- Cereal.getBytes $ fromIntegral length
+    return $ Compact byteString
+
 instance Serialize (Compact Text) where
-  put (Compact text) = error "TODO"
-  get = error "TODO"
+  put = put . TextEncoding.encodeUtf8 . unwrap
+  get = do
+    byteString <- get
+    case TextEncoding.decodeUtf8' byteString of
+      Right res -> return $ Compact res
+      Left exc -> Get.failWithException exc
 
 instance (Serialize k, Serialize v, Ord k) => Serialize (Compact (Map k v)) where
   put (Compact map) = Put.ordMap put put map

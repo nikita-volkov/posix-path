@@ -18,13 +18,13 @@ packages:
 - completed:
     name: isomorphism-class
     pantry-tree:
-      sha256: 772cd5d9a535ac383d82984a03c706a32d9f0edb20829cdadd5b116efccd3a24
-      size: 608
-    commit: 6030243b4e2c28ab3c010b5f06cb6514d70f9c35
+      sha256: 562f1bc2d85a507c3b18cd5f1691f2b0a398363e243ada5c6160e291a458665f
+      size: 692
+    commit: 33e2a25e9adeabed528d859c6e4a605062e48437
     git: https://github.com/nikita-volkov/isomorphism-class
     version: '0.1'
   original:
-    commit: 6030243b4e2c28ab3c010b5f06cb6514d70f9c35
+    commit: 33e2a25e9adeabed528d859c6e4a605062e48437
     git: https://github.com/nikita-volkov/isomorphism-class
 - completed:
     name: structure-kit
@@ -88,7 +88,7 @@ packages:
     hackage: vector-extras-0.2.6
 snapshots:
 - completed:
-    sha256: 1b1fbecac3fc9c8efb60b85fd7ce635c8278d0080a66c2ba0d6e4c03773f5f64
-    size: 590824
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/5/28.yaml
-  original: nightly-2022-05-28
+    sha256: 869e23c4f7367895ae63b129255b70bc8b4b965229aa258f6c50141c6b10ae76
+    size: 607265
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/6/8.yaml
+  original: nightly-2022-06-08
