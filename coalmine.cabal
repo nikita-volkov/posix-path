@@ -131,6 +131,7 @@ library
     Coalmine.InternalPrelude
     Coalmine.Name.Attoparsec
     Coalmine.Name.Constants
+    Coalmine.Name.Charsets
     Coalmine.Name.Gens
     Coalmine.Name.Megaparsec
     Coalmine.SimplePaths.AttoparsecHelpers

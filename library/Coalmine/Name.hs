@@ -34,7 +34,7 @@ instance Cereal.Serialize Name where
   get =
     fmap Name . CerealExtrasGet.secureVec Constants.maxParts $ do
       text <- CerealExtrasGet.secureText Constants.maxPartSize
-      case parse Attoparsec.nameWord text of
+      case parse Attoparsec.part text of
         Right word -> return word
         Left err -> fail $ to err
 
@@ -78,7 +78,7 @@ instance BroadPrinting Name where
 -- * --
 
 attoparsec :: Attoparsec.Parser Name
-attoparsec = Attoparsec.nameWords <&> Name
+attoparsec = Attoparsec.parts <&> Name
 
 megaparsec :: Ord err => Megaparsec.Parsec err Text Name
 megaparsec = Megaparsec.nameWords <&> Name
