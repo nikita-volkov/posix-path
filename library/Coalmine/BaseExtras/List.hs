@@ -120,6 +120,10 @@ zipWithTotally pair left right =
       deeper (succ sharedSize) (pair a b : revList)
     nil _ revList = Right (reverse revList)
 
+-- |
+-- A more generic version of the original list-specialized version:
+--
+-- > intercalate :: [a] -> [[a]] -> [a]
 intercalate :: Monoid a => a -> [a] -> a
 intercalate = intercalateMap id
 
