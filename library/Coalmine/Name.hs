@@ -1,21 +1,42 @@
 module Coalmine.Name where
 
 import qualified AesonValueParser
+import qualified Coalmine.CerealExtras.Compact as CerealExtrasCompact
+import qualified Coalmine.CerealExtras.Get as CerealExtrasGet
+import qualified Coalmine.CerealExtras.Put as CerealExtrasPut
 import Coalmine.InternalPrelude
 import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 import qualified Coalmine.Name.Attoparsec as Attoparsec
+import qualified Coalmine.Name.Constants as Constants
+import qualified Coalmine.Name.Gens as Gens
 import qualified Coalmine.Name.Megaparsec as Megaparsec
+import Coalmine.Parsing
 import Coalmine.Printing
 import qualified Data.Attoparsec.Text as Attoparsec
+import qualified Data.Serialize as Cereal
 import qualified Data.Text as Text
+import qualified Test.QuickCheck.Arbitrary as QuickCheckArbitrary
 import qualified Text.Megaparsec as Megaparsec
 import qualified TextBuilderDev as TextBuilder
 
 -- |
 -- Case-agnostic name with words separated and consisting only of digits and Latin letters.
-newtype Name = Name (BVec Text)
+newtype Name = Name {nameParts :: BVec Text}
 
 -- * Instances
+
+instance QuickCheckArbitrary.Arbitrary Name where
+  arbitrary = Name <$> Gens.parts
+
+instance Cereal.Serialize Name where
+  put (Name parts) = do
+    CerealExtrasPut.vec CerealExtrasPut.compactText parts
+  get =
+    fmap Name . CerealExtrasGet.secureCompactVec Constants.maxParts $ do
+      text <- CerealExtrasGet.secureCompactText Constants.maxBytesInPart
+      case parse Attoparsec.part text of
+        Right word -> return word
+        Left err -> fail $ to err <> "\nInput: " <> to text
 
 deriving instance Eq Name
 
@@ -57,7 +78,7 @@ instance BroadPrinting Name where
 -- * --
 
 attoparsec :: Attoparsec.Parser Name
-attoparsec = Attoparsec.nameWords <&> Name
+attoparsec = Attoparsec.parts <&> Name
 
 megaparsec :: Ord err => Megaparsec.Parsec err Text Name
 megaparsec = Megaparsec.nameWords <&> Name

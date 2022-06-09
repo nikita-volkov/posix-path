@@ -7,8 +7,8 @@
 -- Thus ensuring that only optimised serialisable primitives are used.
 module Coalmine.CerealExtras.Compact where
 
-import qualified Coalmine.CerealExtras.Get as Get
-import qualified Coalmine.CerealExtras.Put as Put
+import qualified Coalmine.CerealExtras.Get as CerealExtrasGet
+import qualified Coalmine.CerealExtras.Put as CerealExtrasPut
 import Coalmine.InternalPrelude hiding (get, put)
 import qualified Data.ByteString as ByteString
 import qualified Data.Map.Strict as Map
@@ -53,19 +53,19 @@ instance Serialize (Compact Text) where
     byteString <- get
     case TextEncoding.decodeUtf8' byteString of
       Right res -> return $ Compact res
-      Left exc -> Get.failWithException exc
+      Left exc -> CerealExtrasGet.failWithException exc
 
 instance (Serialize k, Serialize v, Ord k) => Serialize (Compact (Map k v)) where
-  put (Compact map) = Put.ordMap put put map
-  get = Get.ordMap get get <&> Compact
+  put (Compact map) = CerealExtrasPut.ordMap put put map
+  get = CerealExtrasGet.ordMap get get <&> Compact
 
 instance Serialize a => Serialize (Compact (BVec.Vector a)) where
-  put (Compact vec) = Put.vec put vec
-  get = Get.vec get <&> Compact
+  put (Compact vec) = CerealExtrasPut.vec put vec
+  get = CerealExtrasGet.vec get <&> Compact
 
 instance (Serialize a, UVec.Unbox a) => Serialize (Compact (UVec.Vector a)) where
-  put (Compact vec) = Put.vec put vec
-  get = Get.vec get <&> Compact
+  put (Compact vec) = CerealExtrasPut.vec put vec
+  get = CerealExtrasGet.vec get <&> Compact
 
 instance (Serialize a) => Serialize (Compact [a]) where
   put (Compact list) = do

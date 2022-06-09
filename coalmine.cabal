@@ -104,11 +104,13 @@ library
     Coalmine.Res
     Coalmine.RestEasy
     Coalmine.ScientificExtras
+    Coalmine.Serialization
     Coalmine.SimplePaths
     Coalmine.Streamer
     Coalmine.Tasty
-    Coalmine.Tasty.HeadedMegaparsec
     Coalmine.Tasty.TestTrees
+    Coalmine.Tasty.TestTrees.Cereal
+    Coalmine.Tasty.TestTrees.HeadedMegaparsec
     Coalmine.TextAppender
     Coalmine.TH.Exp
     Coalmine.TH.QuasiQuoter
@@ -128,6 +130,9 @@ library
     Coalmine.Inter.TH
     Coalmine.InternalPrelude
     Coalmine.Name.Attoparsec
+    Coalmine.Name.Charsets
+    Coalmine.Name.Constants
+    Coalmine.Name.Gens
     Coalmine.Name.Megaparsec
     Coalmine.SimplePaths.AttoparsecHelpers
   build-depends:
@@ -170,6 +175,7 @@ library
     optics,
     optics-core,
     primitive,
+    QuickCheck,
     quickcheck-instances,
     rerebase,
     structure-kit,
@@ -214,6 +220,7 @@ test-suite test
     TestSuites.Inter.Regressions.FromFormatica
     TestSuites.LocatedRendering
     TestSuites.MegaparsecExtras
+    TestSuites.Name
     TestSuites.SimplePaths
     TestSuites.TimeExtrasConversions
   build-depends:

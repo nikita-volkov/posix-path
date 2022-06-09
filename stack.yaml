@@ -6,7 +6,7 @@ extra-deps:
   - git: https://github.com/nikita-volkov/isomorphism-class
     commit: 33e2a25e9adeabed528d859c6e4a605062e48437
   - git: https://github.com/nikita-volkov/structure-kit
-    commit: 25191e675725457c36b643fee52f40fdd72e2533
+    commit: 807f9b40e15d2624f8a679c35a978c2b21a36bfe
   - aeson-value-parser-0.19.6
   - cereal-unordered-containers-0.1
   - domain-aeson-0.1

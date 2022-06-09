@@ -1,9 +1,10 @@
-module Coalmine.Tasty.HeadedMegaparsec where
+module Coalmine.Tasty.TestTrees.HeadedMegaparsec where
 
 import qualified Coalmine.HeadedMegaparsecExtras as P
 import Coalmine.InternalPrelude hiding (FilePath)
 import Coalmine.Printing
 import Coalmine.SimplePaths (FilePath)
+import qualified Data.Text.IO as TextIO
 import HeadedMegaparsec
 import Test.QuickCheck.Instances
 import Test.Tasty
@@ -43,7 +44,8 @@ testFileParserToSucceed ::
   a ->
   TestTree
 testFileParserToSucceed name path parser expectation =
-  testCase name $
-    P.toFileReader parser path >>= \case
+  testCase name $ do
+    text <- TextIO.readFile (printCompactAsString path)
+    case P.toRefiner parser text of
       Right res -> assertEqual "" expectation res
       Left err -> assertFailure . to $ err

@@ -1,11 +1,13 @@
 module Coalmine.Name.Attoparsec where
 
+import Coalmine.AttoparsecExtras.Text
 import Coalmine.InternalPrelude
+import qualified Coalmine.Name.Charsets as Charsets
 import Data.Attoparsec.Text hiding (sepBy, sepBy1)
 import VectorBuilder.MonadPlus
 
 complete parser = parser <* endOfInput
 
-nameWords = sepBy1 nameWord (char '-')
+parts = sepBy1 part (char '-')
 
-nameWord = takeWhile1 (\a -> isAsciiLower a || isDigit a)
+part = textOfCharset1 Charsets.part
