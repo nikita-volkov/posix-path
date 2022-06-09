@@ -5,6 +5,7 @@ import qualified Data.IntMap.Strict as IntMap
 import qualified Data.Map.Strict as Map
 import Data.Serialize.Get
 import qualified Data.Serialize.LEB128 as Leb128
+import qualified Data.Text.Encoding as TextEncoding
 import qualified Data.Vector as BVec
 import qualified Data.Vector.Generic as GVec
 
@@ -39,3 +40,35 @@ intMap = map IntMap.fromDistinctAscList
 
 failWithException :: Exception e => e -> Get any
 failWithException = fail . displayException
+
+secureVec ::
+  GVec.Vector v a =>
+  -- | Max size.
+  Int ->
+  Get a ->
+  Get (v a)
+secureVec maxSize element = do
+  sizeVal <- size
+  if sizeVal > maxSize
+    then fail "Size is too large"
+    else GVec.replicateM sizeVal element
+
+secureByteString ::
+  -- | Max size.
+  Int ->
+  Get ByteString
+secureByteString maxSize = do
+  sizeVal <- size
+  if sizeVal > maxSize
+    then fail "Size is too large"
+    else getBytes sizeVal
+
+secureText ::
+  -- | Max UTF8-encoded size.
+  Int ->
+  Get Text
+secureText maxSize = do
+  byteString <- secureByteString maxSize
+  case TextEncoding.decodeUtf8' byteString of
+    Right res -> return res
+    Left exc -> failWithException exc

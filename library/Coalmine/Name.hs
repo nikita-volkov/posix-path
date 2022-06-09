@@ -1,21 +1,36 @@
 module Coalmine.Name where
 
 import qualified AesonValueParser
+import qualified Coalmine.CerealExtras.Compact as CerealExtrasCompact
+import qualified Coalmine.CerealExtras.Get as CerealExtrasGet
+import qualified Coalmine.CerealExtras.Put as CerealExtrasPut
 import Coalmine.InternalPrelude
 import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
 import qualified Coalmine.Name.Attoparsec as Attoparsec
 import qualified Coalmine.Name.Megaparsec as Megaparsec
+import Coalmine.Parsing
 import Coalmine.Printing
 import qualified Data.Attoparsec.Text as Attoparsec
+import qualified Data.Serialize as Cereal
 import qualified Data.Text as Text
 import qualified Text.Megaparsec as Megaparsec
 import qualified TextBuilderDev as TextBuilder
 
 -- |
 -- Case-agnostic name with words separated and consisting only of digits and Latin letters.
-newtype Name = Name (BVec Text)
+newtype Name = Name {nameParts :: BVec Text}
 
 -- * Instances
+
+instance Cereal.Serialize Name where
+  put (Name parts) = do
+    CerealExtrasPut.vec (Cereal.put . CerealExtrasCompact.Compact) parts
+  get =
+    fmap Name . CerealExtrasGet.secureVec 100 $ do
+      text <- CerealExtrasGet.secureText 100
+      case parse Attoparsec.nameWord text of
+        Right word -> return word
+        Left err -> fail $ to err
 
 deriving instance Eq Name
 

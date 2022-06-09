@@ -13,8 +13,15 @@ import qualified Data.Vector.Generic as GVec
 size :: Int -> Put
 size = Leb128.putLEB128 @Word64 . fromIntegral
 
+sized ::
+  (a -> Int) ->
+  (a -> Put) ->
+  (a -> Put)
+sized toSize toPut a =
+  size (toSize a) <> toPut a
+
 -- |
--- General sequence.
+-- General sequence with compact encoding of the size metadata.
 sizedSequence ::
   -- | Implementation of 'foldMap'.
   (forall x. Monoid x => (a -> x) -> seq -> x) ->
@@ -24,8 +31,8 @@ sizedSequence ::
   (a -> Put) ->
   seq ->
   Put
-sizedSequence foldMap measureSize putElement sequence =
-  size (measureSize sequence) <> foldMap putElement sequence
+sizedSequence foldMap measureSize putElement =
+  sized measureSize (foldMap putElement)
 
 -- * Specifics
 
