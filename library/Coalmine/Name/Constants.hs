@@ -4,4 +4,4 @@ import Coalmine.InternalPrelude
 
 maxParts = 100
 
-maxPartSize = 100
+maxBytesInPart = 100

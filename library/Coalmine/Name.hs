@@ -33,10 +33,10 @@ instance Cereal.Serialize Name where
     CerealExtrasPut.vec CerealExtrasPut.compactText parts
   get =
     fmap Name . CerealExtrasGet.secureCompactVec Constants.maxParts $ do
-      text <- CerealExtrasGet.secureCompactText Constants.maxPartSize
+      text <- CerealExtrasGet.secureCompactText Constants.maxBytesInPart
       case parse Attoparsec.part text of
         Right word -> return word
-        Left err -> fail $ to err
+        Left err -> fail $ to err <> "\nInput: " <> to text
 
 deriving instance Eq Name
 
