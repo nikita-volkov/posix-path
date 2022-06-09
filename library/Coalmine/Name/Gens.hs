@@ -1,6 +1,7 @@
 module Coalmine.Name.Gens where
 
 import Coalmine.InternalPrelude
+import qualified Coalmine.Name.Charsets as Charsets
 import qualified Coalmine.Name.Constants as Constants
 import qualified Data.ByteString as ByteString
 import qualified Data.Text as Text
@@ -23,4 +24,4 @@ part = do
 
 partChar :: Gen Char
 partChar =
-  error "TODO"
+  elements $ toList $ Charsets.part

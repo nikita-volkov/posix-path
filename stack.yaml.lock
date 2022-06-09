@@ -29,13 +29,13 @@ packages:
 - completed:
     name: structure-kit
     pantry-tree:
-      sha256: e675fb2af75c4acc9828d0e04e0e4ea22aadf274b86c6c81c876a405e3a1dd2f
+      sha256: c64047580ccc550a98e97c8ceea649b1a60b4565f370043fc01a13e5ad4e2abb
       size: 3500
-    commit: f9cc646220ada4cc5e4de0509b8409ab987b92b4
+    commit: 807f9b40e15d2624f8a679c35a978c2b21a36bfe
     git: https://github.com/nikita-volkov/structure-kit
-    version: '0.1'
+    version: 0.1.0.1
   original:
-    commit: f9cc646220ada4cc5e4de0509b8409ab987b92b4
+    commit: 807f9b40e15d2624f8a679c35a978c2b21a36bfe
     git: https://github.com/nikita-volkov/structure-kit
 - completed:
     pantry-tree:
