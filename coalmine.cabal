@@ -104,6 +104,7 @@ library
     Coalmine.Res
     Coalmine.RestEasy
     Coalmine.ScientificExtras
+    Coalmine.Serialization
     Coalmine.SimplePaths
     Coalmine.Streamer
     Coalmine.Tasty
