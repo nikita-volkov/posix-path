@@ -18,32 +18,32 @@ packages:
 - completed:
     name: isomorphism-class
     pantry-tree:
-      sha256: 562f1bc2d85a507c3b18cd5f1691f2b0a398363e243ada5c6160e291a458665f
+      sha256: 7dcd1a98e4abf4cb01fb03dcffe323e7c1c6484d4df8f5790c58c374852ddad2
       size: 692
-    commit: 33e2a25e9adeabed528d859c6e4a605062e48437
+    commit: 64aca4d216dccab96b1d417f28a6b6db5359c5ec
     git: https://github.com/nikita-volkov/isomorphism-class
     version: '0.1'
   original:
-    commit: 33e2a25e9adeabed528d859c6e4a605062e48437
+    commit: 64aca4d216dccab96b1d417f28a6b6db5359c5ec
     git: https://github.com/nikita-volkov/isomorphism-class
 - completed:
     name: structure-kit
     pantry-tree:
-      sha256: c64047580ccc550a98e97c8ceea649b1a60b4565f370043fc01a13e5ad4e2abb
+      sha256: b7779ebe935d65c0b4f6e3ea8b5f5011abdabf362b1673826545c93625e050ad
       size: 3500
-    commit: 807f9b40e15d2624f8a679c35a978c2b21a36bfe
+    commit: 46ffb6527c48f8a718adecd21a313f0b1ba5e81c
     git: https://github.com/nikita-volkov/structure-kit
     version: 0.1.0.1
   original:
-    commit: 807f9b40e15d2624f8a679c35a978c2b21a36bfe
+    commit: 46ffb6527c48f8a718adecd21a313f0b1ba5e81c
     git: https://github.com/nikita-volkov/structure-kit
 - completed:
     pantry-tree:
-      sha256: a2fa5c7577470e6472dcc9f9c3826486bfabce337149555a5297c11807bfe993
-      size: 454
-    hackage: aeson-value-parser-0.19.6@sha256:ccd8424b17fd5608c3f1f7e51c7d4b77ff64cd409b51387759d27fc0e6e419bc,2054
+      sha256: 4c700792b51236a70e364ac79c1cd0d197596264c0f57099eb5cea193b663c1b
+      size: 408
+    hackage: aeson-value-parser-0.19.7@sha256:c114ae7deb86b55154a408896602f9ce61555ac6fd044e8e209c9c544ad2f4db,2054
   original:
-    hackage: aeson-value-parser-0.19.6
+    hackage: aeson-value-parser-0.19.7
 - completed:
     pantry-tree:
       sha256: 1240e61d89fa70c65636995919674b5bc55bc33a719e555fa4ec8950a91eb6e5
@@ -65,13 +65,6 @@ packages:
     hackage: domain-cereal-0.1@sha256:db6fe7980ee3f9834a9e2c7cbe577354406286fecfb18477aac712cc008a83ce,1879
   original:
     hackage: domain-cereal-0.1
-- completed:
-    pantry-tree:
-      sha256: 97f8e9346d1f5dac49b1c1a3e23b9dad1f0adb42e869937ecded9aee35b496e3
-      size: 1409
-    hackage: jsonifier-0.2.1.1@sha256:9aac2704fff1facef7ae201d87a33267e865e8817ac2e18c130f85017dd79bc9,4157
-  original:
-    hackage: jsonifier-0.2.1.1
 - completed:
     pantry-tree:
       sha256: af6a4af7b400a4891918a0d3b60d16cbf90a4d5d0a101223f920d684d435754c
