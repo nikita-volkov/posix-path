@@ -95,6 +95,7 @@ library
     Coalmine.MultilineTextBuilder
     Coalmine.Name
     Coalmine.NameConversion
+    Coalmine.OpenApi
     Coalmine.Optics
     Coalmine.Parsed
     Coalmine.Parsing
@@ -235,13 +236,13 @@ test-suite test
     tasty-hunit >=0.9 && <0.11,
     tasty-quickcheck >=0.9 && <0.11,
 
-test-suite rest-easy-demo
+test-suite open-api-demo
   import: language-settings
   type: exitcode-stdio-1.0
-  hs-source-dirs: rest-easy-demo
+  hs-source-dirs: open-api-demo
   main-is:
     Main.hs
   other-modules:
-    RestEasyDemo.Model
+    OpenApiDemo.Model
   build-depends:
     coalmine,

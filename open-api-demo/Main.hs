@@ -1,9 +1,9 @@
 module Main where
 
 import Coalmine.JsonSchema
+import Coalmine.OpenApi
 import Coalmine.Prelude
-import Coalmine.RestEasy
-import qualified RestEasyDemo.Model as M
+import qualified OpenApiDemo.Model as M
 
 -- * --
 
