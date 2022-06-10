@@ -23,29 +23,6 @@ serve =
 
 -- * --
 
-data Authenticated request = Authenticated
-  { authenticatedToken :: !ByteString,
-    authenicatedRequest :: !request
-  }
-  deriving (Functor)
-
--- Something closely related to security policy.
-data SecurityPolicy sess
-
-sessionInHeaderApiKeySecurityPolicy :: SessionStore sess -> SecurityPolicy sess
-sessionInHeaderApiKeySecurityPolicy =
-  error "TODO"
-
-data Authenticator cred sess
-
-data SessionStore sess
-
-authenticator :: (cred -> IO (Maybe sess)) -> Authenticator cred sess
-authenticator =
-  error "TODO"
-
--- * --
-
 data RequestBody i
 
 instance Functor RequestBody
@@ -56,37 +33,27 @@ jsonRequestBody =
 
 data Route
 
-secureGetRoute :: SecurityPolicy sess -> StateT sess IO Response -> Route
-secureGetRoute =
-  error "TODO"
-
 insecurePostRoute :: [RequestBody req] -> (req -> IO Response) -> Route
 insecurePostRoute =
-  error "TODO"
-
-securePostRoute :: SecurityPolicy sess -> [RequestBody req] -> (req -> StateT sess IO Response) -> Route
-securePostRoute =
-  error "TODO"
-
-securePutRoute :: SecurityPolicy sess -> [RequestBody req] -> (req -> StateT sess IO Response) -> Route
-securePutRoute =
-  error "TODO"
-
-authPostRoute :: SecurityPolicy sess -> [RequestBody (IO (Maybe sess))] -> Route
-authPostRoute =
   error "TODO"
 
 staticSegmentRoute :: Text -> [Route] -> Route
 staticSegmentRoute =
   error "TODO"
 
-dynamicSegmentRoute :: Schema a -> (a -> [Route]) -> Route
+dynamicSegmentRoute :: Text -> Schema a -> (a -> [Route]) -> Route
 dynamicSegmentRoute =
   error "TODO"
 
 data Response
 
-response :: Int -> Text -> [ResponseContent] -> Response
+response ::
+  -- | Status code.
+  Int ->
+  -- | Status text.
+  Text ->
+  [ResponseContent] ->
+  Response
 response =
   error "TODO"
 
