@@ -25,3 +25,6 @@ instance
     HeadedMegaparsecExtras.toRefiner
 
 type TextParser = Data.Attoparsec.Text.Parser
+
+parseWith :: Parsing parser => parser a -> ParserInput parser -> Either Text a
+parseWith = parse

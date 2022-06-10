@@ -86,6 +86,7 @@ library
     Coalmine.Json
     Coalmine.JsonEncoder
     Coalmine.JsonSchema
+    Coalmine.Literal
     Coalmine.Located
     Coalmine.Located.Rendering
     Coalmine.MachinesExtras.Mealy

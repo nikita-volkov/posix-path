@@ -1,0 +1,55 @@
+-- |
+-- Common interface for custom data-types which can be represented with a custom textual literal.
+--
+-- Provides a reusable compile-time constructor, parsing and rendering APIs.
+module Coalmine.Literal where
+
+import Coalmine.InternalPrelude
+import Coalmine.Parsing
+import qualified Data.Attoparsec.Text as Attoparsec
+import qualified Data.Text as Text
+import qualified Language.Haskell.TH.Quote as TH
+import qualified Language.Haskell.TH.Syntax as TH
+import qualified TextBuilderDev
+
+-- | Value that has a textual representation.
+--
+-- This class is lawful: rendering the value and then parsing it
+-- should succeed and produce the original value.
+--
+-- The law can be represented with the following code:
+-- @
+-- Right a
+--   == 'Attoparsec.parseOnly'
+--     ('literalParser' <* 'Attoparsec.endOfInput')
+--     ('to' ('literalCompactTextBuilder' a))
+-- @
+class Literal a where
+  literalParser :: Attoparsec.Parser a
+  literalTextBuilder :: a -> TextBuilderDev.TextBuilder
+
+-- | If a literal can also be converted to code, we can instantiate and
+-- validate it at compile time, thus letting us provide guarantees that a
+-- value constructed this way is correct.
+--
+-- Examples:
+--
+-- > exampleOrg :: URL
+-- > exampleOrg = $$(l "http://example.org")
+--
+-- > userAtExampleOrg :: Email
+-- > userAtExampleOrg = $$(l "user@example.org")
+--
+-- > exampleUUID :: UUID
+-- > exampleUUID = $$(l "123e4567-e89b-12d3-a456-426614174000")
+--
+-- > -- | Construct text not by converting from a string literal,
+-- > -- but by packing a byte-array literal, which is more efficient.
+-- > exampleText :: Text
+-- > exampleText = $$(l "Example text")
+l :: (Literal a, Lift a) => String -> TH.Q (TH.TExp a)
+l literal = do
+  literal <- case parseWith literalParser (to literal) of
+    Right literal -> return literal
+    Left err -> fail $ to err
+  TH.examineCode $ TH.liftTyped literal
