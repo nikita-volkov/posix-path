@@ -5,6 +5,7 @@ import qualified Coalmine.BaseExtras.List as List
 import Coalmine.InternalPrelude
 import Coalmine.JsonSchema
 import Coalmine.Parsing
+import qualified Data.Serialize as Cereal
 import qualified Data.Text as Text
 import qualified Data.Vector as BVec
 import qualified Jsonifier
@@ -33,8 +34,8 @@ jsonRequestBody =
 
 data Route
 
-insecurePostRoute :: [RequestBody req] -> (req -> IO Response) -> Route
-insecurePostRoute =
+postRoute :: [RequestBody req] -> (req -> IO Response) -> Route
+postRoute =
   error "TODO"
 
 staticSegmentRoute :: Text -> [Route] -> Route
@@ -59,6 +60,10 @@ response =
 
 data ResponseContent
 
-jsonResponseContent :: Schema a -> a -> ResponseContent
-jsonResponseContent =
+jsonifierJsonResponseContent :: Jsonifier.Json -> ResponseContent
+jsonifierJsonResponseContent =
+  error "TODO"
+
+cerealBinaryResponseContent :: Cereal.Put -> ResponseContent
+cerealBinaryResponseContent =
   error "TODO"
