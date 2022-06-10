@@ -9,6 +9,10 @@ import qualified Data.Serialize as Cereal
 import qualified Data.Text as Text
 import qualified Data.Vector as BVec
 import qualified Jsonifier
+import qualified Network.HTTP.Media as HttpMedia
+import qualified Network.HTTP.Types as HttpTypes
+import qualified Network.Wai as Wai
+import qualified Network.Wai.Handler.Warp as Warp
 
 -- * Execution
 
