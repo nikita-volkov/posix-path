@@ -1,5 +1,6 @@
 module Main where
 
+import Coalmine.JsonSchema
 import Coalmine.Prelude
 import Coalmine.RestEasy
 import qualified RestEasyDemo.Model as M
