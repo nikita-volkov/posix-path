@@ -3,8 +3,8 @@ module Coalmine.RestEasy where
 import qualified AesonValueParser
 import qualified Coalmine.BaseExtras.List as List
 import Coalmine.InternalPrelude
-import Coalmine.JsonSchema
 import Coalmine.Parsing
+import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.Serialize as Cereal
 import qualified Data.Text as Text
 import qualified Data.Vector as BVec
@@ -24,12 +24,18 @@ serve =
 
 -- * --
 
+-- |
+-- Request body parser.
 data RequestBody i
 
 instance Functor RequestBody
 
-jsonRequestBody :: Schema i -> RequestBody i
+jsonRequestBody :: AesonValueParser.Value i -> RequestBody i
 jsonRequestBody =
+  error "TODO"
+
+binaryRequestBody :: Cereal.Get a -> RequestBody a
+binaryRequestBody =
   error "TODO"
 
 data Route
@@ -42,7 +48,7 @@ staticSegmentRoute :: Text -> [Route] -> Route
 staticSegmentRoute =
   error "TODO"
 
-dynamicSegmentRoute :: Text -> Schema a -> (a -> [Route]) -> Route
+dynamicSegmentRoute :: Attoparsec.Parser seg -> (seg -> [Route]) -> Route
 dynamicSegmentRoute =
   error "TODO"
 
