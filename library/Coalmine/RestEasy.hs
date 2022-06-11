@@ -60,16 +60,16 @@ runRoutes routes segments request =
   where
     go = \case
       Route runRoute : routes ->
-        runRoute segments request >>= \case
+        case runRoute segments request of
           Nothing -> go routes
-          Just response -> return response
+          Just produceResponse -> produceResponse
       _ ->
         return $ Responses.notFound
 
 -- * Route
 
 newtype Route
-  = Route ([Text] -> Wai.Request -> IO (Maybe Wai.Response))
+  = Route ([Text] -> Wai.Request -> Maybe (IO Wai.Response))
 
 postRoute :: [RequestBody req] -> (req -> IO Response) -> Route
 postRoute bodyParsers handler =
@@ -82,8 +82,9 @@ staticSegmentRoute expectedSegment childRoutes =
     case segments of
       h : t ->
         if h == expectedSegment
-          then Just <$> runRoutes childRoutes t request
-          else error "TODO"
+          then Just $ runRoutes childRoutes t request
+          else Nothing
+      _ -> Nothing
 
 dynamicSegmentRoute :: Attoparsec.Parser seg -> (seg -> [Route]) -> Route
 dynamicSegmentRoute =
