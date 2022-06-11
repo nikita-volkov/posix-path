@@ -29,7 +29,7 @@ serve ::
 serve =
   error "TODO"
 
--- * --
+-- * Request Body Parser
 
 -- |
 -- Request body parser.
@@ -51,11 +51,13 @@ binaryRequestBody :: Cereal.Get a -> RequestBody a
 binaryRequestBody get =
   RequestBody MimeTypeLists.binary (BodyConsumers.cereal get)
 
+-- * Route
+
 newtype Route
   = Route ([Text] -> Wai.Request -> IO Wai.Response)
 
 postRoute :: [RequestBody req] -> (req -> IO Response) -> Route
-postRoute =
+postRoute bodyParsers handler =
   error "TODO"
 
 staticSegmentRoute :: Text -> [Route] -> Route
@@ -66,6 +68,8 @@ dynamicSegmentRoute :: Attoparsec.Parser seg -> (seg -> [Route]) -> Route
 dynamicSegmentRoute =
   error "TODO"
 
+-- * Response
+
 data Response
 
 response ::
@@ -73,6 +77,8 @@ response ::
   Int ->
   -- | Status text.
   Text ->
+  -- | Renderings of various content-types. The choice is automatically
+  -- determined based on the "Accept" header in the request.
   [ResponseContent] ->
   Response
 response =
