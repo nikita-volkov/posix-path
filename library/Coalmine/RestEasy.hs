@@ -36,6 +36,8 @@ data RequestBody a
       !Text
       -- ^ Expected type.
       (IO ByteString -> IO (Either Text a))
+      -- ^ Consumer. Calls the provided chunk-producing action until it
+      -- produces an empty chunk.
 
 instance Functor RequestBody
 
@@ -45,9 +47,9 @@ jsonRequestBody =
 
 binaryRequestBody :: Cereal.Get a -> RequestBody a
 binaryRequestBody get =
-  RequestBody "application/binary" run
+  RequestBody "application/binary" consume
   where
-    run loadChunk =
+    consume loadChunk =
       go $ Cereal.runGetPartial get
       where
         go decode = do
