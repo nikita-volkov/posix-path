@@ -4,6 +4,8 @@ import qualified AesonValueParser
 import Coalmine.Inter
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
+import qualified Data.Aeson as Aeson
+import qualified Data.Aeson.Parser as AesonParser
 import qualified Data.Attoparsec.ByteString as AttoparsecByteString
 import qualified Data.ByteString as ByteString
 import qualified Data.Serialize as Cereal
@@ -12,16 +14,25 @@ import qualified Data.Text as Text
 type BodyConsumer a =
   IO ByteString -> IO (Either Text a)
 
+refine :: (a -> Either Text b) -> BodyConsumer a -> BodyConsumer b
+refine refiner consumer fetch =
+  consumer fetch <&> \case
+    Right res -> refiner res
+    Left err -> Left err
+
 aesonValueParser :: AesonValueParser.Value a -> BodyConsumer a
 aesonValueParser parser =
-  error "TODO"
+  refine refiner aeson
+  where
+    refiner = AesonValueParser.runWithTextError parser
 
-aesonRefiner refiner =
-  error "TODO"
+aeson :: BodyConsumer Aeson.Value
+aeson =
+  attoparsecByteStringParser AesonParser.json
 
 attoparsecByteStringParser :: AttoparsecByteString.Parser a -> BodyConsumer a
-attoparsecByteStringParser parser loadChunk =
-  loadChunk >>= AttoparsecByteString.parseWith loadChunk parser >>= \case
+attoparsecByteStringParser parser fetch =
+  fetch >>= AttoparsecByteString.parseWith fetch parser >>= \case
     AttoparsecByteString.Done rmdr res ->
       return $ Right res
     AttoparsecByteString.Fail rmdr contexts msg ->
@@ -32,11 +43,11 @@ attoparsecByteStringParser parser loadChunk =
       return $ Left "Not enough input"
 
 cereal :: Cereal.Get a -> BodyConsumer a
-cereal get loadChunk =
+cereal get fetch =
   go $ Cereal.runGetPartial get
   where
     go decode = do
-      chunk <- loadChunk
+      chunk <- fetch
       if ByteString.null chunk
         then return $ Left "Not enough data"
         else case decode chunk of
