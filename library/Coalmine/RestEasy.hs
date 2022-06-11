@@ -54,15 +54,21 @@ binaryRequestBody get =
 -- * Route
 
 newtype Route
-  = Route ([Text] -> Wai.Request -> IO Wai.Response)
+  = Route ([Text] -> Wai.Request -> IO (Maybe Wai.Response))
 
 postRoute :: [RequestBody req] -> (req -> IO Response) -> Route
 postRoute bodyParsers handler =
-  error "TODO"
+  Route $ \segments request ->
+    error "TODO"
 
 staticSegmentRoute :: Text -> [Route] -> Route
-staticSegmentRoute =
-  error "TODO"
+staticSegmentRoute expectedSegment childRoutes =
+  Route $ \segments request ->
+    case segments of
+      h : t ->
+        if h == expectedSegment
+          then error "TODO"
+          else error "TODO"
 
 dynamicSegmentRoute :: Attoparsec.Parser seg -> (seg -> [Route]) -> Route
 dynamicSegmentRoute =

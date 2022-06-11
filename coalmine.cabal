@@ -108,6 +108,8 @@ library
     Coalmine.RestEasy
     Coalmine.RestEasy.BodyConsumers
     Coalmine.RestEasy.MimeTypeLists
+    Coalmine.RestEasy.Responses
+    Coalmine.RestEasy.Statuses
     Coalmine.ScientificExtras
     Coalmine.Serialization
     Coalmine.SimplePaths
