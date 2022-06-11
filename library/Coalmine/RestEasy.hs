@@ -6,6 +6,7 @@ import Coalmine.InternalPrelude
 import Coalmine.Parsing
 import qualified Coalmine.RestEasy.BodyConsumers as BodyConsumers
 import qualified Coalmine.RestEasy.MimeTypeLists as MimeTypeLists
+import qualified Coalmine.RestEasy.Responses as Responses
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.ByteString as ByteString
 import qualified Data.Serialize as Cereal
@@ -51,6 +52,20 @@ binaryRequestBody :: Cereal.Get a -> RequestBody a
 binaryRequestBody get =
   RequestBody MimeTypeLists.binary (BodyConsumers.cereal get)
 
+-- * Route execution
+
+runRoutes :: [Route] -> [Text] -> Wai.Request -> IO Wai.Response
+runRoutes routes segments request =
+  go routes
+  where
+    go = \case
+      Route runRoute : routes ->
+        runRoute segments request >>= \case
+          Nothing -> go routes
+          Just response -> return response
+      _ ->
+        return $ Responses.notFound
+
 -- * Route
 
 newtype Route
@@ -67,7 +82,7 @@ staticSegmentRoute expectedSegment childRoutes =
     case segments of
       h : t ->
         if h == expectedSegment
-          then error "TODO"
+          then Just <$> runRoutes childRoutes t request
           else error "TODO"
 
 dynamicSegmentRoute :: Attoparsec.Parser seg -> (seg -> [Route]) -> Route
