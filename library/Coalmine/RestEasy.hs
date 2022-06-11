@@ -4,6 +4,8 @@ import qualified AesonValueParser
 import qualified Coalmine.BaseExtras.List as List
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
+import qualified Coalmine.RestEasy.BodyConsumers as BodyConsumers
+import qualified Coalmine.RestEasy.MimeTypeLists as MimeTypeLists
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.ByteString as ByteString
 import qualified Data.Serialize as Cereal
@@ -33,8 +35,8 @@ serve =
 -- Request body parser.
 data RequestBody a
   = RequestBody
-      !Text
-      -- ^ Expected type.
+      [Text]
+      -- ^ Expected types.
       (IO ByteString -> IO (Either Text a))
       -- ^ Consumer. Calls the provided chunk-producing action until it
       -- produces an empty chunk.
@@ -42,24 +44,12 @@ data RequestBody a
 instance Functor RequestBody
 
 jsonRequestBody :: AesonValueParser.Value a -> RequestBody a
-jsonRequestBody =
-  error "TODO"
+jsonRequestBody parser =
+  RequestBody MimeTypeLists.json (BodyConsumers.aesonValueParser parser)
 
 binaryRequestBody :: Cereal.Get a -> RequestBody a
 binaryRequestBody get =
-  RequestBody "application/binary" consume
-  where
-    consume loadChunk =
-      go $ Cereal.runGetPartial get
-      where
-        go decode = do
-          chunk <- loadChunk
-          if ByteString.null chunk
-            then return $ Left "Not enough data"
-            else case decode chunk of
-              Cereal.Done res _ -> return $ Right res
-              Cereal.Fail err _ -> return $ Left $ to err
-              Cereal.Partial decodeNext -> go decodeNext
+  RequestBody MimeTypeLists.binary (BodyConsumers.cereal get)
 
 newtype Route
   = Route ([Text] -> Wai.Request -> IO Wai.Response)

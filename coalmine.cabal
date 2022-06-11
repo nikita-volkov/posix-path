@@ -106,6 +106,8 @@ library
     Coalmine.Printing
     Coalmine.Res
     Coalmine.RestEasy
+    Coalmine.RestEasy.BodyConsumers
+    Coalmine.RestEasy.MimeTypeLists
     Coalmine.ScientificExtras
     Coalmine.Serialization
     Coalmine.SimplePaths
