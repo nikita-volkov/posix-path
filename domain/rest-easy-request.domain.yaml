@@ -1,0 +1,27 @@
+# Request information that is of interest to the router.
+# Any unknown values of method and type cause a bad request response.
+
+Request:
+  product:
+    method: Method
+    path: List Text
+    query: List (Text, Text)
+    contentType: Maybe Type
+    accept: List Type
+
+Method:
+  enum:
+    - head
+    - get
+    - post
+    - put
+    - delete
+
+Type:
+  enum:
+    - text
+    - json
+    - binary
+    - html
+    - yaml
+    - xml
