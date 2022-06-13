@@ -109,7 +109,7 @@ library
     Coalmine.RestEasy.BodyConsumers
     Coalmine.RestEasy.MimeTypeLists
     Coalmine.RestEasy.AdaptedRequest.Model
-    Coalmine.RestEasy.AdaptedRequest.Parser
+    Coalmine.RestEasy.AdaptedRequest.WaiParsing
     Coalmine.RestEasy.Responses
     Coalmine.RestEasy.Statuses
     Coalmine.ScientificExtras

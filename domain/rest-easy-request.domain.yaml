@@ -1,4 +1,5 @@
-# Request information that is of interest to the router.
+# Structured information that is of interest to the router,
+# extracted from the request head.
 # Any unknown values of method and type cause a bad request response.
 
 Request:
@@ -6,6 +7,9 @@ Request:
     method: Method
     path: List Text
     query: List (Text, Text)
+    ip: IP
+    userAgent: Maybe Text
+    referer: Maybe Text
     contentType: Maybe Type
     accept: List Type
 
