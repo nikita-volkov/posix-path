@@ -104,6 +104,7 @@ library
     Coalmine.Predicates
     Coalmine.Prelude
     Coalmine.Printing
+    Coalmine.QuickCheckExtras.Gens
     Coalmine.Res
     Coalmine.RestEasy
     Coalmine.RestEasy.BodyConsumers
