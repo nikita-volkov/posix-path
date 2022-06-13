@@ -8,6 +8,9 @@ module Coalmine.AttoparsecExtras.Text
     charOfCharset,
     textOfCharset,
     textOfCharset1,
+    charNotOfCharset,
+    textNotOfCharset,
+    textNotOfCharset1,
   )
 where
 
@@ -192,3 +195,12 @@ textOfCharset = takeWhile . Charset.toCharPredicate
 
 textOfCharset1 :: Charset.Charset -> Parser Text
 textOfCharset1 = takeWhile1 . Charset.toCharPredicate
+
+charNotOfCharset :: Charset.Charset -> Parser Char
+charNotOfCharset = satisfy . fmap not . Charset.toCharPredicate
+
+textNotOfCharset :: Charset.Charset -> Parser Text
+textNotOfCharset = takeWhile . fmap not . Charset.toCharPredicate
+
+textNotOfCharset1 :: Charset.Charset -> Parser Text
+textNotOfCharset1 = takeWhile1 . fmap not . Charset.toCharPredicate

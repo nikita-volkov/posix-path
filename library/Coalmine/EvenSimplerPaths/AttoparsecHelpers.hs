@@ -1,5 +1,7 @@
 module Coalmine.EvenSimplerPaths.AttoparsecHelpers where
 
+import Coalmine.AttoparsecExtras.Text
+import qualified Coalmine.EvenSimplerPaths.Charsets as Charsets
 import Coalmine.InternalPrelude hiding (takeWhile)
 import Data.Attoparsec.Text
 
@@ -15,10 +17,10 @@ dir = takeWhile1 $ \a -> a /= '/' && a /= '\\'
 
 filePathDirs = many $ dir <* char '/'
 
-fileName = takeWhile $ \a -> a /= '.' && a /= '/' && a /= '\\'
+fileName = textNotOfCharset Charsets.notFileName
 
-fileName1 = takeWhile1 $ \a -> a /= '.' && a /= '/' && a /= '\\'
+fileName1 = textNotOfCharset1 Charsets.notFileName
 
-extension = char '.' *> takeWhile1 (\a -> a /= '.' && a /= '/' && a /= '\\')
+extension = char '.' *> fileName1
 
 abs = char '/' $> True <|> pure False

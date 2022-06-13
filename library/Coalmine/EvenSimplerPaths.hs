@@ -21,6 +21,7 @@ import Coalmine.BaseExtras.MonadPlus
 import qualified Coalmine.CerealExtras.Compact as CerealExtrasCompact
 import qualified Coalmine.EvenSimplerPaths.AttoparsecHelpers as AttoparsecHelpers
 import qualified Coalmine.EvenSimplerPaths.IsomorphismClassHelpers as IsomorphismClassHelpers
+import qualified Coalmine.EvenSimplerPaths.QuickCheckGens as QuickCheckGens
 import Coalmine.InternalPrelude
 import qualified Coalmine.Name as Name
 import Coalmine.NameConversion
@@ -30,6 +31,7 @@ import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.Serialize as Cereal
 import qualified Data.Text as Text
 import qualified System.Directory as Directory
+import qualified Test.QuickCheck as QuickCheck
 import qualified TextBuilderDev as TextBuilderDev
 
 -- * --
@@ -43,6 +45,12 @@ data Component
       ![Text]
       -- ^ Extensions in reverse order.
   deriving (Eq)
+
+instance QuickCheck.Arbitrary Component where
+  arbitrary = do
+    name <- QuickCheckGens.fileName
+    extensions <- QuickCheck.listOf QuickCheckGens.extension
+    return $ Component name extensions
 
 instance Cereal.Serialize Component where
   put (Component name extensions) = do
@@ -66,6 +74,9 @@ data Path
       ![Component]
       -- ^ Components in reverse order.
   deriving (Eq)
+
+instance QuickCheck.Arbitrary Path where
+  arbitrary = Path <$> QuickCheck.arbitrary <*> QuickCheck.arbitrary
 
 instance Cereal.Serialize Path where
   put (Path abs components) = do
