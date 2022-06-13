@@ -1,4 +1,4 @@
-module Coalmine.RestEasy.Models.Request where
+module Coalmine.RestEasy.AdaptedRequest.Model where
 
 import Coalmine.InternalPrelude
 import qualified Domain
