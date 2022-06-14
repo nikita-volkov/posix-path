@@ -2,6 +2,6 @@ module Coalmine.Name.Constants where
 
 import Coalmine.InternalPrelude
 
-maxParts = 100
+maxParts = 30
 
-maxBytesInPart = 100
+maxBytesInPart = 50
