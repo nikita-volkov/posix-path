@@ -175,6 +175,7 @@ instance FromName Path where
 
 -- * --
 
+-- | Helper for dealing with APIs for FilePath from base.
 toString :: Path -> String
 toString = to . toCompactBuilder
 
