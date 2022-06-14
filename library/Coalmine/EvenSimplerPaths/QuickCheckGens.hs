@@ -17,7 +17,7 @@ fileName = do
 
 extension :: Gen Text
 extension = do
-  size <- chooseInt (0, 100)
+  size <- chooseInt (1, 100)
   fromString <$> vectorOf size char
   where
     char = filter pred arbitrary
