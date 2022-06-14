@@ -88,4 +88,9 @@ instance BroadPrinting Word where
 
 instance (BroadPrinting a, BroadPrinting b) => BroadPrinting (a, b) where
   toBroadBuilder (a, b) =
-    mconcat ["- ", toBroadBuilder a, "\n- ", toBroadBuilder b]
+    mconcat
+      [ "- ",
+        Mb.indent 2 $ toBroadBuilder a,
+        "\n- ",
+        Mb.indent 2 $ toBroadBuilder b
+      ]
