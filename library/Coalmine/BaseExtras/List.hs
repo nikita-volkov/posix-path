@@ -125,10 +125,10 @@ zipWithTotally pair left right =
 --
 -- > intercalate :: [a] -> [[a]] -> [a]
 intercalate :: Monoid a => a -> [a] -> a
-intercalate = intercalateMap id
+intercalate = mapIntercalate id
 
-intercalateMap :: Monoid m => (a -> m) -> m -> [a] -> m
-intercalateMap proj separator = \case
+mapIntercalate :: Monoid m => (a -> m) -> m -> [a] -> m
+mapIntercalate proj separator = \case
   [] -> mempty
   head : tail ->
     foldl' (\acc element -> acc <> separator <> proj element) (proj head) tail

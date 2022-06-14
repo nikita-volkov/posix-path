@@ -34,6 +34,6 @@ readOneOf = go []
             "Failed to read from any of the following files:\n"
               <> list
             where
-              list = List.intercalateMap errReport "\n" errs
+              list = List.mapIntercalate errReport "\n" errs
               errReport (err, path) =
                 "- " <> printCompactAs path
