@@ -2,6 +2,7 @@ module Main where
 
 import Coalmine.Prelude
 import Coalmine.Tasty
+import qualified TestSuites.CerealExtras.Compact
 import qualified TestSuites.ConduitExtras as ConduitExtras
 import qualified TestSuites.EvenSimplerPaths as EvenSimplerPaths
 import qualified TestSuites.Inter as Inter
@@ -20,5 +21,8 @@ main =
       testGroup "EvenSimplerPaths" EvenSimplerPaths.tests,
       testGroup "SimplePaths" SimplePaths.tests,
       testGroup "ConduitExtras" ConduitExtras.tests,
-      testGroup "Name" Name.tests
+      testGroup "Name" Name.tests,
+      testGroup "CerealExtras" $
+        [ testGroup "Compact" TestSuites.CerealExtras.Compact.tests
+        ]
     ]

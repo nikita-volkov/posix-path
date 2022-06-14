@@ -52,5 +52,4 @@ function demo {
 }
 
 format
-fork_haddock
 build_and_test

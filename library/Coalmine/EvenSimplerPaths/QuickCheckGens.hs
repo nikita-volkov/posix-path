@@ -7,17 +7,24 @@ import qualified StructureKit.Charset as Charset
 import Test.QuickCheck
 
 fileName :: Gen Text
-fileName =
-  fromString <$> listOf char
+fileName = do
+  size <- chooseInt (0, 100)
+  fromString <$> vectorOf size char
   where
     char = filter pred arbitrary
       where
         pred = not . Charset.toCharPredicate Charsets.notFileName
 
 extension :: Gen Text
-extension =
-  fromString <$> listOf1 char
+extension = do
+  size <- chooseInt (1, 10)
+  fromString <$> vectorOf size char
   where
     char = filter pred arbitrary
       where
         pred = not . Charset.toCharPredicate Charsets.notFileName
+
+extensions :: Gen [Text]
+extensions = do
+  amount <- chooseInt (0, 10)
+  vectorOf amount extension

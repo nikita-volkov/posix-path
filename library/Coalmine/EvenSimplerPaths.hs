@@ -49,7 +49,7 @@ data Component
 instance QuickCheck.Arbitrary Component where
   arbitrary = do
     name <- QuickCheckGens.fileName
-    extensions <- QuickCheck.listOf QuickCheckGens.extension
+    extensions <- QuickCheckGens.extensions
     return $ Component name extensions
 
 instance Cereal.Serialize Component where
@@ -76,7 +76,11 @@ data Path
   deriving (Eq)
 
 instance QuickCheck.Arbitrary Path where
-  arbitrary = Path <$> QuickCheck.arbitrary <*> QuickCheck.arbitrary
+  arbitrary = Path <$> QuickCheck.arbitrary <*> components
+    where
+      components = do
+        size <- QuickCheck.chooseInt (0, 20)
+        QuickCheck.vectorOf size QuickCheck.arbitrary
 
 instance Cereal.Serialize Path where
   put (Path abs components) = do

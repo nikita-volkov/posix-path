@@ -1,6 +1,7 @@
 module Coalmine.CerealExtras.Get where
 
 import Coalmine.InternalPrelude hiding (get, map, put)
+import qualified Data.ByteString as ByteString
 import qualified Data.IntMap.Strict as IntMap
 import qualified Data.Map.Strict as Map
 import Data.Serialize.Get
@@ -8,6 +9,16 @@ import qualified Data.Serialize.LEB128 as Leb128
 import qualified Data.Text.Encoding as TextEncoding
 import qualified Data.Vector as BVec
 import qualified Data.Vector.Generic as GVec
+
+runCompletely :: Get a -> ByteString -> Either Text a
+runCompletely get input =
+  case runGetPartial get input of
+    Done res rem ->
+      if ByteString.null rem
+        then Right res
+        else Left "Too much input"
+    Fail err _ -> Left (to err)
+    Partial _ -> Left "Not enough input"
 
 intInSLeb128 :: Get Int
 intInSLeb128 = Leb128.getSLEB128
