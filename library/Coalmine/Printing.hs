@@ -85,3 +85,7 @@ instance BroadPrinting Int where
 
 instance BroadPrinting Word where
   toBroadBuilder = toBroadBuilder . Ub.unsignedDecimal
+
+instance (BroadPrinting a, BroadPrinting b) => BroadPrinting (a, b) where
+  toBroadBuilder (a, b) =
+    mconcat ["- ", toBroadBuilder a, "\n- ", toBroadBuilder b]
