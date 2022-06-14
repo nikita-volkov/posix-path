@@ -52,4 +52,4 @@ function demo {
 }
 
 format
-build_and_test_by_pattern "Encode-decode equals original"
+build_and_test
