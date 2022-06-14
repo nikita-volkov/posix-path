@@ -6,6 +6,7 @@ module Coalmine.EvenSimplerPaths
     toString,
     parent,
     components,
+    name,
     extensions,
 
     -- * --
@@ -198,6 +199,13 @@ components (Path abs components) =
     nonAbsFromComponents = \case
       h : t -> Path False [h] : nonAbsFromComponents t
       _ -> []
+
+-- | File name sans extensions.
+name :: Path -> Text
+name (Path _ components) =
+  case components of
+    Component name _ : _ -> name
+    [] -> ""
 
 extensions :: Path -> [Text]
 extensions (Path _ components) =
