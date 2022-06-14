@@ -52,5 +52,4 @@ function demo {
 }
 
 format
-fork_haddock
-build_and_test
+build_and_test_by_pattern "Encode-decode equals original"

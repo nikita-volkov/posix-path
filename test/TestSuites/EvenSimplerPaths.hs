@@ -3,6 +3,7 @@ module TestSuites.EvenSimplerPaths where
 import Coalmine.EvenSimplerPaths
 import Coalmine.Prelude
 import Coalmine.Tasty
+import Coalmine.Tasty.TestTrees.Cereal
 
 tests =
   [ testGroup
@@ -44,5 +45,6 @@ tests =
           "Triple"
           (Right "src/main")
           (parseTextLeniently @Path "src///main")
-      ]
+      ],
+    testEncodeDecode @Path Proxy
   ]
