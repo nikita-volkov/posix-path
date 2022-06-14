@@ -8,7 +8,7 @@ import Test.QuickCheck
 
 fileName :: Gen Text
 fileName = do
-  size <- chooseInt (0, 200)
+  size <- chooseInt (0, 100)
   fromString <$> vectorOf size char
   where
     char = filter pred arbitrary
@@ -17,7 +17,7 @@ fileName = do
 
 extension :: Gen Text
 extension = do
-  size <- chooseInt (1, 100)
+  size <- chooseInt (1, 10)
   fromString <$> vectorOf size char
   where
     char = filter pred arbitrary

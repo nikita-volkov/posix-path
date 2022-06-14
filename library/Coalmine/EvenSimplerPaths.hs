@@ -79,7 +79,7 @@ instance QuickCheck.Arbitrary Path where
   arbitrary = Path <$> QuickCheck.arbitrary <*> components
     where
       components = do
-        size <- QuickCheck.chooseInt (0, 50)
+        size <- QuickCheck.chooseInt (0, 20)
         QuickCheck.vectorOf size QuickCheck.arbitrary
 
 instance Cereal.Serialize Path where
