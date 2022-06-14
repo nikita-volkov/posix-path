@@ -232,6 +232,7 @@ test-suite test
   main-is:
     Main.hs
   other-modules:
+    TestSuites.CerealExtras.Compact
     TestSuites.ConduitExtras
     TestSuites.EvenSimplerPaths
     TestSuites.Inter

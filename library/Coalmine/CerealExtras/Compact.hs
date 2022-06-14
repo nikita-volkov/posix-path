@@ -20,7 +20,7 @@ import qualified Data.Vector as BVec
 import qualified Data.Vector.Unboxed as UVec
 
 newtype Compact a = Compact {unwrap :: a}
-  deriving (Show, Eq, Ord, Integral, Num, Real, Enum, FromJSON, ToJSON, ToJSONKey)
+  deriving (Show, Eq, Ord, Integral, Num, Real, Enum, FromJSON, ToJSON, ToJSONKey, Arbitrary)
 
 instance Serialize (Compact Int) where
   put (Compact a) = Leb128.putSLEB128 a
