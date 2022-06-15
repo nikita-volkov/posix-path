@@ -10,7 +10,6 @@ module Coalmine.SimplePaths
 where
 
 import Coalmine.InternalPrelude hiding (FilePath)
-import Coalmine.Name (FromNameInSpinalCase (..), FromNameInUpperCamelCase (..))
 import Coalmine.NameConversion
 import Coalmine.Printing
 import qualified Coalmine.SimplePaths.AttoparsecHelpers as AttoparsecHelpers
@@ -71,14 +70,6 @@ instance ToJSON DirPath where
 instance ToJSONKey DirPath where
   toJSONKey = contramap printCompactAsText toJSONKey
 
-instance FromNameInSpinalCase DirPath where
-  fromNameInSpinalCase _name =
-    DirPath False [fromNameInSpinalCase _name]
-
-instance FromNameInUpperCamelCase DirPath where
-  fromNameInUpperCamelCase _name =
-    DirPath False [fromNameInUpperCamelCase _name]
-
 instance FromName DirPath where
   fromNameIn casing name =
     DirPath False [fromNameIn casing name]
@@ -133,14 +124,6 @@ instance ToJSON FilePath where
 
 instance ToJSONKey FilePath where
   toJSONKey = contramap (to @Text . toCompactBuilder) toJSONKey
-
-instance FromNameInSpinalCase FilePath where
-  fromNameInSpinalCase _name =
-    FilePath mempty (fromNameInSpinalCase _name) []
-
-instance FromNameInUpperCamelCase FilePath where
-  fromNameInUpperCamelCase _name =
-    FilePath mempty (fromNameInUpperCamelCase _name) []
 
 instance FromName FilePath where
   fromNameIn casing name =
