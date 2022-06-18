@@ -37,3 +37,21 @@ readOneOf = go []
               list = List.mapIntercalate errReport "\n" errs
               errReport (err, path) =
                 "- " <> printCompactAs path
+
+-- | Load and parse a required environment variable.
+loadRequiredEnv :: LenientParser a => Text -> IO a
+loadRequiredEnv name = do
+  env <- getEnv (to name)
+  case parseTextLeniently (to env) of
+    Left err -> die (to err)
+    Right res -> return res
+
+-- | Load and parse a non-required environment variable.
+loadNonRequiredEnv :: LenientParser a => Text -> IO (Maybe a)
+loadNonRequiredEnv name = do
+  env <- lookupEnv (to name)
+  case env of
+    Just env -> case parseTextLeniently (to env) of
+      Left err -> die (to err)
+      Right res -> return $ Just res
+    Nothing -> return Nothing
