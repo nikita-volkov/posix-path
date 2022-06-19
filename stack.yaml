@@ -7,6 +7,8 @@ extra-deps:
     commit: 64aca4d216dccab96b1d417f28a6b6db5359c5ec
   - git: https://github.com/nikita-volkov/structure-kit
     commit: 46ffb6527c48f8a718adecd21a313f0b1ba5e81c
+  - git: https://github.com/nikita-volkov/text-builder-dev
+    commit: fba3bcd336f7864a1ed7a2a80b61e5a06386e63c
   - aeson-value-parser-0.19.7
   - cereal-unordered-containers-0.1
   - domain-aeson-0.1

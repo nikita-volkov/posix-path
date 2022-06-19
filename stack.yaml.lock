@@ -38,6 +38,17 @@ packages:
     commit: 46ffb6527c48f8a718adecd21a313f0b1ba5e81c
     git: https://github.com/nikita-volkov/structure-kit
 - completed:
+    name: text-builder-dev
+    pantry-tree:
+      sha256: 8c0c4277dda1c014b96c35c7d7b6d2e76cae58329ed7b3f51b35747b3767e4cf
+      size: 952
+    commit: fba3bcd336f7864a1ed7a2a80b61e5a06386e63c
+    git: https://github.com/nikita-volkov/text-builder-dev
+    version: 0.3.2
+  original:
+    commit: fba3bcd336f7864a1ed7a2a80b61e5a06386e63c
+    git: https://github.com/nikita-volkov/text-builder-dev
+- completed:
     pantry-tree:
       sha256: 4c700792b51236a70e364ac79c1cd0d197596264c0f57099eb5cea193b663c1b
       size: 408
