@@ -16,6 +16,10 @@ module Coalmine.InternalPrelude
     -- * --
     renderAsYamlText,
     parseTextLeniently,
+
+    -- * UTF8
+    Data.Text.Encoding.encodeUtf8,
+    decodeUtf8,
   )
 where
 
@@ -92,3 +96,7 @@ renderAsYamlText =
   Data.Text.Encoding.decodeUtf8
     . Data.Yaml.encode
     . Data.Aeson.toJSON
+
+-- * UTF8
+
+decodeUtf8 = Data.Text.Encoding.decodeUtf8'
