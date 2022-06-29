@@ -53,6 +53,7 @@ import Data.Vector.Unboxed.Deriving as Exports (derivingUnbox)
 import qualified Data.Yaml
 import DeferredFolds.Unfoldr as Exports (Unfoldr (..))
 import Deque.Strict as Exports (Deque)
+import Foreign.C.Types as Exports
 import GHC.Exts as Exports (IsList (..))
 import IsomorphismClass as Exports
 import Language.Haskell.TH.Quote as Exports (QuasiQuoter (..))
