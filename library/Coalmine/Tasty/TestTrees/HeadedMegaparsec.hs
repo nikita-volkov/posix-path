@@ -1,9 +1,8 @@
 module Coalmine.Tasty.TestTrees.HeadedMegaparsec where
 
 import qualified Coalmine.HeadedMegaparsecExtras as P
-import Coalmine.InternalPrelude hiding (FilePath)
+import Coalmine.InternalPrelude
 import Coalmine.Printing
-import Coalmine.SimplePaths (FilePath)
 import qualified Data.Text.IO as TextIO
 import HeadedMegaparsec
 import Test.QuickCheck.Instances

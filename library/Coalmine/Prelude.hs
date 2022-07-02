@@ -17,7 +17,7 @@ import Coalmine.EvenSimplerPaths as Exports (Path)
 import Coalmine.HCurrying as Exports
 import Coalmine.HashableExtras as Exports
 import Coalmine.Inter as Exports
-import Coalmine.InternalPrelude as Exports hiding (FilePath)
+import Coalmine.InternalPrelude as Exports
 import Coalmine.Interval as Exports (Interval)
 import Coalmine.IsomorphismClassInstances as Exports ()
 import Coalmine.MtlExtras as Exports
@@ -26,7 +26,6 @@ import Coalmine.Name as Exports (Name)
 import Coalmine.NameConversion as Exports
 import Coalmine.Parsing as Exports
 import Coalmine.Printing as Exports
-import Coalmine.SimplePaths as Exports (DirPath, FilePath)
 import Coalmine.TransformersExtras.Reader as Exports ()
 import Coalmine.TransformersExtras.State as Exports ()
 

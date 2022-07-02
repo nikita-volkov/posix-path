@@ -9,7 +9,6 @@ import qualified TestSuites.Inter as Inter
 import qualified TestSuites.LocatedRendering as LocatedRendering
 import qualified TestSuites.MegaparsecExtras as MegaparsecExtras
 import qualified TestSuites.Name as Name
-import qualified TestSuites.SimplePaths as SimplePaths
 import qualified TestSuites.TimeExtrasConversions as TimeExtrasConversions
 
 main =
@@ -19,7 +18,6 @@ main =
       testGroup "MegaparsecExtras" MegaparsecExtras.tests,
       testGroup "TimeExtrasConversions" TimeExtrasConversions.tests,
       testGroup "EvenSimplerPaths" EvenSimplerPaths.tests,
-      testGroup "SimplePaths" SimplePaths.tests,
       testGroup "ConduitExtras" ConduitExtras.tests,
       testGroup "Name" Name.tests,
       testGroup "CerealExtras" $

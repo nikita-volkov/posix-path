@@ -26,7 +26,6 @@ import qualified Coalmine.EvenSimplerPaths.QuickCheckGens as QuickCheckGens
 import Coalmine.InternalPrelude
 import Coalmine.NameConversion
 import Coalmine.Printing
-import qualified Coalmine.SimplePaths as SimplePaths
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.Serialize as Cereal
 import qualified Data.Text as Text
@@ -152,18 +151,6 @@ instance IsString Path where
     either error id
       . Attoparsec.parseOnly (lenientParser <* Attoparsec.endOfInput)
       . fromString
-
-instance IsomorphicTo SimplePaths.DirPath Path where
-  to = IsomorphismClassHelpers.thruText
-
-instance IsomorphicTo Path SimplePaths.DirPath where
-  to = IsomorphismClassHelpers.thruText
-
-instance IsomorphicTo SimplePaths.FilePath Path where
-  to = IsomorphismClassHelpers.thruText
-
-instance IsomorphicTo Path SimplePaths.FilePath where
-  to = IsomorphismClassHelpers.thruText
 
 instance FromName Path where
   fromNameIn casing name =
