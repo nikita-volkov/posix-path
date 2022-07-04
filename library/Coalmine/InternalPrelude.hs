@@ -40,6 +40,7 @@ import Data.Group as Exports
 import Data.Groupoid as Exports
 import Data.Machine.Mealy as Exports
 import Data.Machine.Moore as Exports
+import Data.Semialign as Exports
 import qualified Data.Text.Encoding
 import Data.Time.Compat as Exports ()
 import Data.Tuple.All as Exports hiding (only)
@@ -63,7 +64,7 @@ import System.IO as Exports
 import Test.QuickCheck.Arbitrary as Exports (Arbitrary)
 import Test.QuickCheck.Instances ()
 import TextBuilderDev as Exports (IsomorphicToTextBuilder (..), TextBuilder, buildText)
-import Prelude hiding (Vector, chosen, toList, uncons, (%))
+import Prelude hiding (Vector, chosen, repeat, toList, uncons, unzip, zip, zipWith, (%))
 
 -- * --
 

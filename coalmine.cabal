@@ -190,6 +190,7 @@ library
     QuickCheck,
     quickcheck-instances,
     rerebase,
+    semialign,
     structure-kit,
     tasty,
     tasty-hunit,
