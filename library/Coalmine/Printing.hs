@@ -94,3 +94,7 @@ instance (BroadPrinting a, BroadPrinting b) => BroadPrinting (a, b) where
         "\n- ",
         Mb.indent 2 $ toBroadBuilder b
       ]
+
+instance (ToJSON a) => BroadPrinting (BVec a) where
+  toBroadBuilder =
+    to . renderAsYamlText
