@@ -43,6 +43,7 @@ import Data.Machine.Moore as Exports
 import Data.Semialign as Exports
 import qualified Data.Text.Encoding
 import Data.Time.Compat as Exports ()
+import Data.Time.Format.ISO8601 as Exports (ISO8601 (..), iso8601ParseM, iso8601Show)
 import Data.Tuple.All as Exports hiding (only)
 import qualified Data.Vector
 import Data.Vector.Generic as Exports (Vector)
