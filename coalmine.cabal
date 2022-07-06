@@ -208,6 +208,7 @@ library
     wai-app-static,
     wai-cors,
     warp,
+    witherable,
     yaml,
 
 test-suite doctest

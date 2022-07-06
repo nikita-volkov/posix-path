@@ -65,7 +65,8 @@ import System.IO as Exports
 import Test.QuickCheck.Arbitrary as Exports (Arbitrary)
 import Test.QuickCheck.Instances ()
 import TextBuilderDev as Exports (IsomorphicToTextBuilder (..), TextBuilder, buildText)
-import Prelude hiding (Vector, chosen, repeat, toList, uncons, unzip, zip, zipWith, (%))
+import Witherable as Exports
+import Prelude hiding (Vector, catMaybes, chosen, filter, mapMaybe, repeat, toList, uncons, unzip, zip, zipWith, (%))
 
 -- * --
 
