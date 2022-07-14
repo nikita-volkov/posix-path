@@ -127,6 +127,7 @@ library
     Coalmine.TH.QuasiQuoter
     Coalmine.TimeExtras.Conversions
     Coalmine.TransformersExtras.Cont
+    Coalmine.TransformersExtras.Except
     Coalmine.TransformersExtras.Reader
     Coalmine.TransformersExtras.State
     Coalmine.UnorderedContainersExtras.HashMap

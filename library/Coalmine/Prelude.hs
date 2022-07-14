@@ -26,6 +26,7 @@ import Coalmine.Name as Exports (Name)
 import Coalmine.NameConversion as Exports
 import Coalmine.Parsing as Exports
 import Coalmine.Printing as Exports
+import Coalmine.TransformersExtras.Except as Exports ()
 import Coalmine.TransformersExtras.Reader as Exports ()
 import Coalmine.TransformersExtras.State as Exports ()
 
