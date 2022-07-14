@@ -137,16 +137,16 @@ mapIntercalate proj separator = \case
 
 -- | @atLength atLen atEnd n ls@ unravels list @ls@ to position @n@. Precisely:
 --
--- @
---  atLength atLenPred atEndPred n ls
---   | n < 0         = atLenPred ls
---   | length ls < n = atEndPred (n - length ls)
---   | otherwise     = atLenPred (drop n ls)
--- @
+-- > atLength atLenPred atEndPred n ls
+-- >  | n < 0         = atLenPred ls
+-- >  | length ls < n = atEndPred (n - length ls)
+-- >  | otherwise     = atLenPred (drop n ls)
 atLength ::
-  ([a] -> b) -> -- Called when length ls >= n, passed (drop n ls)
-  --    NB: arg passed to this function may be []
-  b -> -- Called when length ls <  n
+  -- | Called when @length ls >= n@, passed (@drop n ls@)
+  -- NB: arg passed to this function may be []
+  ([a] -> b) ->
+  -- | Called when @length ls < n@
+  b ->
   Int ->
   [a] ->
   b
