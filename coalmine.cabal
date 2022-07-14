@@ -171,6 +171,7 @@ library
     filepath,
     foldl,
     from-sum,
+    ghc,
     headed-megaparsec,
     http-media,
     http-types,
