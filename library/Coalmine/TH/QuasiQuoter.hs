@@ -1,6 +1,7 @@
 module Coalmine.TH.QuasiQuoter where
 
-import Coalmine.InternalPrelude hiding (exp)
+import Coalmine.InternalPrelude hiding (exp, lift)
+import Coalmine.TH.Exp
 import qualified Data.Attoparsec.Text as Atto
 import Language.Haskell.TH.Quote
 import Language.Haskell.TH.Syntax
@@ -35,3 +36,6 @@ pureAttoparsedExp parser =
     (either fail pure . Atto.parseOnly parser' . fromString)
   where
     parser' = parser <* Atto.endOfInput
+
+pureAttoparsedLiftable :: Lift a => Atto.Parser a -> QuasiQuoter
+pureAttoparsedLiftable = pureAttoparsedExp . fmap liftPurely
