@@ -37,5 +37,8 @@ pureAttoparsedExp parser =
   where
     parser' = parser <* Atto.endOfInput
 
-pureAttoparsedLiftable :: Lift a => Atto.Parser a -> QuasiQuoter
-pureAttoparsedLiftable = pureAttoparsedExp . fmap liftPurely
+-- |
+-- Lets you easily create custom literal quoters by utilizing typeclasses.
+literal :: (LenientParser a, Lift a) => Proxy a -> QuasiQuoter
+literal proxy =
+  pureAttoparsedExp . fmap (liftPurely . flip asProxyTypeOf proxy) $ lenientParser
