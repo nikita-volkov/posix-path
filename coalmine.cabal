@@ -108,6 +108,7 @@ library
     Coalmine.Printing
     Coalmine.QuickCheckExtras.Gens
     Coalmine.Res
+    Coalmine.Result
     Coalmine.RestEasy
     Coalmine.RestEasy.BodyConsumers
     Coalmine.RestEasy.MimeTypeLists
