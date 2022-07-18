@@ -1,5 +1,7 @@
 -- |
 -- Error builder DSL.
+--
+-- TODO: Add rendering to colored terminal.
 module Coalmine.ErrBuilder
   ( err,
     Context,
@@ -8,25 +10,36 @@ module Coalmine.ErrBuilder
 where
 
 import qualified Coalmine.BaseExtras.List as List
-import Coalmine.Inter as Exports
+import Coalmine.Inter
 import Coalmine.InternalPrelude
 import Coalmine.MultilineTextBuilder (MultilineTextBuilder)
+import Coalmine.Printing
 
-err :: MultilineTextBuilder -> MultilineTextBuilder -> [Context] -> Text
-err reason suggestion contexts =
-  to
+-- * Err
+
+data Err = Err
+  { errReason :: Text,
+    errSuggestion :: Text,
+    errContexts :: [Context]
+  }
+
+instance BroadPrinting Err where
+  toBroadBuilder Err {..} =
     [j|
-      $reason
+      $errReason
 
       Suggestion:
-        $suggestion
+        $errSuggestion
 
       Context:
         $renderedContexts
     |]
-  where
-    renderedContexts =
-      List.mapIntercalate contextSplice "\n" contexts
+    where
+      renderedContexts =
+        List.mapIntercalate contextSplice "\n" errContexts
+
+err :: Text -> Text -> [Context] -> Err
+err = Err
 
 -- * Context
 
