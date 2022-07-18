@@ -1,8 +1,5 @@
 module Coalmine.Prelude
   ( module Exports,
-
-    -- * --
-    MultilineTextBuilder,
   )
 where
 
@@ -21,7 +18,7 @@ import Coalmine.InternalPrelude as Exports
 import Coalmine.Interval as Exports (Interval)
 import Coalmine.IsomorphismClassInstances as Exports ()
 import Coalmine.MtlExtras as Exports
-import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
+import Coalmine.MultilineTextBuilder as Exports (MultilineTextBuilder)
 import Coalmine.Name as Exports (Name)
 import Coalmine.NameConversion as Exports
 import Coalmine.Parsing as Exports
@@ -29,5 +26,3 @@ import Coalmine.Printing as Exports
 import Coalmine.TransformersExtras.Except as Exports ()
 import Coalmine.TransformersExtras.Reader as Exports ()
 import Coalmine.TransformersExtras.State as Exports ()
-
-type MultilineTextBuilder = MultilineTextBuilder.Builder

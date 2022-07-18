@@ -1,5 +1,6 @@
 module Coalmine.MultilineTextBuilder
   ( -- * --
+    MultilineTextBuilder,
     Builder,
 
     -- * --
@@ -21,6 +22,8 @@ import qualified Data.Text.Lazy.Builder as TextLazyBuilder
 import qualified TextBuilderDev as Tb
 
 -- * --
+
+type MultilineTextBuilder = Builder
 
 data Builder
   = Builder Bool (Int -> Tb.TextBuilder)
