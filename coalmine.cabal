@@ -67,6 +67,7 @@ library
     Coalmine.DecimalExtras
     Coalmine.DecimalExtras.Instances
     Coalmine.Domain
+    Coalmine.ErrBuilder
     Coalmine.EvenSimplerPaths
     Coalmine.EvenSimplerPaths.AttoparsecHelpers
     Coalmine.EvenSimplerPaths.Charsets
