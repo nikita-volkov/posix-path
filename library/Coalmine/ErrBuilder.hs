@@ -3,7 +3,8 @@
 --
 -- TODO: Add rendering to colored terminal.
 module Coalmine.ErrBuilder
-  ( err,
+  ( Err,
+    err,
     Context,
     context,
   )
