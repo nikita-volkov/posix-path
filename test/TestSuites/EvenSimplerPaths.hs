@@ -14,6 +14,17 @@ tests =
           (components "src/main/java")
       ],
     testGroup
+      "Empty"
+      [ eqTestCase
+          "equals empty"
+          (Right mempty)
+          (parseTextLeniently @Path ""),
+        eqTestCase
+          "equals dot"
+          (Right ".")
+          (parseTextLeniently @Path "")
+      ],
+    testGroup
       "Dot"
       [ eqTestCase
           "equals empty"
