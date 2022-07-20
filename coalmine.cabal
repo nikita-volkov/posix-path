@@ -125,6 +125,7 @@ library
     Coalmine.Tasty.TestTrees.Cereal
     Coalmine.Tasty.TestTrees.HeadedMegaparsec
     Coalmine.TextAppender
+    Coalmine.TextExtras.Text
     Coalmine.TH.Exp
     Coalmine.TH.QuasiQuoter
     Coalmine.TimeExtras.Conversions
@@ -186,6 +187,7 @@ library
     megaparsec,
     mmorph,
     moore-machines,
+    natural-sort,
     neat-interpolation,
     network-ip,
     optics,
