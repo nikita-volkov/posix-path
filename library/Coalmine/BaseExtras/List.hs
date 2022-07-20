@@ -194,3 +194,6 @@ isNotLongerThan n lst
 -- | @(isShorterThan n xs) == (length xs < n)@
 isShorterThan :: Int -> [a] -> Bool
 isShorterThan = atLength (const False) True
+
+traverseConcat :: (Applicative f, Monoid a) => [f a] -> f a
+traverseConcat = fmap mconcat . sequenceA
