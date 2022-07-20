@@ -1,7 +1,6 @@
 module Coalmine.Tasty.TestTrees where
 
 import Coalmine.InternalPrelude
-import Test.QuickCheck.Instances
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck

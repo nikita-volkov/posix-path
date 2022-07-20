@@ -1,18 +1,24 @@
 module Coalmine.Tasty
-  ( -- * Reexports of the original Tasty modules.
-    module Exports,
+  ( -- * Reexports from the original Tasty modules.
+    module Test.Tasty,
+    module Test.Tasty.HUnit,
+    module Test.Tasty.QuickCheck,
 
     -- * Extensions
+
+    -- ** Main
     suitesMain,
+
+    -- ** Test trees
+    module Coalmine.Tasty.TestTrees,
   )
 where
 
 import Coalmine.InternalPrelude
-import Coalmine.Tasty.TestTrees as Exports
-import Test.QuickCheck.Instances as Exports
-import Test.Tasty as Exports
-import Test.Tasty.HUnit as Exports
-import Test.Tasty.QuickCheck as Exports
+import Coalmine.Tasty.TestTrees
+import Test.Tasty
+import Test.Tasty.HUnit
+import Test.Tasty.QuickCheck
 
 -- | Individually initialized test trees.
 --
