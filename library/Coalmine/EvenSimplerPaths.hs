@@ -18,6 +18,7 @@ module Coalmine.EvenSimplerPaths
   )
 where
 
+import qualified Algorithms.NaturalSort as NaturalSort
 import Coalmine.BaseExtras.MonadPlus
 import qualified Coalmine.CerealExtras.Compact as CerealExtrasCompact
 import qualified Coalmine.EvenSimplerPaths.AttoparsecHelpers as AttoparsecHelpers
@@ -37,12 +38,12 @@ import qualified TextBuilderDev as TextBuilderDev
 
 -- |
 -- Structured name of a single component of a path.
-data Component
-  = Component
-      !Text
-      -- ^ Name.
-      ![Text]
-      -- ^ Extensions in reverse order.
+data Component = Component
+  { -- | Name.
+    componentName :: !Text,
+    -- | Extensions in reverse order.
+    componentExtensions :: ![Text]
+  }
   deriving (Eq)
 
 instance QuickCheck.Arbitrary Component where
@@ -61,8 +62,28 @@ instance Cereal.Serialize Component where
     return $ Component name (fmap CerealExtrasCompact.unwrap extensions)
 
 instance Ord Component where
-  Component la lb <= Component ra rb =
-    la <= ra || reverse lb <= reverse rb
+  compare l r =
+    if la == ra
+      then
+        if lb < rb
+          then LT
+          else
+            if lb == rb
+              then EQ
+              else GT
+      else
+        if la < ra
+          then LT
+          else GT
+    where
+      la = componentNameSortKey l
+      lb = componentExtensionsSortKey l
+      ra = componentNameSortKey r
+      rb = componentExtensionsSortKey r
+
+componentNameSortKey = NaturalSort.sortKey . componentName
+
+componentExtensionsSortKey = reverse . fmap NaturalSort.sortKey . componentExtensions
 
 -- * --
 
@@ -91,8 +112,19 @@ instance Cereal.Serialize Path where
     return $ Path abs components
 
 instance Ord Path where
-  Path la lb <= Path ra rb =
-    la <= ra || reverse lb <= reverse rb
+  compare (Path la lb) (Path ra rb) =
+    if la == ra
+      then
+        if lb < rb
+          then LT
+          else
+            if lb == rb
+              then EQ
+              else GT
+      else
+        if la < ra
+          then LT
+          else GT
 
 instance Semigroup Path where
   Path _lAbs _lNames <> Path _rAbs _rNames =
