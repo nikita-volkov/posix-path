@@ -1,19 +1,23 @@
 module Coalmine.ArgsParser
-  ( ArgsParser,
-    arg,
+  ( -- * Top-level execution
+    consume,
+    readAndConsumeArgsHappily,
 
-    -- * Arg
-    ArgParser,
-    minMaxIntArg,
+    -- * Args consumer
+    Consumer,
+    parse,
+
+    -- * Arg parser
+    Parser,
+    minMaxInt,
+    enum,
   )
 where
 
 import Coalmine.InternalPrelude
 import qualified Data.Attoparsec.Text as Attoparsec
 
--- * Args
-
-newtype ArgsParser a = ArgsParser (Int -> [String] -> Either Err a)
+-- * Execution
 
 data Err
   = ConsumptionErr
@@ -21,6 +25,21 @@ data Err
       -- ^ Index that we're at.
       ConsumptionErr
   | TooManyErr
+
+consume :: Consumer a -> String -> Either Err a
+consume =
+  error "TODO"
+
+-- | Read CLI args dying with a rendered error in case of failure.
+--
+-- Useful for CLI apps.
+readAndConsumeArgsHappily :: Consumer a -> IO a
+readAndConsumeArgsHappily =
+  error "TODO"
+
+-- * Args consumer
+
+newtype Consumer a = Consumer (Int -> [String] -> (Int, Either ConsumptionErr a))
 
 data ConsumptionErr
   = -- | No more args available to fetch from.
@@ -30,24 +49,27 @@ data ConsumptionErr
       ParsingErr
       -- ^ Error details.
 
+parse :: Parser a -> Consumer a
+parse (Parser parseArg) = Consumer $ \offset -> \case
+  [] -> (offset, Left ExhaustedConsumptionErr)
+  h : t -> case parseArg h of
+    Right res -> let !nextOffset = succ offset in (nextOffset, Right res)
+    Left err -> (offset, Left . ParsingConsumptionErr $ err)
+
+-- * Arg parser
+
+newtype Parser a = Parser (String -> Either ParsingErr a)
+  deriving (Functor)
+
 data ParsingErr
   = InvalidIntParsingErr
   | SmallerIntParsingErr Int
   | LargerIntParsingErr Int
+  | MissingEnumParsingErr
 
-arg :: ArgParser a -> ArgsParser a
-arg (ArgParser parseArg) = ArgsParser $ \offset -> \case
-  [] -> Left $ ConsumptionErr offset ExhaustedConsumptionErr
-  head : tail -> error "TODO"
-
--- * Arg
-
-newtype ArgParser a = ArgParser (String -> Either ParsingErr a)
-  deriving (Functor)
-
-minMaxIntArg :: Int -> Int -> ArgParser Int
-minMaxIntArg min max =
-  ArgParser $ \input -> case readMaybe input of
+minMaxInt :: Int -> Int -> Parser Int
+minMaxInt min max =
+  Parser $ \input -> case readMaybe input of
     Just int ->
       if int < min
         then Left $ SmallerIntParsingErr min
@@ -55,3 +77,8 @@ minMaxIntArg min max =
           if int > max
             then Left $ LargerIntParsingErr max
             else Right int
+    Nothing -> Left InvalidIntParsingErr
+
+enum :: [(Text, a)] -> Parser a
+enum =
+  error "TODO"
