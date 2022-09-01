@@ -23,7 +23,7 @@ data Err
       Int
       -- ^ Index that we're at.
       ConsumptionErr
-  | TooManyErr
+  | TooManyArgsErr Int
 
 -- | Read CLI args dying with a printed error in case of failure.
 --
@@ -35,12 +35,16 @@ getAndConsumeArgsHappily consumer =
     Left err -> die . to . renderErr $ err
 
 consume :: Consumer a -> [String] -> Either Err a
-consume =
-  error "TODO"
+consume (Consumer run) inputs =
+  case run 0 inputs of
+    Right (_, argsTail, res) -> case argsTail of
+      [] -> Right res
+      _ -> Left $ TooManyArgsErr (length argsTail)
+    Left (pos, err) -> Left $ ConsumptionErr pos err
 
 renderErr :: Err -> Text
 renderErr =
-  error "TODO"
+  error "TODO: Implement error rendering"
 
 -- * Args consumer
 
@@ -73,6 +77,12 @@ data ConsumptionErr
       String
       -- ^ Input.
 
+data ParsingErr
+  = InvalidIntParsingErr
+  | SmallerIntParsingErr Int
+  | LargerIntParsingErr Int
+  | MissingEnumParsingErr [Text]
+
 parse :: Parser a -> Consumer a
 parse (Parser parseArg) = Consumer $ \offset -> \case
   [] -> Left (offset, ExhaustedConsumptionErr)
@@ -84,12 +94,6 @@ parse (Parser parseArg) = Consumer $ \offset -> \case
 
 newtype Parser a = Parser (String -> Either ParsingErr a)
   deriving (Functor)
-
-data ParsingErr
-  = InvalidIntParsingErr
-  | SmallerIntParsingErr Int
-  | LargerIntParsingErr Int
-  | MissingEnumParsingErr [Text]
 
 minMaxInt :: Int -> Int -> Parser Int
 minMaxInt min max =
