@@ -99,5 +99,8 @@ minMaxInt min max =
     Nothing -> Left InvalidIntParsingErr
 
 enum :: [(Text, a)] -> Parser a
-enum =
-  error "TODO"
+enum list =
+  Parser $ \input ->
+    case lookup (fromString input) list of
+      Just res -> Right res
+      Nothing -> Left $ MissingEnumParsingErr $ fmap fst list
