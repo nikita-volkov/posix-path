@@ -99,6 +99,7 @@ library
     Coalmine.MultilineTextBuilder
     Coalmine.Name
     Coalmine.NameConversion
+    Coalmine.NumericVersion
     Coalmine.OpenApi
     Coalmine.Optics
     Coalmine.Parsed
