@@ -41,6 +41,7 @@ library
   import: language-settings
   hs-source-dirs: library
   exposed-modules:
+    Coalmine.ArgsParser
     Coalmine.AttoparsecExtras.Text
     Coalmine.BaseExtras.Alternative
     Coalmine.BaseExtras.Applicative
