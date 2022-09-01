@@ -48,13 +48,13 @@ reverseSepBy1 element sep =
         (sep >> element >>= go . (: acc))
         (return acc)
 
-manyTillPreserving :: MonadPlus m => m part -> m end -> m ([part], end)
-manyTillPreserving repeated end = go []
+reverseManyTillPreserving :: MonadPlus m => m part -> m end -> m ([part], end)
+reverseManyTillPreserving repeated end = go []
   where
     go list =
       mplus finish continue
       where
-        finish = fmap (reverse list,) end
+        finish = fmap (list,) end
         continue = do
           !a <- repeated
           go $ a : list
