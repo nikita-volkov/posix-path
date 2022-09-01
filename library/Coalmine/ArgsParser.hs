@@ -39,7 +39,24 @@ readAndConsumeArgsHappily =
 
 -- * Args consumer
 
-newtype Consumer a = Consumer (Int -> [String] -> (Int, Either ConsumptionErr a))
+newtype Consumer a = Consumer (Int -> [String] -> Either (Int, ConsumptionErr) (Int, [String], a))
+
+instance Functor Consumer where
+  fmap f (Consumer run) =
+    Consumer $ \i args -> fmap (fmap f) (run i args)
+
+instance Applicative Consumer where
+  pure a = Consumer $ \i args -> Right (i, args, a)
+  (<*>) = ap
+
+instance Monad Consumer where
+  return = pure
+  Consumer runL >>= k =
+    Consumer $ \i args ->
+      case runL i args of
+        Right (i, args, res) -> case k res of
+          Consumer runR -> runR i args
+        Left err -> Left err
 
 data ConsumptionErr
   = -- | No more args available to fetch from.
@@ -51,10 +68,10 @@ data ConsumptionErr
 
 parse :: Parser a -> Consumer a
 parse (Parser parseArg) = Consumer $ \offset -> \case
-  [] -> (offset, Left ExhaustedConsumptionErr)
+  [] -> Left (offset, ExhaustedConsumptionErr)
   h : t -> case parseArg h of
-    Right res -> let !nextOffset = succ offset in (nextOffset, Right res)
-    Left err -> (offset, Left . ParsingConsumptionErr $ err)
+    Left err -> Left (offset, ParsingConsumptionErr err)
+    Right res -> let !nextOffset = succ offset in Right (nextOffset, t, res)
 
 -- * Arg parser
 
