@@ -1,5 +1,7 @@
 module Coalmine.NumericVersion
   ( NumericVersion,
+    parts,
+    bump,
   )
 where
 
@@ -9,14 +11,14 @@ import Coalmine.Printing
 import qualified Data.Attoparsec.Text as Attoparsec
 
 data NumericVersion = NumericVersion
-  { versionHead :: !Word,
-    versionTail :: ![Word]
+  { head :: !Word,
+    tail :: ![Word]
   }
   deriving (Eq, Show, Generic)
 
 instance Ord NumericVersion where
   compare l r =
-    compare (versionParts l) (versionParts r)
+    compare (parts l) (parts r)
 
 instance CompactPrinting NumericVersion where
   toCompactBuilder (NumericVersion h t) =
@@ -42,6 +44,17 @@ instance LenientParser NumericVersion where
         Attoparsec.char '.'
         Attoparsec.decimal
 
-versionParts :: NumericVersion -> [Word]
-versionParts (NumericVersion head tail) =
+parts :: NumericVersion -> [Word]
+parts (NumericVersion head tail) =
   head : tail
+
+-- | Bump the version at the specified position if such position exists.
+bump :: Int -> NumericVersion -> Maybe NumericVersion
+bump position (NumericVersion head tail) =
+  case position of
+    0 -> Just $ NumericVersion (succ head) []
+    _ -> case splitAt (pred position) tail of
+      (prefix, suffix) ->
+        case suffix of
+          x : _ -> Just $ NumericVersion head (prefix <> [succ x])
+          _ -> Nothing
