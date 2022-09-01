@@ -65,12 +65,14 @@ data ConsumptionErr
     ParsingConsumptionErr
       ParsingErr
       -- ^ Error details.
+      String
+      -- ^ Input.
 
 parse :: Parser a -> Consumer a
 parse (Parser parseArg) = Consumer $ \offset -> \case
   [] -> Left (offset, ExhaustedConsumptionErr)
   h : t -> case parseArg h of
-    Left err -> Left (offset, ParsingConsumptionErr err)
+    Left err -> Left (offset, ParsingConsumptionErr err h)
     Right res -> let !nextOffset = succ offset in Right (nextOffset, t, res)
 
 -- * Arg parser
@@ -82,7 +84,7 @@ data ParsingErr
   = InvalidIntParsingErr
   | SmallerIntParsingErr Int
   | LargerIntParsingErr Int
-  | MissingEnumParsingErr
+  | MissingEnumParsingErr [Text]
 
 minMaxInt :: Int -> Int -> Parser Int
 minMaxInt min max =
