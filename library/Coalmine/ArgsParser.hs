@@ -1,7 +1,6 @@
 module Coalmine.ArgsParser
   ( -- * Top-level execution
-    consume,
-    readAndConsumeArgsHappily,
+    getAndConsumeArgsHappily,
 
     -- * Args consumer
     Consumer,
@@ -26,15 +25,21 @@ data Err
       ConsumptionErr
   | TooManyErr
 
-consume :: Consumer a -> String -> Either Err a
+-- | Read CLI args dying with a printed error in case of failure.
+--
+-- Useful for CLI apps.
+getAndConsumeArgsHappily :: Consumer a -> IO a
+getAndConsumeArgsHappily consumer =
+  getArgs >>= \args -> case consume consumer args of
+    Right res -> return res
+    Left err -> die . to . renderErr $ err
+
+consume :: Consumer a -> [String] -> Either Err a
 consume =
   error "TODO"
 
--- | Read CLI args dying with a rendered error in case of failure.
---
--- Useful for CLI apps.
-readAndConsumeArgsHappily :: Consumer a -> IO a
-readAndConsumeArgsHappily =
+renderErr :: Err -> Text
+renderErr =
   error "TODO"
 
 -- * Args consumer
