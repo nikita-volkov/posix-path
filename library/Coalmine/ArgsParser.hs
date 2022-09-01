@@ -5,9 +5,6 @@ module Coalmine.ArgsParser
     -- * Args consumer
     Consumer,
     parse,
-
-    -- * Arg parser
-    Parser,
     minMaxInt,
     enum,
   )
@@ -83,33 +80,26 @@ data ParsingErr
   | LargerIntParsingErr Int
   | MissingEnumParsingErr [Text]
 
-parse :: Parser a -> Consumer a
-parse (Parser parseArg) = Consumer $ \offset -> \case
+parse :: (String -> Either ParsingErr a) -> Consumer a
+parse parseArg = Consumer $ \offset -> \case
   [] -> Left (offset, ExhaustedConsumptionErr)
   h : t -> case parseArg h of
     Left err -> Left (offset, ParsingConsumptionErr err h)
     Right res -> let !nextOffset = succ offset in Right (nextOffset, t, res)
 
--- * Arg parser
+minMaxInt :: Int -> Int -> Consumer Int
+minMaxInt min max = parse $ \input -> case readMaybe input of
+  Just int ->
+    if int < min
+      then Left $ SmallerIntParsingErr min
+      else
+        if int > max
+          then Left $ LargerIntParsingErr max
+          else Right int
+  Nothing -> Left InvalidIntParsingErr
 
-newtype Parser a = Parser (String -> Either ParsingErr a)
-  deriving (Functor)
-
-minMaxInt :: Int -> Int -> Parser Int
-minMaxInt min max =
-  Parser $ \input -> case readMaybe input of
-    Just int ->
-      if int < min
-        then Left $ SmallerIntParsingErr min
-        else
-          if int > max
-            then Left $ LargerIntParsingErr max
-            else Right int
-    Nothing -> Left InvalidIntParsingErr
-
-enum :: [(Text, a)] -> Parser a
-enum list =
-  Parser $ \input ->
-    case lookup (fromString input) list of
-      Just res -> Right res
-      Nothing -> Left $ MissingEnumParsingErr $ fmap fst list
+enum :: [(Text, a)] -> Consumer a
+enum list = parse $ \input ->
+  case lookup (fromString input) list of
+    Just res -> Right res
+    Nothing -> Left $ MissingEnumParsingErr $ fmap fst list
