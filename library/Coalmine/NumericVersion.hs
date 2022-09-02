@@ -1,5 +1,6 @@
 module Coalmine.NumericVersion
   ( NumericVersion,
+    lit,
     parts,
     bump,
   )
@@ -8,13 +9,14 @@ where
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
 import Coalmine.Printing
+import qualified Coalmine.TH.QuasiQuoter as QuasiQuoter
 import qualified Data.Attoparsec.Text as Attoparsec
 
 data NumericVersion = NumericVersion
   { head :: !Word,
     tail :: ![Word]
   }
-  deriving (Eq, Show, Generic)
+  deriving (Eq, Show, Generic, Lift)
 
 instance Ord NumericVersion where
   compare l r =
@@ -44,17 +46,28 @@ instance LenientParser NumericVersion where
         Attoparsec.char '.'
         Attoparsec.decimal
 
+lit :: QuasiQuoter
+lit =
+  QuasiQuoter.literal $ Proxy @NumericVersion
+
 parts :: NumericVersion -> [Word]
 parts (NumericVersion head tail) =
   head : tail
 
--- | Bump the version at the specified position if such position exists.
-bump :: Int -> NumericVersion -> Maybe NumericVersion
+-- | Bump the version at the specified position,
+-- introducing the position if it does not exist.
+bump :: Int -> NumericVersion -> NumericVersion
 bump position (NumericVersion head tail) =
   case position of
-    0 -> Just $ NumericVersion (succ head) []
-    _ -> case splitAt (pred position) tail of
-      (prefix, suffix) ->
-        case suffix of
-          x : _ -> Just $ NumericVersion head (prefix <> [succ x])
-          _ -> Nothing
+    0 -> NumericVersion (succ head) []
+    _ -> NumericVersion head newTail
+      where
+        newTail = eliminateTail (pred position) tail
+          where
+            eliminateTail !position = \case
+              h : t ->
+                case position of
+                  0 -> [succ h]
+                  _ -> h : eliminateTail (pred position) t
+              [] ->
+                replicate position 0 <> [1]
