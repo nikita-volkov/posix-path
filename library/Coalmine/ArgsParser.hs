@@ -10,6 +10,7 @@ module Coalmine.ArgsParser
   )
 where
 
+import Coalmine.Inter
 import Coalmine.InternalPrelude
 import qualified Data.Attoparsec.Text as Attoparsec
 
@@ -21,6 +22,7 @@ data Err
       -- ^ Index that we're at.
       ConsumptionErr
   | TooManyArgsErr Int
+  deriving (Show)
 
 -- | Read CLI args dying with a printed error in case of failure.
 --
@@ -40,8 +42,27 @@ consume (Consumer run) inputs =
     Left (pos, err) -> Left $ ConsumptionErr pos err
 
 renderErr :: Err -> Text
-renderErr =
-  error "TODO: Implement error rendering"
+renderErr = \case
+  TooManyArgsErr n ->
+    [i|Got $n unexpected arguments|]
+  ConsumptionErr index err -> case err of
+    ExhaustedConsumptionErr ->
+      [i|Not enough arguments. Consumed $index|]
+    ParsingConsumptionErr err input -> case err of
+      InvalidIntParsingErr ->
+        fromReason "Not a valid int"
+      SmallerIntParsingErr n ->
+        fromReason [i|Int is smaller than $n|]
+      LargerIntParsingErr n ->
+        fromReason [i|Int is larger than $n|]
+      MissingEnumParsingErr options ->
+        fromReason [i|No such enum option. Expecting one of $optionsString|]
+        where
+          optionsString = show options
+      where
+        fromReason :: TextBuilder -> Text
+        fromReason reason =
+          [i|Failed to parse arg "$input" at index $index: $reason|]
 
 -- * Args consumer
 
@@ -73,12 +94,14 @@ data ConsumptionErr
       -- ^ Error details.
       String
       -- ^ Input.
+  deriving (Show)
 
 data ParsingErr
   = InvalidIntParsingErr
   | SmallerIntParsingErr Int
   | LargerIntParsingErr Int
   | MissingEnumParsingErr [Text]
+  deriving (Show)
 
 parse :: (String -> Either ParsingErr a) -> Consumer a
 parse parseArg = Consumer $ \offset -> \case
