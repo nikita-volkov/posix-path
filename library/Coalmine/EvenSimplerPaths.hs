@@ -9,9 +9,10 @@ module Coalmine.EvenSimplerPaths
     name,
     extensions,
 
-    -- * --
+    -- * Actions
     createDirsTo,
     listDirectory,
+    setCurrentDirectory,
 
     -- * --
     addExtension,
@@ -238,9 +239,13 @@ createDirsTo =
     . parent
 
 listDirectory :: Path -> IO [Path]
-listDirectory dir =
-  Directory.listDirectory (printCompactAs dir)
+listDirectory path =
+  Directory.listDirectory (printCompactAs path)
     <&> fmap fromString
+
+setCurrentDirectory :: Path -> IO ()
+setCurrentDirectory path =
+  Directory.setCurrentDirectory (printCompactAs path)
 
 -- * Traversers (or Van Laarhoven lenses)
 
