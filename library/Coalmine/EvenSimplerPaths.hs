@@ -140,7 +140,9 @@ instance CompactPrinting Path where
   toCompactBuilder (Path _abs _components) =
     if _abs
       then "/" <> _relative
-      else _relative
+      else case _components of
+        [] -> "."
+        _ -> _relative
     where
       _relative =
         TextBuilderDev.intercalate "/" . fmap _fromComponent . reverse $ _components
