@@ -4,10 +4,10 @@ module Coalmine.ArgsParser
 
     -- * Args consumer
     Consumer,
-    parse,
     int,
     enum,
     text,
+    parsed,
   )
 where
 
@@ -64,6 +64,8 @@ renderErr = \case
       TextParsingErr err -> case err of
         TooShortTextErr n -> fromReason [i|Shorter than $n|]
         TooLongTextErr n -> fromReason [i|Longer than $n|]
+      ParsedParsingErr format err ->
+        fromReason [i|Does not satisfy the "$format" format|]
       where
         fromReason :: TextBuilder -> Text
         fromReason reason =
@@ -107,6 +109,7 @@ data ParsingErr
   | LargerIntParsingErr Int
   | MissingEnumParsingErr [Text]
   | TextParsingErr TextErr
+  | ParsedParsingErr Text String
   deriving (Show)
 
 data TextErr
@@ -149,3 +152,10 @@ text minLength maxLength = parse $ \input ->
             if length > maxLength
               then Left $ TextParsingErr $ TooLongTextErr maxLength
               else Right text
+
+parsed :: Text -> Attoparsec.Parser a -> Consumer a
+parsed formatName parser = parse $ \input ->
+  case fromString input of
+    text -> case Attoparsec.parseOnly parser text of
+      Right res -> Right res
+      Left err -> Left $ ParsedParsingErr formatName err
