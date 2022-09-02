@@ -240,7 +240,7 @@ createDirsTo =
 listDirectory :: Path -> IO [Path]
 listDirectory dir =
   Directory.listDirectory (printCompactAs dir)
-    <&> fmap (mappend dir . fromString)
+    <&> fmap fromString
 
 -- * Traversers (or Van Laarhoven lenses)
 
