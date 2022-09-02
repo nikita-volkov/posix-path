@@ -7,12 +7,14 @@ module Coalmine.ArgsParser
     parse,
     int,
     enum,
+    text,
   )
 where
 
 import Coalmine.Inter
 import Coalmine.InternalPrelude
 import qualified Data.Attoparsec.Text as Attoparsec
+import qualified Data.Text as Text
 
 -- * Execution
 
@@ -59,6 +61,9 @@ renderErr = \case
         fromReason [i|No such enum option. Expecting one of $optionsString|]
         where
           optionsString = show options
+      TextParsingErr err -> case err of
+        TooShortTextErr n -> fromReason [i|Shorter than $n|]
+        TooLongTextErr n -> fromReason [i|Longer than $n|]
       where
         fromReason :: TextBuilder -> Text
         fromReason reason =
@@ -101,6 +106,12 @@ data ParsingErr
   | SmallerIntParsingErr Int
   | LargerIntParsingErr Int
   | MissingEnumParsingErr [Text]
+  | TextParsingErr TextErr
+  deriving (Show)
+
+data TextErr
+  = TooShortTextErr Int
+  | TooLongTextErr Int
   deriving (Show)
 
 parse :: (String -> Either ParsingErr a) -> Consumer a
@@ -126,3 +137,15 @@ enum list = parse $ \input ->
   case lookup (fromString input) list of
     Just res -> Right res
     Nothing -> Left $ MissingEnumParsingErr $ fmap fst list
+
+text :: Int -> Int -> Consumer Text
+text minLength maxLength = parse $ \input ->
+  case fromString input of
+    text -> case Text.length text of
+      length ->
+        if length < minLength
+          then Left $ TextParsingErr $ TooShortTextErr minLength
+          else
+            if length > maxLength
+              then Left $ TextParsingErr $ TooLongTextErr maxLength
+              else Right text
