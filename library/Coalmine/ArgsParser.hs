@@ -5,7 +5,7 @@ module Coalmine.ArgsParser
     -- * Args consumer
     Consumer,
     parse,
-    minMaxInt,
+    int,
     enum,
   )
 where
@@ -110,8 +110,8 @@ parse parseArg = Consumer $ \offset -> \case
     Left err -> Left (offset, ParsingConsumptionErr err h)
     Right res -> let !nextOffset = succ offset in Right (nextOffset, t, res)
 
-minMaxInt :: Int -> Int -> Consumer Int
-minMaxInt min max = parse $ \input -> case readMaybe input of
+int :: Int -> Int -> Consumer Int
+int min max = parse $ \input -> case readMaybe input of
   Just int ->
     if int < min
       then Left $ SmallerIntParsingErr min
