@@ -41,10 +41,9 @@ readOneOf = go []
 -- | Load and parse a required environment variable.
 loadRequiredEnv :: LenientParser a => Text -> IO a
 loadRequiredEnv name = do
-  env <- getEnv (to name)
-  case parseTextLeniently (to env) of
-    Left err -> die (to err)
-    Right res -> return res
+  loadNonRequiredEnv name >>= \case
+    Nothing -> die [i|Env var $name not found|]
+    Just res -> return res
 
 -- | Load and parse a non-required environment variable.
 loadNonRequiredEnv :: LenientParser a => Text -> IO (Maybe a)
@@ -52,6 +51,6 @@ loadNonRequiredEnv name = do
   env <- lookupEnv (to name)
   case env of
     Just env -> case parseTextLeniently (to env) of
-      Left err -> die (to err)
+      Left err -> die [i|Env var $name parsing: $err|]
       Right res -> return $ Just res
     Nothing -> return Nothing
