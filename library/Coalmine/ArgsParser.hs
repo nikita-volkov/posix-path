@@ -70,6 +70,8 @@ renderErr = \case
         fromReason :: TextBuilder -> Text
         fromReason reason =
           [i|Failed to parse arg "$input" at index $index: $reason|]
+    CustomConsumptionErr err ->
+      [i|Postprocessing err ad index $index: $err|]
 
 -- * Args consumer
 
@@ -92,6 +94,9 @@ instance Monad Consumer where
           Consumer runR -> runR i args
         Left err -> Left err
 
+instance MonadFail Consumer where
+  fail err = Consumer $ \i _ -> Left (i, CustomConsumptionErr err)
+
 data ConsumptionErr
   = -- | No more args available to fetch from.
     ExhaustedConsumptionErr
@@ -101,6 +106,7 @@ data ConsumptionErr
       -- ^ Error details.
       String
       -- ^ Input.
+  | CustomConsumptionErr String
   deriving (Show)
 
 data ParsingErr
