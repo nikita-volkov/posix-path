@@ -13,7 +13,9 @@ import qualified Coalmine.BaseExtras.List as List
 import Coalmine.EvenSimplerPaths (Path)
 import Coalmine.Inter
 import Coalmine.InternalPrelude
+import Coalmine.Parsing
 import Coalmine.Printing
+import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.ByteString as ByteString
 
 -- * --
@@ -50,7 +52,7 @@ loadNonRequiredEnv :: LenientParser a => Text -> IO (Maybe a)
 loadNonRequiredEnv name = do
   env <- fmap to <$> lookupEnv (to name)
   case env of
-    Just env -> case parseTextLeniently env of
+    Just env -> case parse parser env of
       Left err ->
         die
           [i|
@@ -62,3 +64,6 @@ loadNonRequiredEnv name = do
           |]
       Right res -> return $ Just res
     Nothing -> return Nothing
+  where
+    parser =
+      lenientParser <* Attoparsec.skipSpace
