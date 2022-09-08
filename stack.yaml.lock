@@ -62,16 +62,16 @@ packages:
   original:
     url: https://github.com/nikita-volkov/canapi/archive/02f1d9ffea90522a3a0968305793a7f507c7da59.tar.gz
 - completed:
-    sha256: e39a72f504b667fa32d7e4a76124d07695d289e4bd935555db864d4342d495a4
+    sha256: f222b21321f5956bfbc41f7ed3256fa59e5c3d917e19f581f5e42c9e84554345
     name: coalmine
-    size: 54136
-    url: https://github.com/nikita-volkov/coalmine/archive/394ba4935cc1e9927da49b4189ff09b9c9058ab1.tar.gz
+    size: 56369
+    url: https://github.com/nikita-volkov/coalmine/archive/5122392574baad09a1240dd4fa2e499a20443f4f.tar.gz
     pantry-tree:
-      sha256: e421d8599d9471cd7a261dace2fc65adaf146946d08533239a6c56fd1d7c9728
-      size: 9639
+      sha256: 4201e9c4dfe25aa370015c3865cbca13c5607d4ee6236086c7f30f99ea8103fd
+      size: 9807
     version: 0.1.0.5
   original:
-    url: https://github.com/nikita-volkov/coalmine/archive/394ba4935cc1e9927da49b4189ff09b9c9058ab1.tar.gz
+    url: https://github.com/nikita-volkov/coalmine/archive/5122392574baad09a1240dd4fa2e499a20443f4f.tar.gz
 - completed:
     sha256: d6dcd0ca1503d36a353d6e4015565ce25d41ab7b132d8d11b158153af5852c24
     name: curly
@@ -129,13 +129,13 @@ packages:
     url: https://github.com/nikita-volkov/structure-kit/archive/46ffb6527c48f8a718adecd21a313f0b1ba5e81c.tar.gz
 snapshots:
 - completed:
-    sha256: 00e28a22919af2ae644c59232309a80de014165736f9f09b32b683e5d18961e6
+    sha256: 40e5522abd2fb2d69aec9cd7a4a00a3e48675b8ba799ed4deebc6c086d5991c2
     size: 1030
-    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/3aca472c7e2d93b763d94e6de5d1a760f4e80d7e/snapshot.yaml
+    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/ba237491b4b4fe545f5159a2514f1170c666dba1/snapshot.yaml
   original:
-    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/3aca472c7e2d93b763d94e6de5d1a760f4e80d7e/snapshot.yaml
+    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/ba237491b4b4fe545f5159a2514f1170c666dba1/snapshot.yaml
 - completed:
-    sha256: a10f9e3f425aa803549f72b29adb0825ac68262b16140e855f5683b91c2bedfe
-    size: 630640
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/8/19.yaml
-  original: nightly-2022-08-19
+    sha256: 7fbf4aab8837574f2e8af2f7b95e5d61800270a9387b2cd882377d3deb9c8b64
+    size: 634323
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/9/8.yaml
+  original: nightly-2022-09-08

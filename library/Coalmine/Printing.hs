@@ -43,7 +43,31 @@ instance CompactPrinting TextBuilder where
 instance CompactPrinting Int where
   toCompactBuilder = Ub.decimal
 
+instance CompactPrinting Int8 where
+  toCompactBuilder = Ub.decimal
+
+instance CompactPrinting Int16 where
+  toCompactBuilder = Ub.decimal
+
+instance CompactPrinting Int32 where
+  toCompactBuilder = Ub.decimal
+
+instance CompactPrinting Int64 where
+  toCompactBuilder = Ub.decimal
+
 instance CompactPrinting Word where
+  toCompactBuilder = Ub.unsignedDecimal
+
+instance CompactPrinting Word8 where
+  toCompactBuilder = Ub.unsignedDecimal
+
+instance CompactPrinting Word16 where
+  toCompactBuilder = Ub.unsignedDecimal
+
+instance CompactPrinting Word32 where
+  toCompactBuilder = Ub.unsignedDecimal
+
+instance CompactPrinting Word64 where
   toCompactBuilder = Ub.unsignedDecimal
 
 -- * Broad
@@ -83,7 +107,31 @@ instance BroadPrinting TextBuilder where
 instance BroadPrinting Int where
   toBroadBuilder = toBroadBuilder . Ub.decimal
 
+instance BroadPrinting Int8 where
+  toBroadBuilder = toBroadBuilder . Ub.decimal
+
+instance BroadPrinting Int16 where
+  toBroadBuilder = toBroadBuilder . Ub.decimal
+
+instance BroadPrinting Int32 where
+  toBroadBuilder = toBroadBuilder . Ub.decimal
+
+instance BroadPrinting Int64 where
+  toBroadBuilder = toBroadBuilder . Ub.decimal
+
 instance BroadPrinting Word where
+  toBroadBuilder = toBroadBuilder . Ub.unsignedDecimal
+
+instance BroadPrinting Word8 where
+  toBroadBuilder = toBroadBuilder . Ub.unsignedDecimal
+
+instance BroadPrinting Word16 where
+  toBroadBuilder = toBroadBuilder . Ub.unsignedDecimal
+
+instance BroadPrinting Word32 where
+  toBroadBuilder = toBroadBuilder . Ub.unsignedDecimal
+
+instance BroadPrinting Word64 where
   toBroadBuilder = toBroadBuilder . Ub.unsignedDecimal
 
 instance (BroadPrinting a, BroadPrinting b) => BroadPrinting (a, b) where
