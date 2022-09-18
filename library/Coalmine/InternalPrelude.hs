@@ -20,6 +20,12 @@ module Coalmine.InternalPrelude
     -- * UTF8
     Data.Text.Encoding.encodeUtf8,
     decodeUtf8,
+
+    -- * MonadError
+    tryError,
+    withError,
+    handleError,
+    mapError,
   )
 where
 
@@ -103,3 +109,27 @@ renderAsYamlText =
 -- * UTF8
 
 decodeUtf8 = Data.Text.Encoding.decodeUtf8'
+
+-- * MonadError
+
+-- | 'MonadError' analogue to the 'Control.Exception.try' function.
+tryError :: MonadError e m => m a -> m (Either e a)
+tryError action = (Right <$> action) `catchError` (pure . Left)
+
+-- | 'MonadError' analogue to the 'withExceptT' function.
+-- Modify the value (but not the type) of an error.  The type is
+-- fixed because of the functional dependency @m -> e@.  If you need
+-- to change the type of @e@ use 'mapError'.
+withError :: MonadError e m => (e -> e) -> m a -> m a
+withError f action = tryError action >>= either (throwError . f) pure
+
+-- | As 'handle' is flipped 'Control.Exception.catch', 'handleError'
+-- is flipped 'catchError'.
+handleError :: MonadError e m => (e -> m a) -> m a -> m a
+handleError = flip catchError
+
+-- | 'MonadError' analogue of the 'mapExceptT' function.  The
+-- computation is unwrapped, a function is applied to the @Either@, and
+-- the result is lifted into the second 'MonadError' instance.
+mapError :: (MonadError e m, MonadError e' n) => (m (Either e a) -> n (Either e' b)) -> m a -> n b
+mapError f action = f (tryError action) >>= liftEither
