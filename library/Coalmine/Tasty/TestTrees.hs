@@ -14,3 +14,10 @@ eitherEqTestCase name expected actual =
   testCase name $ case actual of
     Right actual -> assertEqual "" expected actual
     Left err -> assertFailure $ to err
+
+eitherIOEqTestCase :: (Eq a, Show a) => TestName -> a -> IO (Either Text a) -> TestTree
+eitherIOEqTestCase name expected getActual =
+  testCase name $
+    getActual >>= \case
+      Right actual -> assertEqual "" expected actual
+      Left err -> assertFailure $ to err
