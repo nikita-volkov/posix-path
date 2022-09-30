@@ -50,8 +50,8 @@ data Component = Component
 instance QuickCheck.Arbitrary Component where
   arbitrary = do
     name <- QuickCheckGens.fileName
-    extensions <- QuickCheckGens.extensions
-    return $ Component name extensions
+    fileExtensions <- QuickCheckGens.fileExtensions
+    return $ Component name fileExtensions
 
 instance Cereal.Serialize Component where
   put (Component name extensions) = do

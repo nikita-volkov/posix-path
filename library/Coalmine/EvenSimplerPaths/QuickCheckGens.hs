@@ -15,8 +15,8 @@ fileName = do
       where
         pred = not . Charset.toCharPredicate Charsets.notFileName
 
-extension :: Gen Text
-extension = do
+fileExtension :: Gen Text
+fileExtension = do
   size <- chooseInt (1, 10)
   fromString <$> vectorOf size char
   where
@@ -24,7 +24,7 @@ extension = do
       where
         pred = not . Charset.toCharPredicate Charsets.notFileName
 
-extensions :: Gen [Text]
-extensions = do
+fileExtensions :: Gen [Text]
+fileExtensions = do
   amount <- chooseInt (0, 10)
-  vectorOf amount extension
+  vectorOf amount fileExtension
