@@ -41,14 +41,12 @@ genRunner = do
   seed <- arbitrary
   return $ \(MkGen run) -> run genState seed
 
-listSampler :: Gen ([a] -> [a])
-listSampler = do
-  run <- genRunner
-  return $ \list -> run $ do
-    shuffled <- shuffle list
-    sublistOf shuffled
-
 nest :: (a -> Gen b) -> Gen (a -> b)
 nest cont = do
   run <- genRunner
   return $ run . cont
+
+listSampler :: Gen ([a] -> [a])
+listSampler = nest $ \list -> do
+  shuffled <- shuffle list
+  sublistOf shuffled
