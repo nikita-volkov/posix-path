@@ -47,3 +47,8 @@ listSampler = do
   return $ \list -> run $ do
     shuffled <- shuffle list
     sublistOf shuffled
+
+nest :: (a -> Gen b) -> Gen (a -> b)
+nest cont = do
+  run <- genRunner
+  return $ run . cont
