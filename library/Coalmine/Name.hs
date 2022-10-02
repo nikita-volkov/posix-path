@@ -77,14 +77,17 @@ instance BroadPrinting Name where
 
 -- * QuickCheck
 
-quickCheckGen :: Bool -> Int -> Int -> QuickCheck.Gen Name
-quickCheckGen alphaFirst maxParts maxBytesInPart =
-  Name <$> gen maxParts maxBytesInPart
-  where
-    gen =
-      if alphaFirst
-        then Gens.alphaFirstParts
-        else Gens.normalParts
+normalQuickCheckGen :: Int -> Int -> QuickCheck.Gen Name
+normalQuickCheckGen maxParts maxBytesInPart =
+  Name <$> Gens.normalParts maxParts maxBytesInPart
+
+onlyFirstAlphaFirstQuickCheckGen :: Int -> Int -> QuickCheck.Gen Name
+onlyFirstAlphaFirstQuickCheckGen maxParts maxBytesInPart =
+  Name <$> Gens.onlyFirstAlphaFirstParts maxParts maxBytesInPart
+
+allAlphaFirstQuickCheckGen :: Int -> Int -> QuickCheck.Gen Name
+allAlphaFirstQuickCheckGen maxParts maxBytesInPart =
+  Name <$> Gens.allAlphaFirstParts maxParts maxBytesInPart
 
 -- * Parsing
 

@@ -14,13 +14,18 @@ normalParts maxParts maxBytesInPart = do
   partsAmount <- chooseInt (1, maxParts)
   BVec.replicateM partsAmount (normalPart maxBytesInPart)
 
-alphaFirstParts :: Int -> Int -> Gen (BVec Text)
-alphaFirstParts maxParts maxBytesInPart = do
+onlyFirstAlphaFirstParts :: Int -> Int -> Gen (BVec Text)
+onlyFirstAlphaFirstParts maxParts maxBytesInPart = do
   head <- alphaFirstPart maxBytesInPart
   tail <- do
     tailSize <- chooseInt (0, pred maxParts)
     replicateM tailSize (normalPart maxBytesInPart)
   return $ fromList (head : tail)
+
+allAlphaFirstParts :: Int -> Int -> Gen (BVec Text)
+allAlphaFirstParts maxParts maxBytesInPart = do
+  partsAmount <- chooseInt (1, maxParts)
+  BVec.replicateM partsAmount (alphaFirstPart maxBytesInPart)
 
 normalPart :: Int -> Gen Text
 normalPart maxBytesInPart = go
