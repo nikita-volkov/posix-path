@@ -10,6 +10,7 @@ module Coalmine.EvenSimplerPaths
     extensions,
 
     -- * Actions
+    createDirs,
     createDirsTo,
     listDirectory,
     setCurrentDirectory,
@@ -232,11 +233,13 @@ extensions (Path _ components) =
 
 -- * --
 
+createDirs :: Path -> IO ()
+createDirs =
+  Directory.createDirectoryIfMissing True . toString
+
 createDirsTo :: Path -> IO ()
 createDirsTo =
-  traverse_
-    (Directory.createDirectoryIfMissing True . toString)
-    . parent
+  traverse_ createDirs . parent
 
 listDirectory :: Path -> IO [Path]
 listDirectory path =
