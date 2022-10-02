@@ -26,7 +26,7 @@ newtype Name = Name {nameParts :: BVec Text}
 -- * Instances
 
 instance QuickCheck.Arbitrary Name where
-  arbitrary = Name <$> Gens.parts Constants.maxParts Constants.maxBytesInPart
+  arbitrary = Name <$> Gens.normalParts Constants.maxParts Constants.maxBytesInPart
 
 instance Cereal.Serialize Name where
   put (Name parts) = do
@@ -77,9 +77,14 @@ instance BroadPrinting Name where
 
 -- * QuickCheck
 
-quickCheckGen :: Int -> Int -> QuickCheck.Gen Name
-quickCheckGen maxParts maxBytesInPart =
-  Name <$> Gens.parts maxParts maxBytesInPart
+quickCheckGen :: Int -> Int -> Bool -> QuickCheck.Gen Name
+quickCheckGen maxParts maxBytesInPart alphaFirst =
+  Name <$> gen maxParts maxBytesInPart
+  where
+    gen =
+      if alphaFirst
+        then Gens.normalParts
+        else Gens.alphaFirstParts
 
 -- * Parsing
 

@@ -6,15 +6,24 @@ import qualified Data.ByteString as ByteString
 import qualified Data.Text as Text
 import qualified Data.Text.Encoding as TextEncoding
 import qualified Data.Vector as BVec
+import qualified StructureKit.Charset as Charset
 import Test.QuickCheck.Gen
 
-parts :: Int -> Int -> Gen (BVec Text)
-parts maxParts maxBytesInPart = do
+normalParts :: Int -> Int -> Gen (BVec Text)
+normalParts maxParts maxBytesInPart = do
   partsAmount <- chooseInt (1, maxParts)
-  BVec.replicateM partsAmount (part maxBytesInPart)
+  BVec.replicateM partsAmount (normalPart maxBytesInPart)
 
-part :: Int -> Gen Text
-part maxBytesInPart = go
+alphaFirstParts :: Int -> Int -> Gen (BVec Text)
+alphaFirstParts maxParts maxBytesInPart = do
+  head <- alphaFirstPart maxBytesInPart
+  tail <- do
+    tailSize <- chooseInt (0, pred maxParts)
+    replicateM tailSize (normalPart maxBytesInPart)
+  return $ fromList (head : tail)
+
+normalPart :: Int -> Gen Text
+normalPart maxBytesInPart = go
   where
     go = do
       partSize <- chooseInt (1, maxBytesInPart)
@@ -23,6 +32,24 @@ part maxBytesInPart = go
         then go
         else return text
 
+alphaFirstPart :: Int -> Gen Text
+alphaFirstPart maxBytesInPart = go
+  where
+    go = do
+      tailSize <- chooseInt (1, maxBytesInPart)
+      text <-
+        Text.pack <$> do
+          head <- lowerLatinPartChar
+          tail <- replicateM tailSize partChar
+          return (head : tail)
+      if ByteString.length (TextEncoding.encodeUtf8 text) > maxBytesInPart
+        then go
+        else return text
+
 partChar :: Gen Char
 partChar =
   elements $ toList $ Charsets.part
+
+lowerLatinPartChar :: Gen Char
+lowerLatinPartChar =
+  elements $ toList $ Charset.lowerLatin
