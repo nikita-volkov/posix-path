@@ -11,7 +11,7 @@ import Test.QuickCheck.Gen
 
 parts :: Gen (BVec Text)
 parts = do
-  partsAmount <- chooseInt (0, Constants.maxParts)
+  partsAmount <- chooseInt (1, Constants.maxParts)
   BVec.replicateM partsAmount part
 
 part :: Gen Text
