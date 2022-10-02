@@ -12,6 +12,7 @@ module Coalmine.EvenSimplerPaths
     -- * Actions
     createDirs,
     createDirsTo,
+    removeForcibly,
     listDirectory,
     setCurrentDirectory,
 
@@ -231,7 +232,7 @@ extensions (Path _ components) =
     Component _ extensions : _ -> reverse extensions
     [] -> []
 
--- * --
+-- * Actions
 
 createDirs :: Path -> IO ()
 createDirs =
@@ -240,6 +241,10 @@ createDirs =
 createDirsTo :: Path -> IO ()
 createDirsTo =
   traverse_ createDirs . parent
+
+removeForcibly :: Path -> IO ()
+removeForcibly =
+  Directory.removePathForcibly . printCompactAs
 
 listDirectory :: Path -> IO [Path]
 listDirectory path =
