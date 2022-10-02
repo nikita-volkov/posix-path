@@ -78,7 +78,7 @@ instance BroadPrinting Name where
 -- * QuickCheck
 
 quickCheckGen :: Bool -> Int -> Int -> QuickCheck.Gen Name
-quickCheckGen alphaFirst maxParts maxBytesInPart  =
+quickCheckGen alphaFirst maxParts maxBytesInPart =
   Name <$> gen maxParts maxBytesInPart
   where
     gen =
