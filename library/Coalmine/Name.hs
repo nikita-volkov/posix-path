@@ -83,8 +83,8 @@ quickCheckGen alphaFirst maxParts maxBytesInPart =
   where
     gen =
       if alphaFirst
-        then Gens.normalParts
-        else Gens.alphaFirstParts
+        then Gens.alphaFirstParts
+        else Gens.normalParts
 
 -- * Parsing
 
