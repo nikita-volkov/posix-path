@@ -15,7 +15,7 @@ import Coalmine.Printing
 import qualified Data.Attoparsec.Text as Attoparsec
 import qualified Data.Serialize as Cereal
 import qualified Data.Text as Text
-import qualified Test.QuickCheck.Arbitrary as QuickCheckArbitrary
+import qualified Test.QuickCheck as QuickCheck
 import qualified Text.Megaparsec as Megaparsec
 import qualified TextBuilderDev as TextBuilder
 
@@ -25,8 +25,8 @@ newtype Name = Name {nameParts :: BVec Text}
 
 -- * Instances
 
-instance QuickCheckArbitrary.Arbitrary Name where
-  arbitrary = Name <$> Gens.parts
+instance QuickCheck.Arbitrary Name where
+  arbitrary = Name <$> Gens.parts Constants.maxParts Constants.maxBytesInPart
 
 instance Cereal.Serialize Name where
   put (Name parts) = do
@@ -75,7 +75,13 @@ instance CompactPrinting Name where
 instance BroadPrinting Name where
   toBroadBuilder = fromTextBuilder . toCompactBuilder
 
--- * --
+-- * QuickCheck
+
+quickCheckGen :: Int -> Int -> QuickCheck.Gen Name
+quickCheckGen maxParts maxBytesInPart =
+  Name <$> Gens.parts maxParts maxBytesInPart
+
+-- * Parsing
 
 attoparsec :: Attoparsec.Parser Name
 attoparsec = Attoparsec.parts <&> Name
