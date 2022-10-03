@@ -2,6 +2,7 @@ module Coalmine.BaseExtras.List where
 
 import Coalmine.InternalPrelude
 import qualified Data.Map.Strict as Map
+import qualified Data.Set as Set
 
 nubSort :: Ord a => [a] -> [a]
 nubSort = nubSortOn id
@@ -197,3 +198,7 @@ isShorterThan = atLength (const False) True
 
 traverseConcat :: (Applicative f, Monoid a) => [f a] -> f a
 traverseConcat = fmap mconcat . sequenceA
+
+isDistinct :: Ord a => [a] -> Bool
+isDistinct xs =
+  Set.size (Set.fromList xs) == length xs
