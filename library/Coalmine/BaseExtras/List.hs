@@ -1,5 +1,6 @@
 module Coalmine.BaseExtras.List where
 
+import qualified Coalmine.ContainersExtras.Map as Map
 import Coalmine.InternalPrelude
 import qualified Data.Map.Strict as Map
 import qualified Data.Set as Set
@@ -202,3 +203,17 @@ traverseConcat = fmap mconcat . sequenceA
 isDistinct :: Ord a => [a] -> Bool
 isDistinct xs =
   Set.size (Set.fromList xs) == length xs
+
+streamUniqueDuplicates :: Ord a => [a] -> [a]
+streamUniqueDuplicates list =
+  foldr step extract list Map.empty
+  where
+    step a next map =
+      case Map.insertLookup (+) a 1 map of
+        (lookup, map) -> case lookup of
+          Just n ->
+            if n > 1
+              then next map
+              else a : next map
+          Nothing -> next map
+    extract map = []
