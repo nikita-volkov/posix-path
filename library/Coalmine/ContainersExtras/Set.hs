@@ -9,3 +9,10 @@ asSingleton a =
     1 -> case findMin a of
       a -> Just a
     _ -> Nothing
+
+insertLookup :: Ord a => a -> Set a -> (Bool, Set a)
+insertLookup =
+  alterF $ \present ->
+    if present
+      then (True, True)
+      else (False, True)
