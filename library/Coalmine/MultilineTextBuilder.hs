@@ -7,6 +7,7 @@ module Coalmine.MultilineTextBuilder
     -- * --
     null,
     indent,
+    prefixEachLine,
     intercalate,
     uniline,
     newline,
@@ -29,7 +30,7 @@ type Splice = Builder
 type MultilineTextBuilder = Builder
 
 data Builder
-  = Builder Bool (Int -> Tb.TextBuilder)
+  = Builder Bool (Tb.TextBuilder -> Tb.TextBuilder)
 
 instance Semigroup Builder where
   (<>) (Builder a b) (Builder c d) = Builder (a && c) (b <> d)
@@ -50,13 +51,13 @@ instance IsString Builder where
 
 instance IsomorphicToTextBuilder Builder where
   toTextBuilder (Builder _ builder) =
-    builder 0
+    builder mempty
   fromTextBuilder =
     text . fromTextBuilder
 
 instance Eq Builder where
   Builder _ l == Builder _ r =
-    on (==) (to @Text) (l 0) (r 0)
+    on (==) (to @Text) (l mempty) (r mempty)
 
 --
 
@@ -85,7 +86,7 @@ instance IsomorphicTo Text Builder where
   to = to . to @TextBuilder
 
 instance IsomorphicTo TextBuilder Builder where
-  to (Builder _ builder) = builder 0
+  to (Builder _ builder) = builder mempty
 
 instance IsomorphicTo TextLazy.Text Builder where
   to = to . to @TextBuilder
@@ -101,7 +102,12 @@ null (Builder a _) =
 
 -- * Transformation
 
-mapBuilder :: ((Int -> Tb.TextBuilder) -> Int -> Tb.TextBuilder) -> Builder -> Builder
+mapBuilder ::
+  ( (Tb.TextBuilder -> Tb.TextBuilder) ->
+    (Tb.TextBuilder -> Tb.TextBuilder)
+  ) ->
+  Builder ->
+  Builder
 mapBuilder mapper (Builder a b) =
   Builder a (mapper b)
 
@@ -128,7 +134,18 @@ mapBuilder mapper (Builder a b) =
 --     j
 indent :: Int -> Builder -> Builder
 indent amount =
-  mapBuilder (\builder outerAmount -> builder (amount + outerAmount))
+  prefixEachLine . to $
+    Text.replicate amount (Text.singleton ' ')
+
+prefixEachLine ::
+  -- | Line prefix.
+  -- It is your responsibility to ensure that it doesn't contain line breaks.
+  Tb.TextBuilder ->
+  Builder ->
+  Builder
+prefixEachLine prefix =
+  mapBuilder $ \cont outerPrefix ->
+    cont $ outerPrefix <> prefix
 
 -- |
 -- Concatenate a list by inserting a separator between each element.
@@ -150,17 +167,13 @@ text :: Text -> Builder
 text text =
   Builder (Text.null text) impl
   where
-    impl indentationAmount =
+    impl prefix =
       List.foldMapHeadAndTail Tb.text (foldMap lineTextMapper) lines
       where
         lines =
           Text.split (== '\n') text
-        indentationText =
-          Text.replicate indentationAmount (Text.singleton ' ')
-        linePrefixBuilder =
-          Tb.char '\n' <> Tb.text indentationText
         lineTextMapper lineText =
-          linePrefixBuilder <> Tb.text lineText
+          Tb.char '\n' <> prefix <> Tb.text lineText
 
 -- |
 -- Efficiently lift a text builder, interpreting its contents as of a single line.
@@ -175,9 +188,5 @@ newline :: Builder
 newline =
   Builder False impl
   where
-    impl indentationAmount = linePrefixBuilder
-      where
-        indentationText =
-          Text.replicate indentationAmount (Text.singleton ' ')
-        linePrefixBuilder =
-          Tb.char '\n' <> Tb.text indentationText
+    impl prefix =
+      Tb.char '\n' <> prefix
