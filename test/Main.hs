@@ -9,6 +9,7 @@ import qualified TestSuites.EvenSimplerPaths as EvenSimplerPaths
 import qualified TestSuites.Inter as Inter
 import qualified TestSuites.LocatedRendering as LocatedRendering
 import qualified TestSuites.MegaparsecExtras as MegaparsecExtras
+import qualified TestSuites.MultilineTextBuilder as MultilineTextBuilder
 import qualified TestSuites.Name as Name
 import qualified TestSuites.NumericVersion as NumericVersion
 import qualified TestSuites.TimeExtrasConversions as TimeExtrasConversions
@@ -28,5 +29,6 @@ main =
         ],
       testGroup "BaseExtras" $
         [ testGroup "List" TestSuites.BaseExtras.List.tests
-        ]
+        ],
+      testGroup "MultilineTextBuilder" MultilineTextBuilder.tests
     ]
