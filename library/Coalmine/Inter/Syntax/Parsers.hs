@@ -42,7 +42,8 @@ contentSegment =
   asum
     [ PlainContentSegment <$> takeWhile1 isPlainContentChar,
       DollarContentSegment <$ string "$$",
-      PlaceholderContentSegment <$> placeholder
+      PlaceholderContentSegment <$> placeholder,
+      DotPlaceholderContentSegment <$> dotPlaceholder
     ]
   where
     isPlainContentChar x =
@@ -51,6 +52,12 @@ contentSegment =
       char '$' *> (wrapped <|> name)
       where
         wrapped = char '{' *> name <* char '}'
+    dotPlaceholder =
+      char '$' *> char '{' *> content <* char '}'
+      where
+        content =
+          DotPlaceholder
+            <$> name <* char '.' <*> name
 
 name :: Parser Name
 name =

@@ -19,8 +19,14 @@ ContentSegment:
     plain: Text
     dollar:
     placeholder: Name
+    dotPlaceholder: DotPlaceholder
 
 Name:
   product:
     head: Char
     tail: Text
+
+DotPlaceholder:
+  product:
+    record: Name
+    field: Name
