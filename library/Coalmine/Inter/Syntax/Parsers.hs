@@ -54,9 +54,9 @@ placeholder =
   char '$' *> (wrapped <|> unwrapped)
   where
     wrapped =
-      char '{' *> unwrapped <* char '}'
+      char '{' *> sepByNonEmpty name (char '.') <* char '}'
     unwrapped =
-      sepByNonEmpty name (char '.')
+      pure <$> name
 
 name :: Parser Name
 name =
