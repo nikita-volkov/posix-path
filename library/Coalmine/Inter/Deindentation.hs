@@ -2,7 +2,6 @@ module Coalmine.Inter.Deindentation
   ( -- * --
     Line (..),
     M.ContentSegment (..),
-    M.DotPlaceholder (..),
     M.Name (..),
 
     -- * --

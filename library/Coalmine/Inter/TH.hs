@@ -46,10 +46,6 @@ lineExps = \case
             prependLitIfNeeded lit $
               indent indentation (placeholder name) :
               next mempty
-          D.DotPlaceholderContentSegment model ->
-            prependLitIfNeeded lit $
-              indent indentation (dotPlaceholder model) :
-              next mempty
       finish lit =
         prependLitIfNeeded lit []
       prependLitIfNeeded lit =
@@ -77,16 +73,16 @@ indent :: Int -> Exp -> Exp
 indent indent =
   AppE (AppE (VarE 'B.indent) (LitE (IntegerL (fromIntegral indent))))
 
-placeholder :: D.Name -> Exp
-placeholder model =
-  AppE (VarE 'toBroadBuilder) $ name model
-
-dotPlaceholder :: D.DotPlaceholder -> Exp
-dotPlaceholder model =
+placeholder :: NonEmpty D.Name -> Exp
+placeholder (modelHead :| modelTail) =
   AppE (VarE 'toBroadBuilder) $
-    GetFieldE
-      (name (#record model))
-      (nameString (#field model))
+    foldr
+      ( \model next !basis ->
+          next $ GetFieldE basis (nameString model)
+      )
+      id
+      modelTail
+      (name modelHead)
 
 name :: D.Name -> Exp
 name model =

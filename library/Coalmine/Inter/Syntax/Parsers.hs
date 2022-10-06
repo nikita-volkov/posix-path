@@ -1,6 +1,7 @@
 module Coalmine.Inter.Syntax.Parsers where
 
 import Coalmine.BaseExtras.Function
+import Coalmine.EvenSimplerPaths.AttoparsecHelpers
 import Coalmine.Inter.Syntax.Model
 import Coalmine.InternalPrelude hiding (takeWhile)
 import Data.Attoparsec.Text
@@ -42,22 +43,20 @@ contentSegment =
   asum
     [ PlainContentSegment <$> takeWhile1 isPlainContentChar,
       DollarContentSegment <$ string "$$",
-      PlaceholderContentSegment <$> placeholder,
-      DotPlaceholderContentSegment <$> dotPlaceholder
+      PlaceholderContentSegment <$> placeholder
     ]
   where
     isPlainContentChar x =
       x /= '\n' && x /= '\r' && x /= '$'
-    placeholder =
-      char '$' *> (wrapped <|> name)
-      where
-        wrapped = char '{' *> name <* char '}'
-    dotPlaceholder =
-      char '$' *> char '{' *> content <* char '}'
-      where
-        content =
-          DotPlaceholder
-            <$> name <* char '.' <*> name
+
+placeholder :: Parser (NonEmpty Name)
+placeholder =
+  char '$' *> (wrapped <|> unwrapped)
+  where
+    wrapped =
+      char '{' *> unwrapped <* char '}'
+    unwrapped =
+      sepByNonEmpty name (char '.')
 
 name :: Parser Name
 name =
