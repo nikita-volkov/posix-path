@@ -9,7 +9,7 @@ module Coalmine.Inter.Deindentation
   )
 where
 
-import qualified Coalmine.Inter.Format.Model as M
+import qualified Coalmine.Inter.Syntax.Model as M
 import Coalmine.InternalPrelude
 import qualified Data.Vector as BVec
 

@@ -1,4 +1,4 @@
-module Coalmine.Inter.Format.Model where
+module Coalmine.Inter.Syntax.Model where
 
 import Coalmine.InternalPrelude
 import qualified Domain
@@ -17,4 +17,4 @@ Domain.declare
         Domain.constructorIsLabelDeriver
       ]
   )
-  =<< Domain.loadSchema "domain/inter-format.domain.yaml"
+  =<< Domain.loadSchema "domain/inter-syntax.domain.yaml"
