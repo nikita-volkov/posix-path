@@ -75,6 +75,7 @@ library
     Coalmine.EvenSimplerPaths.Charsets
     Coalmine.EvenSimplerPaths.IsomorphismClassHelpers
     Coalmine.EvenSimplerPaths.QuickCheckGens
+    Coalmine.Fileset
     Coalmine.FoldlExtras.Fold
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
