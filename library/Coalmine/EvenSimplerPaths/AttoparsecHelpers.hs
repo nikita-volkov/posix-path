@@ -24,3 +24,7 @@ fileName1 = textNotOfCharset1 Charsets.notFileName
 extension = char '.' *> fileName1
 
 abs = char '/' $> True <|> pure False
+
+sepByNonEmpty :: Parser a -> Parser b -> Parser (NonEmpty a)
+sepByNonEmpty element separator =
+  (:|) <$> element <*> many (separator *> element)
