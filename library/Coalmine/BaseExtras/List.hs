@@ -217,3 +217,8 @@ streamUniqueDuplicates list =
               else a : next map
           Nothing -> next map
     extract map = []
+
+-- | Group a list of elements in the sublists of length @i@
+chunk :: Int -> [a] -> [[a]]
+chunk _ [] = []
+chunk i xs = let (f, r) = splitAt i xs in f : chunk i r
