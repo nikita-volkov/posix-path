@@ -19,7 +19,10 @@ import qualified Data.Text.Encoding as TextEncoding
 import qualified Data.Vector as BVec
 import qualified Data.Vector.Unboxed as UVec
 
-newtype Compact a = Compact {unwrap :: a}
+unwrap :: Compact a -> a
+unwrap = (.value)
+
+newtype Compact a = Compact {value :: a}
   deriving (Show, Eq, Ord, Integral, Num, Real, Enum, FromJSON, ToJSON, ToJSONKey, Arbitrary)
 
 instance Serialize (Compact Int) where
@@ -48,7 +51,7 @@ instance Serialize (Compact ByteString) where
     return $ Compact byteString
 
 instance Serialize (Compact Text) where
-  put = put . TextEncoding.encodeUtf8 . unwrap
+  put = put . TextEncoding.encodeUtf8 . (.value)
   get = do
     byteString <- get
     case TextEncoding.decodeUtf8' byteString of

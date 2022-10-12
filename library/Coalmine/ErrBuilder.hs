@@ -19,32 +19,32 @@ import Coalmine.Printing
 -- * Err
 
 data Err = Err
-  { errReason :: Text,
-    errSuggestion :: Text,
-    errContexts :: [Context]
+  { reason :: Text,
+    suggestion :: Text,
+    contexts :: [Context]
   }
 
 instance BroadPrinting Err where
-  toBroadBuilder Err {..} =
+  toBroadBuilder err =
     [j|
-      $errReason
+      ${err.reason}
 
       Suggestion:
-        $errSuggestion
+        ${err.suggestion}
 
       Context:
         $renderedContexts
     |]
     where
       renderedContexts =
-        List.mapIntercalate contextSplice "\n" errContexts
+        List.mapIntercalate (.splice) "\n" err.contexts
 
 err :: Text -> Text -> [Context] -> Err
 err = Err
 
 -- * Context
 
-newtype Context = Context {contextSplice :: MultilineTextBuilder}
+newtype Context = Context {splice :: MultilineTextBuilder}
 
 context :: Text -> Text -> Context
 context category details =

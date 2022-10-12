@@ -34,7 +34,7 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
                           ( objectSchema $
                               M.QuizesPostResponseStatus201Json
                                 <$> lmap
-                                  M.quizesPostResponseStatus201JsonId
+                                  (.id)
                                   (requiredSchemaField "id" uuidSchema)
                           )
                           a
@@ -68,10 +68,10 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
           [ fmap M.JsonUsersPostRequestBody . jsonRequestBody . objectSchema $
               M.UsersPostRequestBodyJson
                 <$> lmap
-                  M.usersPostRequestBodyJsonEmail
+                  (.email)
                   (requiredSchemaField "email" emailSchema)
                 <*> lmap
-                  M.usersPostRequestBodyJsonPassword
+                  (.password)
                   (requiredSchemaField "password" passwordSchema)
           ]
           $ let responseAdapter =
@@ -87,10 +87,10 @@ api securityPolicy quizesPostHandler quizesParamGetHandler quizesParamPutHandler
           [ fmap M.JsonTokensPostRequestBody . jsonRequestBody . objectSchema $
               M.TokensPostRequestBodyJson
                 <$> lmap
-                  M.tokensPostRequestBodyJsonEmail
+                  (.email)
                   (requiredSchemaField "email" emailSchema)
                 <*> lmap
-                  M.tokensPostRequestBodyJsonPassword
+                  (.password)
                   (requiredSchemaField "password" passwordSchema)
           ]
           $ let responseAdapter = \case
@@ -111,13 +111,13 @@ quizConfigSchema =
   objectSchema $
     M.QuizConfig
       <$> lmap
-        M.quizConfigTitle
+        (.title)
         ( requiredSchemaField
             "title"
             (stringSchema 1 100)
         )
       <*> lmap
-        M.quizConfigQuestions
+        (.questions)
         ( requiredSchemaField
             "questions"
             (arraySchema 1 10 questionConfigSchema)

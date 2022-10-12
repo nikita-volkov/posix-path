@@ -9,7 +9,7 @@ import qualified Data.Vector as BVec
 
 variantGet :: Variant sum -> Cereal.Get sum
 variantGet (Variant map1 map2 codec) =
-  codecGet codec <&> map2
+  codec.get <&> map2
 
 -- * Variant
 
@@ -40,8 +40,8 @@ variant = Variant
 -- * Codec
 
 data Codec a b = Codec
-  { codecPut :: a -> Cereal.Put,
-    codecGet :: Cereal.Get b
+  { put :: a -> Cereal.Put,
+    get :: Cereal.Get b
   }
 
 instance Functor (Codec a) where
@@ -65,7 +65,7 @@ sum variants =
     encoder = do
       error "TODO"
     decoder = do
-      tag <- fromIntegral <$> codecGet (natural 4)
+      tag <- fromIntegral <$> (natural 4).get
       case decodersVec BVec.!? tag of
         Just decoder -> decoder
         Nothing -> fail "Invalid tag"

@@ -43,9 +43,9 @@ import qualified TextBuilderDev as TextBuilderDev
 -- Structured name of a single component of a path.
 data Component = Component
   { -- | Name.
-    componentName :: !Text,
+    name :: !Text,
     -- | Extensions in reverse order.
-    componentExtensions :: ![Text]
+    extensions :: ![Text]
   }
   deriving (Eq)
 
@@ -84,9 +84,9 @@ instance Ord Component where
       ra = componentNameSortKey r
       rb = componentExtensionsSortKey r
 
-componentNameSortKey = NaturalSort.sortKey . componentName
+componentNameSortKey = NaturalSort.sortKey . (.name)
 
-componentExtensionsSortKey = reverse . fmap NaturalSort.sortKey . componentExtensions
+componentExtensionsSortKey = reverse . fmap NaturalSort.sortKey . (.extensions)
 
 -- * --
 

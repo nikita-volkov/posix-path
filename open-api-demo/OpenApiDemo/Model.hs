@@ -5,8 +5,8 @@ import Coalmine.Prelude
 -- * --
 
 data QuizConfig = QuizConfig
-  { quizConfigTitle :: !Text,
-    quizConfigQuestions :: !(BVec QuestionConfig)
+  { title :: !Text,
+    questions :: !(BVec QuestionConfig)
   }
 
 data QuestionConfig
@@ -37,7 +37,7 @@ data QuizesPostResponse
   = Status201QuizesPostResponse QuizesPostResponseStatus201Json
 
 data QuizesPostResponseStatus201Json = QuizesPostResponseStatus201Json
-  { quizesPostResponseStatus201JsonId :: !UUID
+  { id :: !UUID
   }
 
 -- * --
@@ -58,8 +58,8 @@ data UsersPostRequestBody
   = JsonUsersPostRequestBody !UsersPostRequestBodyJson
 
 data UsersPostRequestBodyJson = UsersPostRequestBodyJson
-  { usersPostRequestBodyJsonEmail :: !Text,
-    usersPostRequestBodyJsonPassword :: !Text
+  { email :: !Text,
+    password :: !Text
   }
 
 data UsersPostResponse
@@ -74,8 +74,8 @@ data TokensPostRequestBody
   = JsonTokensPostRequestBody !TokensPostRequestBodyJson
 
 data TokensPostRequestBodyJson = TokensPostRequestBodyJson
-  { tokensPostRequestBodyJsonEmail :: !Text,
-    tokensPostRequestBodyJsonPassword :: !Text
+  { email :: !Text,
+    password :: !Text
   }
 
 data TokensPostResponse
