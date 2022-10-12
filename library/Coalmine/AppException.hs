@@ -23,7 +23,7 @@ data AppException = AppException
     suggestion :: Text,
     contexts :: [Text],
     adminMsg :: Text,
-    restoreEnv :: Bool
+    resourceLost :: Bool
   }
   deriving (Show)
 
