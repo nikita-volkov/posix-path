@@ -37,14 +37,14 @@ renderForUserAsPlainText e =
     [j|
       ${e.userReason}
 
+      Context:
+        $compiledContext
+
       Suggestion:
         ${e.suggestion}
-
-      Context:
-        $renderedContexts
     |]
   where
-    renderedContexts =
+    compiledContext =
       Text.intercalate "/" e.contexts
 
 renderForAdminAsPlainText :: AppException -> Text
@@ -66,10 +66,6 @@ handleForCli :: IO a -> IO a
 handleForCli io =
   catch io $ \(appException :: AppException) ->
     error "TODO"
-
-interpretExceptTForCli :: ExceptT AppException IO a -> IO a
-interpretExceptTForCli =
-  either throw return <=< runExceptT
 
 -- * Mapping
 
