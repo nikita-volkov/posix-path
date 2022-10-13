@@ -33,6 +33,25 @@ runRetryStrategyInIO (RetryStrategy retryState retryStep) attempt =
               threadDelay $ 1000 * delayInMilliseconds
               go retryState (succ attemptCount)
 
+runRetryStrategyInIOStatefully ::
+  RetryStrategy ->
+  -- | Initial attempt state.
+  state ->
+  -- | Action to execute on each attempt.
+  (state -> IO (Either state ok)) ->
+  IO (Either state ok)
+runRetryStrategyInIOStatefully (RetryStrategy retryState retryStep) initialAttemptState attemptStep =
+  go initialAttemptState retryState
+  where
+    go !attemptState !retryState =
+      attemptStep attemptState >>= \case
+        Right ok -> return (Right ok)
+        Left nextAttemptState -> case retryStep retryState of
+          Nothing -> return (Left attemptState)
+          Just (delayInMilliseconds, nextRetryState) -> do
+            threadDelay $ 1000 * delayInMilliseconds
+            go nextAttemptState nextRetryState
+
 -- | Execute an iteration of the strategy,
 -- producing a strategy for the next iteration.
 step :: RetryStrategy -> Maybe (Int, RetryStrategy)
