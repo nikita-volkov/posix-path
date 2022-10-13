@@ -16,20 +16,22 @@ data RetryStrategy
 
 runRetryStrategyInIO ::
   RetryStrategy ->
-  IO (Maybe a) ->
-  IO (Maybe a)
+  -- | Action to execute on each attempt.
+  IO (Either err ok) ->
+  -- | Extends the error with the attempt count.
+  IO (Either (err, Int) ok)
 runRetryStrategyInIO (RetryStrategy retryState retryStep) attempt =
-  go retryState
+  go retryState 0
   where
-    go !retryState =
+    go !retryState !attemptCount =
       attempt >>= \case
-        Just a -> return (Just a)
-        Nothing -> do
+        Right ok -> return (Right ok)
+        Left err -> do
           case retryStep retryState of
-            Nothing -> return Nothing
+            Nothing -> return (Left (err, attemptCount))
             Just (delayInMilliseconds, retryState) -> do
               threadDelay $ 1000 * delayInMilliseconds
-              go retryState
+              go retryState (succ attemptCount)
 
 -- | Execute an iteration of the strategy,
 -- producing a strategy for the next iteration.
@@ -39,15 +41,15 @@ step (RetryStrategy state step) =
     Just (emission, state) -> Just (emission, RetryStrategy state step)
     Nothing -> Nothing
 
-growFromByFactorUntil ::
+growFromToByFactor ::
   -- | Initial amount of milliseconds.
+  Int ->
+  -- | Max milliseconds. Inclusive.
   Int ->
   -- | Factor.
   Double ->
-  -- | Max milliseconds. Inclusive.
-  Int ->
   RetryStrategy
-growFromByFactorUntil init factor max =
+growFromToByFactor init max factor =
   RetryStrategy init step
   where
     step lastMillis =
