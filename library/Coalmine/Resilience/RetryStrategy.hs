@@ -15,6 +15,14 @@ data RetryStrategy
       -- decide what that means. Typically interpreting it as a fatal error
       -- due to which the app should stop running.
 
+instance Semigroup RetryStrategy where
+  RetryStrategy lState lStep <> RetryStrategy rState rStep =
+    RetryStrategy (Left lState) $ \case
+      Left lState -> case lStep lState of
+        Just (emission, lState) -> Just (emission, Left lState)
+        Nothing -> error "TODO"
+      Right rState -> error "TODO"
+
 -- | Execute an iteration of the strategy,
 -- producing a strategy for the next iteration.
 step :: RetryStrategy -> Maybe (Int, RetryStrategy)
