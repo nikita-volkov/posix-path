@@ -173,8 +173,8 @@ library
     Coalmine.RestEasy.Responses
     Coalmine.RestEasy.Statuses
     Coalmine.Result
-    Coalmine.Retry.IO
-    Coalmine.Retry.Strategy
+    Coalmine.Resilience.IO
+    Coalmine.Resilience.Strategy
     Coalmine.ScientificExtras
     Coalmine.Serialization
     Coalmine.Streamer

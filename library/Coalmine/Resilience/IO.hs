@@ -1,7 +1,7 @@
-module Coalmine.Retry.IO where
+module Coalmine.Resilience.IO where
 
 import Coalmine.InternalPrelude hiding (print)
-import Coalmine.Retry.Strategy
+import Coalmine.Resilience.Strategy
 
 retry ::
   RetryStrategy ->
