@@ -24,6 +24,8 @@ retry (RetryStrategy retryState retryStep) attempt =
               threadDelay $ 1000 * delayInMilliseconds
               go retryState (succ attemptCount)
 
+-- |
+-- Resiliently execute an action, threading a state through attempts.
 retryStateful ::
   RetryStrategy ->
   -- | Initial attempt state.
