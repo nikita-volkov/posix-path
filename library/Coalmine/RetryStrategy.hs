@@ -14,6 +14,23 @@ data RetryStrategy
       -- decide what that means. Typically interpreting it as a fatal error
       -- due to which the app should stop running.
 
+runRetryStrategyInIO ::
+  RetryStrategy ->
+  IO (Maybe a) ->
+  IO (Maybe a)
+runRetryStrategyInIO (RetryStrategy retryState retryStep) attempt =
+  go retryState
+  where
+    go !retryState =
+      attempt >>= \case
+        Just a -> return (Just a)
+        Nothing -> do
+          case retryStep retryState of
+            Nothing -> return Nothing
+            Just (delayInMilliseconds, retryState) -> do
+              threadDelay $ 1000 * delayInMilliseconds
+              go retryState
+
 -- | Execute an iteration of the strategy,
 -- producing a strategy for the next iteration.
 step :: RetryStrategy -> Maybe (Int, RetryStrategy)
