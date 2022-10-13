@@ -1,5 +1,5 @@
 -- | Pure API focused on retry strategy.
-module Coalmine.Resilience.Strategy where
+module Coalmine.Resilience.RetryStrategy where
 
 import Coalmine.InternalPrelude hiding (print)
 
