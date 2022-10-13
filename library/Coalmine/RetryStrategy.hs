@@ -18,7 +18,8 @@ runRetryStrategyInIO ::
   RetryStrategy ->
   -- | Action to execute on each attempt.
   IO (Either err ok) ->
-  -- | Extends the error with the attempt count.
+  -- | Action producing the last attempt error and attempt count in case of
+  -- retry strategy terminating..
   IO (Either (err, Int) ok)
 runRetryStrategyInIO (RetryStrategy retryState retryStep) attempt =
   go retryState 0
