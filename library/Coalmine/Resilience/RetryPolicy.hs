@@ -1,18 +1,18 @@
 -- | Pure API focused on retry strategy.
-module Coalmine.Resilience.RetryStrategy where
+module Coalmine.Resilience.RetryPolicy where
 
 import Coalmine.InternalPrelude hiding (print)
 
-newtype RetryStrategy
-  = RetryStrategy [Int]
+newtype RetryPolicy
+  = RetryPolicy [Int]
   deriving (Semigroup, Monoid)
 
 -- | Execute an iteration of the strategy,
 -- producing a strategy for the next iteration.
-step :: RetryStrategy -> Maybe (Int, RetryStrategy)
-step (RetryStrategy list) =
+step :: RetryPolicy -> Maybe (Int, RetryPolicy)
+step (RetryPolicy list) =
   case list of
-    h : t -> Just (h, RetryStrategy t)
+    h : t -> Just (h, RetryPolicy t)
     _ -> Nothing
 
 growFromToByFactor ::
@@ -22,9 +22,9 @@ growFromToByFactor ::
   Int ->
   -- | Factor.
   Double ->
-  RetryStrategy
+  RetryPolicy
 growFromToByFactor init max factor =
-  RetryStrategy $ go init
+  RetryPolicy $ go init
   where
     go lastMillis =
       if lastMillis <= max

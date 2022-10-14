@@ -174,7 +174,7 @@ library
     Coalmine.RestEasy.Statuses
     Coalmine.Result
     Coalmine.Resilience.IO
-    Coalmine.Resilience.RetryStrategy
+    Coalmine.Resilience.RetryPolicy
     Coalmine.ScientificExtras
     Coalmine.Serialization
     Coalmine.Streamer

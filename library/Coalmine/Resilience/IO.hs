@@ -1,17 +1,17 @@
 module Coalmine.Resilience.IO where
 
 import Coalmine.InternalPrelude hiding (print)
-import Coalmine.Resilience.RetryStrategy
+import Coalmine.Resilience.RetryPolicy
 
 retry ::
-  RetryStrategy ->
+  RetryPolicy ->
   -- | Action to execute on each attempt.
   -- When Right the result is propagated.
   IO (Either err ok) ->
   -- | Action producing the last attempt error and attempt count in case of
   -- retry strategy terminating.
   IO (Either (err, Int) ok)
-retry (RetryStrategy pauses) attempt =
+retry (RetryPolicy pauses) attempt =
   go pauses 0
   where
     go pauses !attemptCount =
@@ -27,13 +27,13 @@ retry (RetryStrategy pauses) attempt =
 -- |
 -- Resiliently execute an action, threading a state through attempts.
 retryStateful ::
-  RetryStrategy ->
+  RetryPolicy ->
   -- | Initial attempt state.
   state ->
   -- | Action to execute on each attempt.
   (state -> IO (Either state ok)) ->
   IO (Either state ok)
-retryStateful (RetryStrategy pauses) initialAttemptState attemptStep =
+retryStateful (RetryPolicy pauses) initialAttemptState attemptStep =
   go initialAttemptState pauses
   where
     go !attemptState retryState =
