@@ -54,6 +54,16 @@ renderForAdminAsPlainText =
 -- * Execution
 
 -- |
+-- Terminate the whole CLI application printing the exception details.
+--
+-- It is recommended to use a combination of 'throw' and 'handleForCli',
+-- which will trigger handlers around the chain.
+-- That is why this function is actually not exported.
+dieWithForCli :: AppException -> IO a
+dieWithForCli exc =
+  error "TODO"
+
+-- |
 -- Wrap an 'AppException'-throwing IO code,
 -- handling those exceptions for a CLI app.
 --
@@ -64,8 +74,11 @@ renderForAdminAsPlainText =
 -- such an exception will be rethrown.
 handleForCli :: IO a -> IO a
 handleForCli io =
-  catch io $ \(appException :: AppException) ->
-    error "TODO"
+  catch io dieWithForCli
+
+inContext :: Text -> IO a -> IO a
+inContext context io =
+  catch io $ throw . addContext context
 
 -- * Mapping
 
