@@ -140,6 +140,7 @@ library
     Coalmine.Interpreter
     Coalmine.Interval
     Coalmine.IsomorphismClassInstances
+    Coalmine.IsomorphismClasses
     Coalmine.Isomorphisms
     Coalmine.Json
     Coalmine.JsonEncoder
