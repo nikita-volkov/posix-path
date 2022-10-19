@@ -144,6 +144,7 @@ library
     Coalmine.Json
     Coalmine.JsonEncoder
     Coalmine.JsonSchema
+    Coalmine.Lingua
     Coalmine.Literal
     Coalmine.Located
     Coalmine.Located.Rendering
@@ -165,6 +166,8 @@ library
     Coalmine.Printing
     Coalmine.QuickCheckExtras.Gens
     Coalmine.Res
+    Coalmine.Resilience.IO
+    Coalmine.Resilience.RetryPolicy
     Coalmine.RestEasy
     Coalmine.RestEasy.AdaptedRequest.Model
     Coalmine.RestEasy.AdaptedRequest.WaiParsing
@@ -173,8 +176,6 @@ library
     Coalmine.RestEasy.Responses
     Coalmine.RestEasy.Statuses
     Coalmine.Result
-    Coalmine.Resilience.IO
-    Coalmine.Resilience.RetryPolicy
     Coalmine.ScientificExtras
     Coalmine.Serialization
     Coalmine.Streamer
