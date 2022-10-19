@@ -10,7 +10,7 @@ retry ::
   IO (Either err ok) ->
   -- | Action producing the last attempt error and attempt count in case of
   -- retry strategy terminating.
-  IO (Either (err, Int) ok)
+  IO (Int, Either err ok)
 retry (RetryPolicy pauses) attempt =
   go pauses 0
   where
@@ -21,8 +21,8 @@ retry (RetryPolicy pauses) attempt =
             pausesHead : pausesTail -> do
               threadDelay $ 1000 * pausesHead
               go pausesTail (succ attemptCount)
-            [] -> return (Left (err, attemptCount))
-        Right ok -> return (Right ok)
+            [] -> return (attemptCount, Left err)
+        Right ok -> return (attemptCount, Right ok)
 
 -- |
 -- Resiliently execute an action, threading a state through attempts.
