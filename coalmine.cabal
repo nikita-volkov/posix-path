@@ -139,8 +139,9 @@ library
     Coalmine.Inter
     Coalmine.Interpreter
     Coalmine.Interval
-    Coalmine.IsomorphismClassInstances
     Coalmine.IsomorphismClasses
+    Coalmine.IsomorphismClassesOptics
+    Coalmine.IsomorphismClassInstances
     Coalmine.Isomorphisms
     Coalmine.Json
     Coalmine.JsonEncoder
