@@ -196,6 +196,7 @@ library
     Coalmine.TransformersExtras.State
     Coalmine.UnorderedContainersExtras.HashMap
     Coalmine.UnorderedContainersExtras.HashSet
+    Coalmine.UserErr
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml
@@ -264,6 +265,7 @@ library
     tasty-quickcheck,
     template-haskell,
     temporary,
+    text-builder,
     text-builder-dev,
     th-lego,
     time,
