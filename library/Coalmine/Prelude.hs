@@ -28,4 +28,4 @@ import Coalmine.Printing as Exports
 import Coalmine.TransformersExtras.Except as Exports ()
 import Coalmine.TransformersExtras.Reader as Exports ()
 import Coalmine.TransformersExtras.State as Exports ()
-import Coalmine.UserErr as Export (UserErr (..))
+import Coalmine.UserErr as Exports (UserErr (..))
