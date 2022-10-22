@@ -64,5 +64,5 @@ addContextInEither context =
   first $ addContext context
 
 addContextInMonadError :: MonadError UserErr m => Text -> m a -> m a
-addContextInMonadError context m =
-  catchError m $ throwError . addContext context
+addContextInMonadError context =
+  handleError $ throwError . addContext context
