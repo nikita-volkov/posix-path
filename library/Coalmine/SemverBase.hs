@@ -1,5 +1,5 @@
 module Coalmine.SemverBase
-  ( SemverBase,
+  ( SemverBase (..),
     lit,
     parts,
     bumpMajor,
