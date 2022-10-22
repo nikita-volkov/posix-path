@@ -62,3 +62,7 @@ addContext context appException =
 addContextInEither :: Text -> Either UserErr a -> Either UserErr a
 addContextInEither context =
   first $ addContext context
+
+addContextInMonadError :: MonadError UserErr m => Text -> m a -> m a
+addContextInMonadError context m =
+  catchError m $ throwError . addContext context
