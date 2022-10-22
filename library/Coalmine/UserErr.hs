@@ -3,7 +3,8 @@ module Coalmine.UserErr where
 import qualified Coalmine.BaseExtras.List as ListExtras
 import Coalmine.Inter
 import Coalmine.InternalPrelude
-import qualified Coalmine.MultilineTextBuilder as Renderer
+import qualified Coalmine.MultilineTextBuilder as Printer
+import Coalmine.Name (Name)
 import Coalmine.Printing
 import qualified Data.Text as Text
 
@@ -14,7 +15,7 @@ import qualified Data.Text as Text
 data UserErr = UserErr
   { reason :: Text,
     suggestion :: Text,
-    contexts :: [Text]
+    contexts :: [Name]
   }
   deriving (Show)
 
@@ -29,7 +30,7 @@ instance BroadPrinting UserErr where
           else
             let compiledContext =
                   ListExtras.mapIntercalate
-                    (to @Renderer.MultilineTextBuilder)
+                    toBroadBuilder
                     "/"
                     e.contexts
              in Just
@@ -55,14 +56,14 @@ renderAsPlainText =
 
 -- * Mapping
 
-addContext :: Text -> UserErr -> UserErr
+addContext :: Name -> UserErr -> UserErr
 addContext context appException =
   appException {contexts = context : appException.contexts}
 
-addContextInEither :: Text -> Either UserErr a -> Either UserErr a
+addContextInEither :: Name -> Either UserErr a -> Either UserErr a
 addContextInEither context =
   first $ addContext context
 
-addContextInMonadError :: MonadError UserErr m => Text -> m a -> m a
+addContextInMonadError :: MonadError UserErr m => Name -> m a -> m a
 addContextInMonadError context =
   handleError $ throwError . addContext context
