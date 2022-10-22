@@ -198,6 +198,7 @@ library
     Coalmine.UnorderedContainersExtras.HashMap
     Coalmine.UnorderedContainersExtras.HashSet
     Coalmine.UserErr
+    Coalmine.UserResult
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml
