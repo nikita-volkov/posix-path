@@ -27,7 +27,11 @@ instance BroadPrinting UserErr where
         if null e.contexts
           then Nothing
           else
-            let compiledContext = Text.intercalate "/" e.contexts
+            let compiledContext =
+                  ListExtras.mapIntercalate
+                    (to @Renderer.MultilineTextBuilder)
+                    "/"
+                    e.contexts
              in Just
                   [j|
                     Context:
