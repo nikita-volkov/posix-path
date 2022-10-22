@@ -48,7 +48,7 @@ instance LenientParser NumericVersion where
 
 lit :: QuasiQuoter
 lit =
-  QuasiQuoter.literal $ Proxy @NumericVersion
+  QuasiQuoter.lenientLiteral $ Proxy @NumericVersion
 
 parts :: NumericVersion -> [Word]
 parts (NumericVersion head tail) =

@@ -39,6 +39,6 @@ pureAttoparsedExp parser =
 
 -- |
 -- Lets you easily create custom literal quoters by utilizing typeclasses.
-literal :: (LenientParser a, Lift a) => Proxy a -> QuasiQuoter
-literal proxy =
+lenientLiteral :: (LenientParser a, Lift a) => Proxy a -> QuasiQuoter
+lenientLiteral proxy =
   pureAttoparsedExp . fmap (liftPurely . flip asProxyTypeOf proxy) $ lenientParser
