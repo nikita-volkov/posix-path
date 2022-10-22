@@ -180,6 +180,7 @@ library
     Coalmine.Result
     Coalmine.ScientificExtras
     Coalmine.Serialization
+    Coalmine.SemverBase
     Coalmine.Streamer
     Coalmine.Tasty
     Coalmine.Tasty.TestTrees
