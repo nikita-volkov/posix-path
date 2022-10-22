@@ -54,6 +54,19 @@ renderAsPlainText :: UserErr -> Text
 renderAsPlainText =
   from . toBroadBuilder
 
+-- * Construction
+
+init ::
+  -- | Context.
+  Name ->
+  -- | Reason.
+  Text ->
+  -- | Suggestion
+  Text ->
+  UserErr
+init context reason suggestion =
+  UserErr reason suggestion [context]
+
 -- * Mapping
 
 addContext :: Name -> UserErr -> UserErr
