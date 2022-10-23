@@ -17,7 +17,9 @@ data UserErr = UserErr
     suggestion :: Text,
     contexts :: [Name]
   }
-  deriving (Show)
+  deriving (Show, Eq, Ord, Generic)
+
+instance Hashable UserErr
 
 instance BroadPrinting UserErr where
   toBroadBuilder e =
