@@ -87,3 +87,8 @@ nestInMonadError :: MonadError UserErr m => Name -> Either UserErr a -> m a
 nestInMonadError context = \case
   Right a -> return a
   Left err -> throwError $ addContext context err
+
+-- * Conversion class
+
+class ToUserErr a where
+  toUserErr :: a -> UserErr
