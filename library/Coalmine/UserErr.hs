@@ -80,3 +80,8 @@ addContextInEither context =
 addContextInMonadError :: MonadError UserErr m => Name -> m a -> m a
 addContextInMonadError context =
   handleError $ throwError . addContext context
+
+nestInMonadError :: MonadError UserErr m => Name -> Either UserErr a -> m a
+nestInMonadError context = \case
+  Right a -> return a
+  Left err -> throwError $ addContext context err
