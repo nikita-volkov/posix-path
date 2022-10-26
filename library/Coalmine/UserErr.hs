@@ -85,14 +85,14 @@ addContextInMonadError context =
 
 -- * Ops
 
+throwInMonadError :: MonadError UserErr m => Text -> Text -> [Name] -> m a
+throwInMonadError reason suggestion contexts =
+  throwError $ UserErr reason suggestion contexts
+
 nestInMonadError :: MonadError UserErr m => Name -> Either UserErr a -> m a
 nestInMonadError context = \case
   Right a -> return a
   Left err -> throwError $ addContext context err
-
-throwUserErr :: MonadError UserErr m => Text -> Text -> [Name] -> m a
-throwUserErr reason suggestion contexts =
-  throwError $ UserErr reason suggestion contexts
 
 -- * Conversion class
 
