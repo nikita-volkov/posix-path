@@ -11,12 +11,17 @@ module Coalmine.AttoparsecExtras.Text
     charNotOfCharset,
     textNotOfCharset,
     textNotOfCharset1,
+
+    -- * --
+    countWhile,
+    countWhile1,
   )
 where
 
 import qualified Coalmine.BaseExtras.Integer as IntegerExtras
 import Coalmine.InternalPrelude hiding (takeWhile)
 import Data.Attoparsec.Text
+import qualified Data.Text as Text
 import qualified StructureKit.Charset as Charset
 
 -- * --
@@ -204,3 +209,13 @@ textNotOfCharset = takeWhile . fmap not . Charset.toCharPredicate
 
 textNotOfCharset1 :: Charset.Charset -> Parser Text
 textNotOfCharset1 = takeWhile1 . fmap not . Charset.toCharPredicate
+
+-- * --
+
+countWhile :: (Char -> Bool) -> Parser Int
+countWhile pred =
+  takeWhile pred <&> Text.length
+
+countWhile1 :: (Char -> Bool) -> Parser Int
+countWhile1 pred =
+  takeWhile1 pred <&> Text.length
