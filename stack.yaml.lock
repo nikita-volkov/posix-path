@@ -40,6 +40,13 @@ packages:
   original:
     hackage: timestamp-0.2
 - completed:
+    hackage: turtle-1.6.1@sha256:4bde66584e79e8ac455f5cf7d87c2761de904c62ede83f6529486534679a90f4,5246
+    pantry-tree:
+      sha256: e4f49ba24c1c43405fdb5e1ee7a39f17f01c1ebc950c6358055ea0052ffb2f13
+      size: 1180
+  original:
+    hackage: turtle-1.6.1
+- completed:
     name: acquire
     pantry-tree:
       sha256: e194150d070a0e4f07e5f2285e82f177312f328c7490f3a659f361b4f6324d00
@@ -129,11 +136,11 @@ packages:
     url: https://github.com/nikita-volkov/structure-kit/archive/46ffb6527c48f8a718adecd21a313f0b1ba5e81c.tar.gz
 snapshots:
 - completed:
-    sha256: e72cc31d61f7759e96c5c44128867f25459ea37a410bb1879b2198a3050ab54e
-    size: 1030
-    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/e485ef4dea5e5fd9e3d379ddf42bc0c10189d5c3/snapshot.yaml
+    sha256: 8617c234096f1d4959bf883eec6419fdf6ee441b93948c919e5a7774d636bf31
+    size: 1047
+    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/277e477cefeec4531290aba6a70233e2c6574d8d/snapshot.yaml
   original:
-    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/e485ef4dea5e5fd9e3d379ddf42bc0c10189d5c3/snapshot.yaml
+    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/277e477cefeec4531290aba6a70233e2c6574d8d/snapshot.yaml
 - completed:
     sha256: deca5d235f498c2216605522633fbee795993dcca1d94c4c6db9023fe8a1775b
     size: 644486

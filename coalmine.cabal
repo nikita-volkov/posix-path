@@ -273,6 +273,7 @@ library
     th-lego,
     time,
     tuple,
+    turtle,
     vector-builder,
     vector-extras,
     vector-th-unbox,
