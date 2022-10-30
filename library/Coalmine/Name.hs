@@ -1,6 +1,5 @@
 module Coalmine.Name where
 
-import qualified AesonValueParser
 import qualified Coalmine.CerealExtras.Compact as CerealExtrasCompact
 import qualified Coalmine.CerealExtras.Get as CerealExtrasGet
 import qualified Coalmine.CerealExtras.Put as CerealExtrasPut
@@ -96,9 +95,6 @@ attoparsec = Attoparsec.parts <&> Name
 
 megaparsec :: Ord err => Megaparsec.Parsec err Text Name
 megaparsec = Megaparsec.nameWords <&> Name
-
-stringAesonValueParser :: AesonValueParser.String Name
-stringAesonValueParser = AesonValueParser.megaparsedText megaparsec
 
 -- * --
 
