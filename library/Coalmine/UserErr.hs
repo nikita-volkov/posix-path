@@ -83,6 +83,14 @@ addContextInMonadError :: MonadError UserErr m => Name -> m a -> m a
 addContextInMonadError context =
   handleError $ throwError . addContext context
 
+addContexts :: [Name] -> UserErr -> UserErr
+addContexts contexts appException =
+  appException {contexts = contexts <> appException.contexts}
+
+addContextsInMonadError :: MonadError UserErr m => [Name] -> m a -> m a
+addContextsInMonadError contexts =
+  handleError $ throwError . addContexts contexts
+
 -- * Ops
 
 throwInMonadError :: MonadError UserErr m => Text -> Text -> [Name] -> m a

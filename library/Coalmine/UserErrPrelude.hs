@@ -3,6 +3,7 @@ module Coalmine.UserErrPrelude
     UserErr.ToUserErr (..),
     throwUserErr,
     rethrowUserErrAddingContext,
+    rethrowUserErrAddingContexts,
   )
 where
 
@@ -18,3 +19,7 @@ throwUserErr reason suggestion contexts =
 rethrowUserErrAddingContext :: MonadError UserErr m => Name -> m a -> m a
 rethrowUserErrAddingContext =
   UserErr.addContextInMonadError
+
+rethrowUserErrAddingContexts :: MonadError UserErr m => [Name] -> m a -> m a
+rethrowUserErrAddingContexts =
+  UserErr.addContextsInMonadError
