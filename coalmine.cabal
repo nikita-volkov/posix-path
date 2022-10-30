@@ -107,6 +107,7 @@ library
     Coalmine.Building
     Coalmine.ByteArrayArray
     Coalmine.ByteArrayArray.Ends
+    Coalmine.CasedText
     Coalmine.CerealExtras.Compact
     Coalmine.CerealExtras.Get
     Coalmine.CerealExtras.Instances
