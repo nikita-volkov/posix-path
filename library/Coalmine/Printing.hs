@@ -4,6 +4,7 @@ module Coalmine.Printing where
 
 import Coalmine.InternalPrelude
 import qualified Coalmine.MultilineTextBuilder as Mb
+import qualified Data.Text as Text
 import qualified Data.Text.IO as TextIO
 import qualified TextBuilderDev as Ub
 
@@ -145,4 +146,4 @@ instance (BroadPrinting a, BroadPrinting b) => BroadPrinting (a, b) where
 
 instance (ToJSON a) => BroadPrinting (BVec a) where
   toBroadBuilder =
-    to . renderAsYamlText
+    to . Text.stripEnd . renderAsYamlText
