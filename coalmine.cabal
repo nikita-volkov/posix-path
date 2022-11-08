@@ -172,6 +172,7 @@ library
     Coalmine.Res
     Coalmine.Resilience.IO
     Coalmine.Resilience.RetryPolicy
+    Coalmine.Resilient
     Coalmine.RestEasy
     Coalmine.RestEasy.AdaptedRequest.Model
     Coalmine.RestEasy.AdaptedRequest.WaiParsing
