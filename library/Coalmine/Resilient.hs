@@ -37,8 +37,9 @@ resiliently ::
   Resilient resource ->
   -- | Resource handler.
   --
-  -- Tries the last acquired resource and if it returns 'Nothing' it gets
-  -- reexecuted on a reacquired resource until it produces 'Just'.
+  -- Tries the last acquired resource and if the action returns 'Nothing'
+  -- reacquires the resource and reexecutes the action until the action
+  -- produces 'Just'.
   --
   -- If it throws any exception, no changes to the resilient happen. The
   -- exception gets rethrown.
