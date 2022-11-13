@@ -152,6 +152,7 @@ library
     Coalmine.Literal
     Coalmine.Located
     Coalmine.Located.Rendering
+    Coalmine.Logger
     Coalmine.MachinesExtras.Mealy
     Coalmine.MegaparsecExtras
     Coalmine.MtlExtras
@@ -185,6 +186,7 @@ library
     Coalmine.Serialization
     Coalmine.SemverBase
     Coalmine.Streamer
+    Coalmine.StmExtras.TQueue
     Coalmine.Tasty
     Coalmine.Tasty.TestTrees
     Coalmine.Tasty.TestTrees.Cereal

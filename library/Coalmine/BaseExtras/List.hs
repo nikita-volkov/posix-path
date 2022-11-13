@@ -222,3 +222,12 @@ streamUniqueDuplicates list =
 chunk :: Int -> [a] -> [[a]]
 chunk _ [] = []
 chunk i xs = let (f, r) = splitAt i xs in f : chunk i r
+
+findLast :: (a -> Maybe b) -> [a] -> Maybe b
+findLast pred = go
+  where
+    go = \case
+      h : t -> case pred h of
+        Just res -> Just res
+        Nothing -> go t
+      _ -> Nothing
