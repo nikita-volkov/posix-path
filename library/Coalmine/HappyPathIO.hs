@@ -9,14 +9,14 @@
 -- E.g., outputting something before exiting and etc.
 module Coalmine.HappyPathIO where
 
-import qualified Coalmine.BaseExtras.List as List
+import Coalmine.BaseExtras.List qualified as List
 import Coalmine.EvenSimplerPaths (Path)
 import Coalmine.Inter
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
 import Coalmine.Printing
-import qualified Data.Attoparsec.Text as Attoparsec
-import qualified Data.ByteString as ByteString
+import Data.Attoparsec.Text qualified as Attoparsec
+import Data.ByteString qualified as ByteString
 
 -- * --
 

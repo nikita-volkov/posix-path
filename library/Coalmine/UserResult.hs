@@ -4,15 +4,15 @@ module Coalmine.UserResult
   )
 where
 
-import qualified Coalmine.BaseExtras.List as ListExtras
+import Coalmine.BaseExtras.List qualified as ListExtras
 import Coalmine.Inter
 import Coalmine.InternalPrelude
-import qualified Coalmine.MultilineTextBuilder as Printer
+import Coalmine.MultilineTextBuilder qualified as Printer
 import Coalmine.Name (Name)
 import Coalmine.Printing
 import Coalmine.UserErr (UserErr (..))
-import qualified Coalmine.UserErr as UserErr
-import qualified Data.Text as Text
+import Coalmine.UserErr qualified as UserErr
+import Data.Text qualified as Text
 
 -- |
 -- Consider it a 'Maybe' with extended information about the error.

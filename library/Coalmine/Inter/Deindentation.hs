@@ -9,9 +9,9 @@ module Coalmine.Inter.Deindentation
   )
 where
 
-import qualified Coalmine.Inter.Syntax.Model as M
+import Coalmine.Inter.Syntax.Model qualified as M
 import Coalmine.InternalPrelude
-import qualified Data.Vector as BVec
+import Data.Vector qualified as BVec
 
 spacesIndentation :: BVec M.Space -> Int
 spacesIndentation = getSum . foldMap (Sum . spaceIndentation)

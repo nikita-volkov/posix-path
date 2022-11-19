@@ -1,8 +1,8 @@
 module Coalmine.Tasty.TestTrees.Cereal where
 
-import qualified Coalmine.CerealExtras.Get as Get
+import Coalmine.CerealExtras.Get qualified as Get
 import Coalmine.InternalPrelude
-import qualified Data.Serialize as Cereal
+import Data.Serialize qualified as Cereal
 import Test.QuickCheck.Instances
 import Test.Tasty
 import Test.Tasty.HUnit

@@ -1,15 +1,15 @@
 module Coalmine.Tasty.TestTrees.HeadedMegaparsec where
 
-import qualified Coalmine.HeadedMegaparsecExtras as P
+import Coalmine.HeadedMegaparsecExtras qualified as P
 import Coalmine.InternalPrelude
 import Coalmine.Printing
-import qualified Data.Text.IO as TextIO
+import Data.Text.IO qualified as TextIO
 import HeadedMegaparsec
 import Test.QuickCheck.Instances
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck
-import qualified Text.Megaparsec as Megaparsec
+import Text.Megaparsec qualified as Megaparsec
 
 testParserToSucceed ::
   (Eq a, Show a, Megaparsec.VisualStream i, Megaparsec.TraversableStream i, Megaparsec.ShowErrorComponent e) =>

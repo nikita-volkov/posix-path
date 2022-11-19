@@ -1,6 +1,6 @@
 module Main where
 
-import qualified Build_doctests as Bd
+import Build_doctests qualified as Bd
 import Coalmine.InternalPrelude
 import Test.DocTest
 

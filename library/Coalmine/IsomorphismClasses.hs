@@ -6,13 +6,13 @@
 module Coalmine.IsomorphismClasses where
 
 import Coalmine.InternalPrelude
-import qualified Data.Map
-import qualified Data.Map.Strict
-import qualified Data.Text
-import qualified Data.Text.Lazy
-import qualified Data.Text.Lazy.Builder
-import qualified Text.Builder
-import qualified TextBuilderDev
+import Data.Map qualified
+import Data.Map.Strict qualified
+import Data.Text qualified
+import Data.Text.Lazy qualified
+import Data.Text.Lazy.Builder qualified
+import Text.Builder qualified
+import TextBuilderDev qualified
 
 class Strictness lazy strict where
   toStrict :: lazy -> strict

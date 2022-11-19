@@ -18,11 +18,11 @@ module Coalmine.AttoparsecExtras.Text
   )
 where
 
-import qualified Coalmine.BaseExtras.Integer as IntegerExtras
+import Coalmine.BaseExtras.Integer qualified as IntegerExtras
 import Coalmine.InternalPrelude hiding (takeWhile)
 import Data.Attoparsec.Text
-import qualified Data.Text as Text
-import qualified StructureKit.Charset as Charset
+import Data.Text qualified as Text
+import StructureKit.Charset qualified as Charset
 
 -- * --
 

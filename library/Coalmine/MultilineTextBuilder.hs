@@ -14,14 +14,14 @@ module Coalmine.MultilineTextBuilder
   )
 where
 
-import qualified Coalmine.BaseExtras.List as List
+import Coalmine.BaseExtras.List qualified as List
 import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
 import Coalmine.IsomorphismClassInstances
-import qualified Data.Text as Text
-import qualified Data.Text.Lazy as TextLazy
-import qualified Data.Text.Lazy.Builder as TextLazyBuilder
-import qualified TextBuilderDev as Tb
+import Data.Text qualified as Text
+import Data.Text.Lazy qualified as TextLazy
+import Data.Text.Lazy.Builder qualified as TextLazyBuilder
+import TextBuilderDev qualified as Tb
 
 -- * --
 

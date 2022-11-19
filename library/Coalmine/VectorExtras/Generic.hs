@@ -1,9 +1,9 @@
 module Coalmine.VectorExtras.Generic where
 
 import Coalmine.InternalPrelude hiding (Vector, foldMap, foldl', foldr, length, null)
-import qualified Coalmine.VectorExtras.Generic.Mutable as Mut
+import Coalmine.VectorExtras.Generic.Mutable qualified as Mut
 import Data.Vector.Generic
-import qualified Data.Vector.Generic.Mutable as Mut
+import Data.Vector.Generic.Mutable qualified as Mut
 
 -- |
 -- Notice: It is your responsibility to ensure that the indices

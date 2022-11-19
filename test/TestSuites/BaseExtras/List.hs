@@ -1,9 +1,9 @@
 module TestSuites.BaseExtras.List where
 
-import qualified Coalmine.BaseExtras.List as List
+import Coalmine.BaseExtras.List qualified as List
 import Coalmine.Prelude
 import Coalmine.Tasty
-import qualified Data.Set as Set
+import Data.Set qualified as Set
 
 tests =
   [ testGroup "streamUniqueDuplicates" $

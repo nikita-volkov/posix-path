@@ -1,8 +1,8 @@
 module Coalmine.MegaparsecExtras where
 
 import Coalmine.InternalPrelude hiding (try)
-import qualified Coalmine.Located as Located
-import qualified Coalmine.Parsed as Parsed
+import Coalmine.Located qualified as Located
+import Coalmine.Parsed qualified as Parsed
 import Text.Megaparsec
 
 -- |

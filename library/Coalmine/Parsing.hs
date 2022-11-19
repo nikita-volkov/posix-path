@@ -1,10 +1,10 @@
 module Coalmine.Parsing where
 
-import qualified Coalmine.HeadedMegaparsecExtras as HeadedMegaparsecExtras
+import Coalmine.HeadedMegaparsecExtras qualified as HeadedMegaparsecExtras
 import Coalmine.InternalPrelude
-import qualified Data.Attoparsec.Text
-import qualified HeadedMegaparsec
-import qualified Text.Megaparsec as Megaparsec
+import Data.Attoparsec.Text qualified
+import HeadedMegaparsec qualified
+import Text.Megaparsec qualified as Megaparsec
 
 class Parsing parser where
   type ParserInput parser

@@ -1,13 +1,13 @@
 module Coalmine.Inter.TH where
 
-import qualified Coalmine.Inter.Deindentation as D
+import Coalmine.Inter.Deindentation qualified as D
 import Coalmine.InternalPrelude
-import qualified Coalmine.MultilineTextBuilder as B
+import Coalmine.MultilineTextBuilder qualified as B
 import Coalmine.Printing
 import Coalmine.TH.Exp
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Language.Haskell.TH.Syntax
-import qualified THLego.Helpers as Helpers
+import THLego.Helpers qualified as Helpers
 
 -- * --
 

@@ -2,17 +2,17 @@ module Main where
 
 import Coalmine.Prelude
 import Coalmine.Tasty
-import qualified TestSuites.BaseExtras.List
-import qualified TestSuites.CerealExtras.Compact
-import qualified TestSuites.ConduitExtras as ConduitExtras
-import qualified TestSuites.EvenSimplerPaths as EvenSimplerPaths
-import qualified TestSuites.Inter as Inter
-import qualified TestSuites.LocatedRendering as LocatedRendering
-import qualified TestSuites.MegaparsecExtras as MegaparsecExtras
-import qualified TestSuites.MultilineTextBuilder as MultilineTextBuilder
-import qualified TestSuites.Name as Name
-import qualified TestSuites.NumericVersion as NumericVersion
-import qualified TestSuites.TimeExtrasConversions as TimeExtrasConversions
+import TestSuites.BaseExtras.List qualified
+import TestSuites.CerealExtras.Compact qualified
+import TestSuites.ConduitExtras qualified as ConduitExtras
+import TestSuites.EvenSimplerPaths qualified as EvenSimplerPaths
+import TestSuites.Inter qualified as Inter
+import TestSuites.LocatedRendering qualified as LocatedRendering
+import TestSuites.MegaparsecExtras qualified as MegaparsecExtras
+import TestSuites.MultilineTextBuilder qualified as MultilineTextBuilder
+import TestSuites.Name qualified as Name
+import TestSuites.NumericVersion qualified as NumericVersion
+import TestSuites.TimeExtrasConversions qualified as TimeExtrasConversions
 
 main =
   defaultMain . testGroup "All" $

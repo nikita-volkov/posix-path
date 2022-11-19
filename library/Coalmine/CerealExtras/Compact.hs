@@ -7,17 +7,17 @@
 -- Thus ensuring that only optimised serialisable primitives are used.
 module Coalmine.CerealExtras.Compact where
 
-import qualified Coalmine.CerealExtras.Get as CerealExtrasGet
-import qualified Coalmine.CerealExtras.Put as CerealExtrasPut
+import Coalmine.CerealExtras.Get qualified as CerealExtrasGet
+import Coalmine.CerealExtras.Put qualified as CerealExtrasPut
 import Coalmine.InternalPrelude hiding (get, put)
-import qualified Data.ByteString as ByteString
-import qualified Data.Map.Strict as Map
+import Data.ByteString qualified as ByteString
+import Data.Map.Strict qualified as Map
 import Data.Serialize (Serialize (..))
-import qualified Data.Serialize as Cereal
-import qualified Data.Serialize.LEB128 as Leb128
-import qualified Data.Text.Encoding as TextEncoding
-import qualified Data.Vector as BVec
-import qualified Data.Vector.Unboxed as UVec
+import Data.Serialize qualified as Cereal
+import Data.Serialize.LEB128 qualified as Leb128
+import Data.Text.Encoding qualified as TextEncoding
+import Data.Vector qualified as BVec
+import Data.Vector.Unboxed qualified as UVec
 
 unwrap :: Compact a -> a
 unwrap = (.value)

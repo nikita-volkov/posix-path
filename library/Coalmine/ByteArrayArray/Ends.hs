@@ -1,9 +1,9 @@
 module Coalmine.ByteArrayArray.Ends where
 
 import Coalmine.InternalPrelude
-import qualified Coalmine.VectorExtras.Generic as GVecExtras
-import qualified Data.Vector.Unboxed as UVec
-import qualified Data.Vector.Unboxed.Mutable as MUVec
+import Coalmine.VectorExtras.Generic qualified as GVecExtras
+import Data.Vector.Unboxed qualified as UVec
+import Data.Vector.Unboxed.Mutable qualified as MUVec
 import GHC.Exts
 
 -- * --

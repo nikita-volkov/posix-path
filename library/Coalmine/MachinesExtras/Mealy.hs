@@ -2,8 +2,8 @@ module Coalmine.MachinesExtras.Mealy where
 
 import Coalmine.InternalPrelude hiding (scan, scan1)
 import Data.Machine.Mealy
-import qualified Data.Vector.Generic as GVec
-import qualified Data.Vector.Generic.Mutable as GMVec
+import Data.Vector.Generic qualified as GVec
+import Data.Vector.Generic.Mutable qualified as GMVec
 
 -- * Execution
 

@@ -10,7 +10,7 @@ module Coalmine.ErrBuilder
   )
 where
 
-import qualified Coalmine.BaseExtras.List as List
+import Coalmine.BaseExtras.List qualified as List
 import Coalmine.Inter
 import Coalmine.InternalPrelude
 import Coalmine.MultilineTextBuilder (MultilineTextBuilder)

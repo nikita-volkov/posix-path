@@ -6,7 +6,7 @@ module Coalmine.TextExtras.Text
   )
 where
 
-import qualified Algorithms.NaturalSort as NaturalSort
+import Algorithms.NaturalSort qualified as NaturalSort
 import Coalmine.InternalPrelude hiding (init, null)
 import Data.Text hiding (empty)
 

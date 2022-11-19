@@ -1,6 +1,6 @@
 module TestSuites.ConduitExtras where
 
-import qualified Coalmine.ConduitExtras as ConduitExtras
+import Coalmine.ConduitExtras qualified as ConduitExtras
 import Coalmine.Prelude
 import Coalmine.Tasty
 import Conduit

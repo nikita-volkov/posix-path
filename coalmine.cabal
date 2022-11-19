@@ -60,6 +60,7 @@ common language-settings
     GADTs
     GeneralizedNewtypeDeriving
     HexFloatLiterals
+    ImportQualifiedPost
     LambdaCase
     LiberalTypeSynonyms
     MultiParamTypeClasses

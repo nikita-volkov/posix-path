@@ -1,21 +1,21 @@
 module Coalmine.CasedText where
 
 import Coalmine.InternalPrelude
-import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
-import qualified Coalmine.Name as Name
-import qualified Coalmine.Name.Attoparsec as Attoparsec
-import qualified Coalmine.Name.Constants as Constants
-import qualified Coalmine.Name.Gens as Gens
-import qualified Coalmine.Name.Megaparsec as Megaparsec
+import Coalmine.MultilineTextBuilder qualified as MultilineTextBuilder
+import Coalmine.Name qualified as Name
+import Coalmine.Name.Attoparsec qualified as Attoparsec
+import Coalmine.Name.Constants qualified as Constants
+import Coalmine.Name.Gens qualified as Gens
+import Coalmine.Name.Megaparsec qualified as Megaparsec
 import Coalmine.Parsing
 import Coalmine.Printing
-import qualified Coalmine.QuickCheckExtras.Gens as QuickCheckExtrasGens
-import qualified Data.Attoparsec.Text as Attoparsec
-import qualified Data.Serialize as Cereal
-import qualified Data.Text as Text
-import qualified Test.QuickCheck as QuickCheck
-import qualified Text.Megaparsec as Megaparsec
-import qualified TextBuilderDev as TextBuilder
+import Coalmine.QuickCheckExtras.Gens qualified as QuickCheckExtrasGens
+import Data.Attoparsec.Text qualified as Attoparsec
+import Data.Serialize qualified as Cereal
+import Data.Text qualified as Text
+import Test.QuickCheck qualified as QuickCheck
+import Text.Megaparsec qualified as Megaparsec
+import TextBuilderDev qualified as TextBuilder
 
 data CasedText = CasedText
   { titlingPolicy :: !TitlingPolicy,

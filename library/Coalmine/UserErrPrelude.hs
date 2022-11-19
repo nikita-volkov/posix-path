@@ -10,7 +10,7 @@ where
 import Coalmine.InternalPrelude
 import Coalmine.Name (Name)
 import Coalmine.UserErr (UserErr)
-import qualified Coalmine.UserErr as UserErr
+import Coalmine.UserErr qualified as UserErr
 
 throwUserErr :: MonadError UserErr m => Text -> Text -> [Name] -> m a
 throwUserErr reason suggestion contexts =

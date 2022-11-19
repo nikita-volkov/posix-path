@@ -1,12 +1,12 @@
 module TestSuites.Inter.Regressions.FromFormatica where
 
 import Coalmine.Inter
-import qualified Coalmine.MultilineTextBuilder as B
+import Coalmine.MultilineTextBuilder qualified as B
 import Coalmine.Prelude
-import qualified Data.Text as Text
-import qualified Test.QuickCheck as QuickCheck
+import Data.Text qualified as Text
+import Test.QuickCheck qualified as QuickCheck
 import Test.QuickCheck.Instances
-import qualified Test.QuickCheck.Property as QuickCheck
+import Test.QuickCheck.Property qualified as QuickCheck
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck

@@ -1,7 +1,7 @@
 module Coalmine.TH.Exp where
 
 import Coalmine.InternalPrelude hiding (lift)
-import qualified Data.Attoparsec.Text as Atto
+import Data.Attoparsec.Text qualified as Atto
 import Language.Haskell.TH.Quote
 import Language.Haskell.TH.Syntax
 

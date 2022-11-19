@@ -12,9 +12,9 @@ where
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
 import Coalmine.Printing
-import qualified Coalmine.TH.QuasiQuoter as QuasiQuoter
+import Coalmine.TH.QuasiQuoter qualified as QuasiQuoter
 import Coalmine.UserErr (UserErr (..))
-import qualified Data.Attoparsec.Text as Attoparsec
+import Data.Attoparsec.Text qualified as Attoparsec
 
 data SemverBase = SemverBase
   { major :: !Word,

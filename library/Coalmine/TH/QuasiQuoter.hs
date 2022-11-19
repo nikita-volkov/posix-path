@@ -2,7 +2,7 @@ module Coalmine.TH.QuasiQuoter where
 
 import Coalmine.InternalPrelude hiding (exp, lift)
 import Coalmine.TH.Exp
-import qualified Data.Attoparsec.Text as Atto
+import Data.Attoparsec.Text qualified as Atto
 import Language.Haskell.TH.Quote
 import Language.Haskell.TH.Syntax
 

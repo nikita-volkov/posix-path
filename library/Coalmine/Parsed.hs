@@ -21,7 +21,7 @@ module Coalmine.Parsed
 where
 
 import Coalmine.InternalPrelude
-import qualified Coalmine.Located as Located
+import Coalmine.Located qualified as Located
 
 -- * --
 

@@ -1,12 +1,12 @@
 module Coalmine.EvenSimplerPaths.QuickCheckGens where
 
-import qualified Coalmine.EvenSimplerPaths.Charsets as Charsets
+import Coalmine.EvenSimplerPaths.Charsets qualified as Charsets
 import Coalmine.InternalPrelude hiding (filter)
 import Coalmine.QuickCheckExtras.Gens
-import qualified StructureKit.Charset as Charset
+import StructureKit.Charset qualified as Charset
 import Test.QuickCheck
 import Test.QuickCheck.Gen
-import qualified Test.QuickCheck.Random as QcRandom
+import Test.QuickCheck.Random qualified as QcRandom
 
 fileName :: Gen Text
 fileName = do

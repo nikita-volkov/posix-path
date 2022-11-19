@@ -36,8 +36,8 @@ import Control.Foldl as Exports (EndoM (..))
 import Control.FromSum as Exports
 import Control.Monad.Morph as Exports
 import Data.Aeson as Exports (FromJSON (..), ToJSON (..), ToJSONKey (..))
-import qualified Data.Aeson
-import qualified Data.Attoparsec.Text
+import Data.Aeson qualified
+import Data.Attoparsec.Text qualified
 import Data.Decimal as Exports (Decimal)
 import Data.Default as Exports
 import Data.DoubleWord as Exports (Word128 (..), Word160 (..), Word192 (..), Word224 (..), Word256 (..), Word96 (..))
@@ -47,16 +47,16 @@ import Data.Groupoid as Exports
 import Data.Machine.Mealy as Exports
 import Data.Machine.Moore as Exports
 import Data.Semialign as Exports
-import qualified Data.Text.Encoding
+import Data.Text.Encoding qualified
 import Data.Tuple.All as Exports hiding (only)
-import qualified Data.Vector
+import Data.Vector qualified
 import Data.Vector.Generic as Exports (Vector)
 import Data.Vector.Instances as Exports
-import qualified Data.Vector.Storable
+import Data.Vector.Storable qualified
 import Data.Vector.Unboxed as Exports (Unbox)
-import qualified Data.Vector.Unboxed
+import Data.Vector.Unboxed qualified
 import Data.Vector.Unboxed.Deriving as Exports (derivingUnbox)
-import qualified Data.Yaml
+import Data.Yaml qualified
 import DeferredFolds.Unfoldr as Exports (Unfoldr (..))
 import Deque.Strict as Exports (Deque)
 import Foreign.C.Types as Exports

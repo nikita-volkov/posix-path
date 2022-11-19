@@ -1,9 +1,9 @@
 module Coalmine.Serialization where
 
 import Coalmine.InternalPrelude
-import qualified Data.Scientific as Scientific
-import qualified Data.Serialize as Cereal
-import qualified Data.Vector as BVec
+import Data.Scientific qualified as Scientific
+import Data.Serialize qualified as Cereal
+import Data.Vector qualified as BVec
 
 -- * Execution
 

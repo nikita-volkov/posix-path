@@ -1,11 +1,11 @@
 module Coalmine.Optics where
 
 import Coalmine.InternalPrelude
-import qualified Coalmine.UnorderedContainersExtras.HashSet as HashSet
-import qualified Data.HashMap.Strict as HashMap
-import qualified Data.Map.Strict as Map
+import Coalmine.UnorderedContainersExtras.HashSet qualified as HashSet
+import Data.HashMap.Strict qualified as HashMap
+import Data.Map.Strict qualified as Map
 import Data.Set.Optics
-import qualified MooreMachines as Mm
+import MooreMachines qualified as Mm
 import Optics
 
 feedingMooreOf :: Fold a b -> Moore b c -> a -> Moore b c

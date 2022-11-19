@@ -2,7 +2,7 @@ module Coalmine.Name.Megaparsec where
 
 import Coalmine.InternalPrelude
 import Text.Megaparsec hiding (sepBy, sepBy1)
-import qualified Text.Megaparsec.Char as MegaparsecChar
+import Text.Megaparsec.Char qualified as MegaparsecChar
 import VectorBuilder.MonadPlus
 
 refineText :: Parsec Void Text a -> Text -> Either Text a

@@ -1,7 +1,7 @@
 module Coalmine.JsonEncoder where
 
 import Coalmine.InternalPrelude
-import qualified Jsonifier
+import Jsonifier qualified
 
 -- |
 -- Specification of how to serialize a data structure as YAML.

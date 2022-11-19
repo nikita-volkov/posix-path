@@ -3,10 +3,10 @@
 module Coalmine.Printing where
 
 import Coalmine.InternalPrelude
-import qualified Coalmine.MultilineTextBuilder as Mb
-import qualified Data.Text as Text
-import qualified Data.Text.IO as TextIO
-import qualified TextBuilderDev as Ub
+import Coalmine.MultilineTextBuilder qualified as Mb
+import Data.Text qualified as Text
+import Data.Text.IO qualified as TextIO
+import TextBuilderDev qualified as Ub
 
 -- * Compact
 

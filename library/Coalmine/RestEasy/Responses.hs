@@ -1,9 +1,9 @@
 module Coalmine.RestEasy.Responses where
 
 import Coalmine.Prelude
-import qualified Data.Text.Encoding as Text
-import qualified Network.HTTP.Types as HttpTypes
-import qualified Network.Wai as Wai
+import Data.Text.Encoding qualified as Text
+import Network.HTTP.Types qualified as HttpTypes
+import Network.Wai qualified as Wai
 
 ok contentType content = Wai.responseBuilder HttpTypes.status200 headers content
   where

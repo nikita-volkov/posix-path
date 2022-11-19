@@ -1,10 +1,10 @@
 module TestSuites.LocatedRendering where
 
 import Coalmine.Inter
-import qualified Coalmine.Located.Rendering as Rendering
+import Coalmine.Located.Rendering qualified as Rendering
 import Coalmine.Prelude
 import Coalmine.Tasty
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 
 tests =
   [ testGroup "select" $

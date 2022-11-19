@@ -18,10 +18,10 @@ module Coalmine.Logger
   )
 where
 
-import qualified Coalmine.BaseExtras.List as List
+import Coalmine.BaseExtras.List qualified as List
 import Coalmine.InternalPrelude hiding (Writer)
-import qualified Coalmine.StmExtras.TQueue as TQueue
-import qualified Data.Text.IO as TextIO
+import Coalmine.StmExtras.TQueue qualified as TQueue
+import Data.Text.IO qualified as TextIO
 
 data Logger = Logger
   { taskQueue :: TQueue Task,

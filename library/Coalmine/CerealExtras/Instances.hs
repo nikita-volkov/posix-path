@@ -2,7 +2,7 @@ module Coalmine.CerealExtras.Instances where
 
 import Cereal.UnorderedContainers.Serialize ()
 import Coalmine.InternalPrelude hiding (get, put)
-import qualified Data.Scientific as Scientific
+import Data.Scientific qualified as Scientific
 import Data.Serialize
 import Data.Serialize.Text ()
 import Data.Vector.Serialize ()

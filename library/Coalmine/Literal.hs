@@ -6,11 +6,11 @@ module Coalmine.Literal where
 
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
-import qualified Data.Attoparsec.Text as Attoparsec
-import qualified Data.Text as Text
-import qualified Language.Haskell.TH.Quote as TH
-import qualified Language.Haskell.TH.Syntax as TH
-import qualified TextBuilderDev
+import Data.Attoparsec.Text qualified as Attoparsec
+import Data.Text qualified as Text
+import Language.Haskell.TH.Quote qualified as TH
+import Language.Haskell.TH.Syntax qualified as TH
+import TextBuilderDev qualified
 
 -- | Value that has a textual representation.
 --

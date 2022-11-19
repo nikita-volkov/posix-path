@@ -5,7 +5,7 @@ import Coalmine.EvenSimplerPaths.AttoparsecHelpers
 import Coalmine.Inter.Syntax.Model
 import Coalmine.InternalPrelude hiding (takeWhile)
 import Data.Attoparsec.Text
-import qualified VectorExtras.Combinators as VectorCombinators
+import VectorExtras.Combinators qualified as VectorCombinators
 
 quasiQuote :: Parser QuasiQuote
 quasiQuote =

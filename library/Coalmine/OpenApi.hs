@@ -1,13 +1,13 @@
 module Coalmine.OpenApi where
 
-import qualified AesonValueParser
-import qualified Coalmine.BaseExtras.List as List
+import AesonValueParser qualified
+import Coalmine.BaseExtras.List qualified as List
 import Coalmine.InternalPrelude
 import Coalmine.JsonSchema
 import Coalmine.Parsing
-import qualified Data.Text as Text
-import qualified Data.Vector as BVec
-import qualified Jsonifier
+import Data.Text qualified as Text
+import Data.Vector qualified as BVec
+import Jsonifier qualified
 
 -- * Execution
 

@@ -1,11 +1,11 @@
 module Coalmine.Formatting where
 
-import qualified Coalmine.BaseExtras.List as List
+import Coalmine.BaseExtras.List qualified as List
 import Coalmine.Building
-import qualified Coalmine.Formatting.Rendering as Finalization
+import Coalmine.Formatting.Rendering qualified as Finalization
 import Coalmine.InternalPrelude hiding (intercalate, null)
-import qualified Data.Text as Text
-import qualified TextBuilderDev as Tb
+import Data.Text qualified as Text
+import TextBuilderDev qualified as Tb
 
 data Multiline
 

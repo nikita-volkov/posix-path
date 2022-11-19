@@ -1,12 +1,12 @@
 module Coalmine.Name.Gens where
 
 import Coalmine.InternalPrelude
-import qualified Coalmine.Name.Charsets as Charsets
-import qualified Data.ByteString as ByteString
-import qualified Data.Text as Text
-import qualified Data.Text.Encoding as TextEncoding
-import qualified Data.Vector as BVec
-import qualified StructureKit.Charset as Charset
+import Coalmine.Name.Charsets qualified as Charsets
+import Data.ByteString qualified as ByteString
+import Data.Text qualified as Text
+import Data.Text.Encoding qualified as TextEncoding
+import Data.Vector qualified as BVec
+import StructureKit.Charset qualified as Charset
 import Test.QuickCheck.Gen
 
 normalParts :: Int -> Int -> Gen (BVec Text)

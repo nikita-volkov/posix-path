@@ -2,7 +2,7 @@ module Coalmine.Isomorphisms where
 
 import Coalmine.InternalPrelude
 import Data.Isomorphism
-import qualified Data.Map.Strict as Map
+import Data.Map.Strict qualified as Map
 
 -- * --
 

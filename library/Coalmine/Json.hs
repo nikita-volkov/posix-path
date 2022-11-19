@@ -1,7 +1,7 @@
 module Coalmine.Json where
 
 import Coalmine.InternalPrelude
-import qualified Jsonifier as Jf
+import Jsonifier qualified as Jf
 
 -- |
 -- JSON literal.

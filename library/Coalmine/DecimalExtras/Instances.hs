@@ -1,10 +1,10 @@
 module Coalmine.DecimalExtras.Instances where
 
 import Coalmine.InternalPrelude
-import qualified Data.Attoparsec.Text as P
-import qualified Data.Decimal as D
-import qualified Data.Serialize as Cereal
-import qualified Data.Text as Text
+import Data.Attoparsec.Text qualified as P
+import Data.Decimal qualified as D
+import Data.Serialize qualified as Cereal
+import Data.Text qualified as Text
 
 instance LenientParser D.Decimal where
   lenientParser = do

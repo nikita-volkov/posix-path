@@ -3,7 +3,7 @@ module Main where
 import Coalmine.JsonSchema
 import Coalmine.OpenApi
 import Coalmine.Prelude
-import qualified OpenApiDemo.Model as M
+import OpenApiDemo.Model qualified as M
 
 -- * --
 

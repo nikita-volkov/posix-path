@@ -1,9 +1,9 @@
 module Coalmine.BaseExtras.List where
 
-import qualified Coalmine.ContainersExtras.Map as Map
+import Coalmine.ContainersExtras.Map qualified as Map
 import Coalmine.InternalPrelude
-import qualified Data.Map.Strict as Map
-import qualified Data.Set as Set
+import Data.Map.Strict qualified as Map
+import Data.Set qualified as Set
 
 nubSort :: Ord a => [a] -> [a]
 nubSort = nubSortOn id

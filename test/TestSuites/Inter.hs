@@ -2,15 +2,15 @@ module TestSuites.Inter where
 
 import Coalmine.Inter
 import Coalmine.Prelude
-import qualified Data.Text as Text
-import qualified Test.QuickCheck as QuickCheck
+import Data.Text qualified as Text
+import Test.QuickCheck qualified as QuickCheck
 import Test.QuickCheck.Instances
-import qualified Test.QuickCheck.Property as QuickCheck
+import Test.QuickCheck.Property qualified as QuickCheck
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck
 import Test.Tasty.Runners
-import qualified TestSuites.Inter.Regressions.FromFormatica as RegressionsFromFormatica
+import TestSuites.Inter.Regressions.FromFormatica qualified as RegressionsFromFormatica
 
 tests =
   [ testCase "" $

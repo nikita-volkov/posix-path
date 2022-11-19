@@ -2,14 +2,14 @@
 -- Indentation-sensitive line-by-line parsing.
 module Coalmine.MultilineParser where
 
-import qualified Coalmine.CharPredicates as CharPredicates
+import Coalmine.CharPredicates qualified as CharPredicates
 import Coalmine.InternalPrelude hiding (maybe)
-import qualified Coalmine.VectorExtras.Generic as Vec
-import qualified Data.Attoparsec.Text as A
-import qualified Data.Text as Text
-import qualified Text.Megaparsec as M
-import qualified Text.Megaparsec.Char as M
-import qualified Text.Megaparsec.Char.Lexer as M
+import Coalmine.VectorExtras.Generic qualified as Vec
+import Data.Attoparsec.Text qualified as A
+import Data.Text qualified as Text
+import Text.Megaparsec qualified as M
+import Text.Megaparsec.Char qualified as M
+import Text.Megaparsec.Char.Lexer qualified as M
 
 -- * --
 

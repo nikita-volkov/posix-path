@@ -2,9 +2,9 @@
 module Coalmine.Lingua where
 
 import Coalmine.InternalPrelude
-import qualified Data.Text
-import qualified Data.Text.Lazy
-import qualified Data.Text.Lazy.Builder
+import Data.Text qualified
+import Data.Text.Lazy qualified
+import Data.Text.Lazy.Builder qualified
 
 type family Strict a
 

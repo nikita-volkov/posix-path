@@ -1,8 +1,8 @@
 module Coalmine.BaseExtras.IO where
 
 import Coalmine.InternalPrelude
-import qualified Data.ByteString.Char8 as ByteStringChar8
-import qualified Data.Yaml as Yaml
+import Data.ByteString.Char8 qualified as ByteStringChar8
+import Data.Yaml qualified as Yaml
 
 -- |
 -- Assume that the result of executing an explicitly failing action is right.

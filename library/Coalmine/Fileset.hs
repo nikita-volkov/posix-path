@@ -13,12 +13,12 @@ module Coalmine.Fileset
 where
 
 import Coalmine.EvenSimplerPaths (Path)
-import qualified Coalmine.EvenSimplerPaths as Paths
+import Coalmine.EvenSimplerPaths qualified as Paths
 import Coalmine.InternalPrelude hiding (print)
-import qualified Coalmine.MultilineTextBuilder as B
+import Coalmine.MultilineTextBuilder qualified as B
 import Coalmine.Printing
-import qualified Data.Map.Strict as Map
-import qualified Data.Text.IO as TextIO
+import Data.Map.Strict qualified as Map
+import Data.Text.IO qualified as TextIO
 
 -- * --
 

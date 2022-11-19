@@ -1,15 +1,15 @@
 module Coalmine.RestEasy.BodyConsumers where
 
-import qualified AesonValueParser
+import AesonValueParser qualified
 import Coalmine.Inter
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
-import qualified Data.Aeson as Aeson
-import qualified Data.Aeson.Parser as AesonParser
-import qualified Data.Attoparsec.ByteString as AttoparsecByteString
-import qualified Data.ByteString as ByteString
-import qualified Data.Serialize as Cereal
-import qualified Data.Text as Text
+import Data.Aeson qualified as Aeson
+import Data.Aeson.Parser qualified as AesonParser
+import Data.Attoparsec.ByteString qualified as AttoparsecByteString
+import Data.ByteString qualified as ByteString
+import Data.Serialize qualified as Cereal
+import Data.Text qualified as Text
 
 type BodyConsumer a =
   IO ByteString -> IO (Either Text a)

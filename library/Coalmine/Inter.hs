@@ -2,11 +2,11 @@
 -- Layout for text with indentation using efficient specialised builders.
 module Coalmine.Inter where
 
-import qualified Coalmine.Inter.Deindentation as Deindentation
-import qualified Coalmine.Inter.Syntax.Parsers as Parsers
-import qualified Coalmine.Inter.TH as InterTH
+import Coalmine.Inter.Deindentation qualified as Deindentation
+import Coalmine.Inter.Syntax.Parsers qualified as Parsers
+import Coalmine.Inter.TH qualified as InterTH
 import Coalmine.InternalPrelude
-import qualified Coalmine.TH.QuasiQuoter as QuasiQuoter
+import Coalmine.TH.QuasiQuoter qualified as QuasiQuoter
 
 i :: QuasiQuoter
 i = QuasiQuoter.pureAttoparsedExp parser

@@ -3,7 +3,7 @@ module TestSuites.MultilineTextBuilder where
 import Coalmine.MultilineTextBuilder
 import Coalmine.Prelude hiding (choose)
 import Coalmine.Tasty
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 
 tests =
   [ testProperty "Concatting lifted texts equals concatting originals" $

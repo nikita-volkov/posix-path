@@ -1,7 +1,7 @@
 module Coalmine.EvenSimplerPaths.AttoparsecHelpers where
 
 import Coalmine.AttoparsecExtras.Text
-import qualified Coalmine.EvenSimplerPaths.Charsets as Charsets
+import Coalmine.EvenSimplerPaths.Charsets qualified as Charsets
 import Coalmine.InternalPrelude hiding (takeWhile)
 import Data.Attoparsec.Text
 

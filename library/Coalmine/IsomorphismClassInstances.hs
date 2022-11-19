@@ -3,11 +3,11 @@
 module Coalmine.IsomorphismClassInstances where
 
 import Coalmine.InternalPrelude
-import qualified Coalmine.TimeExtras.Conversions as TimeConversions
+import Coalmine.TimeExtras.Conversions qualified as TimeConversions
 import Data.Ratio ((%))
-import qualified Data.Vector.Generic as VectorGeneric
-import qualified Data.Vector.Unboxed as VectorUnboxed
-import qualified TextBuilderDev
+import Data.Vector.Generic qualified as VectorGeneric
+import Data.Vector.Unboxed qualified as VectorUnboxed
+import TextBuilderDev qualified
 
 --
 

@@ -1,7 +1,7 @@
 module Coalmine.TimeExtras.Conversions where
 
 import Coalmine.InternalPrelude
-import qualified Data.Time.Clock.System as Time
+import Data.Time.Clock.System qualified as Time
 
 millisecondsSinceEpochUTCTime :: Integer -> UTCTime
 millisecondsSinceEpochUTCTime time =

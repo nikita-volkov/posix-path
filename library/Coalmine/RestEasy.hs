@@ -1,22 +1,22 @@
 module Coalmine.RestEasy where
 
-import qualified AesonValueParser
-import qualified Coalmine.BaseExtras.List as List
+import AesonValueParser qualified
+import Coalmine.BaseExtras.List qualified as List
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
-import qualified Coalmine.RestEasy.BodyConsumers as BodyConsumers
-import qualified Coalmine.RestEasy.MimeTypeLists as MimeTypeLists
-import qualified Coalmine.RestEasy.Responses as Responses
-import qualified Data.Attoparsec.Text as Attoparsec
-import qualified Data.ByteString as ByteString
-import qualified Data.Serialize as Cereal
-import qualified Data.Text as Text
-import qualified Data.Vector as BVec
-import qualified Jsonifier
-import qualified Network.HTTP.Media as HttpMedia
-import qualified Network.HTTP.Types as HttpTypes
-import qualified Network.Wai as Wai
-import qualified Network.Wai.Handler.Warp as Warp
+import Coalmine.RestEasy.BodyConsumers qualified as BodyConsumers
+import Coalmine.RestEasy.MimeTypeLists qualified as MimeTypeLists
+import Coalmine.RestEasy.Responses qualified as Responses
+import Data.Attoparsec.Text qualified as Attoparsec
+import Data.ByteString qualified as ByteString
+import Data.Serialize qualified as Cereal
+import Data.Text qualified as Text
+import Data.Vector qualified as BVec
+import Jsonifier qualified
+import Network.HTTP.Media qualified as HttpMedia
+import Network.HTTP.Types qualified as HttpTypes
+import Network.Wai qualified as Wai
+import Network.Wai.Handler.Warp qualified as Warp
 
 -- * Execution
 

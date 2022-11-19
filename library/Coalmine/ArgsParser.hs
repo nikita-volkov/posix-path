@@ -13,8 +13,8 @@ where
 
 import Coalmine.Inter
 import Coalmine.InternalPrelude
-import qualified Data.Attoparsec.Text as Attoparsec
-import qualified Data.Text as Text
+import Data.Attoparsec.Text qualified as Attoparsec
+import Data.Text qualified as Text
 
 -- * Execution
 

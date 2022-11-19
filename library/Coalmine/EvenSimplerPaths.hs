@@ -21,21 +21,21 @@ module Coalmine.EvenSimplerPaths
   )
 where
 
-import qualified Algorithms.NaturalSort as NaturalSort
+import Algorithms.NaturalSort qualified as NaturalSort
 import Coalmine.BaseExtras.MonadPlus
-import qualified Coalmine.CerealExtras.Compact as CerealExtrasCompact
-import qualified Coalmine.EvenSimplerPaths.AttoparsecHelpers as AttoparsecHelpers
-import qualified Coalmine.EvenSimplerPaths.IsomorphismClassHelpers as IsomorphismClassHelpers
-import qualified Coalmine.EvenSimplerPaths.QuickCheckGens as QuickCheckGens
+import Coalmine.CerealExtras.Compact qualified as CerealExtrasCompact
+import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
+import Coalmine.EvenSimplerPaths.IsomorphismClassHelpers qualified as IsomorphismClassHelpers
+import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
 import Coalmine.InternalPrelude
 import Coalmine.NameConversion
 import Coalmine.Printing
-import qualified Data.Attoparsec.Text as Attoparsec
-import qualified Data.Serialize as Cereal
-import qualified Data.Text as Text
-import qualified System.Directory as Directory
-import qualified Test.QuickCheck as QuickCheck
-import qualified TextBuilderDev as TextBuilderDev
+import Data.Attoparsec.Text qualified as Attoparsec
+import Data.Serialize qualified as Cereal
+import Data.Text qualified as Text
+import System.Directory qualified as Directory
+import Test.QuickCheck qualified as QuickCheck
+import TextBuilderDev qualified as TextBuilderDev
 
 -- * --
 

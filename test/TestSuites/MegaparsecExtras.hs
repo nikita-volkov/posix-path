@@ -1,11 +1,11 @@
 module TestSuites.MegaparsecExtras where
 
 import Coalmine.Inter
-import qualified Coalmine.Located as Located
+import Coalmine.Located qualified as Located
 import Coalmine.MegaparsecExtras
 import Coalmine.Prelude
 import Coalmine.Tasty
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Text.Megaparsec
 import Text.Megaparsec.Char
 

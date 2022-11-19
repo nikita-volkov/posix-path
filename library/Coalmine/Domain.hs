@@ -1,8 +1,8 @@
 module Coalmine.Domain where
 
 import Coalmine.InternalPrelude
-import qualified Domain
-import qualified DomainOptics
+import Domain qualified
+import DomainOptics qualified
 
 declareStd =
   Domain.declare

@@ -4,11 +4,11 @@ module Coalmine.FileSystem
 where
 
 import Coalmine.EvenSimplerPaths (Path)
-import qualified Coalmine.EvenSimplerPaths as Path
+import Coalmine.EvenSimplerPaths qualified as Path
 import Coalmine.InternalPrelude hiding (print)
 import Coalmine.Printing
-import qualified Data.Text.IO as TextIO
-import qualified Turtle
+import Data.Text.IO qualified as TextIO
+import Turtle qualified
 
 atPathAsWorkDir :: Path -> IO a -> IO a
 atPathAsWorkDir path io =

@@ -1,7 +1,7 @@
 module Coalmine.Interval where
 
 import Coalmine.InternalPrelude
-import qualified Coalmine.TimeExtras.Conversions as TimeConversions
+import Coalmine.TimeExtras.Conversions qualified as TimeConversions
 import Data.Ratio ((%))
 
 -- * --

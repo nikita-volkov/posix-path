@@ -2,11 +2,11 @@ module Coalmine.ByteArrayArray where
 
 import Coalmine.InternalPrelude
 import Data.Primitive.ByteArray (ByteArray (..))
-import qualified Data.Primitive.ByteArray as ByteArray
-import qualified Data.Text as Text
-import qualified Data.Text.Array as TextArray
-import qualified Data.Text.Internal as TextInternal
-import qualified Data.Vector.Unboxed as UVec
+import Data.Primitive.ByteArray qualified as ByteArray
+import Data.Text qualified as Text
+import Data.Text.Array qualified as TextArray
+import Data.Text.Internal qualified as TextInternal
+import Data.Vector.Unboxed qualified as UVec
 import GHC.Exts
 
 -- * --

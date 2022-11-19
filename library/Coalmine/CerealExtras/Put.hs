@@ -1,14 +1,14 @@
 module Coalmine.CerealExtras.Put where
 
 import Coalmine.InternalPrelude hiding (get, map, put)
-import qualified Data.ByteString as ByteString
-import qualified Data.IntMap.Strict as IntMap
-import qualified Data.Map.Strict as Map
+import Data.ByteString qualified as ByteString
+import Data.IntMap.Strict qualified as IntMap
+import Data.Map.Strict qualified as Map
 import Data.Serialize.LEB128 (putLEB128)
 import Data.Serialize.Put
-import qualified Data.Text.Encoding as TextEncoding
-import qualified Data.Vector as BVec
-import qualified Data.Vector.Generic as GVec
+import Data.Text.Encoding qualified as TextEncoding
+import Data.Vector qualified as BVec
+import Data.Vector.Generic qualified as GVec
 
 -- * Helpers
 

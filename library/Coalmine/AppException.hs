@@ -15,8 +15,8 @@ module Coalmine.AppException where
 
 import Coalmine.Inter
 import Coalmine.InternalPrelude
-import qualified Coalmine.MultilineTextBuilder as Renderer
-import qualified Data.Text as Text
+import Coalmine.MultilineTextBuilder qualified as Renderer
+import Data.Text qualified as Text
 
 data AppException = AppException
   { userReason :: Text,

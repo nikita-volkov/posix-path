@@ -1,7 +1,7 @@
 module Coalmine.NameConversion where
 
 import Coalmine.InternalPrelude
-import qualified Coalmine.MultilineTextBuilder as MultilineTextBuilder
+import Coalmine.MultilineTextBuilder qualified as MultilineTextBuilder
 import Coalmine.Name
 
 -- * --

@@ -1,10 +1,10 @@
 module Coalmine.JsonSchema where
 
-import qualified AesonValueParser
+import AesonValueParser qualified
 import Coalmine.InternalPrelude
-import qualified Data.Text as Text
-import qualified Data.Vector as BVec
-import qualified Jsonifier
+import Data.Text qualified as Text
+import Data.Vector qualified as BVec
+import Jsonifier qualified
 
 -- |
 -- Use a schema to parse some JSON input.

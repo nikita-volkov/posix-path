@@ -2,7 +2,7 @@ module Coalmine.Name.Attoparsec where
 
 import Coalmine.AttoparsecExtras.Text
 import Coalmine.InternalPrelude
-import qualified Coalmine.Name.Charsets as Charsets
+import Coalmine.Name.Charsets qualified as Charsets
 import Data.Attoparsec.Text hiding (sepBy, sepBy1)
 import VectorBuilder.MonadPlus
 

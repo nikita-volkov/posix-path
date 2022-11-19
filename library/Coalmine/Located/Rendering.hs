@@ -8,12 +8,12 @@
 -- > expecting "--", "/*", end of input, or white space
 module Coalmine.Located.Rendering where
 
-import qualified Coalmine.BaseExtras.Integer as Integer
+import Coalmine.BaseExtras.Integer qualified as Integer
 import Coalmine.Inter
 import Coalmine.InternalPrelude hiding (select)
-import qualified Coalmine.TextAppender as TextAppender
-import qualified Data.Text as Text
-import qualified TextBuilderDev as TextBuilder
+import Coalmine.TextAppender qualified as TextAppender
+import Data.Text qualified as Text
+import TextBuilderDev qualified as TextBuilder
 
 render :: Text -> Int -> Int -> Text -> Text
 render input startOffset endOffset explanation =

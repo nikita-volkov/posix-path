@@ -1,7 +1,7 @@
 module Coalmine.Streamer where
 
 import Coalmine.InternalPrelude hiding (State)
-import qualified Jsonifier
+import Jsonifier qualified
 
 -- |
 -- Specification of how to stream values of a particular type.

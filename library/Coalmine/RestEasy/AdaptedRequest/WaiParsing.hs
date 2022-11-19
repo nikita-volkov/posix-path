@@ -4,11 +4,11 @@ module Coalmine.RestEasy.AdaptedRequest.WaiParsing where
 
 import Coalmine.InternalPrelude
 import Coalmine.RestEasy.AdaptedRequest.Model
-import qualified Coalmine.RestEasy.MimeTypeLists as MimeTypeLists
-import qualified Network.HTTP.Media as HttpMedia
-import qualified Network.HTTP.Types as HttpTypes
-import qualified Network.Wai as Wai
-import qualified Network.Wai.Handler.Warp as Warp
+import Coalmine.RestEasy.MimeTypeLists qualified as MimeTypeLists
+import Network.HTTP.Media qualified as HttpMedia
+import Network.HTTP.Types qualified as HttpTypes
+import Network.Wai qualified as Wai
+import Network.Wai.Handler.Warp qualified as Warp
 
 contentType :: ByteString -> Maybe Type
 contentType = HttpMedia.mapContentMedia mimeTypeListAssocs

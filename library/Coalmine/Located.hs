@@ -7,7 +7,7 @@ module Coalmine.Located
 where
 
 import Coalmine.InternalPrelude
-import qualified Coalmine.Located.Rendering as Rendering
+import Coalmine.Located.Rendering qualified as Rendering
 
 -- * --
 

@@ -13,12 +13,12 @@ module Coalmine.Interpreter
 where
 
 import Coalmine.EvenSimplerPaths (Path)
-import qualified Coalmine.EvenSimplerPaths as Path
+import Coalmine.EvenSimplerPaths qualified as Path
 import Coalmine.InternalPrelude hiding (fail)
 import Coalmine.Located (Located)
-import qualified Coalmine.Located as Located
+import Coalmine.Located qualified as Located
 import Coalmine.Printing
-import qualified Data.Text.IO as TextIO
+import Data.Text.IO qualified as TextIO
 
 -- * --
 
