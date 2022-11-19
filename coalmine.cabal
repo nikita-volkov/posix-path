@@ -164,6 +164,7 @@ library
     Coalmine.NumericVersion
     Coalmine.OpenApi
     Coalmine.Optics
+    Coalmine.Pakk
     Coalmine.Parsed
     Coalmine.Parsing
     Coalmine.PartialEndo
@@ -220,6 +221,11 @@ library
     Coalmine.Name.Constants
     Coalmine.Name.Gens
     Coalmine.Name.Megaparsec
+    Coalmine.Pakk.Codec
+    Coalmine.Pakk.Decoding
+    Coalmine.Pakk.Encoding
+    Coalmine.Pakk.Schema
+    Coalmine.Pakk.ValueClass
   build-depends:
     acc,
     aeson,
