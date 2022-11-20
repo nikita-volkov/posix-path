@@ -14,6 +14,13 @@ serializeAsByteStringWithoutSchema :: Codec a -> ByteString
 serializeAsByteStringWithoutSchema =
   error "TODO"
 
+data DecodingError
+  = SchemaMismatchDecodingError
+      Schema.Schema
+      -- ^ Expected.
+      Schema.Schema
+      -- ^ Actual.
+
 -- |
 -- Encoder, decoder and structure metadata all united in a single composable abstraction.
 --
