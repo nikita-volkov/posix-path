@@ -115,3 +115,34 @@ variant name unpack pack codec =
         Just b -> Just (codec.encode b)
     )
     (fmap pack codec.decode)
+
+-- * Validation
+
+isCorrect :: CodecCorrectness -> Bool
+isCorrect =
+  error "TODO"
+
+-- |
+-- Composite over the report on all the properties of a correct codec.
+data CodecCorrectness = CodecCorrectness
+  { -- | Whether encoding and decoding produces the same value.
+    encodeDecode :: ~Bool,
+    schemaMatch :: ~Bool
+  }
+
+-- |
+-- Test a codec on a given value and produce a structured report about
+-- the properties that are satisfied.
+-- Codec is considered correct only when it satisfies all properties,
+-- which can be checked via a combination of 'validate' and 'isCorrect' functions.
+--
+-- Can be seen as a universal interface that can be mapped into all property-testing
+-- libraries.
+-- The specific adapters are expected to be provided as separate libraries,
+-- thus both not limiting the user to a specific set of libraries and
+-- leaving the interface open for other libraries to be integrated via.
+-- An open interface may also turn usable for tasks that have not been discovered yet.
+-- This approach also lets the user control the dependencies.
+validate :: Codec a -> a -> CodecCorrectness
+validate =
+  error "TODO"
