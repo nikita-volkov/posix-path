@@ -28,7 +28,7 @@ productCodec :: ProductCodec a a -> Codec a
 productCodec ProductCodec {..} =
   Codec (Schema.ProductSchema (toList schema)) encode decode
 
-sumCodec :: [(Text, Codec a)] -> Codec a
+sumCodec :: [VariantCodec a] -> Codec a
 sumCodec variants =
   error "TODO"
 
@@ -55,9 +55,18 @@ instance Applicative (ProductCodec i) where
       (\i -> lEncode i <> rEncode i)
       (lDecode <*> rDecode)
 
-data VariantCodec a
-  = VariantCodec
+data VariantCodec a = VariantCodec
+  { schema :: Acc (Text, Schema.Schema),
+    encode :: Integer -> a -> Either Integer Encoding.Encoding,
+    decode :: Acc (Decoding.StreamingPtrDecoder a)
+  }
 
 variant :: Text -> (a -> Maybe b) -> (b -> a) -> Codec b -> VariantCodec a
 variant name unpack pack codec =
-  error "TODO"
+  VariantCodec
+    (pure (name, codec.schema))
+    ( \idx a -> case unpack a of
+        Nothing -> Left (succ idx)
+        Just b -> Right (Encoding.varLengthInteger idx <> codec.encode b)
+    )
+    (pure (fmap pack codec.decode))

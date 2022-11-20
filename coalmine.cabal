@@ -226,6 +226,7 @@ library
     Coalmine.Pakk.Encoding
     Coalmine.Pakk.Schema
     Coalmine.Pakk.ValueClass
+    Coalmine.Pakk.Write
   build-depends:
     acc,
     aeson,
