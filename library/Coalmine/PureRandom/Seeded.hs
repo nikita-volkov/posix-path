@@ -1,4 +1,4 @@
-module Coalmine.SeedRandom where
+module Coalmine.PureRandom.Seeded where
 
 import Coalmine.InternalPrelude
 import Data.Vector qualified as BVec
@@ -28,25 +28,21 @@ instance Monad Seeded where
         (resL, seedL) -> case cont resL of
           Seeded runR -> runR iterate seedL
 
-word :: Seeded Word
-word = Seeded $ \iterate seed -> (seed, iterate seed)
+seed :: Seeded Word
+seed = Seeded $ \iterate seed -> (seed, iterate seed)
 
-smallerWord :: Word -> Seeded Word
-smallerWord seed =
-  error "TODO"
+smallerSeed :: Word -> Seeded Word
+smallerSeed maxSeed =
+  seed <&> \seed -> rem seed maxSeed
 
 oneOf :: BVec.Vector (Seeded a) -> Seeded a
 oneOf vec =
   join $ uniformElement vec
 
-vectorOf :: GVec.Vector v a => Seeded (v a)
-vectorOf =
-  error "TODO"
-
-vectorOfLength :: GVec.Vector v a => Int -> Seeded (v a)
+vectorOfLength :: GVec.Vector v a => Int -> Seeded a -> Seeded (v a)
 vectorOfLength length =
   error "TODO"
 
 uniformElement :: BVec.Vector a -> Seeded a
 uniformElement vec =
-  smallerWord (fromIntegral (BVec.length vec)) <&> BVec.unsafeIndex vec . fromIntegral
+  smallerSeed (fromIntegral (BVec.length vec)) <&> BVec.unsafeIndex vec . fromIntegral

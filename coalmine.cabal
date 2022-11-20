@@ -185,7 +185,8 @@ library
     Coalmine.RestEasy.Statuses
     Coalmine.Result
     Coalmine.ScientificExtras
-    Coalmine.SeedRandom
+    Coalmine.PureRandom.Seeded
+    Coalmine.PureRandom.SizedSeeded
     Coalmine.SemverBase
     Coalmine.Serialization
     Coalmine.StmExtras.TQueue
