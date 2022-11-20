@@ -87,6 +87,17 @@ instance Applicative (ProductCodec i) where
       (\i -> lEncode i <> rEncode i)
       (lDecode <*> rDecode)
 
+instance Profunctor ProductCodec where
+  dimap f1 f2 codec =
+    ProductCodec
+      codec.schema
+      (codec.encode . f1)
+      (fmap f2 codec.decode)
+
+field :: Text -> Codec a -> ProductCodec a a
+field name codec =
+  error "TODO"
+
 data VariantCodec a = VariantCodec
   { name :: Text,
     schema :: Schema.Schema,
