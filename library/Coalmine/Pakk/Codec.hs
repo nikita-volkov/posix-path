@@ -4,6 +4,7 @@ import Coalmine.InternalPrelude
 import Coalmine.Pakk.Decoding qualified as Decoding
 import Coalmine.Pakk.Encoding qualified as Encoding
 import Coalmine.Pakk.Schema qualified as Schema
+import Data.Vector qualified as BVec
 
 serializeAsByteStringWithSchema :: Codec a -> ByteString
 serializeAsByteStringWithSchema =
@@ -30,7 +31,31 @@ productCodec ProductCodec {..} =
 
 sumCodec :: [VariantCodec a] -> Codec a
 sumCodec variants =
-  error "TODO"
+  Codec schema encode decode
+  where
+    schema =
+      variants
+        & fmap (\variant -> (variant.name, variant.schema))
+        & Schema.SumSchema
+    encode val =
+      foldr step finish variants 0
+      where
+        step variant next !idx =
+          case variant.encode val of
+            Nothing -> next (succ idx)
+            Just encoding -> Encoding.varLengthInteger (fromIntegral idx) <> encoding
+        finish idx =
+          -- Alternatively we can encode the index with no body.
+          -- However there's no benefit of that found yet.
+          Encoding.failure $ "No variant projection found"
+    decode = do
+      idx <- fromIntegral <$> Decoding.varLengthNatural
+      case vec BVec.!? idx of
+        Just decoder -> decoder
+        Nothing -> Decoding.failure $ "Invalid index: " <> showAs idx
+      where
+        vec =
+          BVec.fromList $ fmap (.decode) $ variants
 
 -- |
 -- Composable codec of product fields.
@@ -56,17 +81,19 @@ instance Applicative (ProductCodec i) where
       (lDecode <*> rDecode)
 
 data VariantCodec a = VariantCodec
-  { schema :: Acc (Text, Schema.Schema),
-    encode :: Integer -> a -> Either Integer Encoding.Encoding,
-    decode :: Acc (Decoding.StreamingPtrDecoder a)
+  { name :: Text,
+    schema :: Schema.Schema,
+    encode :: a -> Maybe Encoding.Encoding,
+    decode :: Decoding.StreamingPtrDecoder a
   }
 
 variant :: Text -> (a -> Maybe b) -> (b -> a) -> Codec b -> VariantCodec a
 variant name unpack pack codec =
   VariantCodec
-    (pure (name, codec.schema))
-    ( \idx a -> case unpack a of
-        Nothing -> Left (succ idx)
-        Just b -> Right (Encoding.varLengthInteger idx <> codec.encode b)
+    name
+    codec.schema
+    ( \a -> case unpack a of
+        Nothing -> Nothing
+        Just b -> Just (codec.encode b)
     )
-    (pure (fmap pack codec.decode))
+    (fmap pack codec.decode)

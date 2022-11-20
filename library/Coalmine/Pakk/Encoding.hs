@@ -18,3 +18,7 @@ instance Monoid Encoding where
 varLengthInteger :: Integer -> Encoding
 varLengthInteger =
   error "TODO"
+
+failure :: Text -> Encoding
+failure reason =
+  Encoding 0 $ Write.failure reason

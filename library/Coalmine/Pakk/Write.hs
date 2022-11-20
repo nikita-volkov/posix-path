@@ -19,6 +19,10 @@ instance Monoid Write where
   mempty = Write $ \ptr cap ->
     pure $ FinishedWriteIteration ptr cap
 
+failure :: Text -> Write
+failure reason =
+  Write $ \_ _ -> pure $ FailedWriteIteration reason
+
 data WriteIteration
   = FinishedWriteIteration
       (Ptr Word8)

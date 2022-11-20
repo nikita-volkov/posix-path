@@ -27,6 +27,19 @@ instance Applicative StreamingPtrDecoder where
   left <*> right =
     error "TODO"
 
+instance Monad StreamingPtrDecoder where
+  return = pure
+  (>>=) =
+    error "TODO"
+
+failure :: Text -> StreamingPtrDecoder a
+failure =
+  error "TODO"
+
+varLengthNatural :: StreamingPtrDecoder Natural
+varLengthNatural =
+  error "TODO"
+
 -- | Result of processing one chunk of a streamed input.
 data StreamingPtrDecoderIteration a
   = -- | Failed.
