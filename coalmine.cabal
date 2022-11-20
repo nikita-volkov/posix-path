@@ -185,10 +185,11 @@ library
     Coalmine.RestEasy.Statuses
     Coalmine.Result
     Coalmine.ScientificExtras
-    Coalmine.Serialization
+    Coalmine.SeedRandom
     Coalmine.SemverBase
-    Coalmine.Streamer
+    Coalmine.Serialization
     Coalmine.StmExtras.TQueue
+    Coalmine.Streamer
     Coalmine.Tasty
     Coalmine.Tasty.TestTrees
     Coalmine.Tasty.TestTrees.Cereal
@@ -225,6 +226,7 @@ library
     Coalmine.Pakk.Decoding
     Coalmine.Pakk.Encoding
     Coalmine.Pakk.Schema
+    Coalmine.Pakk.Value
     Coalmine.Pakk.ValueClass
     Coalmine.Pakk.Write
   build-depends:
