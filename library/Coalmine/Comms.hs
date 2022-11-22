@@ -1,4 +1,4 @@
-module Coalmine.Pakk
+module Coalmine.Comms
   ( -- * Payload functionality for data types
   )
 where

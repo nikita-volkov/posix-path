@@ -1,9 +1,9 @@
-module Coalmine.Pakk.Codec where
+module Coalmine.Comms.Codec where
 
+import Coalmine.Comms.Decoding qualified as Decoding
+import Coalmine.Comms.Encoding qualified as Encoding
+import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude
-import Coalmine.Pakk.Decoding qualified as Decoding
-import Coalmine.Pakk.Encoding qualified as Encoding
-import Coalmine.Pakk.Schema qualified as Schema
 import Data.Vector qualified as BVec
 
 serializeAsByteStringWithSchema :: Codec a -> ByteString

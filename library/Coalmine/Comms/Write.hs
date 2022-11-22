@@ -1,4 +1,4 @@
-module Coalmine.Pakk.Write where
+module Coalmine.Comms.Write where
 
 import Coalmine.InternalPrelude
 

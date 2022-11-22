@@ -1,7 +1,7 @@
-module Coalmine.Pakk.ValueClass where
+module Coalmine.Comms.ValueClass where
 
+import Coalmine.Comms.Codec qualified as Codec
 import Coalmine.InternalPrelude
-import Coalmine.Pakk.Codec qualified as Codec
 
 -- |
 -- Provides a data type with a representation in the Pakk format.

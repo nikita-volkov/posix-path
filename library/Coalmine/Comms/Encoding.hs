@@ -1,7 +1,7 @@
-module Coalmine.Pakk.Encoding where
+module Coalmine.Comms.Encoding where
 
+import Coalmine.Comms.Write qualified as Write
 import Coalmine.InternalPrelude
-import Coalmine.Pakk.Write qualified as Write
 
 data Encoding = Encoding
   { size :: Int,

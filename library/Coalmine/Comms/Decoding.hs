@@ -1,4 +1,4 @@
-module Coalmine.Pakk.Decoding where
+module Coalmine.Comms.Decoding where
 
 import Coalmine.InternalPrelude
 import Data.ByteString.Internal qualified as ByteString

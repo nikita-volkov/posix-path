@@ -115,6 +115,7 @@ library
     Coalmine.CerealExtras.Put
     Coalmine.CharPredicates
     Coalmine.Collector
+    Coalmine.Comms
     Coalmine.ConduitExtras
     Coalmine.ContainersExtras.IntMap
     Coalmine.ContainersExtras.Map
@@ -164,13 +165,14 @@ library
     Coalmine.NumericVersion
     Coalmine.OpenApi
     Coalmine.Optics
-    Coalmine.Pakk
     Coalmine.Parsed
     Coalmine.Parsing
     Coalmine.PartialEndo
     Coalmine.Predicates
     Coalmine.Prelude
     Coalmine.Printing
+    Coalmine.PureRandom.Seeded
+    Coalmine.PureRandom.SizedSeeded
     Coalmine.QuickCheckExtras.Gens
     Coalmine.Res
     Coalmine.Resilience.IO
@@ -185,8 +187,6 @@ library
     Coalmine.RestEasy.Statuses
     Coalmine.Result
     Coalmine.ScientificExtras
-    Coalmine.PureRandom.Seeded
-    Coalmine.PureRandom.SizedSeeded
     Coalmine.SemverBase
     Coalmine.Serialization
     Coalmine.StmExtras.TQueue
@@ -213,6 +213,13 @@ library
     Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml
   other-modules:
+    Coalmine.Comms.Codec
+    Coalmine.Comms.Decoding
+    Coalmine.Comms.Encoding
+    Coalmine.Comms.Schema
+    Coalmine.Comms.Value
+    Coalmine.Comms.ValueClass
+    Coalmine.Comms.Write
     Coalmine.Inter.Deindentation
     Coalmine.Inter.Syntax.Model
     Coalmine.Inter.Syntax.Parsers
@@ -223,13 +230,6 @@ library
     Coalmine.Name.Constants
     Coalmine.Name.Gens
     Coalmine.Name.Megaparsec
-    Coalmine.Pakk.Codec
-    Coalmine.Pakk.Decoding
-    Coalmine.Pakk.Encoding
-    Coalmine.Pakk.Schema
-    Coalmine.Pakk.Value
-    Coalmine.Pakk.ValueClass
-    Coalmine.Pakk.Write
   build-depends:
     acc,
     aeson,

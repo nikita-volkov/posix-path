@@ -1,4 +1,4 @@
-module Coalmine.Pakk.Schema where
+module Coalmine.Comms.Schema where
 
 import Coalmine.InternalPrelude
 
