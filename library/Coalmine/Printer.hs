@@ -3,15 +3,12 @@ module Coalmine.Printer
     Printer,
 
     -- ** Management
-    start,
+    startWithWriter,
+    startWithHandle,
     stop,
 
     -- ** Operations
     write,
-
-    -- * Writer interface
-    Writer,
-    startHandleWriter,
   )
 where
 
@@ -20,34 +17,35 @@ import Coalmine.InternalPrelude hiding (Writer)
 import Coalmine.StmExtras.TQueue qualified as TQueue
 import Data.Text.IO qualified as TextIO
 
+-- | Asynchronous printer.
 newtype Printer = Printer
   { taskQueue :: TQueue Task
   }
 
-start :: Writer -> IO Printer
-start writer = do
+startWithWriter :: (Text -> IO ()) -> IO Printer
+startWithWriter write = do
   taskQueue <- newTQueueIO
   forkIO $
     let go = do
           tasks <- atomically $ flushTQueue taskQueue
-          playResult <- playTasks tasks
-          writer.flush
-          case playResult of
-            False -> return ()
-            True -> go
+          case processTasks mempty tasks of
+            (output, continue) -> do
+              write (to output)
+              if continue then go else return ()
      in go
   return $ Printer taskQueue
   where
-    playTasks = \case
+    processTasks :: TextBuilder -> [Task] -> (TextBuilder, Bool)
+    processTasks !output = \case
       task : remainder -> case task of
-        StopTask -> return False
-        WriteTask message -> do
-          writer.write message
-          playTasks remainder
-      [] -> return True
+        StopTask -> (output, False)
+        WriteTask taskText -> processTasks (output <> to taskText) remainder
+      [] -> (output, True)
 
-startHandle :: Handle -> IO Printer
-startHandle handle = startHandleWriter handle >>= start
+startWithHandle :: Handle -> IO Printer
+startWithHandle handle = do
+  hSetBuffering handle NoBuffering
+  startWithWriter (TextIO.hPutStr handle)
 
 stop :: Printer -> IO ()
 stop logger =
@@ -64,19 +62,3 @@ write logger message =
 data Task
   = WriteTask Text
   | StopTask
-
--- * Writer
-
-data Writer = Writer
-  { write :: Text -> IO (),
-    flush :: IO ()
-  }
-
-startHandleWriter :: Handle -> IO Writer
-startHandleWriter handle = do
-  hSetBuffering handle (BlockBuffering Nothing)
-  return $
-    Writer
-      { write = TextIO.hPutStrLn handle,
-        flush = hFlush handle
-      }
