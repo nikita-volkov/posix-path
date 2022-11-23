@@ -28,8 +28,17 @@ data Logger = Logger
     currentVerbosityVar :: TVar Int
   }
 
-start :: Int -> Writer -> IO Logger
-start initialVerbosity writer = do
+start ::
+  -- | Initial verbosity.
+  Int ->
+  -- | Verbosity labels.
+  -- For prefixing messages with things like \"INFO\".
+  IntMap Text ->
+  -- | Whether to render timestamp.
+  Bool ->
+  Writer ->
+  IO Logger
+start initialVerbosity verbosityLabels doTimestamping writer = do
   taskQueue <- newTQueueIO
   forkIO $
     let go !verbosity = do
@@ -57,10 +66,19 @@ start initialVerbosity writer = do
               playTasks verbosity remainder
       [] -> return (Just verbosity)
 
-startHandle :: Int -> Handle -> IO Logger
-startHandle verbosity handle = do
-  writer <- startHandleWriter verbosity handle
-  start verbosity writer
+startHandle ::
+  -- | Initial verbosity.
+  Int ->
+  -- | Verbosity labels.
+  -- For prefixing messages with things like \"INFO\".
+  IntMap Text ->
+  -- | Whether to render timestamp.
+  Bool ->
+  Handle ->
+  IO Logger
+startHandle verbosity verbosityLabels doTimestamping handle = do
+  writer <- startHandleWriter handle
+  start verbosity verbosityLabels doTimestamping writer
 
 stop :: Logger -> IO ()
 stop logger =
@@ -107,8 +125,8 @@ data Writer = Writer
     flush :: IO ()
   }
 
-startHandleWriter :: Int -> Handle -> IO Writer
-startHandleWriter verbosity handle = do
+startHandleWriter :: Handle -> IO Writer
+startHandleWriter handle = do
   hSetBuffering handle (BlockBuffering Nothing)
   return $
     Writer
