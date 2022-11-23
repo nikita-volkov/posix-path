@@ -2,6 +2,9 @@ module Coalmine.Comms.Write where
 
 import Coalmine.InternalPrelude
 
+-- |
+-- Streaming write operation.
+-- Fills the provided buffer up to a capacity and then gives back control.
 newtype Write = Write {run :: Ptr Word8 -> Int -> IO WriteIteration}
 
 instance Semigroup Write where
