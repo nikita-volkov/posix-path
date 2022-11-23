@@ -1,41 +1,41 @@
-cabal-version: 3.0
-
-name: coalmine
-version: 0.1.0.18
-synopsis: My evolving toolkit that I come to projects with
-description:
-  Collection of unpolished utils for application development.
-homepage: https://github.com/nikita-volkov/coalmine
-bug-reports: https://github.com/nikita-volkov/coalmine/issues
-author: Nikita Volkov <nikita.y.volkov@mail.ru>
-maintainer: Nikita Volkov <nikita.y.volkov@mail.ru>
-copyright: (c) 2019 Nikita Volkov
-license: MIT
-license-file: LICENSE
-build-type: Custom
+cabal-version:      3.0
+name:               coalmine
+version:            0.1.0.18
+synopsis:           My evolving toolkit that I come to projects with
+description:        Collection of unpolished utils for application development.
+homepage:           https://github.com/nikita-volkov/coalmine
+bug-reports:        https://github.com/nikita-volkov/coalmine/issues
+author:             Nikita Volkov <nikita.y.volkov@mail.ru>
+maintainer:         Nikita Volkov <nikita.y.volkov@mail.ru>
+copyright:          (c) 2019 Nikita Volkov
+license:            MIT
+license-file:       LICENSE
+build-type:         Custom
 extra-source-files:
-  Setup.hs
   domain/*.domain.yaml
+  Setup.hs
 
 source-repository head
-  type: git
+  type:     git
   location: git://github.com/nikita-volkov/coalmine.git
 
 -- Make the test suites dump their template-haskell splices.
 flag doctest
   default: False
-  manual: True
+  manual:  True
 
 custom-setup
   setup-depends:
-    Cabal >=1.10 && <4,
-    base >=4.7 && <5,
-    cabal-doctest >=1 && <1.1,
-    filepath
+    , base           >=4.7  && <5
+    , Cabal          >=1.10 && <4
+    , cabal-doctest  ^>=1
+    , filepath
 
 common language-settings
-  default-language: Haskell2010
+  default-language:   Haskell2010
   default-extensions:
+    NoImplicitPrelude
+    NoMonomorphismRestriction
     ApplicativeDo
     Arrows
     BangPatterns
@@ -65,12 +65,8 @@ common language-settings
     LiberalTypeSynonyms
     MultiParamTypeClasses
     MultiWayIf
-    NoFieldSelectors
-    NoImplicitPrelude
-    NoMonomorphismRestriction
     NumericUnderscores
     OverloadedLabels
-    OverloadedRecordDot
     OverloadedStrings
     ParallelListComp
     PatternGuards
@@ -88,10 +84,12 @@ common language-settings
     TypeOperators
     UndecidableInstances
     ViewPatterns
+    NoFieldSelectors
+    OverloadedRecordDot
 
 library
-  import: language-settings
-  hs-source-dirs: library
+  import:          language-settings
+  hs-source-dirs:  library
   exposed-modules:
     Coalmine.AppException
     Coalmine.ArgsParser
@@ -212,6 +210,7 @@ library
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
     Coalmine.Yaml
+
   other-modules:
     Coalmine.Comms.Codec
     Coalmine.Comms.Decoding
@@ -230,96 +229,95 @@ library
     Coalmine.Name.Constants
     Coalmine.Name.Gens
     Coalmine.Name.Megaparsec
+
   build-depends:
-    acc,
-    aeson,
-    aeson-value-parser,
-    attoparsec,
-    attoparsec-data,
-    case-insensitive,
-    cereal,
-    cereal-text,
-    cereal-unordered-containers,
-    cereal-vector,
-    comonad,
-    conduit,
-    data-default,
-    data-dword,
-    Decimal,
-    deferred-folds,
-    deque,
-    directory,
-    domain,
-    domain-aeson,
-    domain-cereal,
-    domain-optics,
-    filepath,
-    foldl,
-    from-sum,
-    ghc,
-    headed-megaparsec,
-    http-media,
-    http-types,
-    isomorphism-class,
-    jsonifier,
-    leb128-cereal,
-    lens,
-    machines,
-    megaparsec,
-    mmorph,
-    moore-machines,
-    natural-sort,
-    neat-interpolation,
-    network-ip,
-    optics,
-    optics-core,
-    primitive,
-    QuickCheck,
-    quickcheck-instances,
-    rerebase,
-    semialign,
-    structure-kit,
-    tasty,
-    tasty-hunit,
-    tasty-quickcheck,
-    template-haskell,
-    temporary,
-    text-builder,
-    text-builder-dev,
-    th-lego,
-    time,
-    tuple,
-    turtle,
-    vector-builder,
-    vector-extras,
-    vector-th-unbox,
-    wai,
-    wai-app-static,
-    wai-cors,
-    warp,
-    witherable,
-    yaml,
+    , acc
+    , aeson
+    , aeson-value-parser
+    , attoparsec
+    , attoparsec-data
+    , case-insensitive
+    , cereal
+    , cereal-text
+    , cereal-unordered-containers
+    , cereal-vector
+    , comonad
+    , conduit
+    , data-default
+    , data-dword
+    , Decimal
+    , deferred-folds
+    , deque
+    , directory
+    , domain
+    , domain-aeson
+    , domain-cereal
+    , domain-optics
+    , filepath
+    , foldl
+    , from-sum
+    , ghc
+    , headed-megaparsec
+    , http-media
+    , http-types
+    , isomorphism-class
+    , jsonifier
+    , leb128-cereal
+    , lens
+    , machines
+    , megaparsec
+    , mmorph
+    , moore-machines
+    , natural-sort
+    , neat-interpolation
+    , network-ip
+    , optics
+    , optics-core
+    , primitive
+    , QuickCheck
+    , quickcheck-instances
+    , rerebase
+    , semialign
+    , structure-kit
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , temporary
+    , text-builder
+    , text-builder-dev
+    , th-lego
+    , time
+    , tuple
+    , turtle
+    , vector-builder
+    , vector-extras
+    , vector-th-unbox
+    , wai
+    , wai-app-static
+    , wai-cors
+    , warp
+    , witherable
+    , yaml
 
 test-suite doctest
-  import: language-settings
-  type: exitcode-stdio-1.0
+  import:         language-settings
+  type:           exitcode-stdio-1.0
   hs-source-dirs: doctest
-  main-is:
-    Main.hs
-  other-modules:
-    Build_doctests
+  main-is:        Main.hs
+  other-modules:  Build_doctests
   build-depends:
-    doctest,
-    rerebase
+    , doctest
+    , rerebase
+
   if !flag(doctest)
     buildable: False
 
 test-suite test
-  import: language-settings
-  type: exitcode-stdio-1.0
+  import:         language-settings
+  type:           exitcode-stdio-1.0
   hs-source-dirs: test
-  main-is:
-    Main.hs
+  main-is:        Main.hs
   other-modules:
     TestSuites.BaseExtras.List
     TestSuites.CerealExtras.Compact
@@ -333,24 +331,22 @@ test-suite test
     TestSuites.Name
     TestSuites.NumericVersion
     TestSuites.TimeExtrasConversions
+
   build-depends:
-    coalmine,
-    conduit,
-    megaparsec,
-    QuickCheck >=2.8.1 && <3,
-    quickcheck-instances >=0.3.11 && <0.4,
-    rerebase <2,
-    tasty >=0.12 && <2,
-    tasty-hunit >=0.9 && <0.11,
-    tasty-quickcheck >=0.9 && <0.11,
+    , coalmine
+    , conduit
+    , megaparsec
+    , QuickCheck            >=2.8.1  && <3
+    , quickcheck-instances  ^>=0.3.11
+    , rerebase              <2
+    , tasty                 >=0.12   && <2
+    , tasty-hunit           >=0.9    && <0.11
+    , tasty-quickcheck      >=0.9    && <0.11
 
 test-suite open-api-demo
-  import: language-settings
-  type: exitcode-stdio-1.0
+  import:         language-settings
+  type:           exitcode-stdio-1.0
   hs-source-dirs: open-api-demo
-  main-is:
-    Main.hs
-  other-modules:
-    OpenApiDemo.Model
-  build-depends:
-    coalmine,
+  main-is:        Main.hs
+  other-modules:  OpenApiDemo.Model
+  build-depends:  coalmine
