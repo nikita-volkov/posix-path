@@ -168,6 +168,7 @@ library
     Coalmine.PartialEndo
     Coalmine.Predicates
     Coalmine.Prelude
+    Coalmine.Printer
     Coalmine.Printing
     Coalmine.PureRandom.Seeded
     Coalmine.PureRandom.SizedSeeded
