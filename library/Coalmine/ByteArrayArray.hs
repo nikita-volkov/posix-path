@@ -33,4 +33,4 @@ toTextList ByteArrayArray {..} =
         finish _ = start
      in UVec.foldr step' finish ends 0
   where
-    textArray = case array of ByteArray array -> TextArray.Array array
+    textArray = case array of ByteArray array -> TextArray.ByteArray array

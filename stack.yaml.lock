@@ -71,14 +71,14 @@ packages:
 - completed:
     name: coalmine
     pantry-tree:
-      sha256: 644df170c51b2ce426dae3a85df2a1487ddaef4ec13885edeec039753513c726
-      size: 10111
-    sha256: e880983f355962623445cfd0162a5228a564a472f590b3ae178a73671e4dda5a
-    size: 59382
-    url: https://github.com/nikita-volkov/coalmine/archive/caf6b4329a0c501b923f54b156dd8d3fbf3eb76f.tar.gz
-    version: 0.1.0.14
+      sha256: d201542ad5dcc77ea80b3c79fc8c9f46ccad40772f8eaa20196e3291a85b8394
+      size: 11063
+    sha256: 72d133b4022fa9aad16cc5ab84048ef95811a5ded833f41fd0c0b67d1aad8a40
+    size: 64643
+    url: https://github.com/nikita-volkov/coalmine/archive/0351349d8b028d2e1c331c92f69b5647ca1dfe4c.tar.gz
+    version: 0.1.0.18
   original:
-    url: https://github.com/nikita-volkov/coalmine/archive/caf6b4329a0c501b923f54b156dd8d3fbf3eb76f.tar.gz
+    url: https://github.com/nikita-volkov/coalmine/archive/0351349d8b028d2e1c331c92f69b5647ca1dfe4c.tar.gz
 - completed:
     name: curly
     pantry-tree:
@@ -113,17 +113,6 @@ packages:
   original:
     url: https://github.com/nikita-volkov/lean-http-client/archive/52343895df1e5ae49159b8c5f76a50ac438216b1.tar.gz
 - completed:
-    name: moore-machines
-    pantry-tree:
-      sha256: 3d1505067d5c8599e9843ed45ec2bc587fa5100c448f558ca5db2c97fb55706f
-      size: 887
-    sha256: 412ad5ec4f887fbbb77afd2b273a44a320b3e6f044c6382bd59c572b6f69a3f1
-    size: 8284
-    url: https://github.com/nikita-volkov/moore-machines/archive/7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290.tar.gz
-    version: '0.1'
-  original:
-    url: https://github.com/nikita-volkov/moore-machines/archive/7e95c33b203a1cfe42dbc0e0de3cec8e6fe94290.tar.gz
-- completed:
     name: structure-kit
     pantry-tree:
       sha256: b7779ebe935d65c0b4f6e3ea8b5f5011abdabf362b1673826545c93625e050ad
@@ -136,13 +125,13 @@ packages:
     url: https://github.com/nikita-volkov/structure-kit/archive/46ffb6527c48f8a718adecd21a313f0b1ba5e81c.tar.gz
 snapshots:
 - completed:
-    sha256: 8617c234096f1d4959bf883eec6419fdf6ee441b93948c919e5a7774d636bf31
-    size: 1047
-    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/277e477cefeec4531290aba6a70233e2c6574d8d/snapshot.yaml
+    sha256: 9a178d8721cfc20f2898439b855dda876a59312f1d3ada3b5a18fcbd7a55c3db
+    size: 934
+    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/c4beb13c3c4eca9f76a7524ea63fe4347f7489d3/snapshot.yaml
   original:
-    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/277e477cefeec4531290aba6a70233e2c6574d8d/snapshot.yaml
+    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/c4beb13c3c4eca9f76a7524ea63fe4347f7489d3/snapshot.yaml
 - completed:
-    sha256: deca5d235f498c2216605522633fbee795993dcca1d94c4c6db9023fe8a1775b
-    size: 644486
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/10/25.yaml
-  original: nightly-2022-10-25
+    sha256: f362b55ceee5cba32d93a6af53fe7f8885eacb316dc952058caa00e6f50488dc
+    size: 547071
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/11/25.yaml
+  original: nightly-2022-11-25
