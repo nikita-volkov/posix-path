@@ -5,15 +5,14 @@ import Coalmine.UnorderedContainersExtras.HashSet qualified as HashSet
 import Data.HashMap.Strict qualified as HashMap
 import Data.Map.Strict qualified as Map
 import Data.Set.Optics
-import MooreMachines qualified as Mm
 import Optics
 
 feedingMooreOf :: Fold a b -> Moore b c -> a -> Moore b c
 feedingMooreOf optic =
   foldlOf' optic step
   where
-    step moore b =
-      Mm.feeding b moore
+    step (Moore _ progress) b =
+      progress b
 
 -- |
 --
@@ -40,7 +39,21 @@ foldedCounting =
   folding folder
   where
     folder i =
-      Mm.feedingFoldable i Mm.countEach & extract & HashMap.toList
+      feedingFoldable i countEach & extract & HashMap.toList
+    feedingFoldable :: Foldable f => f a -> Moore a b -> Moore a b
+    feedingFoldable =
+      foldr step id
+      where
+        step a next (Moore _ !progress) =
+          next (progress a)
+    countEach :: (Eq a, Hashable a) => Moore a (HashMap a Int)
+    countEach =
+      loop HashMap.empty
+      where
+        loop !a =
+          Moore a (\b -> loop (HashMap.alter alterer b a))
+        alterer =
+          Just . maybe 1 succ
 
 -- |
 --
