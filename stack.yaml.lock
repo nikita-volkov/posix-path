@@ -40,13 +40,6 @@ packages:
   original:
     hackage: timestamp-0.2
 - completed:
-    hackage: turtle-1.6.1@sha256:4bde66584e79e8ac455f5cf7d87c2761de904c62ede83f6529486534679a90f4,5246
-    pantry-tree:
-      sha256: e4f49ba24c1c43405fdb5e1ee7a39f17f01c1ebc950c6358055ea0052ffb2f13
-      size: 1180
-  original:
-    hackage: turtle-1.6.1
-- completed:
     name: acquire
     pantry-tree:
       sha256: e194150d070a0e4f07e5f2285e82f177312f328c7490f3a659f361b4f6324d00
@@ -71,14 +64,14 @@ packages:
 - completed:
     name: coalmine
     pantry-tree:
-      sha256: d201542ad5dcc77ea80b3c79fc8c9f46ccad40772f8eaa20196e3291a85b8394
-      size: 11063
-    sha256: 72d133b4022fa9aad16cc5ab84048ef95811a5ded833f41fd0c0b67d1aad8a40
-    size: 64643
-    url: https://github.com/nikita-volkov/coalmine/archive/0351349d8b028d2e1c331c92f69b5647ca1dfe4c.tar.gz
+      sha256: 3af0ac9e0defd2f703dea9f9df1ac85ff37fe20225939399d93d2cfffb94476b
+      size: 12062
+    sha256: e429b55cafd4b9d7d273da8499d415d054990e7f834d7281f2b4e1fd3347c493
+    size: 71016
+    url: https://github.com/nikita-volkov/coalmine/archive/95295462e45bc05843b24dbd594b3c584dd21878.tar.gz
     version: 0.1.0.18
   original:
-    url: https://github.com/nikita-volkov/coalmine/archive/0351349d8b028d2e1c331c92f69b5647ca1dfe4c.tar.gz
+    url: https://github.com/nikita-volkov/coalmine/archive/95295462e45bc05843b24dbd594b3c584dd21878.tar.gz
 - completed:
     name: curly
     pantry-tree:
@@ -115,23 +108,23 @@ packages:
 - completed:
     name: structure-kit
     pantry-tree:
-      sha256: b7779ebe935d65c0b4f6e3ea8b5f5011abdabf362b1673826545c93625e050ad
-      size: 3500
-    sha256: 2e5b01ebcbc4ec1371d2014cb04307a63239148f73a0bed55bf418e20e654ce9
-    size: 41529
-    url: https://github.com/nikita-volkov/structure-kit/archive/46ffb6527c48f8a718adecd21a313f0b1ba5e81c.tar.gz
+      sha256: eafdfc72a06a88fc983dfa12b501470962fa5e448a010e8cdc22f7ede2118495
+      size: 3699
+    sha256: 3669cfe6414d12263b9a42b75cce15936d45a5f7f2f042f4106affd73d20fd56
+    size: 42836
+    url: https://github.com/nikita-volkov/structure-kit/archive/f6423d909d1fc65e15f128012e4940b3412e64fd.tar.gz
     version: 0.1.0.1
   original:
-    url: https://github.com/nikita-volkov/structure-kit/archive/46ffb6527c48f8a718adecd21a313f0b1ba5e81c.tar.gz
+    url: https://github.com/nikita-volkov/structure-kit/archive/f6423d909d1fc65e15f128012e4940b3412e64fd.tar.gz
 snapshots:
 - completed:
-    sha256: 9a178d8721cfc20f2898439b855dda876a59312f1d3ada3b5a18fcbd7a55c3db
-    size: 934
-    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/c4beb13c3c4eca9f76a7524ea63fe4347f7489d3/snapshot.yaml
+    sha256: 1a4df2c3da783aca49329d51c86d5a13ecc6927e56fc374a8784b75072f78560
+    size: 917
+    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/b47f005dadee4b513869c8465170f97ee8a1814d/snapshot.yaml
   original:
-    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/c4beb13c3c4eca9f76a7524ea63fe4347f7489d3/snapshot.yaml
+    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/b47f005dadee4b513869c8465170f97ee8a1814d/snapshot.yaml
 - completed:
-    sha256: f362b55ceee5cba32d93a6af53fe7f8885eacb316dc952058caa00e6f50488dc
-    size: 547071
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/11/25.yaml
-  original: nightly-2022-11-25
+    sha256: d9aa443983dd03adb1b9af9b621240bfe8fbe938b25b0706267fb387028ce45c
+    size: 549867
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/11/26.yaml
+  original: nightly-2022-11-26
