@@ -1,11 +1,11 @@
 module Coalmine.Comms.Encoding where
 
-import Coalmine.Comms.Write qualified as Write
+import Coalmine.Comms.StreamingWrite qualified as StreamingWrite
 import Coalmine.InternalPrelude
 
 data Encoding = Encoding
   { size :: Int,
-    write :: Write.Write
+    write :: StreamingWrite.StreamingWrite
   }
 
 instance Semigroup Encoding where
@@ -21,4 +21,4 @@ varLengthInteger =
 
 failure :: Text -> Encoding
 failure reason =
-  Encoding 0 $ Write.failure reason
+  Encoding 0 $ StreamingWrite.failure reason

@@ -215,9 +215,9 @@ library
     Coalmine.Comms.Decoding
     Coalmine.Comms.Encoding
     Coalmine.Comms.Schema
+    Coalmine.Comms.StreamingWrite
     Coalmine.Comms.Value
     Coalmine.Comms.ValueClass
-    Coalmine.Comms.Write
     Coalmine.Inter.Deindentation
     Coalmine.Inter.Syntax.Model
     Coalmine.Inter.Syntax.Parsers
