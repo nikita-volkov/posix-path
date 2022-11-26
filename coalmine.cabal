@@ -168,6 +168,9 @@ library
     Coalmine.Prelude
     Coalmine.Printer
     Coalmine.Printing
+    Coalmine.PtrKit.ImmediatePoker
+    Coalmine.PtrKit.Poker
+    Coalmine.PtrKit.StreamingPoker
     Coalmine.PureRandom.Seeded
     Coalmine.PureRandom.SizedSeeded
     Coalmine.QuickCheckExtras.Gens
@@ -227,7 +230,6 @@ library
     Coalmine.Name.Constants
     Coalmine.Name.Gens
     Coalmine.Name.Megaparsec
-    Coalmine.PtrKit.StreamingPoker
 
   build-depends:
     , acc

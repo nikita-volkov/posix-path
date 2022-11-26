@@ -1,4 +1,10 @@
-module Coalmine.PtrKit.StreamingPoker where
+module Coalmine.PtrKit.StreamingPoker
+  ( StreamingPoker,
+    toLazyByteString,
+    toLazyByteStringOfDefaultChunkSize,
+    failure,
+  )
+where
 
 import Coalmine.InternalPrelude
 
@@ -41,6 +47,18 @@ instance Semigroup StreamingPoker where
 instance Monoid StreamingPoker where
   mempty = StreamingPoker $ \ptr cap ->
     pure $ FinishedWriteIteration ptr cap
+
+toLazyByteString ::
+  -- | Chunk size.
+  Int ->
+  StreamingPoker ->
+  LazyByteString
+toLazyByteString =
+  error "TODO"
+
+toLazyByteStringOfDefaultChunkSize :: StreamingPoker -> LazyByteString
+toLazyByteStringOfDefaultChunkSize =
+  error "TODO"
 
 failure :: Text -> StreamingPoker
 failure reason =
