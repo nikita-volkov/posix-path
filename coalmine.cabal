@@ -104,8 +104,6 @@ library
     Coalmine.BaseExtras.Monoid
     Coalmine.BaseExtras.NonEmpty
     Coalmine.Building
-    Coalmine.ByteArrayArray
-    Coalmine.ByteArrayArray.Ends
     Coalmine.CasedText
     Coalmine.CerealExtras.Compact
     Coalmine.CerealExtras.Get
