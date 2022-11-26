@@ -31,22 +31,22 @@ import Coalmine.InternalPrelude
 --
 -- This abstraction is not the best choice for constructing
 -- a single strict 'ByteString', use 'Coalmine.PtrKit.ImmediatePoker' for that.
-newtype StreamingPoker = StreamingPoker {run :: Ptr Word8 -> Int -> IO WriteIteration}
+newtype StreamingPoker = StreamingPoker {run :: Ptr Word8 -> Int -> IO Status}
 
 instance Semigroup StreamingPoker where
   left <> right =
     StreamingPoker $ \ptr cap ->
       left.run ptr cap >>= \case
-        FinishedWriteIteration ptr cap ->
+        FinishedStatus ptr cap ->
           right.run ptr cap
-        ExhaustedWriteIteration nextLeftWrite ->
-          return $ ExhaustedWriteIteration $ nextLeftWrite <> right
-        FailedWriteIteration err ptr cap ->
-          return $ FailedWriteIteration err ptr cap
+        ExhaustedStatus nextLeftWrite ->
+          return $ ExhaustedStatus $ nextLeftWrite <> right
+        FailedStatus err ptr cap ->
+          return $ FailedStatus err ptr cap
 
 instance Monoid StreamingPoker where
   mempty = StreamingPoker $ \ptr cap ->
-    pure $ FinishedWriteIteration ptr cap
+    pure $ FinishedStatus ptr cap
 
 toLazyByteString ::
   -- | Chunk size.
@@ -62,20 +62,20 @@ toLazyByteStringOfDefaultChunkSize =
 
 failure :: Text -> StreamingPoker
 failure reason =
-  StreamingPoker $ \ptr cap -> pure $ FailedWriteIteration reason ptr cap
+  StreamingPoker $ \ptr cap -> pure $ FailedStatus reason ptr cap
 
-data WriteIteration
-  = FinishedWriteIteration
+data Status
+  = FinishedStatus
       (Ptr Word8)
       -- ^ Pointer after the written data.
       Int
       -- ^ Capacity of that pointer.
   | -- | Need a pointer to continue writing to.
-    ExhaustedWriteIteration
+    ExhaustedStatus
       StreamingPoker
       -- ^ Next encoding to execute.
   | -- | Encoding failure.
-    FailedWriteIteration
+    FailedStatus
       Text
       -- ^ Reason
       (Ptr Word8)
