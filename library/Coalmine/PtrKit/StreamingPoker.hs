@@ -2,6 +2,7 @@ module Coalmine.PtrKit.StreamingPoker
   ( StreamingPoker,
     toLazyByteString,
     toLazyByteStringOfDefaultChunkSize,
+    streamThruBuffer,
     failure,
   )
 where
@@ -59,6 +60,36 @@ toLazyByteString =
 toLazyByteStringOfDefaultChunkSize :: StreamingPoker -> LazyByteString
 toLazyByteStringOfDefaultChunkSize =
   error "TODO"
+
+-- | Evaluate the poker by repeatedly filling up a reusable buffer and calling
+-- a continuation on it. Buffer allocation is encapsulated.
+--
+-- This is what you should use for integrating with sockets or file system.
+streamThruBuffer ::
+  StreamingPoker ->
+  -- | Reused buffer size.
+  Int ->
+  -- | Action to be repeatedly executed when the buffer is filled.
+  -- The params are the pointer to read from and the length of data in it.
+  (Ptr Word8 -> Int -> IO ()) ->
+  -- | Action producing error details if there is one.
+  IO (Maybe Text)
+streamThruBuffer poker bufSize send =
+  allocaBytes bufSize $ \ptr ->
+    let exhaust (StreamingPoker run) =
+          run ptr bufSize >>= \case
+            ExhaustedStatus next -> do
+              send ptr bufSize
+              exhaust next
+            FinishedStatus ptrAfter _ -> do
+              when (ptrAfter > ptr) $
+                send ptr (minusPtr ptrAfter ptr)
+              return Nothing
+            FailedStatus reason ptrAfter _ -> do
+              when (ptrAfter > ptr) $
+                send ptr (minusPtr ptrAfter ptr)
+              return $ Just reason
+     in exhaust poker
 
 failure :: Text -> StreamingPoker
 failure reason =

@@ -61,6 +61,7 @@ import Data.Yaml qualified
 import DeferredFolds.Unfoldr as Exports (Unfoldr (..))
 import Deque.Strict as Exports (Deque)
 import Foreign.C.Types as Exports
+import Foreign.Marshal.Alloc as Exports
 import GHC.Exts as Exports (IsList (..))
 import GHC.ForeignPtr as Exports (mallocPlainForeignPtrBytes)
 import GHC.Utils.Misc as Exports (applyWhen, nTimes, nubSort)

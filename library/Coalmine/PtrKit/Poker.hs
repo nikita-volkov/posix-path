@@ -3,6 +3,7 @@ module Coalmine.PtrKit.Poker
     toByteString,
     toByteStringList,
     toLazyByteString,
+    streamThruBuffer,
 
     -- * Errors
     ImmediatePoker.ByteStringErr (..),
@@ -42,3 +43,19 @@ toByteStringList =
 toLazyByteString :: Poker -> LazyByteString
 toLazyByteString =
   StreamingPoker.toLazyByteStringOfDefaultChunkSize . (.streaming)
+
+-- | Evaluate the poker by filling up a reusable buffer and repeatedly calling
+-- a continuation on it. Buffer allocation is encapsulated.
+--
+-- This is what you should use for integrating with sockets or file system.
+streamThruBuffer ::
+  Poker ->
+  -- | Reused buffer size.
+  Int ->
+  -- | Action to be repeatedly executed when the buffer is filled.
+  -- The params are the pointer to read from and the length of data in it.
+  (Ptr Word8 -> Int -> IO ()) ->
+  -- | Action producing error details if there is one.
+  IO (Maybe Text)
+streamThruBuffer poker =
+  StreamingPoker.streamThruBuffer poker.streaming
