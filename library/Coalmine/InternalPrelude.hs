@@ -38,6 +38,7 @@ import Control.Monad.Morph as Exports
 import Data.Aeson as Exports (FromJSON (..), ToJSON (..), ToJSONKey (..))
 import Data.Aeson qualified
 import Data.Attoparsec.Text qualified
+import Data.ByteString.Lazy as Exports (LazyByteString)
 import Data.Decimal as Exports (Decimal)
 import Data.Default as Exports
 import Data.DoubleWord as Exports (Word128 (..), Word160 (..), Word192 (..), Word224 (..), Word256 (..), Word96 (..))
