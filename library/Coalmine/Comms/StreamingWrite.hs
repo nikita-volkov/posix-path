@@ -15,8 +15,8 @@ instance Semigroup StreamingWrite where
           right.run ptr cap
         ExhaustedWriteIteration nextLeftWrite ->
           return $ ExhaustedWriteIteration $ nextLeftWrite <> right
-        FailedWriteIteration err ->
-          return $ FailedWriteIteration err
+        FailedWriteIteration err ptr cap ->
+          return $ FailedWriteIteration err ptr cap
 
 instance Monoid StreamingWrite where
   mempty = StreamingWrite $ \ptr cap ->
@@ -24,7 +24,7 @@ instance Monoid StreamingWrite where
 
 failure :: Text -> StreamingWrite
 failure reason =
-  StreamingWrite $ \_ _ -> pure $ FailedWriteIteration reason
+  StreamingWrite $ \ptr cap -> pure $ FailedWriteIteration reason ptr cap
 
 data WriteIteration
   = FinishedWriteIteration
@@ -39,3 +39,8 @@ data WriteIteration
   | -- | Encoding failure.
     FailedWriteIteration
       Text
+      -- ^ Reason
+      (Ptr Word8)
+      -- ^ Pointer after the written data.
+      Int
+      -- ^ Capacity of that pointer.
