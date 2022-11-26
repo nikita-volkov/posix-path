@@ -42,15 +42,14 @@ run =
 
 toByteString :: ImmediatePoker -> Either Text ByteString
 toByteString (ImmediatePoker maxSize run) =
-  unsafeDupablePerformIO $ catch attempt restore
-  where
-    attempt = do
-      fp <- ByteStringInternal.mallocByteString maxSize
-      actualSize <- withForeignPtr fp $ \p ->
-        run p <&> \pAfter -> minusPtr p pAfter
-      return $! Right $! ByteStringInternal.BS fp actualSize
-    restore = \case
-      UserControlException _ reason -> return $ Left reason
+  unsafeDupablePerformIO $ do
+    fp <- mallocPlainForeignPtrBytes maxSize
+    catch
+      ( do
+          actualSize <- withForeignPtr fp $ \p -> run p <&> \pAfter -> minusPtr pAfter p
+          evaluate (Right $! ByteStringInternal.BS fp actualSize)
+      )
+      (\(UserControlException _ reason) -> return $ Left reason)
 
 failure :: Text -> ImmediatePoker
 failure reason =
