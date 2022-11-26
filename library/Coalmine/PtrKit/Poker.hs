@@ -5,7 +5,7 @@ module Coalmine.PtrKit.Poker
     toLazyByteString,
 
     -- * Errors
-    ImmediatePoker.OffsetErr (..),
+    ImmediatePoker.ByteStringErr (..),
   )
 where
 
@@ -31,7 +31,7 @@ instance Semigroup Poker where
 instance Monoid Poker where
   mempty = Poker mempty mempty
 
-toByteString :: Poker -> Either ImmediatePoker.OffsetErr ByteString
+toByteString :: Poker -> Either ImmediatePoker.ByteStringErr ByteString
 toByteString =
   ImmediatePoker.toByteString . (.immediate)
 

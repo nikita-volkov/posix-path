@@ -5,7 +5,7 @@ module Coalmine.PtrKit.ImmediatePoker
     failure,
 
     -- * Errors
-    OffsetErr(..),
+    ByteStringErr (..),
   )
 where
 
@@ -49,7 +49,7 @@ run ::
 run =
   error "TODO"
 
-toByteString :: ImmediatePoker -> Either OffsetErr(..) ByteString
+toByteString :: ImmediatePoker -> Either ByteStringErr ByteString
 toByteString (ImmediatePoker maxSize run) =
   unsafeDupablePerformIO $ do
     fp <- mallocPlainForeignPtrBytes maxSize
@@ -59,9 +59,8 @@ toByteString (ImmediatePoker maxSize run) =
             Right (ByteStringInternal.BS fp (minusPtr pAfter p))
         )
         ( \(UserControlException pAfter reason) ->
-            return $
-              Left $
-                OffsetErr(..) (minusPtr pAfter p) reason
+            return . Left . ByteStringErr reason . ByteStringInternal.BS fp $
+              minusPtr pAfter p
         )
 
 failure :: Text -> ImmediatePoker
@@ -83,7 +82,8 @@ data ControlException
 
 instance Exception ControlException
 
-data OffsetErr(..) = OffsetErr(..)
-  { offset :: Int,
-    reason :: Text
+data ByteStringErr = ByteStringErr
+  { reason :: Text,
+    -- | The so far constructed unfinished bytestring.
+    byteString :: ByteString
   }
