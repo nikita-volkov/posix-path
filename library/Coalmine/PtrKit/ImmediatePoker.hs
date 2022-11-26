@@ -1,6 +1,7 @@
 module Coalmine.PtrKit.ImmediatePoker where
 
 import Coalmine.InternalPrelude
+import Data.ByteString.Internal qualified as ByteStringInternal
 
 data ImmediatePoker =
   -- Should not be exported, since we want to keep the control
@@ -39,9 +40,17 @@ run ::
 run =
   error "TODO"
 
-toByteString :: ImmediatePoker -> ByteString
-toByteString =
-  error "TODO"
+toByteString :: ImmediatePoker -> Either Text ByteString
+toByteString (ImmediatePoker maxSize run) =
+  unsafeDupablePerformIO $ catch attempt restore
+  where
+    attempt = do
+      fp <- ByteStringInternal.mallocByteString maxSize
+      actualSize <- withForeignPtr fp $ \p ->
+        run p <&> \pAfter -> minusPtr p pAfter
+      return $! Right $! ByteStringInternal.BS fp actualSize
+    restore = \case
+      UserControlException _ reason -> return $ Left reason
 
 failure :: Text -> ImmediatePoker
 failure reason =

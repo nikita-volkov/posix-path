@@ -28,7 +28,7 @@ instance Semigroup Poker where
 instance Monoid Poker where
   mempty = Poker mempty mempty
 
-toByteString :: Poker -> ByteString
+toByteString :: Poker -> Either Text ByteString
 toByteString =
   ImmediatePoker.toByteString . (.immediate)
 
