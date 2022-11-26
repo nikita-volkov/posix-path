@@ -215,7 +215,6 @@ library
     Coalmine.Comms.Decoding
     Coalmine.Comms.Encoding
     Coalmine.Comms.Schema
-    Coalmine.Comms.StreamingPoker
     Coalmine.Comms.Value
     Coalmine.Comms.ValueClass
     Coalmine.Inter.Deindentation
@@ -228,6 +227,7 @@ library
     Coalmine.Name.Constants
     Coalmine.Name.Gens
     Coalmine.Name.Megaparsec
+    Coalmine.PtrKit.StreamingPoker
 
   build-depends:
     , acc

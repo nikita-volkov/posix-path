@@ -1,7 +1,7 @@
 module Coalmine.Comms.Encoding where
 
-import Coalmine.Comms.StreamingPoker qualified as StreamingPoker
 import Coalmine.InternalPrelude
+import Coalmine.PtrKit.StreamingPoker qualified as StreamingPoker
 
 data Encoding = Encoding
   { size :: Int,

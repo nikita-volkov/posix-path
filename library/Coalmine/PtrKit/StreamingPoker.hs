@@ -1,9 +1,9 @@
-module Coalmine.Comms.StreamingPoker where
+module Coalmine.PtrKit.StreamingPoker where
 
 import Coalmine.InternalPrelude
 
 -- |
--- Streaming write operation.
+-- Streaming poking operation.
 -- Fills the provided buffer up to a capacity and then gives back control.
 newtype StreamingPoker = StreamingPoker {run :: Ptr Word8 -> Int -> IO WriteIteration}
 
