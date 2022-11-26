@@ -1,4 +1,13 @@
-module Coalmine.PtrKit.ImmediatePoker where
+module Coalmine.PtrKit.ImmediatePoker
+  ( ImmediatePoker,
+    run,
+    toByteString,
+    failure,
+
+    -- * Errors
+    OffsetErr(..),
+  )
+where
 
 import Coalmine.InternalPrelude
 import Data.ByteString.Internal qualified as ByteStringInternal
@@ -40,16 +49,20 @@ run ::
 run =
   error "TODO"
 
-toByteString :: ImmediatePoker -> Either Text ByteString
+toByteString :: ImmediatePoker -> Either OffsetErr(..) ByteString
 toByteString (ImmediatePoker maxSize run) =
   unsafeDupablePerformIO $ do
     fp <- mallocPlainForeignPtrBytes maxSize
-    catch
-      ( do
-          actualSize <- withForeignPtr fp $ \p -> run p <&> \pAfter -> minusPtr pAfter p
-          evaluate (Right $! ByteStringInternal.BS fp actualSize)
-      )
-      (\(UserControlException _ reason) -> return $ Left reason)
+    withForeignPtr fp $ \p ->
+      catch
+        ( run p <&> \pAfter ->
+            Right (ByteStringInternal.BS fp (minusPtr pAfter p))
+        )
+        ( \(UserControlException pAfter reason) ->
+            return $
+              Left $
+                OffsetErr(..) (minusPtr pAfter p) reason
+        )
 
 failure :: Text -> ImmediatePoker
 failure reason =
@@ -69,3 +82,8 @@ data ControlException
   deriving (Show)
 
 instance Exception ControlException
+
+data OffsetErr(..) = OffsetErr(..)
+  { offset :: Int,
+    reason :: Text
+  }
