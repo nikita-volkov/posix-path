@@ -1,11 +1,11 @@
 module Coalmine.Comms.Encoding where
 
-import Coalmine.Comms.StreamingWrite qualified as StreamingWrite
+import Coalmine.Comms.StreamingPoker qualified as StreamingPoker
 import Coalmine.InternalPrelude
 
 data Encoding = Encoding
   { size :: Int,
-    write :: StreamingWrite.StreamingWrite
+    write :: StreamingPoker.StreamingPoker
   }
 
 instance Semigroup Encoding where
@@ -21,4 +21,4 @@ varLengthInteger =
 
 failure :: Text -> Encoding
 failure reason =
-  Encoding 0 $ StreamingWrite.failure reason
+  Encoding 0 $ StreamingPoker.failure reason

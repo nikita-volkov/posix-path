@@ -215,7 +215,7 @@ library
     Coalmine.Comms.Decoding
     Coalmine.Comms.Encoding
     Coalmine.Comms.Schema
-    Coalmine.Comms.StreamingWrite
+    Coalmine.Comms.StreamingPoker
     Coalmine.Comms.Value
     Coalmine.Comms.ValueClass
     Coalmine.Inter.Deindentation

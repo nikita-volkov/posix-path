@@ -1,15 +1,15 @@
-module Coalmine.Comms.StreamingWrite where
+module Coalmine.Comms.StreamingPoker where
 
 import Coalmine.InternalPrelude
 
 -- |
 -- Streaming write operation.
 -- Fills the provided buffer up to a capacity and then gives back control.
-newtype StreamingWrite = StreamingWrite {run :: Ptr Word8 -> Int -> IO WriteIteration}
+newtype StreamingPoker = StreamingPoker {run :: Ptr Word8 -> Int -> IO WriteIteration}
 
-instance Semigroup StreamingWrite where
+instance Semigroup StreamingPoker where
   left <> right =
-    StreamingWrite $ \ptr cap ->
+    StreamingPoker $ \ptr cap ->
       left.run ptr cap >>= \case
         FinishedWriteIteration ptr cap ->
           right.run ptr cap
@@ -18,13 +18,13 @@ instance Semigroup StreamingWrite where
         FailedWriteIteration err ptr cap ->
           return $ FailedWriteIteration err ptr cap
 
-instance Monoid StreamingWrite where
-  mempty = StreamingWrite $ \ptr cap ->
+instance Monoid StreamingPoker where
+  mempty = StreamingPoker $ \ptr cap ->
     pure $ FinishedWriteIteration ptr cap
 
-failure :: Text -> StreamingWrite
+failure :: Text -> StreamingPoker
 failure reason =
-  StreamingWrite $ \ptr cap -> pure $ FailedWriteIteration reason ptr cap
+  StreamingPoker $ \ptr cap -> pure $ FailedWriteIteration reason ptr cap
 
 data WriteIteration
   = FinishedWriteIteration
@@ -34,7 +34,7 @@ data WriteIteration
       -- ^ Capacity of that pointer.
   | -- | Need a pointer to continue writing to.
     ExhaustedWriteIteration
-      StreamingWrite
+      StreamingPoker
       -- ^ Next encoding to execute.
   | -- | Encoding failure.
     FailedWriteIteration
