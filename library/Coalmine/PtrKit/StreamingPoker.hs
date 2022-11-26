@@ -26,7 +26,7 @@ import Coalmine.InternalPrelude
 --
 -- You can integrate that API with any streaming library quite easily, since
 -- all of them support lists of bytestrings as the datasource. You can also
--- integrate with it close to zero cost by directly operating on data buffers.
+-- integrate with it at close to zero cost by directly operating on data buffers.
 -- Or you can do both and integrate with a streaming library more
 -- efficiently.
 --
