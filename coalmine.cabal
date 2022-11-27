@@ -170,9 +170,9 @@ library
     Coalmine.Printing
     Coalmine.PtrKit.ImmediatePoker
     Coalmine.PtrKit.ImmediatePoker.PtrIO
-    Coalmine.PtrKit.NonValidatingImmediatePoker
     Coalmine.PtrKit.Poker
     Coalmine.PtrKit.StreamingPoker
+    Coalmine.PtrKit.Writer
     Coalmine.PureRandom.Seeded
     Coalmine.PureRandom.SizedSeeded
     Coalmine.QuickCheckExtras.Gens

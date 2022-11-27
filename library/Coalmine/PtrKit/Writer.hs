@@ -1,5 +1,5 @@
-module Coalmine.PtrKit.NonValidatingImmediatePoker
-  ( NonValidatingImmediatePoker,
+module Coalmine.PtrKit.Writer
+  ( Writer,
 
     -- * Elimination
     toByteString,
@@ -9,14 +9,14 @@ module Coalmine.PtrKit.NonValidatingImmediatePoker
   )
 where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (Writer)
 import Coalmine.PtrKit.ImmediatePoker.PtrIO qualified as PtrIO
 import Data.ByteString.Internal qualified as ByteStringInternal
 
-data NonValidatingImmediatePoker =
+data Writer =
   -- Should not be exported, since we want to keep the control
   -- over the ways of executing this abstraction.
-  NonValidatingImmediatePoker
+  Writer
   { -- | How many bytes it might occupy.
     --
     -- Determines how much to allocate.
@@ -34,23 +34,23 @@ data NonValidatingImmediatePoker =
     poke :: Ptr Word8 -> IO (Ptr Word8)
   }
 
-instance Semigroup NonValidatingImmediatePoker where
+instance Semigroup Writer where
   left <> right =
     error "TODO"
 
-instance Monoid NonValidatingImmediatePoker where
-  mempty = NonValidatingImmediatePoker 0 pure
+instance Monoid Writer where
+  mempty = Writer 0 pure
 
 run ::
-  NonValidatingImmediatePoker ->
+  Writer ->
   -- | Action providing a pointer of the requested capacity.
   (Int -> IO (Ptr Word8)) ->
   IO (Ptr Word8)
-run (NonValidatingImmediatePoker size poke) alloc =
+run (Writer size poke) alloc =
   error "TODO"
 
-toByteString :: NonValidatingImmediatePoker -> ByteString
-toByteString (NonValidatingImmediatePoker maxSize poke) =
+toByteString :: Writer -> ByteString
+toByteString (Writer maxSize poke) =
   unsafeDupablePerformIO $ do
     fp <- mallocPlainForeignPtrBytes maxSize
     actualSize <- withForeignPtr fp $ \p ->
@@ -67,7 +67,7 @@ toByteString (NonValidatingImmediatePoker maxSize poke) =
 -- __Warning:__
 -- It is your responsibility to ensure that the value is non-negative,
 -- otherwise the encoder will fall into an infinite loop.
-varLengthUnsignedInteger :: (Integral a, Bits a) => a -> NonValidatingImmediatePoker
+varLengthUnsignedInteger :: (Integral a, Bits a) => a -> Writer
 varLengthUnsignedInteger =
   -- A two-phase implementation:
   -- 1. Aggregate the size and metadata required for poking.
@@ -86,7 +86,7 @@ varLengthUnsignedInteger =
         nextValue = unsafeShiftR value 7
 
     processMetadata lastOffset head tail =
-      NonValidatingImmediatePoker size poke
+      Writer size poke
       where
         size = succ lastOffset
         poke ptr =
