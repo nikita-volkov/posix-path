@@ -22,8 +22,8 @@ serializeAsByteStringWithoutSchema =
 -- a schema that matches them.
 data Codec a = Codec
   { schema :: Schema.Schema,
-    write :: a -> Either EncodingError Writer.Writer,
-    stream :: a -> Either EncodingError Streamer.Streamer,
+    write :: a -> Writer.Writer,
+    stream :: a -> Streamer.Streamer,
     decode :: Decoding.StreamingPtrDecoder a
   }
 
@@ -45,10 +45,9 @@ sumCodec variants =
         step variant next !idx =
           case variant.write val of
             Nothing -> next (succ idx)
-            Just (Right encoding) -> Right $ Writer.varLengthUnsignedInteger idx <> encoding
-            Just (Left err) -> Left err
+            Just encoding -> Writer.varLengthUnsignedInteger idx <> encoding
         finish idx =
-          error "TODO"
+          Writer.varLengthUnsignedInteger idx
     stream =
       error "TODO"
     decode = do
@@ -64,8 +63,8 @@ sumCodec variants =
 -- Composable codec of product fields.
 data ProductCodec i o = ProductCodec
   { schema :: Acc (Text, Schema.Schema),
-    write :: i -> Either EncodingError Writer.Writer,
-    stream :: i -> Either EncodingError Streamer.Streamer,
+    write :: i -> Writer.Writer,
+    stream :: i -> Streamer.Streamer,
     decode :: Decoding.StreamingPtrDecoder o
   }
 
@@ -76,14 +75,14 @@ instance Applicative (ProductCodec i) where
   pure a =
     ProductCodec
       mempty
-      (const (Right mempty))
-      (const (Right mempty))
+      (const mempty)
+      (const mempty)
       (pure a)
   ProductCodec lSchema lWrite lStream lDecode <*> ProductCodec rSchema rWrite rStream rDecode =
     ProductCodec
       (lSchema <> rSchema)
-      (\i -> (<>) <$> lWrite i <*> rWrite i)
-      (\i -> (<>) <$> lStream i <*> rStream i)
+      (\i -> lWrite i <> rWrite i)
+      (\i -> lStream i <> rStream i)
       (lDecode <*> rDecode)
 
 instance Profunctor ProductCodec where
@@ -101,8 +100,8 @@ field name codec =
 data VariantCodec a = VariantCodec
   { name :: Text,
     schema :: Schema.Schema,
-    write :: a -> Maybe (Either EncodingError Writer.Writer),
-    stream :: a -> Maybe (Either EncodingError Streamer.Streamer),
+    write :: a -> Maybe Writer.Writer,
+    stream :: a -> Maybe Streamer.Streamer,
     decode :: Decoding.StreamingPtrDecoder a
   }
 
@@ -111,8 +110,8 @@ variant name unpack pack codec =
   VariantCodec
     name
     codec.schema
-    (fmap (inContextEncodingErrorEither name . codec.write) . unpack)
-    (fmap (inContextEncodingErrorEither name . codec.stream) . unpack)
+    (fmap codec.write . unpack)
+    (fmap codec.stream . unpack)
     (fmap pack codec.decode)
 
 -- * Validation
@@ -154,16 +153,3 @@ data DecodingError
       -- ^ Expected.
       Schema.Schema
       -- ^ Actual.
-
-data EncodingError = EncodingError
-  { reason :: Text,
-    path :: [Text]
-  }
-
-inContextEncodingErrorEither :: Text -> Either EncodingError a -> Either EncodingError a
-inContextEncodingErrorEither context =
-  first $ inContextEncodingError context
-
-inContextEncodingError :: Text -> EncodingError -> EncodingError
-inContextEncodingError context err =
-  err {path = context : err.path}
