@@ -1,5 +1,5 @@
-module Coalmine.PtrKit.StreamingPoker
-  ( StreamingPoker,
+module Coalmine.PtrKit.Streamer
+  ( Streamer,
     toLazyByteString,
     toLazyByteStringOfDefaultChunkSize,
     streamThruBuffer,
@@ -20,7 +20,7 @@ import Coalmine.InternalPrelude
 -- utilize 'ByteString'.
 --
 -- In fact, since 'ByteString' is itself just an abstraction over a
--- pointer, 'StreamingPoker' can be used to stream 'ByteString' chunks of a
+-- pointer, 'Streamer' can be used to stream 'ByteString' chunks of a
 -- given size. You can see it as a builder optimized to produce bytestring
 -- chunks with a linear complexity.
 --
@@ -32,11 +32,11 @@ import Coalmine.InternalPrelude
 --
 -- This abstraction is not the best choice for constructing
 -- a single strict 'ByteString', use 'Coalmine.PtrKit.ValidatingWriter' for that.
-newtype StreamingPoker = StreamingPoker {run :: Ptr Word8 -> Int -> IO Status}
+newtype Streamer = Streamer {run :: Ptr Word8 -> Int -> IO Status}
 
-instance Semigroup StreamingPoker where
+instance Semigroup Streamer where
   left <> right =
-    StreamingPoker $ \ptr cap ->
+    Streamer $ \ptr cap ->
       left.run ptr cap >>= \case
         FinishedStatus ptr cap ->
           right.run ptr cap
@@ -45,19 +45,19 @@ instance Semigroup StreamingPoker where
         FailedStatus err ptr cap ->
           return $ FailedStatus err ptr cap
 
-instance Monoid StreamingPoker where
-  mempty = StreamingPoker $ \ptr cap ->
+instance Monoid Streamer where
+  mempty = Streamer $ \ptr cap ->
     pure $ FinishedStatus ptr cap
 
 toLazyByteString ::
   -- | Chunk size.
   Int ->
-  StreamingPoker ->
+  Streamer ->
   LazyByteString
 toLazyByteString =
   error "TODO"
 
-toLazyByteStringOfDefaultChunkSize :: StreamingPoker -> LazyByteString
+toLazyByteStringOfDefaultChunkSize :: Streamer -> LazyByteString
 toLazyByteStringOfDefaultChunkSize =
   error "TODO"
 
@@ -66,7 +66,7 @@ toLazyByteStringOfDefaultChunkSize =
 --
 -- This is what you should use for integrating with sockets or file system.
 streamThruBuffer ::
-  StreamingPoker ->
+  Streamer ->
   -- | Reused buffer size.
   Int ->
   -- | Action to be repeatedly executed when the buffer is filled.
@@ -76,7 +76,7 @@ streamThruBuffer ::
   IO (Maybe Text)
 streamThruBuffer poker bufSize send =
   allocaBytes bufSize $ \ptr ->
-    let exhaust (StreamingPoker run) =
+    let exhaust (Streamer run) =
           run ptr bufSize >>= \case
             ExhaustedStatus next -> do
               send ptr bufSize
@@ -91,9 +91,9 @@ streamThruBuffer poker bufSize send =
               return $ Just reason
      in exhaust poker
 
-failure :: Text -> StreamingPoker
+failure :: Text -> Streamer
 failure reason =
-  StreamingPoker $ \ptr cap -> pure $ FailedStatus reason ptr cap
+  Streamer $ \ptr cap -> pure $ FailedStatus reason ptr cap
 
 data Status
   = FinishedStatus
@@ -103,7 +103,7 @@ data Status
       -- ^ Capacity of that pointer.
   | -- | Need a pointer to continue writing to.
     ExhaustedStatus
-      StreamingPoker
+      Streamer
       -- ^ Next encoding to execute.
   | -- | Encoding failure.
     FailedStatus

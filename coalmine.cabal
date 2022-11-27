@@ -170,7 +170,7 @@ library
     Coalmine.Printing
     Coalmine.PtrKit.Encoding
     Coalmine.PtrKit.PtrIO
-    Coalmine.PtrKit.StreamingPoker
+    Coalmine.PtrKit.Streamer
     Coalmine.PtrKit.ValidatingWriter
     Coalmine.PtrKit.Writer
     Coalmine.PureRandom.Seeded

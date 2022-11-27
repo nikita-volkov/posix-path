@@ -11,7 +11,7 @@ module Coalmine.PtrKit.Encoding
 where
 
 import Coalmine.InternalPrelude
-import Coalmine.PtrKit.StreamingPoker qualified as StreamingPoker
+import Coalmine.PtrKit.Streamer qualified as Streamer
 import Coalmine.PtrKit.ValidatingWriter qualified as ValidatingWriter
 
 -- |
@@ -19,9 +19,9 @@ import Coalmine.PtrKit.ValidatingWriter qualified as ValidatingWriter
 -- immediate applications and streaming.
 --
 -- Implemented as a product of 'ValidatingWriter.ValidatingWriter'
--- and 'StreamingPoker.StreamingPoker'.
+-- and 'Streamer.Streamer'.
 data Encoding = Encoding
-  { streaming :: ~StreamingPoker.StreamingPoker,
+  { streaming :: ~Streamer.Streamer,
     immediate :: ~ValidatingWriter.ValidatingWriter
   }
 
@@ -42,7 +42,7 @@ toByteStringList =
 
 toLazyByteString :: Encoding -> LazyByteString
 toLazyByteString =
-  StreamingPoker.toLazyByteStringOfDefaultChunkSize . (.streaming)
+  Streamer.toLazyByteStringOfDefaultChunkSize . (.streaming)
 
 -- | Evaluate the poker by filling up a reusable buffer and repeatedly calling
 -- a continuation on it. Buffer allocation is encapsulated.
@@ -58,7 +58,7 @@ streamThruBuffer ::
   -- | Action producing error details if there is one.
   IO (Maybe Text)
 streamThruBuffer poker =
-  StreamingPoker.streamThruBuffer poker.streaming
+  Streamer.streamThruBuffer poker.streaming
 
 -- * Constructors
 
