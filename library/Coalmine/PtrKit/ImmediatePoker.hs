@@ -77,8 +77,8 @@ toByteString (ImmediatePoker maxSize poke) =
 -- * Constructors
 
 inContext :: Text -> ImmediatePoker -> ImmediatePoker
-inContext context =
-  error "TODO"
+inContext context (ImmediatePoker size poke) =
+  ImmediatePoker size (\ptr contexts -> poke ptr (context : contexts))
 
 failure :: Text -> ImmediatePoker
 failure reason =
