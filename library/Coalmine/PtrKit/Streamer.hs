@@ -96,7 +96,7 @@ failure :: Text -> Streamer
 failure reason =
   Streamer $ \ptr cap -> pure $ FailedStatus reason ptr cap
 
-varLengthUnsignedInteger :: (Integral a, Bits a, Show a) => a -> Streamer
+varLengthUnsignedInteger :: (Integral a, Bits a) => a -> Streamer
 varLengthUnsignedInteger =
   error "TODO"
 
