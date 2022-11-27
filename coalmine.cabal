@@ -172,6 +172,7 @@ library
     Coalmine.PtrKit.Poker
     Coalmine.PtrKit.PtrIO
     Coalmine.PtrKit.StreamingPoker
+    Coalmine.PtrKit.ValidatingWriter
     Coalmine.PtrKit.Writer
     Coalmine.PureRandom.Seeded
     Coalmine.PureRandom.SizedSeeded
