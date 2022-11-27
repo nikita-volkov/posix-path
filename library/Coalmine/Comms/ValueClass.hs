@@ -10,14 +10,14 @@ class PakkValue a where
 
 instance (PakkValue a, PakkValue b) => PakkValue (a, b) where
   pakkValueCodec =
-    Codec.productCodec $
+    Codec.product $
       (,)
         <$> lmap fst (Codec.field "0" pakkValueCodec)
         <*> lmap snd (Codec.field "1" pakkValueCodec)
 
 instance (PakkValue a, PakkValue b, PakkValue c) => PakkValue (a, b, c) where
   pakkValueCodec =
-    Codec.productCodec $
+    Codec.product $
       (,,)
         <$> lmap (\(x, _, _) -> x) (Codec.field "0" pakkValueCodec)
         <*> lmap (\(_, x, _) -> x) (Codec.field "1" pakkValueCodec)
@@ -25,7 +25,7 @@ instance (PakkValue a, PakkValue b, PakkValue c) => PakkValue (a, b, c) where
 
 instance (PakkValue a, PakkValue b) => PakkValue (Either a b) where
   pakkValueCodec =
-    Codec.sumCodec
+    Codec.sum
       [ Codec.variant
           "left"
           ( \case

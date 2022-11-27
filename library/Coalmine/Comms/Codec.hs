@@ -2,7 +2,7 @@ module Coalmine.Comms.Codec where
 
 import Coalmine.Comms.Decoding qualified as Decoding
 import Coalmine.Comms.Schema qualified as Schema
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (product, sum)
 import Coalmine.PtrKit.Streamer qualified as Streamer
 import Coalmine.PtrKit.Writer qualified as Writer
 import Data.Vector qualified as BVec
@@ -27,12 +27,12 @@ data Codec a = Codec
     decode :: Decoding.StreamingPtrDecoder a
   }
 
-productCodec :: ProductCodec a a -> Codec a
-productCodec ProductCodec {..} =
+product :: ProductCodec a a -> Codec a
+product ProductCodec {..} =
   Codec (Schema.ProductSchema (toList schema)) write stream decode
 
-sumCodec :: [VariantCodec a] -> Codec a
-sumCodec variants =
+sum :: [VariantCodec a] -> Codec a
+sum variants =
   Codec schema write stream decode
   where
     schema =
