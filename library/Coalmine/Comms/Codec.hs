@@ -1,6 +1,7 @@
 module Coalmine.Comms.Codec where
 
 import Coalmine.Comms.Decoding qualified as Decoding
+import Coalmine.Comms.IntegerMath qualified as IntegerMath
 import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude hiding (product, sum)
 import Coalmine.PtrKit.Streamer qualified as Streamer
@@ -84,30 +85,26 @@ normallyDistributedInteger min max epicenter =
 uniformlyDistributedInteger ::
   (Integral a, Bits a) =>
   -- | Min value.
-  a ->
-  -- | Max value.
-  a ->
+  Integer ->
+  -- | Delta to max value.
+  Natural ->
   Codec a
-uniformlyDistributedInteger min max =
+uniformlyDistributedInteger min deltaToMax =
   Codec schema write stream decode
   where
     schema =
-      error "TODO"
+      Schema.UniformlyDistributedIntegerSchema min deltaToMax
     write val =
-      Writer.constLengthInteger byteSize (val - min)
+      Writer.constLengthInteger byteSize (val - adaptedMin)
     stream val =
-      Streamer.constLengthInteger byteSize (val - min)
+      Streamer.constLengthInteger byteSize (val - adaptedMin)
     decode =
       error "TODO"
     -- Amount of bytes for the entire range.
     byteSize =
-      processNormalizedMax 0 normalizedMax
-      where
-        processNormalizedMax !i = \case
-          0 -> i
-          val -> processNormalizedMax (succ i) (unsafeShiftR val 8)
-    normalizedMax =
-      max - min
+      IntegerMath.byteSize deltaToMax
+    adaptedMin =
+      fromIntegral min
 
 -- |
 -- Composable codec of product fields.

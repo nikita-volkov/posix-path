@@ -218,6 +218,7 @@ library
   other-modules:
     Coalmine.Comms.Codec
     Coalmine.Comms.Decoding
+    Coalmine.Comms.IntegerMath
     Coalmine.Comms.Schema
     Coalmine.Comms.Value
     Coalmine.Comms.ValueClass

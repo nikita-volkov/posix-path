@@ -29,7 +29,7 @@ data Schema
       }
   | UniformlyDistributedIntegerSchema
       { minValue :: Integer,
-        maxValue :: Integer
+        deltaToMaxValue :: Natural
       }
   | Utf8TextSchema
   | CustomTextSchema
