@@ -10,6 +10,7 @@ module Coalmine.PtrKit.ImmediatePoker
 where
 
 import Coalmine.InternalPrelude
+import Coalmine.PtrKit.ImmediatePoker.PtrIO qualified as PtrIO
 import Data.ByteString.Internal qualified as ByteStringInternal
 
 data ImmediatePoker =
@@ -69,26 +70,28 @@ failure :: Text -> ImmediatePoker
 failure reason =
   ImmediatePoker 0 (\ptr -> throwIO (UserControlException ptr reason))
 
-varLengthNatural :: Natural -> ImmediatePoker
-varLengthNatural =
-  eliminate 0 []
+naturalUnsignedVarLength :: Natural -> ImmediatePoker
+naturalUnsignedVarLength =
+  -- A two-phase implementation:
+  -- 1. Aggregate the size and metadata required for poking.
+  -- 2. Use the metadata to optimize the poking action.
+  processValue 0 []
   where
-    eliminate !size !byteRevList value =
+    processValue !offset !byteRevList value =
       case unsafeShiftR value 7 of
-        0 -> ImmediatePoker totalSize action
+        0 -> processMetadata offset (fromIntegral value) byteRevList
+        nextValue ->
+          error "TODO"
+
+    processMetadata lastOffset head tail =
+      ImmediatePoker size action
+      where
+        size = succ lastOffset
+        action ptr =
+          PtrIO.backPokeByteRevListWithHead lastPtr head tail
+            $> plusPtr ptr size
           where
-            totalSize = succ size
-            action ptr = do
-              poke @Word8 lastPtr (fromIntegral value)
-              pokeRevList (plusPtr lastPtr (-1)) byteRevList
-              where
-                lastPtr = plusPtr ptr size
-                pokeRevList ptr = \case
-                  byte : tail -> do
-                    poke @Word8 ptr byte
-                    pokeRevList (plusPtr ptr (-1)) tail
-                  [] -> return (plusPtr lastPtr 1)
-        nextValue -> error "TODO"
+            lastPtr = plusPtr ptr lastOffset
 
 -- * Errors
 
