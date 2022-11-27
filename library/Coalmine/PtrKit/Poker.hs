@@ -6,23 +6,23 @@ module Coalmine.PtrKit.Poker
     streamThruBuffer,
 
     -- * Errors
-    ImmediatePoker.ByteStringErr (..),
+    ValidatingWriter.Err (..),
   )
 where
 
 import Coalmine.InternalPrelude
-import Coalmine.PtrKit.ImmediatePoker qualified as ImmediatePoker
 import Coalmine.PtrKit.StreamingPoker qualified as StreamingPoker
+import Coalmine.PtrKit.ValidatingWriter qualified as ValidatingWriter
 
 -- |
 -- Universal poker, which can be used to both effeciently construct
 -- immediate applications and streaming.
 --
--- Implemented as a product of 'ImmediatePoker.ImmediatePoker'
+-- Implemented as a product of 'ValidatingWriter.ValidatingWriter'
 -- and 'StreamingPoker.StreamingPoker'.
 data Poker = Poker
   { streaming :: ~StreamingPoker.StreamingPoker,
-    immediate :: ~ImmediatePoker.ImmediatePoker
+    immediate :: ~ValidatingWriter.ValidatingWriter
   }
 
 instance Semigroup Poker where
@@ -32,9 +32,9 @@ instance Semigroup Poker where
 instance Monoid Poker where
   mempty = Poker mempty mempty
 
-toByteString :: Poker -> Either ImmediatePoker.ByteStringErr ByteString
+toByteString :: Poker -> Either ValidatingWriter.Err ByteString
 toByteString =
-  ImmediatePoker.toByteString . (.immediate)
+  ValidatingWriter.toByteString . (.immediate)
 
 toByteStringList :: Poker -> [ByteString]
 toByteStringList =

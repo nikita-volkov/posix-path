@@ -168,7 +168,6 @@ library
     Coalmine.Prelude
     Coalmine.Printer
     Coalmine.Printing
-    Coalmine.PtrKit.ImmediatePoker
     Coalmine.PtrKit.Poker
     Coalmine.PtrKit.PtrIO
     Coalmine.PtrKit.StreamingPoker

@@ -31,7 +31,7 @@ import Coalmine.InternalPrelude
 -- efficiently.
 --
 -- This abstraction is not the best choice for constructing
--- a single strict 'ByteString', use 'Coalmine.PtrKit.ImmediatePoker' for that.
+-- a single strict 'ByteString', use 'Coalmine.PtrKit.ValidatingWriter' for that.
 newtype StreamingPoker = StreamingPoker {run :: Ptr Word8 -> Int -> IO Status}
 
 instance Semigroup StreamingPoker where
