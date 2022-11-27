@@ -1,9 +1,10 @@
 module Coalmine.Comms.Codec where
 
 import Coalmine.Comms.Decoding qualified as Decoding
-import Coalmine.Comms.Encoding qualified as Encoding
 import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude
+import Coalmine.PtrKit.Streamer qualified as Streamer
+import Coalmine.PtrKit.Writer qualified as Writer
 import Data.Vector qualified as BVec
 
 serializeAsByteStringWithSchema :: Codec a -> ByteString
@@ -21,6 +22,11 @@ data DecodingError
       Schema.Schema
       -- ^ Actual.
 
+data EncodingError = EncodingError
+  { reason :: Text,
+    path :: [Text]
+  }
+
 -- |
 -- Encoder, decoder and structure metadata all united in a single composable abstraction.
 --
@@ -28,33 +34,35 @@ data DecodingError
 -- a schema that matches them.
 data Codec a = Codec
   { schema :: Schema.Schema,
-    encode :: a -> Encoding.Encoding,
+    write :: a -> Either EncodingError Writer.Writer,
+    stream :: a -> Either EncodingError Streamer.Streamer,
     decode :: Decoding.StreamingPtrDecoder a
   }
 
 productCodec :: ProductCodec a a -> Codec a
 productCodec ProductCodec {..} =
-  Codec (Schema.ProductSchema (toList schema)) encode decode
+  Codec (Schema.ProductSchema (toList schema)) write stream decode
 
 sumCodec :: [VariantCodec a] -> Codec a
 sumCodec variants =
-  Codec schema encode decode
+  Codec schema write stream decode
   where
     schema =
       variants
         & fmap (\variant -> (variant.name, variant.schema))
         & Schema.SumSchema
-    encode val =
-      foldr step finish variants 0
+    write val =
+      foldr step finish variants (0 :: Word)
       where
         step variant next !idx =
-          case variant.encode val of
+          case variant.write val of
             Nothing -> next (succ idx)
-            Just encoding -> Encoding.varLengthInteger (fromIntegral idx) <> encoding
+            Just (Right encoding) -> Right $ Writer.varLengthUnsignedInteger idx <> encoding
+            Just (Left err) -> Left err
         finish idx =
-          -- Alternatively we can encode the index with no body.
-          -- However there's no benefit of that found yet.
-          Encoding.failure $ "No variant projection found"
+          error "TODO"
+    stream =
+      error "TODO"
     decode = do
       idx <- fromIntegral <$> Decoding.varLengthNatural
       case vec BVec.!? idx of
@@ -68,7 +76,8 @@ sumCodec variants =
 -- Composable codec of product fields.
 data ProductCodec i o = ProductCodec
   { schema :: Acc (Text, Schema.Schema),
-    encode :: i -> Encoding.Encoding,
+    write :: i -> Either EncodingError Writer.Writer,
+    stream :: i -> Either EncodingError Streamer.Streamer,
     decode :: Decoding.StreamingPtrDecoder o
   }
 
@@ -79,19 +88,22 @@ instance Applicative (ProductCodec i) where
   pure a =
     ProductCodec
       mempty
-      (const mempty)
+      (const (Right mempty))
+      (const (Right mempty))
       (pure a)
-  ProductCodec lSchema lEncode lDecode <*> ProductCodec rSchema rEncode rDecode =
+  ProductCodec lSchema lWrite lStream lDecode <*> ProductCodec rSchema rWrite rStream rDecode =
     ProductCodec
       (lSchema <> rSchema)
-      (\i -> lEncode i <> rEncode i)
+      (\i -> (<>) <$> lWrite i <*> rWrite i)
+      (\i -> (<>) <$> lStream i <*> rStream i)
       (lDecode <*> rDecode)
 
 instance Profunctor ProductCodec where
   dimap f1 f2 codec =
     ProductCodec
       codec.schema
-      (codec.encode . f1)
+      (codec.write . f1)
+      (codec.stream . f1)
       (fmap f2 codec.decode)
 
 field :: Text -> Codec a -> ProductCodec a a
@@ -101,7 +113,8 @@ field name codec =
 data VariantCodec a = VariantCodec
   { name :: Text,
     schema :: Schema.Schema,
-    encode :: a -> Maybe Encoding.Encoding,
+    write :: a -> Maybe (Either EncodingError Writer.Writer),
+    stream :: a -> Maybe (Either EncodingError Streamer.Streamer),
     decode :: Decoding.StreamingPtrDecoder a
   }
 
@@ -110,10 +123,8 @@ variant name unpack pack codec =
   VariantCodec
     name
     codec.schema
-    ( \a -> case unpack a of
-        Nothing -> Nothing
-        Just b -> Just (codec.encode b)
-    )
+    (fmap codec.write . unpack)
+    (fmap codec.stream . unpack)
     (fmap pack codec.decode)
 
 -- * Validation

@@ -1,7 +1,6 @@
 module Coalmine.Comms.Value where
 
 import Coalmine.Comms.Decoding qualified as Decoding
-import Coalmine.Comms.Encoding qualified as Encoding
 import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude
 import Coalmine.PureRandom.SizedSeeded qualified as SizedSeeded
@@ -10,10 +9,6 @@ data Value
   = VariantValue Int Text Value
   | ProductValue [(Text, Value)]
   | SeqValue (BVec Value)
-
-encode :: Value -> Encoding.Encoding
-encode =
-  error "TODO"
 
 decode :: Schema.Schema -> Decoding.StreamingPtrDecoder Value
 decode =
