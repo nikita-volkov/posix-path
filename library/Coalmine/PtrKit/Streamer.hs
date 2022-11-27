@@ -5,6 +5,8 @@ module Coalmine.PtrKit.Streamer
     streamThruBuffer,
     failure,
     varLengthUnsignedInteger,
+    varLengthSignedInteger,
+    constLengthInteger,
   )
 where
 
@@ -98,6 +100,14 @@ failure reason =
 
 varLengthUnsignedInteger :: (Integral a, Bits a) => a -> Streamer
 varLengthUnsignedInteger =
+  error "TODO"
+
+varLengthSignedInteger :: (Integral a, Bits a) => a -> Streamer
+varLengthSignedInteger =
+  error "TODO"
+
+constLengthInteger :: (Integral a, Bits a) => Int -> a -> Streamer
+constLengthInteger size =
   error "TODO"
 
 data Status

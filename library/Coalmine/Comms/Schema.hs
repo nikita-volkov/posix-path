@@ -1,5 +1,6 @@
 module Coalmine.Comms.Schema where
 
+import Coalmine.Comms.Decoding qualified as Decoding
 import Coalmine.InternalPrelude
 
 -- |
@@ -19,7 +20,21 @@ data Schema
         maxLength :: Int,
         element :: Schema
       }
-  | IntegerSchema
+  | NormallyDistributedIntegerSchema
+      { minValue :: Integer,
+        maxValue :: Integer,
+        -- | Offset from the minimum value. Determines the most probable value.
+        -- It will occupy the least bytes in the encoding.
+        peakOffset :: Natural
+      }
+  | UniformlyDistributedIntegerSchema
       { minValue :: Integer,
         maxValue :: Integer
       }
+  | Utf8TextSchema
+  | CustomTextSchema
+      { charsetOrder :: CharsetOrder
+      }
+
+-- | Orders all charsets by their probability.
+data CharsetOrder

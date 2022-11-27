@@ -59,22 +59,55 @@ sum variants =
         vec =
           BVec.fromList $ fmap (.decode) $ variants
 
--- |
--- Variable length representation of unsigned integers.
---
--- Uses the 8th bit of each octet to specify, whether another octet is needed.
-varLengthUnsignedInteger :: (Integral a, Bits a) => Codec a
-varLengthUnsignedInteger =
+normallyDistributedInteger ::
+  (Integral a, Bits a) =>
+  -- | Min value.
+  a ->
+  -- | Max value.
+  a ->
+  -- | Epicenter value.
+  a ->
+  Codec a
+normallyDistributedInteger min max epicenter =
   Codec schema write stream decode
   where
     schema =
       error "TODO"
-    write =
-      Writer.varLengthUnsignedInteger
+    write val =
+      Writer.varLengthSignedInteger $
+        val - epicenter
     stream =
-      Streamer.varLengthUnsignedInteger
+      error "TODO"
     decode =
       error "TODO"
+
+uniformlyDistributedInteger ::
+  (Integral a, Bits a) =>
+  -- | Min value.
+  a ->
+  -- | Max value.
+  a ->
+  Codec a
+uniformlyDistributedInteger min max =
+  Codec schema write stream decode
+  where
+    schema =
+      error "TODO"
+    write val =
+      Writer.constLengthInteger byteSize (val - min)
+    stream val =
+      Streamer.constLengthInteger byteSize (val - min)
+    decode =
+      error "TODO"
+    -- Amount of bytes for the entire range.
+    byteSize =
+      processNormalizedMax 0 normalizedMax
+      where
+        processNormalizedMax !i = \case
+          0 -> i
+          val -> processNormalizedMax (succ i) (unsafeShiftR val 8)
+    normalizedMax =
+      max - min
 
 -- |
 -- Composable codec of product fields.

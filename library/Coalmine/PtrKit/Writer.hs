@@ -6,6 +6,8 @@ module Coalmine.PtrKit.Writer
 
     -- * Construction and transformation
     varLengthUnsignedInteger,
+    varLengthSignedInteger,
+    constLengthInteger,
   )
 where
 
@@ -98,3 +100,11 @@ varLengthUnsignedInteger =
             $> plusPtr ptr size
           where
             lastPtr = plusPtr ptr lastOffset
+
+varLengthSignedInteger :: (Integral a, Bits a) => a -> Writer
+varLengthSignedInteger =
+  error "TODO"
+
+constLengthInteger :: (Integral a, Bits a) => Int -> a -> Writer
+constLengthInteger size =
+  error "TODO"
