@@ -4,6 +4,7 @@ module Coalmine.PtrKit.Encoding
     toByteStringList,
     toLazyByteString,
     streamThruBuffer,
+    varLengthUnsignedInteger,
   )
 where
 
@@ -59,6 +60,8 @@ streamThruBuffer poker =
 
 -- * Constructors
 
-varLengthInteger :: Integer -> Encoding
-varLengthInteger =
-  error "TODO"
+varLengthUnsignedInteger :: (Integral a, Bits a, Show a) => a -> Encoding
+varLengthUnsignedInteger value =
+  Encoding
+    (Streamer.varLengthUnsignedInteger value)
+    (Writer.varLengthUnsignedInteger value)

@@ -4,6 +4,7 @@ module Coalmine.PtrKit.Streamer
     toLazyByteStringOfDefaultChunkSize,
     streamThruBuffer,
     failure,
+    varLengthUnsignedInteger,
   )
 where
 
@@ -31,7 +32,7 @@ import Coalmine.InternalPrelude
 -- efficiently.
 --
 -- This abstraction is not the best choice for constructing
--- a single strict 'ByteString', use 'Coalmine.PtrKit.ValidatingWriter' for that.
+-- a single strict 'ByteString', use 'Coalmine.PtrKit.ValidatedEncoding' for that.
 newtype Streamer = Streamer {run :: Ptr Word8 -> Int -> IO Status}
 
 instance Semigroup Streamer where
@@ -94,6 +95,10 @@ streamThruBuffer poker bufSize send =
 failure :: Text -> Streamer
 failure reason =
   Streamer $ \ptr cap -> pure $ FailedStatus reason ptr cap
+
+varLengthUnsignedInteger :: (Integral a, Bits a, Show a) => a -> Streamer
+varLengthUnsignedInteger =
+  error "TODO"
 
 data Status
   = FinishedStatus
