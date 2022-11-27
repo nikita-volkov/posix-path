@@ -2,11 +2,9 @@ module Coalmine.PtrKit.NonValidatingImmediatePoker
   ( NonValidatingImmediatePoker,
 
     -- * Elimination
-    run,
     toByteString,
 
     -- * Construction and transformation
-    exception,
     varLengthUnsignedInteger,
   )
 where
@@ -47,22 +45,28 @@ run ::
   NonValidatingImmediatePoker ->
   -- | Action providing a pointer of the requested capacity.
   (Int -> IO (Ptr Word8)) ->
-  IO (Either Err (Ptr Word8))
-run (NonValidatingImmediatePoker size poke) alloc = do
-  ptr <- alloc size
-  catch (Right <$> poke ptr) $ \(ControlException ptrAfter reason) ->
-    error "TODO"
+  IO (Ptr Word8)
+run (NonValidatingImmediatePoker size poke) alloc =
+  error "TODO"
+
+toByteString :: NonValidatingImmediatePoker -> ByteString
+toByteString (NonValidatingImmediatePoker maxSize poke) =
+  unsafeDupablePerformIO $ do
+    fp <- mallocPlainForeignPtrBytes maxSize
+    actualSize <- withForeignPtr fp $ \p ->
+      poke p <&> \pAfter -> minusPtr pAfter p
+    evaluate (ByteStringInternal.BS fp actualSize)
 
 -- * Constructors
-
-exception :: Exception e => e -> NonValidatingImmediatePoker
-exception exc =
-  NonValidatingImmediatePoker 0 (\ptr -> throwIO (ControlException ptr exc))
 
 -- |
 -- Variable length representation of unsigned integers.
 --
 -- Uses the 8th bit of each octet to specify, whether another octet is needed.
+--
+-- __Warning:__
+-- It is your responsibility to ensure that the value is non-negative,
+-- otherwise the encoder will fall into an infinite loop.
 varLengthUnsignedInteger :: (Integral a, Bits a) => a -> NonValidatingImmediatePoker
 varLengthUnsignedInteger =
   -- A two-phase implementation:
@@ -90,17 +94,3 @@ varLengthUnsignedInteger =
             $> plusPtr ptr size
           where
             lastPtr = plusPtr ptr lastOffset
-
--- * Exceptions
-
-data ControlException e
-  = ControlException (Ptr Word8) e
-  deriving (Show)
-
-instance Exception e => Exception (ControlException e)
-
--- * Errors
-
-data Err
-  = Err ByteString SomeException
-  deriving (Show)
