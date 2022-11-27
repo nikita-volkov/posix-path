@@ -4,25 +4,22 @@ module Coalmine.PtrKit.Encoding
     toByteStringList,
     toLazyByteString,
     streamThruBuffer,
-
-    -- * Errors
-    ValidatingWriter.Err (..),
   )
 where
 
 import Coalmine.InternalPrelude
 import Coalmine.PtrKit.Streamer qualified as Streamer
-import Coalmine.PtrKit.ValidatingWriter qualified as ValidatingWriter
+import Coalmine.PtrKit.Writer qualified as Writer
 
 -- |
 -- Universal poker, which can be used to both effeciently construct
 -- immediate applications and streaming.
 --
--- Implemented as a product of 'ValidatingWriter.ValidatingWriter'
+-- Implemented as a product of 'Writer.Writer'
 -- and 'Streamer.Streamer'.
 data Encoding = Encoding
   { streaming :: ~Streamer.Streamer,
-    immediate :: ~ValidatingWriter.ValidatingWriter
+    immediate :: ~Writer.Writer
   }
 
 instance Semigroup Encoding where
@@ -32,9 +29,9 @@ instance Semigroup Encoding where
 instance Monoid Encoding where
   mempty = Encoding mempty mempty
 
-toByteString :: Encoding -> Either ValidatingWriter.Err ByteString
+toByteString :: Encoding -> ByteString
 toByteString =
-  ValidatingWriter.toByteString . (.immediate)
+  Writer.toByteString . (.immediate)
 
 toByteStringList :: Encoding -> [ByteString]
 toByteStringList =
