@@ -1,8 +1,14 @@
 module Coalmine.PtrKit.ImmediatePoker
   ( ImmediatePoker,
+
+    -- * Elimination
     run,
     toByteString,
+
+    -- * Construction and transformation
+    inContext,
     failure,
+    varLengthUnsignedInteger,
 
     -- * Errors
     ByteStringErr (..),
@@ -31,7 +37,11 @@ data ImmediatePoker =
     --
     -- It does not however export these exceptions and executes
     -- into an exceptionless action via the exported API.
-    run :: Ptr Word8 -> IO (Ptr Word8)
+    poke ::
+      Ptr Word8 ->
+      -- Context for errors.
+      [Text] ->
+      IO (Ptr Word8)
   }
 
 instance Semigroup ImmediatePoker where
@@ -39,7 +49,7 @@ instance Semigroup ImmediatePoker where
     error "TODO"
 
 instance Monoid ImmediatePoker where
-  mempty = ImmediatePoker 0 pure
+  mempty = ImmediatePoker 0 (\ptr _ -> return ptr)
 
 run ::
   ImmediatePoker ->
@@ -51,47 +61,61 @@ run =
   error "TODO"
 
 toByteString :: ImmediatePoker -> Either ByteStringErr ByteString
-toByteString (ImmediatePoker maxSize run) =
+toByteString (ImmediatePoker maxSize poke) =
   unsafeDupablePerformIO $ do
     fp <- mallocPlainForeignPtrBytes maxSize
     withForeignPtr fp $ \p ->
       catch
-        ( run p <&> \pAfter ->
+        ( poke p [] <&> \pAfter ->
             Right (ByteStringInternal.BS fp (minusPtr pAfter p))
         )
-        ( \(UserControlException pAfter reason) ->
-            return . Left . ByteStringErr reason . ByteStringInternal.BS fp $
+        ( \(ControlException pAfter context reason) ->
+            return . Left . ByteStringErr reason context . ByteStringInternal.BS fp $
               minusPtr pAfter p
         )
 
 -- * Constructors
 
+inContext :: Text -> ImmediatePoker -> ImmediatePoker
+inContext context =
+  error "TODO"
+
 failure :: Text -> ImmediatePoker
 failure reason =
-  ImmediatePoker 0 (\ptr -> throwIO (UserControlException ptr reason))
+  ImmediatePoker 0 (\ptr context -> throwIO (ControlException ptr context reason))
 
-naturalUnsignedVarLength :: Natural -> ImmediatePoker
-naturalUnsignedVarLength =
+-- |
+-- Variable length representation of unsigned integers.
+--
+-- Uses the 8th bit of each octet to specify, whether another octet is needed.
+varLengthUnsignedInteger :: (Integral a, Bits a) => a -> ImmediatePoker
+varLengthUnsignedInteger =
   -- A two-phase implementation:
   -- 1. Aggregate the size and metadata required for poking.
   -- 2. Use the metadata to optimize the poking action.
-  processValue 0 []
+  processValue
   where
-    processValue !offset !byteRevList value =
+    processValue value =
+      if value < 0
+        then inContext "varLengthUnsignedInteger" (failure "Negative value")
+        else processValidValue 0 [] value
+
+    processValidValue !offset !byteRevList value =
       case nextValue of
-        0 -> processMetadata offset (fromIntegral value) byteRevList
+        0 ->
+          processMetadata offset (fromIntegral value) byteRevList
         _ ->
-          processValue (succ offset) (byte : byteRevList) nextValue
+          processValidValue (succ offset) (byte : byteRevList) nextValue
           where
             !byte = setBit (fromIntegral value) 7
       where
         nextValue = unsafeShiftR value 7
 
     processMetadata lastOffset head tail =
-      ImmediatePoker size action
+      ImmediatePoker size poke
       where
         size = succ lastOffset
-        action ptr =
+        poke ptr _ =
           PtrIO.backPokeByteRevListWithHead lastPtr head tail
             $> plusPtr ptr size
           where
@@ -103,11 +127,13 @@ naturalUnsignedVarLength =
 --
 -- Does not get exposed to the user.
 data ControlException
-  = UserControlException
+  = ControlException
       (Ptr Word8)
       -- ^ Pointer that was reached before the exception got thrown.
       --
       -- Helpful for defining location.
+      [Text]
+      -- ^ Context.
       Text
       -- ^ User-supplied error reason.
   deriving (Show)
@@ -116,6 +142,7 @@ instance Exception ControlException
 
 data ByteStringErr = ByteStringErr
   { reason :: Text,
+    context :: [Text],
     -- | The so far constructed unfinished bytestring.
     byteString :: ByteString
   }
