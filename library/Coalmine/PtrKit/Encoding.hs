@@ -1,5 +1,5 @@
-module Coalmine.PtrKit.Poker
-  ( Poker,
+module Coalmine.PtrKit.Encoding
+  ( Encoding,
     toByteString,
     toByteStringList,
     toLazyByteString,
@@ -20,27 +20,27 @@ import Coalmine.PtrKit.ValidatingWriter qualified as ValidatingWriter
 --
 -- Implemented as a product of 'ValidatingWriter.ValidatingWriter'
 -- and 'StreamingPoker.StreamingPoker'.
-data Poker = Poker
+data Encoding = Encoding
   { streaming :: ~StreamingPoker.StreamingPoker,
     immediate :: ~ValidatingWriter.ValidatingWriter
   }
 
-instance Semigroup Poker where
-  Poker streamingL immediateL <> Poker streamingR immediateR =
-    Poker (streamingL <> streamingR) (immediateL <> immediateR)
+instance Semigroup Encoding where
+  Encoding streamingL immediateL <> Encoding streamingR immediateR =
+    Encoding (streamingL <> streamingR) (immediateL <> immediateR)
 
-instance Monoid Poker where
-  mempty = Poker mempty mempty
+instance Monoid Encoding where
+  mempty = Encoding mempty mempty
 
-toByteString :: Poker -> Either ValidatingWriter.Err ByteString
+toByteString :: Encoding -> Either ValidatingWriter.Err ByteString
 toByteString =
   ValidatingWriter.toByteString . (.immediate)
 
-toByteStringList :: Poker -> [ByteString]
+toByteStringList :: Encoding -> [ByteString]
 toByteStringList =
   error "TODO"
 
-toLazyByteString :: Poker -> LazyByteString
+toLazyByteString :: Encoding -> LazyByteString
 toLazyByteString =
   StreamingPoker.toLazyByteStringOfDefaultChunkSize . (.streaming)
 
@@ -49,7 +49,7 @@ toLazyByteString =
 --
 -- This is what you should use for integrating with sockets or file system.
 streamThruBuffer ::
-  Poker ->
+  Encoding ->
   -- | Reused buffer size.
   Int ->
   -- | Action to be repeatedly executed when the buffer is filled.
@@ -62,6 +62,6 @@ streamThruBuffer poker =
 
 -- * Constructors
 
-varLengthInteger :: Integer -> Poker
+varLengthInteger :: Integer -> Encoding
 varLengthInteger =
   error "TODO"

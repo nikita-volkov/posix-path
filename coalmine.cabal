@@ -168,7 +168,7 @@ library
     Coalmine.Prelude
     Coalmine.Printer
     Coalmine.Printing
-    Coalmine.PtrKit.Poker
+    Coalmine.PtrKit.Encoding
     Coalmine.PtrKit.PtrIO
     Coalmine.PtrKit.StreamingPoker
     Coalmine.PtrKit.ValidatingWriter
