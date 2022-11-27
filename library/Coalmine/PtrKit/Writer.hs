@@ -10,7 +10,7 @@ module Coalmine.PtrKit.Writer
 where
 
 import Coalmine.InternalPrelude hiding (Writer)
-import Coalmine.PtrKit.ImmediatePoker.PtrIO qualified as PtrIO
+import Coalmine.PtrKit.PtrIO qualified as PtrIO
 import Data.ByteString.Internal qualified as ByteStringInternal
 
 data Writer =

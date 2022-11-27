@@ -1,6 +1,6 @@
 -- |
 -- IO actions on a pointer conforming to Handle pattern.
-module Coalmine.PtrKit.ImmediatePoker.PtrIO where
+module Coalmine.PtrKit.PtrIO where
 
 import Coalmine.InternalPrelude
 

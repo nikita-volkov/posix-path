@@ -169,8 +169,8 @@ library
     Coalmine.Printer
     Coalmine.Printing
     Coalmine.PtrKit.ImmediatePoker
-    Coalmine.PtrKit.ImmediatePoker.PtrIO
     Coalmine.PtrKit.Poker
+    Coalmine.PtrKit.PtrIO
     Coalmine.PtrKit.StreamingPoker
     Coalmine.PtrKit.Writer
     Coalmine.PureRandom.Seeded

@@ -16,7 +16,7 @@ module Coalmine.PtrKit.ImmediatePoker
 where
 
 import Coalmine.InternalPrelude
-import Coalmine.PtrKit.ImmediatePoker.PtrIO qualified as PtrIO
+import Coalmine.PtrKit.PtrIO qualified as PtrIO
 import Data.ByteString.Internal qualified as ByteStringInternal
 
 data ImmediatePoker =
