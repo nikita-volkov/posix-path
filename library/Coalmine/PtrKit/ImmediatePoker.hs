@@ -78,10 +78,14 @@ naturalUnsignedVarLength =
   processValue 0 []
   where
     processValue !offset !byteRevList value =
-      case unsafeShiftR value 7 of
+      case nextValue of
         0 -> processMetadata offset (fromIntegral value) byteRevList
-        nextValue ->
-          error "TODO"
+        _ ->
+          processValue (succ offset) (byte : byteRevList) nextValue
+          where
+            !byte = setBit (fromIntegral value) 7
+      where
+        nextValue = unsafeShiftR value 7
 
     processMetadata lastOffset head tail =
       ImmediatePoker size action
