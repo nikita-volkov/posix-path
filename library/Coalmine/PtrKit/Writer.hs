@@ -49,6 +49,10 @@ run ::
 run (Writer size poke) alloc =
   error "TODO"
 
+-- |
+-- May allocate a bytestring that occupies redundant memory.
+--
+-- Use 'Data.ByteString.copy' to compact it, when that\'s important.
 toByteString :: Writer -> ByteString
 toByteString (Writer maxSize poke) =
   unsafeDupablePerformIO $ do
