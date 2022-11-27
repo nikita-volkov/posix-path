@@ -59,3 +59,9 @@ streamThruBuffer ::
   IO (Maybe Text)
 streamThruBuffer poker =
   StreamingPoker.streamThruBuffer poker.streaming
+
+-- * Constructors
+
+varLengthInteger :: Integer -> Poker
+varLengthInteger =
+  error "TODO"

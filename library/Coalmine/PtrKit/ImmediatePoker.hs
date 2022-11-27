@@ -63,9 +63,34 @@ toByteString (ImmediatePoker maxSize run) =
               minusPtr pAfter p
         )
 
+-- * Constructors
+
 failure :: Text -> ImmediatePoker
 failure reason =
   ImmediatePoker 0 (\ptr -> throwIO (UserControlException ptr reason))
+
+varLengthNatural :: Natural -> ImmediatePoker
+varLengthNatural =
+  eliminate 0 []
+  where
+    eliminate !size !byteRevList value =
+      case unsafeShiftR value 7 of
+        0 -> ImmediatePoker totalSize action
+          where
+            totalSize = succ size
+            action ptr = do
+              poke @Word8 lastPtr (fromIntegral value)
+              pokeRevList (plusPtr lastPtr (-1)) byteRevList
+              where
+                lastPtr = plusPtr ptr size
+                pokeRevList ptr = \case
+                  byte : tail -> do
+                    poke @Word8 ptr byte
+                    pokeRevList (plusPtr ptr (-1)) tail
+                  [] -> return (plusPtr lastPtr 1)
+        nextValue -> error "TODO"
+
+-- * Errors
 
 -- | Exception used as an internal control signal for efficiency.
 --
