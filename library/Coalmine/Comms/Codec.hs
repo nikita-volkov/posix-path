@@ -60,6 +60,23 @@ sum variants =
           BVec.fromList $ fmap (.decode) $ variants
 
 -- |
+-- Variable length representation of unsigned integers.
+--
+-- Uses the 8th bit of each octet to specify, whether another octet is needed.
+varLengthUnsignedInteger :: (Integral a, Bits a) => Codec a
+varLengthUnsignedInteger =
+  Codec schema write stream decode
+  where
+    schema =
+      error "TODO"
+    write =
+      Writer.varLengthUnsignedInteger
+    stream =
+      Streamer.varLengthUnsignedInteger
+    decode =
+      error "TODO"
+
+-- |
 -- Composable codec of product fields.
 data ProductCodec i o = ProductCodec
   { schema :: Acc (Text, Schema.Schema),
