@@ -15,18 +15,6 @@ serializeAsByteStringWithoutSchema :: Codec a -> ByteString
 serializeAsByteStringWithoutSchema =
   error "TODO"
 
-data DecodingError
-  = SchemaMismatchDecodingError
-      Schema.Schema
-      -- ^ Expected.
-      Schema.Schema
-      -- ^ Actual.
-
-data EncodingError = EncodingError
-  { reason :: Text,
-    path :: [Text]
-  }
-
 -- |
 -- Encoder, decoder and structure metadata all united in a single composable abstraction.
 --
@@ -123,8 +111,8 @@ variant name unpack pack codec =
   VariantCodec
     name
     codec.schema
-    (fmap codec.write . unpack)
-    (fmap codec.stream . unpack)
+    (fmap (inContextEncodingErrorEither name . codec.write) . unpack)
+    (fmap (inContextEncodingErrorEither name . codec.stream) . unpack)
     (fmap pack codec.decode)
 
 -- * Validation
@@ -157,3 +145,25 @@ data CodecCorrectness = CodecCorrectness
 validate :: Codec a -> a -> CodecCorrectness
 validate =
   error "TODO"
+
+-- * Errors
+
+data DecodingError
+  = SchemaMismatchDecodingError
+      Schema.Schema
+      -- ^ Expected.
+      Schema.Schema
+      -- ^ Actual.
+
+data EncodingError = EncodingError
+  { reason :: Text,
+    path :: [Text]
+  }
+
+inContextEncodingErrorEither :: Text -> Either EncodingError a -> Either EncodingError a
+inContextEncodingErrorEither context =
+  first $ inContextEncodingError context
+
+inContextEncodingError :: Text -> EncodingError -> EncodingError
+inContextEncodingError context err =
+  err {path = context : err.path}
