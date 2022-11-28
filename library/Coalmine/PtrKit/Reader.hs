@@ -1,106 +1,19 @@
 module Coalmine.PtrKit.Reader where
 
 import Coalmine.InternalPrelude hiding (Reader)
+import Coalmine.PtrKit.Peeker qualified as Peeker
 import Data.ByteString.Internal qualified as ByteString
-
--- |
--- Decoder which can read from multiple chunks of data
--- represented in pointers.
--- This implies full compatibility with 'ByteString'
--- at zero cost but also provides for more low-level tools.
-newtype Reader a = Reader
-  { run ::
-      -- Pointer to read the data from.
-      Ptr Word8 ->
-      -- Bytes avail in the pointer.
-      Int ->
-      -- Total offset amongst all inputs.
-      Int ->
-      -- Result of processing one chunk.
-      IO (Status a)
-  }
-  deriving (Functor)
-
-instance Applicative Reader where
-  pure a = Reader $ \ptr avail totalOffset ->
-    pure $ EmittingStatus a ptr avail totalOffset
-  left <*> right =
-    error "TODO"
-
-instance Monad Reader where
-  return = pure
-  (>>=) =
-    error "TODO"
-
-failure :: Text -> Reader a
-failure =
-  error "TODO"
-
-varLengthNatural :: Reader Natural
-varLengthNatural =
-  error "TODO"
-
-varLengthSignedInteger :: (Integral a, Bits a) => Reader a
-varLengthSignedInteger =
-  Reader processFirstByte
-  where
-    processFirstByte ptr avail totalOffset =
-      if avail > 0
-        then do
-          byte <- peek ptr
-          if testBit byte 6
-            then
-              processNextByte
-                (testBit byte 7)
-                6
-                (fromIntegral byte)
-                (plusPtr ptr 1)
-                (pred avail)
-                (succ totalOffset)
-            else
-              return $
-                EmittingStatus
-                  (fromIntegral (fromIntegral @_ @Int8 byte))
-                  (plusPtr ptr 1)
-                  (pred avail)
-                  (succ totalOffset)
-        else
-          return $
-            ExpectingStatus $
-              Reader processFirstByte
-    processNextByte negative !index !val ptr avail !totalOffset =
-      if avail > 0
-        then do
-          byte <- peek @Word8 ptr
-          let updatedVal = unsafeShiftL (fromIntegral byte) index .|. val
-          if testBit byte 7
-            then
-              processNextByte
-                negative
-                (index + 7)
-                updatedVal
-                (plusPtr ptr 1)
-                (pred avail)
-                (succ totalOffset)
-            else
-              return $
-                EmittingStatus
-                  (if negative then negate updatedVal else updatedVal)
-                  (plusPtr ptr 1)
-                  (pred avail)
-                  (succ totalOffset)
-        else
-          return $
-            ExpectingStatus $
-              Reader $
-                processNextByte negative index val
 
 -- | Result of processing one chunk of a streamed input.
 data Status a
   = -- | Failed.
     FailedStatus
-      Int
-      -- ^ Local offset in the last consumed input.
+      Text
+      -- ^ Message.
+      [Text]
+      -- ^ Contexts.
+      (Ptr Word8)
+      -- ^ Pointer at which we've stopped.
       Int
       -- ^ Total offset amongst all consumed inputs.
   | EmittingStatus
@@ -109,19 +22,67 @@ data Status a
       (Ptr Word8)
       -- ^ Pointer to read the following data from.
       Int
-      -- ^ Bytes avail in the pointer.
-      Int
-      -- ^ Total offset amongst all inputs.
-  | ExpectingStatus
+      -- ^ Total offset amongst all consumed inputs.
+  | -- | The provided pointer is read from in completion,
+    -- we still need more data though.
+    ExhaustedStatus
       (Reader a)
   deriving (Functor)
 
-feedByteString ::
-  Reader a ->
-  -- | Accumulated offset.
-  Int ->
-  ByteString ->
-  Status a
-feedByteString decoder totalOffset (ByteString.BS fp len) =
-  unsafePerformIO . withForeignPtr fp $ \p ->
-    decoder.run p len totalOffset
+-- |
+-- Decoder which can read from multiple chunks of data
+-- represented in pointers.
+-- This implies full compatibility with 'ByteString'
+-- at zero cost but also provides for more low-level tools.
+newtype Reader a = Reader
+  { run ::
+      -- Context path.
+      [Text] ->
+      -- Total offset amongst all inputs.
+      Int ->
+      -- Pointer to read the data from.
+      Ptr Word8 ->
+      -- Pointer after the data.
+      Ptr Word8 ->
+      -- Result of processing one chunk.
+      IO (Status a)
+  }
+  deriving (Functor)
+
+instance Applicative Reader where
+  pure a = Reader $ \_ totalOffset ptr ptr' ->
+    pure $ EmittingStatus a ptr totalOffset
+  left <*> right =
+    error "TODO"
+
+instance Monad Reader where
+  return = pure
+  (>>=) =
+    error "TODO"
+
+liftPeeker :: Peeker.Peeker a -> Reader a
+liftPeeker =
+  Reader . read
+  where
+    read peeker path !offset ptr ptr' =
+      peeker.run ptr ptr' <&> \case
+        Peeker.FailedStatus message ptr'' ->
+          FailedStatus message path ptr'' (offset + minusPtr ptr'' ptr)
+        Peeker.EmittingStatus result ptr'' _ ->
+          EmittingStatus result ptr'' (offset + minusPtr ptr'' ptr)
+        Peeker.ExhaustedStatus nextPeeker ->
+          ExhaustedStatus $
+            Reader $ \path offset ->
+              read nextPeeker path (offset + minusPtr ptr' ptr)
+
+failure :: Text -> Reader a
+failure =
+  error "TODO"
+
+varLengthUnsignedInteger :: (Integral a, Bits a) => Reader a
+varLengthUnsignedInteger =
+  error "TODO"
+
+varLengthSignedInteger :: (Integral a, Bits a) => Reader a
+varLengthSignedInteger =
+  error "TODO"

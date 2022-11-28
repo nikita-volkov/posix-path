@@ -7,6 +7,8 @@ import Data.ByteString.Internal qualified as ByteString
 data Status a
   = -- | Failed.
     FailedStatus
+      Text
+      -- ^ Message.
       (Ptr Word8)
       -- ^ Pointer at which we've stopped.
   | -- | Finished with a result and a remainder.

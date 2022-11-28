@@ -52,7 +52,7 @@ sum variants =
     stream =
       error "TODO"
     decode = do
-      idx <- fromIntegral <$> Decoding.varLengthNatural
+      idx <- Decoding.varLengthUnsignedInteger
       case vec BVec.!? idx of
         Just decoder -> decoder
         Nothing -> Decoding.failure $ "Invalid index: " <> showAs idx
