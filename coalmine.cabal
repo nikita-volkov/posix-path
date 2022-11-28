@@ -169,6 +169,7 @@ library
     Coalmine.Printer
     Coalmine.Printing
     Coalmine.PtrKit.Encoding
+    Coalmine.PtrKit.Peeker
     Coalmine.PtrKit.PtrIO
     Coalmine.PtrKit.Streamer
     Coalmine.PtrKit.ValidatedEncoding
