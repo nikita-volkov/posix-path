@@ -1,9 +1,9 @@
 module Coalmine.Comms.Codec where
 
-import Coalmine.Comms.Decoding qualified as Decoding
 import Coalmine.Comms.IntegerMath qualified as IntegerMath
 import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude hiding (product, sum)
+import Coalmine.PtrKit.Reader qualified as Decoding
 import Coalmine.PtrKit.Streamer qualified as Streamer
 import Coalmine.PtrKit.Writer qualified as Writer
 import Data.Vector qualified as BVec
@@ -25,7 +25,7 @@ data Codec a = Codec
   { schema :: Schema.Schema,
     write :: a -> Writer.Writer,
     stream :: a -> Streamer.Streamer,
-    decode :: Decoding.PtrReader a
+    decode :: Decoding.Reader a
   }
 
 product :: ProductCodec a a -> Codec a
@@ -126,7 +126,7 @@ data ProductCodec i o = ProductCodec
   { schema :: Acc (Text, Schema.Schema),
     write :: i -> Writer.Writer,
     stream :: i -> Streamer.Streamer,
-    decode :: Decoding.PtrReader o
+    decode :: Decoding.Reader o
   }
 
 instance Functor (ProductCodec i) where
@@ -163,7 +163,7 @@ data VariantCodec a = VariantCodec
     schema :: Schema.Schema,
     write :: a -> Maybe Writer.Writer,
     stream :: a -> Maybe Streamer.Streamer,
-    decode :: Decoding.PtrReader a
+    decode :: Decoding.Reader a
   }
 
 variant :: Text -> (a -> Maybe b) -> (b -> a) -> Codec b -> VariantCodec a

@@ -217,7 +217,6 @@ library
 
   other-modules:
     Coalmine.Comms.Codec
-    Coalmine.Comms.Decoding
     Coalmine.Comms.IntegerMath
     Coalmine.Comms.Schema
     Coalmine.Comms.Value
@@ -232,6 +231,7 @@ library
     Coalmine.Name.Constants
     Coalmine.Name.Gens
     Coalmine.Name.Megaparsec
+    Coalmine.PtrKit.Reader
 
   build-depends:
     , acc

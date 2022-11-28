@@ -1,6 +1,6 @@
-module Coalmine.Comms.Decoding where
+module Coalmine.PtrKit.Reader where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (Reader)
 import Data.ByteString.Internal qualified as ByteString
 
 -- |
@@ -8,7 +8,7 @@ import Data.ByteString.Internal qualified as ByteString
 -- represented in pointers.
 -- This implies full compatibility with 'ByteString'
 -- at zero cost but also provides for more low-level tools.
-newtype PtrReader a = PtrReader
+newtype Reader a = Reader
   { run ::
       -- Pointer to read the data from.
       Ptr Word8 ->
@@ -17,32 +17,32 @@ newtype PtrReader a = PtrReader
       -- Total offset amongst all inputs.
       Int ->
       -- Result of processing one chunk.
-      IO (PtrReaderIteration a)
+      IO (ReaderIteration a)
   }
   deriving (Functor)
 
-instance Applicative PtrReader where
-  pure a = PtrReader $ \ptr avail totalOffset ->
-    pure $ EmittingPtrReaderIteration a ptr avail totalOffset
+instance Applicative Reader where
+  pure a = Reader $ \ptr avail totalOffset ->
+    pure $ EmittingReaderIteration a ptr avail totalOffset
   left <*> right =
     error "TODO"
 
-instance Monad PtrReader where
+instance Monad Reader where
   return = pure
   (>>=) =
     error "TODO"
 
-failure :: Text -> PtrReader a
+failure :: Text -> Reader a
 failure =
   error "TODO"
 
-varLengthNatural :: PtrReader Natural
+varLengthNatural :: Reader Natural
 varLengthNatural =
   error "TODO"
 
-varLengthSignedInteger :: (Integral a, Bits a) => PtrReader a
+varLengthSignedInteger :: (Integral a, Bits a) => Reader a
 varLengthSignedInteger =
-  PtrReader processFirstByte
+  Reader processFirstByte
   where
     processFirstByte ptr avail totalOffset =
       if avail > 0
@@ -59,15 +59,15 @@ varLengthSignedInteger =
                 (succ totalOffset)
             else
               return $
-                EmittingPtrReaderIteration
+                EmittingReaderIteration
                   (fromIntegral (fromIntegral @_ @Int8 byte))
                   (plusPtr ptr 1)
                   (pred avail)
                   (succ totalOffset)
         else
           return $
-            ExpectingPtrReaderIteration $
-              PtrReader processFirstByte
+            ExpectingReaderIteration $
+              Reader processFirstByte
     processNextByte negative !index !val ptr avail !totalOffset =
       if avail > 0
         then do
@@ -84,26 +84,26 @@ varLengthSignedInteger =
                 (succ totalOffset)
             else
               return $
-                EmittingPtrReaderIteration
+                EmittingReaderIteration
                   (if negative then negate updatedVal else updatedVal)
                   (plusPtr ptr 1)
                   (pred avail)
                   (succ totalOffset)
         else
           return $
-            ExpectingPtrReaderIteration $
-              PtrReader $
+            ExpectingReaderIteration $
+              Reader $
                 processNextByte negative index val
 
 -- | Result of processing one chunk of a streamed input.
-data PtrReaderIteration a
+data ReaderIteration a
   = -- | Failed.
-    FailedPtrReaderIteration
+    FailedReaderIteration
       Int
       -- ^ Local offset in the last consumed input.
       Int
       -- ^ Total offset amongst all consumed inputs.
-  | EmittingPtrReaderIteration
+  | EmittingReaderIteration
       a
       -- ^ Result.
       (Ptr Word8)
@@ -112,16 +112,16 @@ data PtrReaderIteration a
       -- ^ Bytes avail in the pointer.
       Int
       -- ^ Total offset amongst all inputs.
-  | ExpectingPtrReaderIteration
-      (PtrReader a)
+  | ExpectingReaderIteration
+      (Reader a)
   deriving (Functor)
 
 feedByteString ::
-  PtrReader a ->
+  Reader a ->
   -- | Accumulated offset.
   Int ->
   ByteString ->
-  PtrReaderIteration a
+  ReaderIteration a
 feedByteString decoder totalOffset (ByteString.BS fp len) =
   unsafePerformIO . withForeignPtr fp $ \p ->
     decoder.run p len totalOffset

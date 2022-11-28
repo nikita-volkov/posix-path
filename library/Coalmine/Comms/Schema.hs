@@ -1,7 +1,7 @@
 module Coalmine.Comms.Schema where
 
-import Coalmine.Comms.Decoding qualified as Decoding
 import Coalmine.InternalPrelude
+import Coalmine.PtrKit.Reader qualified as Decoding
 
 -- |
 -- Structure of the data.
