@@ -10,7 +10,7 @@ data Value
   | ProductValue [(Text, Value)]
   | SeqValue (BVec Value)
 
-decode :: Schema.Schema -> Decoding.StreamingPtrDecoder Value
+decode :: Schema.Schema -> Decoding.PtrReader Value
 decode =
   error "TODO"
 

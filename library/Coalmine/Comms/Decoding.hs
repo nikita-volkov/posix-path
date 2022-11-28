@@ -8,7 +8,7 @@ import Data.ByteString.Internal qualified as ByteString
 -- represented in pointers.
 -- This implies full compatibility with 'ByteString'
 -- at zero cost but also provides for more low-level tools.
-newtype StreamingPtrDecoder a = StreamingPtrDecoder
+newtype PtrReader a = PtrReader
   { run ::
       -- Pointer to read the data from.
       Ptr Word8 ->
@@ -17,32 +17,32 @@ newtype StreamingPtrDecoder a = StreamingPtrDecoder
       -- Total offset amongst all inputs.
       Int ->
       -- Result of processing one chunk.
-      IO (StreamingPtrDecoderIteration a)
+      IO (PtrReaderIteration a)
   }
   deriving (Functor)
 
-instance Applicative StreamingPtrDecoder where
-  pure a = StreamingPtrDecoder $ \ptr avail totalOffset ->
-    pure $ EmittingStreamingPtrDecoderIteration a ptr avail totalOffset
+instance Applicative PtrReader where
+  pure a = PtrReader $ \ptr avail totalOffset ->
+    pure $ EmittingPtrReaderIteration a ptr avail totalOffset
   left <*> right =
     error "TODO"
 
-instance Monad StreamingPtrDecoder where
+instance Monad PtrReader where
   return = pure
   (>>=) =
     error "TODO"
 
-failure :: Text -> StreamingPtrDecoder a
+failure :: Text -> PtrReader a
 failure =
   error "TODO"
 
-varLengthNatural :: StreamingPtrDecoder Natural
+varLengthNatural :: PtrReader Natural
 varLengthNatural =
   error "TODO"
 
-varLengthSignedInteger :: (Integral a, Bits a) => StreamingPtrDecoder a
+varLengthSignedInteger :: (Integral a, Bits a) => PtrReader a
 varLengthSignedInteger =
-  StreamingPtrDecoder processFirstByte
+  PtrReader processFirstByte
   where
     processFirstByte ptr avail totalOffset =
       if avail > 0
@@ -59,15 +59,15 @@ varLengthSignedInteger =
                 (succ totalOffset)
             else
               return $
-                EmittingStreamingPtrDecoderIteration
+                EmittingPtrReaderIteration
                   (fromIntegral (fromIntegral @_ @Int8 byte))
                   (plusPtr ptr 1)
                   (pred avail)
                   (succ totalOffset)
         else
           return $
-            ExpectingStreamingPtrDecoderIteration $
-              StreamingPtrDecoder processFirstByte
+            ExpectingPtrReaderIteration $
+              PtrReader processFirstByte
     processNextByte negative !index !val ptr avail !totalOffset =
       if avail > 0
         then do
@@ -84,26 +84,26 @@ varLengthSignedInteger =
                 (succ totalOffset)
             else
               return $
-                EmittingStreamingPtrDecoderIteration
+                EmittingPtrReaderIteration
                   (if negative then negate updatedVal else updatedVal)
                   (plusPtr ptr 1)
                   (pred avail)
                   (succ totalOffset)
         else
           return $
-            ExpectingStreamingPtrDecoderIteration $
-              StreamingPtrDecoder $
+            ExpectingPtrReaderIteration $
+              PtrReader $
                 processNextByte negative index val
 
 -- | Result of processing one chunk of a streamed input.
-data StreamingPtrDecoderIteration a
+data PtrReaderIteration a
   = -- | Failed.
-    FailedStreamingPtrDecoderIteration
+    FailedPtrReaderIteration
       Int
       -- ^ Local offset in the last consumed input.
       Int
       -- ^ Total offset amongst all consumed inputs.
-  | EmittingStreamingPtrDecoderIteration
+  | EmittingPtrReaderIteration
       a
       -- ^ Result.
       (Ptr Word8)
@@ -112,16 +112,16 @@ data StreamingPtrDecoderIteration a
       -- ^ Bytes avail in the pointer.
       Int
       -- ^ Total offset amongst all inputs.
-  | ExpectingStreamingPtrDecoderIteration
-      (StreamingPtrDecoder a)
+  | ExpectingPtrReaderIteration
+      (PtrReader a)
   deriving (Functor)
 
 feedByteString ::
-  StreamingPtrDecoder a ->
+  PtrReader a ->
   -- | Accumulated offset.
   Int ->
   ByteString ->
-  StreamingPtrDecoderIteration a
+  PtrReaderIteration a
 feedByteString decoder totalOffset (ByteString.BS fp len) =
   unsafePerformIO . withForeignPtr fp $ \p ->
     decoder.run p len totalOffset

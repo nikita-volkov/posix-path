@@ -25,7 +25,7 @@ data Codec a = Codec
   { schema :: Schema.Schema,
     write :: a -> Writer.Writer,
     stream :: a -> Streamer.Streamer,
-    decode :: Decoding.StreamingPtrDecoder a
+    decode :: Decoding.PtrReader a
   }
 
 product :: ProductCodec a a -> Codec a
@@ -126,7 +126,7 @@ data ProductCodec i o = ProductCodec
   { schema :: Acc (Text, Schema.Schema),
     write :: i -> Writer.Writer,
     stream :: i -> Streamer.Streamer,
-    decode :: Decoding.StreamingPtrDecoder o
+    decode :: Decoding.PtrReader o
   }
 
 instance Functor (ProductCodec i) where
@@ -163,7 +163,7 @@ data VariantCodec a = VariantCodec
     schema :: Schema.Schema,
     write :: a -> Maybe Writer.Writer,
     stream :: a -> Maybe Streamer.Streamer,
-    decode :: Decoding.StreamingPtrDecoder a
+    decode :: Decoding.PtrReader a
   }
 
 variant :: Text -> (a -> Maybe b) -> (b -> a) -> Codec b -> VariantCodec a
