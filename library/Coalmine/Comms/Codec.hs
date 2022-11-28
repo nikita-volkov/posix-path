@@ -70,17 +70,31 @@ normallyDistributedInteger ::
   a ->
   Codec a
 normallyDistributedInteger min max epicenter =
-  Codec schema write stream decode
-  where
-    schema =
-      error "TODO"
-    write val =
-      Writer.varLengthSignedInteger $
-        val - epicenter
-    stream =
-      error "TODO"
-    decode =
-      error "TODO"
+  case epicenter of
+    0 ->
+      Codec schema write stream decode
+      where
+        schema =
+          error "TODO"
+        write =
+          Writer.varLengthSignedInteger
+        stream =
+          error "TODO"
+        decode =
+          Decoding.varLengthSignedInteger
+    _ ->
+      Codec schema write stream decode
+      where
+        schema =
+          error "TODO"
+        write val =
+          Writer.varLengthSignedInteger $
+            val - epicenter
+        stream =
+          error "TODO"
+        decode =
+          (+ epicenter)
+            <$> Decoding.varLengthSignedInteger
 
 uniformlyDistributedInteger ::
   (Integral a, Bits a) =>
