@@ -3,7 +3,7 @@ module Coalmine.Comms.Codec where
 import Coalmine.Comms.IntegerMath qualified as IntegerMath
 import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude hiding (product, sum)
-import Coalmine.PtrKit.Reader qualified as Decoding
+import Coalmine.PtrKit.Reader qualified as Reader
 import Coalmine.PtrKit.Streamer qualified as Streamer
 import Coalmine.PtrKit.Writer qualified as Writer
 import Data.Vector qualified as BVec
@@ -25,16 +25,16 @@ data Codec a = Codec
   { schema :: Schema.Schema,
     write :: a -> Writer.Writer,
     stream :: a -> Streamer.Streamer,
-    decode :: Decoding.Reader a
+    read :: Reader.Reader a
   }
 
 product :: ProductCodec a a -> Codec a
 product ProductCodec {..} =
-  Codec (Schema.ProductSchema (toList schema)) write stream decode
+  Codec (Schema.ProductSchema (toList schema)) write stream read
 
 sum :: [VariantCodec a] -> Codec a
 sum variants =
-  Codec schema write stream decode
+  Codec schema write stream read
   where
     schema =
       variants
@@ -51,14 +51,14 @@ sum variants =
           Writer.varLengthUnsignedInteger idx
     stream =
       error "TODO"
-    decode = do
-      idx <- Decoding.varLengthUnsignedInteger
+    read = do
+      idx <- Reader.varLengthUnsignedInteger
       case vec BVec.!? idx of
         Just decoder -> decoder
-        Nothing -> Decoding.failure $ "Invalid index: " <> showAs idx
+        Nothing -> Reader.failure $ "Invalid index: " <> showAs idx
       where
         vec =
-          BVec.fromList $ fmap (.decode) $ variants
+          BVec.fromList $ fmap (.read) $ variants
 
 normallyDistributedInteger ::
   (Integral a, Bits a) =>
@@ -72,7 +72,7 @@ normallyDistributedInteger ::
 normallyDistributedInteger min max epicenter =
   case epicenter of
     0 ->
-      Codec schema write stream decode
+      Codec schema write stream read
       where
         schema =
           error "TODO"
@@ -80,10 +80,10 @@ normallyDistributedInteger min max epicenter =
           Writer.varLengthSignedInteger
         stream =
           error "TODO"
-        decode =
-          Decoding.varLengthSignedInteger
+        read =
+          Reader.varLengthSignedInteger
     _ ->
-      Codec schema write stream decode
+      Codec schema write stream read
       where
         schema =
           error "TODO"
@@ -92,9 +92,9 @@ normallyDistributedInteger min max epicenter =
             val - epicenter
         stream =
           error "TODO"
-        decode =
+        read =
           (+ epicenter)
-            <$> Decoding.varLengthSignedInteger
+            <$> Reader.varLengthSignedInteger
 
 uniformlyDistributedInteger ::
   (Integral a, Bits a) =>
@@ -104,7 +104,7 @@ uniformlyDistributedInteger ::
   Natural ->
   Codec a
 uniformlyDistributedInteger min deltaToMax =
-  Codec schema write stream decode
+  Codec schema write stream read
   where
     schema =
       Schema.UniformlyDistributedIntegerSchema min deltaToMax
@@ -112,7 +112,7 @@ uniformlyDistributedInteger min deltaToMax =
       Writer.constLengthInteger byteSize (val - adaptedMin)
     stream val =
       Streamer.constLengthInteger byteSize (val - adaptedMin)
-    decode =
+    read =
       error "TODO"
     -- Amount of bytes for the entire range.
     byteSize =
@@ -126,7 +126,7 @@ data ProductCodec i o = ProductCodec
   { schema :: Acc (Text, Schema.Schema),
     write :: i -> Writer.Writer,
     stream :: i -> Streamer.Streamer,
-    decode :: Decoding.Reader o
+    read :: Reader.Reader o
   }
 
 instance Functor (ProductCodec i) where
@@ -152,7 +152,7 @@ instance Profunctor ProductCodec where
       codec.schema
       (codec.write . f1)
       (codec.stream . f1)
-      (fmap f2 codec.decode)
+      (fmap f2 codec.read)
 
 field :: Text -> Codec a -> ProductCodec a a
 field name codec =
@@ -163,7 +163,7 @@ data VariantCodec a = VariantCodec
     schema :: Schema.Schema,
     write :: a -> Maybe Writer.Writer,
     stream :: a -> Maybe Streamer.Streamer,
-    decode :: Decoding.Reader a
+    read :: Reader.Reader a
   }
 
 variant :: Text -> (a -> Maybe b) -> (b -> a) -> Codec b -> VariantCodec a
@@ -173,7 +173,7 @@ variant name unpack pack codec =
     codec.schema
     (fmap codec.write . unpack)
     (fmap codec.stream . unpack)
-    (fmap pack codec.decode)
+    (fmap pack codec.read)
 
 -- * Validation
 
