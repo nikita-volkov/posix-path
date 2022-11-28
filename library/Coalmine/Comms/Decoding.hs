@@ -40,6 +40,61 @@ varLengthNatural :: StreamingPtrDecoder Natural
 varLengthNatural =
   error "TODO"
 
+varLengthSignedInteger :: (Integral a, Bits a) => StreamingPtrDecoder a
+varLengthSignedInteger =
+  StreamingPtrDecoder processFirstByte
+  where
+    processFirstByte ptr avail totalOffset =
+      if avail > 0
+        then do
+          byte <- peek ptr
+          if testBit byte 6
+            then
+              processNextByte
+                (testBit byte 7)
+                6
+                (fromIntegral byte)
+                (plusPtr ptr 1)
+                (pred avail)
+                (succ totalOffset)
+            else
+              return $
+                EmittingStreamingPtrDecoderIteration
+                  (fromIntegral (fromIntegral @_ @Int8 byte))
+                  (plusPtr ptr 1)
+                  (pred avail)
+                  (succ totalOffset)
+        else
+          return $
+            ExpectingStreamingPtrDecoderIteration $
+              StreamingPtrDecoder processFirstByte
+    processNextByte negative !index !val ptr avail !totalOffset =
+      if avail > 0
+        then do
+          byte <- peek @Word8 ptr
+          let updatedVal = unsafeShiftL (fromIntegral byte) index .|. val
+          if testBit byte 7
+            then
+              processNextByte
+                negative
+                (index + 7)
+                updatedVal
+                (plusPtr ptr 1)
+                (pred avail)
+                (succ totalOffset)
+            else
+              return $
+                EmittingStreamingPtrDecoderIteration
+                  (if negative then negate updatedVal else updatedVal)
+                  (plusPtr ptr 1)
+                  (pred avail)
+                  (succ totalOffset)
+        else
+          return $
+            ExpectingStreamingPtrDecoderIteration $
+              StreamingPtrDecoder $
+                processNextByte negative index val
+
 -- | Result of processing one chunk of a streamed input.
 data StreamingPtrDecoderIteration a
   = -- | Failed.
