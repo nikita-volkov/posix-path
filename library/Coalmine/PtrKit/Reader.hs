@@ -17,13 +17,13 @@ newtype Reader a = Reader
       -- Total offset amongst all inputs.
       Int ->
       -- Result of processing one chunk.
-      IO (ReaderIteration a)
+      IO (Status a)
   }
   deriving (Functor)
 
 instance Applicative Reader where
   pure a = Reader $ \ptr avail totalOffset ->
-    pure $ EmittingReaderIteration a ptr avail totalOffset
+    pure $ EmittingStatus a ptr avail totalOffset
   left <*> right =
     error "TODO"
 
@@ -59,14 +59,14 @@ varLengthSignedInteger =
                 (succ totalOffset)
             else
               return $
-                EmittingReaderIteration
+                EmittingStatus
                   (fromIntegral (fromIntegral @_ @Int8 byte))
                   (plusPtr ptr 1)
                   (pred avail)
                   (succ totalOffset)
         else
           return $
-            ExpectingReaderIteration $
+            ExpectingStatus $
               Reader processFirstByte
     processNextByte negative !index !val ptr avail !totalOffset =
       if avail > 0
@@ -84,26 +84,26 @@ varLengthSignedInteger =
                 (succ totalOffset)
             else
               return $
-                EmittingReaderIteration
+                EmittingStatus
                   (if negative then negate updatedVal else updatedVal)
                   (plusPtr ptr 1)
                   (pred avail)
                   (succ totalOffset)
         else
           return $
-            ExpectingReaderIteration $
+            ExpectingStatus $
               Reader $
                 processNextByte negative index val
 
 -- | Result of processing one chunk of a streamed input.
-data ReaderIteration a
+data Status a
   = -- | Failed.
-    FailedReaderIteration
+    FailedStatus
       Int
       -- ^ Local offset in the last consumed input.
       Int
       -- ^ Total offset amongst all consumed inputs.
-  | EmittingReaderIteration
+  | EmittingStatus
       a
       -- ^ Result.
       (Ptr Word8)
@@ -112,7 +112,7 @@ data ReaderIteration a
       -- ^ Bytes avail in the pointer.
       Int
       -- ^ Total offset amongst all inputs.
-  | ExpectingReaderIteration
+  | ExpectingStatus
       (Reader a)
   deriving (Functor)
 
@@ -121,7 +121,7 @@ feedByteString ::
   -- | Accumulated offset.
   Int ->
   ByteString ->
-  ReaderIteration a
+  Status a
 feedByteString decoder totalOffset (ByteString.BS fp len) =
   unsafePerformIO . withForeignPtr fp $ \p ->
     decoder.run p len totalOffset
