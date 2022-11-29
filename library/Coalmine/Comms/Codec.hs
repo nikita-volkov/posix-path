@@ -52,10 +52,8 @@ sum variants =
     stream =
       error "TODO"
     read = do
-      idx <- Reader.varLengthUnsignedInteger
-      case vec BVec.!? idx of
-        Just decoder -> decoder
-        Nothing -> Reader.failure $ "Invalid index: " <> showAs idx
+      idx <- Reader.varLengthUnsignedInteger 0 (pred (BVec.length vec))
+      BVec.unsafeIndex vec idx
       where
         vec =
           BVec.fromList $ fmap (.read) $ variants
@@ -70,31 +68,17 @@ normallyDistributedInteger ::
   a ->
   Codec a
 normallyDistributedInteger min max epicenter =
-  case epicenter of
-    0 ->
-      Codec schema write stream read
-      where
-        schema =
-          error "TODO"
-        write =
-          Writer.varLengthSignedInteger
-        stream =
-          error "TODO"
-        read =
-          Reader.varLengthSignedInteger
-    _ ->
-      Codec schema write stream read
-      where
-        schema =
-          error "TODO"
-        write val =
-          Writer.varLengthSignedInteger $
-            val - epicenter
-        stream =
-          error "TODO"
-        read =
-          (+ epicenter)
-            <$> Reader.varLengthSignedInteger
+  Codec schema write stream read
+  where
+    schema =
+      error "TODO"
+    write val =
+      Writer.varLengthSignedInteger $
+        val - epicenter
+    stream =
+      error "TODO"
+    read =
+      Reader.varLengthSignedInteger min max epicenter
 
 uniformlyDistributedInteger ::
   (Integral a, Bits a) =>

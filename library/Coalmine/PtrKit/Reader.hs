@@ -84,10 +84,24 @@ failure :: Text -> Reader a
 failure =
   error "TODO"
 
-varLengthUnsignedInteger :: (Integral a, Bits a) => Reader a
+varLengthUnsignedInteger ::
+  (Integral a, Bits a) =>
+  -- | Minimum value.
+  a ->
+  -- | Maximum value.
+  a ->
+  Reader a
 varLengthUnsignedInteger =
   error "TODO"
 
-varLengthSignedInteger :: (Integral a, Bits a) => Reader a
+varLengthSignedInteger ::
+  (Integral a, Bits a) =>
+  -- | Minimum value.
+  a ->
+  -- | Maximum value.
+  a ->
+  -- | Zero offset. Points to the most probable value.
+  a ->
+  Reader a
 varLengthSignedInteger =
   error "TODO"
