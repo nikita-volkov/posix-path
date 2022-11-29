@@ -57,8 +57,13 @@ instance Applicative Reader where
 
 instance Monad Reader where
   return = pure
-  (>>=) =
-    error "TODO"
+  Reader runL >>= contR =
+    Reader $ \path offset ptr ptr' ->
+      runL path offset ptr ptr' >>= \case
+        EmittingStatus resL ptrL offsetL ->
+          case contR resL of Reader runR -> runR path offsetL ptrL ptr'
+        ExhaustedStatus nextL ->
+          return $ ExhaustedStatus $ nextL >>= contR
 
 liftPeeker :: Peeker.Peeker a -> Reader a
 liftPeeker =
