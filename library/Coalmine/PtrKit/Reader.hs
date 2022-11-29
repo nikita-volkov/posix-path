@@ -26,8 +26,13 @@ data Status a
   | -- | The provided pointer is read from in completion,
     -- we still need more data though.
     ExhaustedStatus
-      (Reader a)
-      -- ^ Updated reader to feed to eventually acquire the result.
+      ( -- Pointer to read the data from.
+        Ptr Word8 ->
+        -- Pointer after the data.
+        Ptr Word8 ->
+        -- Result of processing one chunk.
+        IO (Status a)
+      )
   deriving (Functor)
 
 -- |
@@ -59,12 +64,17 @@ instance Applicative Reader where
 instance Monad Reader where
   return = pure
   Reader runL >>= contR =
-    Reader $ \path offset ptr ptr' ->
-      runL path offset ptr ptr' >>= \case
-        EmittingStatus resL ptrL offsetL ->
-          case contR resL of Reader runR -> runR path offsetL ptrL ptr'
-        ExhaustedStatus nextL ->
-          return $ ExhaustedStatus $ nextL >>= contR
+    Reader run
+    where
+      run path offset ptr ptr' =
+        runL path offset ptr ptr' >>= processStatusL
+        where
+          processStatusL = \case
+            EmittingStatus resL ptrL offsetL ->
+              case contR resL of Reader runR -> runR path offsetL ptrL ptr'
+            ExhaustedStatus runNextL ->
+              return . ExhaustedStatus $ \ptr ptr' ->
+                runNextL ptr ptr' >>= processStatusL
 
 liftPeeker :: Peeker.Peeker a -> Reader a
 liftPeeker =
@@ -78,8 +88,7 @@ liftPeeker =
           EmittingStatus result ptr'' (offset + minusPtr ptr'' ptr)
         Peeker.ExhaustedStatus nextPeeker ->
           ExhaustedStatus $
-            Reader $ \path offset ->
-              read nextPeeker path (offset + minusPtr ptr' ptr)
+            read nextPeeker path (offset + minusPtr ptr' ptr)
 
 failure :: Text -> Reader a
 failure =
