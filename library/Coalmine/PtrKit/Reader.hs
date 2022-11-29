@@ -27,6 +27,7 @@ data Status a
     -- we still need more data though.
     ExhaustedStatus
       (Reader a)
+      -- ^ Updated reader to feed to eventually acquire the result.
   deriving (Functor)
 
 -- |
