@@ -54,9 +54,9 @@ sum variants =
       error "TODO"
     decoder = do
       idx <-
-        Decoder.inContext "sum-tag" $
+        Decoder.inContext "variant-tag" $
           CommsDecoders.varLengthUnsignedInteger 0 (pred (BVec.length vec))
-      Decoder.inContext "sum-payload" $ BVec.unsafeIndex vec idx
+      Decoder.inContext "variant-payload" $ BVec.unsafeIndex vec idx
       where
         vec =
           BVec.fromList $ fmap (.decoder) $ variants
