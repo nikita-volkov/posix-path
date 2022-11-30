@@ -1,9 +1,8 @@
-module Coalmine.PtrKit.Reader where
+module Coalmine.Comms.Decoder where
 
 import Coalmine.BaseExtras.Integer qualified as Integer
-import Coalmine.InternalPrelude hiding (Reader)
+import Coalmine.InternalPrelude
 import Coalmine.PtrKit.Peeker qualified as Peeker
-import Data.ByteString.Internal qualified as ByteString
 
 -- | Result of processing one chunk of a streamed input.
 data Status a
@@ -41,7 +40,7 @@ data Status a
 -- represented in pointers.
 -- This implies full compatibility with 'ByteString'
 -- at zero cost but also provides for more low-level tools.
-newtype Reader a = Reader
+newtype Decoder a = Decoder
   { run ::
       -- Context path.
       [Text] ->
@@ -56,30 +55,30 @@ newtype Reader a = Reader
   }
   deriving (Functor)
 
-instance Applicative Reader where
-  pure a = Reader $ \_ totalOffset ptr ptr' ->
+instance Applicative Decoder where
+  pure a = Decoder $ \_ totalOffset ptr ptr' ->
     pure $ EmittingStatus a ptr totalOffset
   left <*> right =
     error "TODO"
 
-instance Monad Reader where
+instance Monad Decoder where
   return = pure
-  Reader runL >>= contR =
-    Reader run
+  Decoder runL >>= contR =
+    Decoder run
     where
       run path offset ptr ptr' =
         runL path offset ptr ptr' >>= processStatusL
         where
           processStatusL = \case
             EmittingStatus resL ptrL offsetL ->
-              case contR resL of Reader runR -> runR path offsetL ptrL ptr'
+              case contR resL of Decoder runR -> runR path offsetL ptrL ptr'
             ExhaustedStatus runNextL ->
               return . ExhaustedStatus $ \ptr ptr' ->
                 runNextL ptr ptr' >>= processStatusL
 
-liftPeeker :: Peeker.Peeker a -> Reader a
+liftPeeker :: Peeker.Peeker a -> Decoder a
 liftPeeker =
-  Reader . read
+  Decoder . read
   where
     read peeker path !offset ptr ptr' =
       peeker.run ptr ptr' <&> \case
@@ -91,11 +90,11 @@ liftPeeker =
           ExhaustedStatus $
             read nextPeeker path (offset + minusPtr ptr' ptr)
 
-inContext :: Text -> Reader a -> Reader a
+inContext :: Text -> Decoder a -> Decoder a
 inContext =
   error "TODO"
 
-failure :: Text -> Reader a
+failure :: Text -> Decoder a
 failure =
   error "TODO"
 
@@ -105,7 +104,7 @@ varLengthUnsignedInteger ::
   a ->
   -- | Maximum value.
   a ->
-  Reader a
+  Decoder a
 varLengthUnsignedInteger =
   error "TODO"
 
@@ -117,20 +116,20 @@ varLengthSignedInteger ::
   a ->
   -- | Zero offset. Points to the most probable value.
   a ->
-  Reader a
+  Decoder a
 varLengthSignedInteger minVal maxVal valOffset =
-  Reader read
+  Decoder decode
   where
     absValuePositiveBound = maxVal - valOffset
     absValueNegativeBound = valOffset - minVal
-    read path startOffset =
+    decode path startOffset =
       if maxVal == minVal
         then error "TODO: Fail with bad configuration"
-        else readHead
+        else decodeHead
       where
         bitsToOffset bits =
           startOffset + Integer.bytesNeededForBits bits
-        readHead currentPtr afterPtr =
+        decodeHead currentPtr afterPtr =
           if currentPtr < afterPtr
             then do
               byte <- peek @Word8 currentPtr
@@ -141,11 +140,11 @@ varLengthSignedInteger minVal maxVal valOffset =
                         then error "TODO: handle value too large"
                         else
                           if testBit byte 6
-                            then readTailInNegativeMode 6 absValueState (plusPtr currentPtr 1) afterPtr
+                            then decodeTailInNegativeMode 6 absValueState (plusPtr currentPtr 1) afterPtr
                             else error "TODO: finish"
-                else error "TODO: read tail in positive mode"
+                else error "TODO: decode tail in positive mode"
             else error "TODO: exhaust"
-        readTailInNegativeMode !payloadBitOffset !absValueState currentPtr afterPtr =
+        decodeTailInNegativeMode !payloadBitOffset !absValueState currentPtr afterPtr =
           if absValueState > absValueNegativeBound
             then
               return $
