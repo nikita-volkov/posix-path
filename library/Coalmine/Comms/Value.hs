@@ -1,9 +1,9 @@
 module Coalmine.Comms.Value where
 
-import Coalmine.Comms.Decoders qualified as Decoders
+import Coalmine.Comms.Readers qualified as Readers
 import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude
-import Coalmine.PtrKit.Decoder qualified as Decoder
+import Coalmine.PtrKit.Reader qualified as Reader
 import Coalmine.PureRandom.SizedSeeded qualified as SizedSeeded
 
 data Value
@@ -11,8 +11,8 @@ data Value
   | ProductValue [(Text, Value)]
   | SeqValue (BVec Value)
 
-decode :: Schema.Schema -> Decoder.Decoder Value
-decode =
+read :: Schema.Schema -> Reader.Reader Value
+read =
   error "TODO"
 
 simulateFromSchema :: Schema.Schema -> SizedSeeded.SizedSeeded Value

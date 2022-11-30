@@ -1,8 +1,8 @@
-module Coalmine.Comms.Decoders where
+module Coalmine.Comms.Readers where
 
 import Coalmine.BaseExtras.Integer qualified as Integer
-import Coalmine.InternalPrelude
-import Coalmine.PtrKit.Decoder
+import Coalmine.InternalPrelude hiding (Reader)
+import Coalmine.PtrKit.Reader
 
 varLengthUnsignedInteger ::
   (Integral a, Bits a) =>
@@ -10,7 +10,7 @@ varLengthUnsignedInteger ::
   a ->
   -- | Maximum value.
   a ->
-  Decoder a
+  Reader a
 varLengthUnsignedInteger =
   error "TODO"
 
@@ -22,9 +22,9 @@ varLengthSignedInteger ::
   a ->
   -- | Zero offset. Points to the most probable value.
   a ->
-  Decoder a
+  Reader a
 varLengthSignedInteger minVal maxVal valOffset =
-  Decoder decode
+  Reader decode
   where
     absValuePositiveBound = maxVal - valOffset
     absValueNegativeBound = valOffset - minVal

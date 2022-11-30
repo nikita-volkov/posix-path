@@ -1,10 +1,10 @@
 module Coalmine.Comms.Codec where
 
 import Coalmine.BaseExtras.Integer qualified as IntegerMath
-import Coalmine.Comms.Decoders qualified as CommsDecoders
+import Coalmine.Comms.Readers qualified as CommsReaders
 import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude hiding (product, sum)
-import Coalmine.PtrKit.Decoder qualified as Decoder
+import Coalmine.PtrKit.Reader qualified as Reader
 import Coalmine.PtrKit.Streamer qualified as Streamer
 import Coalmine.PtrKit.Writer qualified as Writer
 import Data.Vector qualified as BVec
@@ -26,16 +26,16 @@ data Codec a = Codec
   { schema :: Schema.Schema,
     write :: a -> Writer.Writer,
     stream :: a -> Streamer.Streamer,
-    decoder :: Decoder.Decoder a
+    reader :: Reader.Reader a
   }
 
 product :: ProductCodec a a -> Codec a
 product ProductCodec {..} =
-  Codec (Schema.ProductSchema (toList schema)) write stream decoder
+  Codec (Schema.ProductSchema (toList schema)) write stream reader
 
 sum :: [VariantCodec a] -> Codec a
 sum variants =
-  Codec schema write stream decoder
+  Codec schema write stream reader
   where
     schema =
       variants
@@ -52,14 +52,14 @@ sum variants =
           Writer.varLengthUnsignedInteger idx
     stream =
       error "TODO"
-    decoder = do
+    reader = do
       idx <-
-        Decoder.inContext "variant-tag" $
-          CommsDecoders.varLengthUnsignedInteger 0 (pred (BVec.length vec))
-      Decoder.inContext "variant-payload" $ BVec.unsafeIndex vec idx
+        Reader.inContext "variant-tag" $
+          CommsReaders.varLengthUnsignedInteger 0 (pred (BVec.length vec))
+      Reader.inContext "variant-payload" $ BVec.unsafeIndex vec idx
       where
         vec =
-          BVec.fromList $ fmap (.decoder) $ variants
+          BVec.fromList $ fmap (.reader) $ variants
 
 normallyDistributedInteger ::
   (Integral a, Bits a, Show a) =>
@@ -71,7 +71,7 @@ normallyDistributedInteger ::
   a ->
   Codec a
 normallyDistributedInteger min max epicenter =
-  Codec schema write stream decoder
+  Codec schema write stream reader
   where
     schema =
       error "TODO"
@@ -80,8 +80,8 @@ normallyDistributedInteger min max epicenter =
         val - epicenter
     stream =
       error "TODO"
-    decoder =
-      CommsDecoders.varLengthSignedInteger min max epicenter
+    reader =
+      CommsReaders.varLengthSignedInteger min max epicenter
 
 uniformlyDistributedInteger ::
   (Integral a, Bits a) =>
@@ -91,7 +91,7 @@ uniformlyDistributedInteger ::
   Natural ->
   Codec a
 uniformlyDistributedInteger min deltaToMax =
-  Codec schema write stream decoder
+  Codec schema write stream reader
   where
     schema =
       Schema.UniformlyDistributedIntegerSchema min deltaToMax
@@ -99,7 +99,7 @@ uniformlyDistributedInteger min deltaToMax =
       Writer.constLengthInteger byteSize (val - adaptedMin)
     stream val =
       Streamer.constLengthInteger byteSize (val - adaptedMin)
-    decoder =
+    reader =
       error "TODO"
     -- Amount of bytes for the entire range.
     byteSize =
@@ -113,7 +113,7 @@ data ProductCodec i o = ProductCodec
   { schema :: Acc (Text, Schema.Schema),
     write :: i -> Writer.Writer,
     stream :: i -> Streamer.Streamer,
-    decoder :: Decoder.Decoder o
+    reader :: Reader.Reader o
   }
 
 instance Functor (ProductCodec i) where
@@ -139,7 +139,7 @@ instance Profunctor ProductCodec where
       codec.schema
       (codec.write . f1)
       (codec.stream . f1)
-      (fmap f2 codec.decoder)
+      (fmap f2 codec.reader)
 
 field :: Text -> Codec a -> ProductCodec a a
 field name codec =
@@ -150,7 +150,7 @@ data VariantCodec a = VariantCodec
     schema :: Schema.Schema,
     write :: a -> Maybe Writer.Writer,
     stream :: a -> Maybe Streamer.Streamer,
-    decoder :: Decoder.Decoder a
+    reader :: Reader.Reader a
   }
 
 variant :: Text -> (a -> Maybe b) -> (b -> a) -> Codec b -> VariantCodec a
@@ -160,7 +160,7 @@ variant name unpack pack codec =
     codec.schema
     (fmap codec.write . unpack)
     (fmap codec.stream . unpack)
-    (fmap pack codec.decoder)
+    (fmap pack codec.reader)
 
 -- * Validation
 

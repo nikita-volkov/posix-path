@@ -168,10 +168,10 @@ library
     Coalmine.Prelude
     Coalmine.Printer
     Coalmine.Printing
-    Coalmine.PtrKit.Decoder
     Coalmine.PtrKit.Encoding
     Coalmine.PtrKit.Peeker
     Coalmine.PtrKit.PtrIO
+    Coalmine.PtrKit.Reader
     Coalmine.PtrKit.Streamer
     Coalmine.PtrKit.ValidatedEncoding
     Coalmine.PtrKit.Writer
@@ -219,7 +219,7 @@ library
 
   other-modules:
     Coalmine.Comms.Codec
-    Coalmine.Comms.Decoders
+    Coalmine.Comms.Readers
     Coalmine.Comms.Schema
     Coalmine.Comms.Value
     Coalmine.Comms.ValueClass

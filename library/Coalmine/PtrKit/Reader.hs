@@ -1,6 +1,6 @@
-module Coalmine.PtrKit.Decoder where
+module Coalmine.PtrKit.Reader where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (Reader)
 import Coalmine.PtrKit.Peeker qualified as Peeker
 
 -- | Result of processing one chunk of a streamed input.
@@ -37,7 +37,7 @@ data Status a
 -- represented in pointers.
 -- This implies full compatibility with 'ByteString'
 -- at zero cost but also provides for more low-level tools.
-newtype Decoder a = Decoder
+newtype Reader a = Reader
   { run ::
       -- Context path.
       [Text] ->
@@ -52,30 +52,30 @@ newtype Decoder a = Decoder
   }
   deriving (Functor)
 
-instance Applicative Decoder where
-  pure a = Decoder $ \_ totalOffset ptr ptr' ->
+instance Applicative Reader where
+  pure a = Reader $ \_ totalOffset ptr ptr' ->
     pure $ EmittingStatus a ptr totalOffset
   left <*> right =
     error "TODO"
 
-instance Monad Decoder where
+instance Monad Reader where
   return = pure
-  Decoder runL >>= contR =
-    Decoder run
+  Reader runL >>= contR =
+    Reader run
     where
       run path offset ptr ptr' =
         runL path offset ptr ptr' >>= processStatusL
         where
           processStatusL = \case
             EmittingStatus resL ptrL offsetL ->
-              case contR resL of Decoder runR -> runR path offsetL ptrL ptr'
+              case contR resL of Reader runR -> runR path offsetL ptrL ptr'
             ExhaustedStatus runNextL ->
               return . ExhaustedStatus $ \ptr ptr' ->
                 runNextL ptr ptr' >>= processStatusL
 
-liftPeeker :: Peeker.Peeker a -> Decoder a
+liftPeeker :: Peeker.Peeker a -> Reader a
 liftPeeker =
-  Decoder . read
+  Reader . read
   where
     read peeker path !offset ptr ptr' =
       peeker.run ptr ptr' <&> \case
@@ -87,10 +87,10 @@ liftPeeker =
           ExhaustedStatus $
             read nextPeeker path (offset + minusPtr ptr' ptr)
 
-inContext :: Text -> Decoder a -> Decoder a
+inContext :: Text -> Reader a -> Reader a
 inContext =
   error "TODO"
 
-failure :: Text -> Decoder a
+failure :: Text -> Reader a
 failure =
   error "TODO"
