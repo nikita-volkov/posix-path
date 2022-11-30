@@ -1,6 +1,5 @@
 module Coalmine.Comms.Schema where
 
-import Coalmine.Comms.Decoder qualified as Decoding
 import Coalmine.InternalPrelude
 
 -- |

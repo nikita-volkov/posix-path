@@ -1,9 +1,10 @@
 module Coalmine.Comms.Codec where
 
 import Coalmine.BaseExtras.Integer qualified as IntegerMath
-import Coalmine.Comms.Decoder qualified as Decoder
+import Coalmine.Comms.Decoders qualified as CommsDecoders
 import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude hiding (product, sum)
+import Coalmine.PtrKit.Decoder qualified as Decoder
 import Coalmine.PtrKit.Streamer qualified as Streamer
 import Coalmine.PtrKit.Writer qualified as Writer
 import Data.Vector qualified as BVec
@@ -54,7 +55,7 @@ sum variants =
     decoder = do
       idx <-
         Decoder.inContext "sum-tag" $
-          Decoder.varLengthUnsignedInteger 0 (pred (BVec.length vec))
+          CommsDecoders.varLengthUnsignedInteger 0 (pred (BVec.length vec))
       Decoder.inContext "sum-payload" $ BVec.unsafeIndex vec idx
       where
         vec =
@@ -80,7 +81,7 @@ normallyDistributedInteger min max epicenter =
     stream =
       error "TODO"
     decoder =
-      Decoder.varLengthSignedInteger min max epicenter
+      CommsDecoders.varLengthSignedInteger min max epicenter
 
 uniformlyDistributedInteger ::
   (Integral a, Bits a) =>
