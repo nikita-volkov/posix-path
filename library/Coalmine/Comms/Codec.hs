@@ -3,6 +3,7 @@ module Coalmine.Comms.Codec where
 import Coalmine.BaseExtras.Integer qualified as IntegerMath
 import Coalmine.Comms.Readers qualified as CommsReaders
 import Coalmine.Comms.Schema qualified as Schema
+import Coalmine.Comms.Writers qualified as CommsWriters
 import Coalmine.InternalPrelude hiding (product, sum)
 import Coalmine.PtrKit.Reader qualified as Reader
 import Coalmine.PtrKit.Streamer qualified as Streamer
@@ -47,9 +48,9 @@ sum variants =
         step variant next !idx =
           case variant.write val of
             Nothing -> next (succ idx)
-            Just encoding -> Writer.varLengthUnsignedInteger idx <> encoding
+            Just encoding -> CommsWriters.varLengthUnsignedInteger idx <> encoding
         finish idx =
-          Writer.varLengthUnsignedInteger idx
+          CommsWriters.varLengthUnsignedInteger idx
     stream =
       error "TODO"
     reader = do
@@ -76,7 +77,7 @@ normallyDistributedInteger min max epicenter =
     schema =
       error "TODO"
     write val =
-      Writer.varLengthSignedInteger $
+      CommsWriters.varLengthSignedInteger $
         val - epicenter
     stream =
       error "TODO"
@@ -96,7 +97,7 @@ uniformlyDistributedInteger min deltaToMax =
     schema =
       Schema.UniformlyDistributedIntegerSchema min deltaToMax
     write val =
-      Writer.constLengthInteger byteSize (val - adaptedMin)
+      CommsWriters.constLengthInteger byteSize (val - adaptedMin)
     stream val =
       Streamer.constLengthInteger byteSize (val - adaptedMin)
     reader =

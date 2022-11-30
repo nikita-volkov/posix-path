@@ -1,5 +1,5 @@
 module Coalmine.PtrKit.ValidatedEncoding
-  ( ValidatedEncoding,
+  ( ValidatedEncoding (..),
 
     -- * Elimination
     toByteString,
@@ -7,7 +7,6 @@ module Coalmine.PtrKit.ValidatedEncoding
     -- * Construction and transformation
     inContext,
     failure,
-    varLengthUnsignedInteger,
 
     -- * Errors
     Err (..),
@@ -47,13 +46,3 @@ inContext context (ValidatedEncoding run) =
 failure :: Text -> ValidatedEncoding
 failure reason =
   ValidatedEncoding (\path -> Left $ Err reason path)
-
--- |
--- Variable length representation of unsigned integers.
---
--- Uses the 8th bit of each octet to specify, whether another octet is needed.
-varLengthUnsignedInteger :: (Integral a, Bits a, Show a) => a -> ValidatedEncoding
-varLengthUnsignedInteger value =
-  if value < 0
-    then inContext "varLengthUnsignedInteger" (failure ("Negative value: " <> showAs value))
-    else ValidatedEncoding $ const $ Right $ Encoding.varLengthUnsignedInteger value

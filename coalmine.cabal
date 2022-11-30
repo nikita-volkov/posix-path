@@ -223,6 +223,7 @@ library
     Coalmine.Comms.Schema
     Coalmine.Comms.Value
     Coalmine.Comms.ValueClass
+    Coalmine.Comms.Writers
     Coalmine.Inter.Deindentation
     Coalmine.Inter.Syntax.Model
     Coalmine.Inter.Syntax.Parsers

@@ -1,10 +1,9 @@
 module Coalmine.PtrKit.Encoding
-  ( Encoding,
+  ( Encoding (..),
     toByteString,
     toByteStringList,
     toLazyByteString,
     streamThruBuffer,
-    varLengthUnsignedInteger,
   )
 where
 
@@ -57,11 +56,3 @@ streamThruBuffer ::
   IO (Maybe Text)
 streamThruBuffer poker =
   Streamer.streamThruBuffer poker.streaming
-
--- * Constructors
-
-varLengthUnsignedInteger :: (Integral a, Bits a, Show a) => a -> Encoding
-varLengthUnsignedInteger value =
-  Encoding
-    (Streamer.varLengthUnsignedInteger value)
-    (Writer.varLengthUnsignedInteger value)
