@@ -1,6 +1,6 @@
 module Coalmine.Comms.Codec where
 
-import Coalmine.Comms.IntegerMath qualified as IntegerMath
+import Coalmine.BaseExtras.Integer qualified as IntegerMath
 import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude hiding (product, sum)
 import Coalmine.PtrKit.Reader qualified as Reader
@@ -52,14 +52,16 @@ sum variants =
     stream =
       error "TODO"
     read = do
-      idx <- Reader.varLengthUnsignedInteger 0 (pred (BVec.length vec))
-      BVec.unsafeIndex vec idx
+      idx <-
+        Reader.inContext "tag" $
+          Reader.varLengthUnsignedInteger 0 (pred (BVec.length vec))
+      Reader.inContext "payload" $ BVec.unsafeIndex vec idx
       where
         vec =
           BVec.fromList $ fmap (.read) $ variants
 
 normallyDistributedInteger ::
-  (Integral a, Bits a) =>
+  (Integral a, Bits a, Show a) =>
   -- | Min value.
   a ->
   -- | Max value.

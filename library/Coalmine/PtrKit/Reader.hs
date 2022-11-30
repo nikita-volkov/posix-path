@@ -1,5 +1,6 @@
 module Coalmine.PtrKit.Reader where
 
+import Coalmine.BaseExtras.Integer qualified as Integer
 import Coalmine.InternalPrelude hiding (Reader)
 import Coalmine.PtrKit.Peeker qualified as Peeker
 import Data.ByteString.Internal qualified as ByteString
@@ -15,7 +16,7 @@ data Status a
       (Ptr Word8)
       -- ^ Pointer at which we've stopped.
       Int
-      -- ^ Total offset amongst all consumed inputs.
+      -- ^ Total offset amongst all consumed inputs before the beginning of this value.
   | EmittingStatus
       a
       -- ^ Result.
@@ -90,6 +91,10 @@ liftPeeker =
           ExhaustedStatus $
             read nextPeeker path (offset + minusPtr ptr' ptr)
 
+inContext :: Text -> Reader a -> Reader a
+inContext =
+  error "TODO"
+
 failure :: Text -> Reader a
 failure =
   error "TODO"
@@ -105,7 +110,7 @@ varLengthUnsignedInteger =
   error "TODO"
 
 varLengthSignedInteger ::
-  (Integral a, Bits a) =>
+  (Integral a, Bits a, Show a) =>
   -- | Minimum value.
   a ->
   -- | Maximum value.
@@ -113,5 +118,44 @@ varLengthSignedInteger ::
   -- | Zero offset. Points to the most probable value.
   a ->
   Reader a
-varLengthSignedInteger =
-  error "TODO"
+varLengthSignedInteger minVal maxVal valOffset =
+  Reader read
+  where
+    absValuePositiveBound = maxVal - valOffset
+    absValueNegativeBound = valOffset - minVal
+    read path startOffset =
+      if maxVal == minVal
+        then error "TODO: Fail with bad configuration"
+        else readHead
+      where
+        bitsToOffset bits =
+          startOffset + Integer.bytesNeededForBits bits
+        readHead currentPtr afterPtr =
+          if currentPtr < afterPtr
+            then do
+              byte <- peek @Word8 currentPtr
+              if testBit byte 7
+                then
+                  let absValueState = fromIntegral (byte .&. 0b00111111)
+                   in if absValueState > absValueNegativeBound
+                        then error "TODO: handle value too large"
+                        else
+                          if testBit byte 6
+                            then readTailInNegativeMode 6 absValueState (plusPtr currentPtr 1) afterPtr
+                            else error "TODO: finish"
+                else error "TODO: read tail in positive mode"
+            else error "TODO: exhaust"
+        readTailInNegativeMode !payloadBitOffset !absValueState currentPtr afterPtr =
+          if absValueState > absValueNegativeBound
+            then
+              return $
+                let message = "Value is smaller than " <> showAs minVal
+                 in FailedStatus message path currentPtr startOffset
+            else
+              if currentPtr < afterPtr
+                then do
+                  byte <- peek currentPtr
+                  if testBit byte 7
+                    then error "TODO: loop"
+                    else error "TODO: finish"
+                else error "TODO: exhaust"
