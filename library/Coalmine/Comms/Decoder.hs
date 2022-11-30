@@ -12,8 +12,6 @@ data Status a
       -- ^ Message.
       [Text]
       -- ^ Contexts.
-      (Ptr Word8)
-      -- ^ Pointer at which we've stopped.
       Int
       -- ^ Total offset amongst all consumed inputs before the beginning of this value.
   | EmittingStatus
@@ -83,7 +81,7 @@ liftPeeker =
     read peeker path !offset ptr ptr' =
       peeker.run ptr ptr' <&> \case
         Peeker.FailedStatus message ptr'' ->
-          FailedStatus message path ptr'' (offset + minusPtr ptr'' ptr)
+          FailedStatus message path (offset + minusPtr ptr'' ptr)
         Peeker.EmittingStatus result ptr'' _ ->
           EmittingStatus result ptr'' (offset + minusPtr ptr'' ptr)
         Peeker.ExhaustedStatus nextPeeker ->
@@ -127,38 +125,53 @@ varLengthSignedInteger minVal maxVal valOffset =
         then error "TODO: Fail with bad configuration"
         else decodeHead
       where
-        bitsToOffset bits =
-          startOffset + Integer.bytesNeededForBits bits
         decodeHead currentPtr afterPtr =
           if currentPtr < afterPtr
             then do
               byte <- peek @Word8 currentPtr
+              let absValueState = fromIntegral (byte .&. 0b00111111)
               if testBit byte 7
                 then
-                  let absValueState = fromIntegral (byte .&. 0b00111111)
-                   in if absValueState > absValueNegativeBound
-                        then
-                          return $
-                            let message = "Value is smaller than " <> showAs minVal
-                             in FailedStatus message path currentPtr startOffset
-                        else
-                          if testBit byte 6
-                            then decodeTailInNegativeMode 6 absValueState (plusPtr currentPtr 1) afterPtr
-                            else error "TODO: finish"
-                else error "TODO: decode tail in positive mode"
-            else error "TODO: exhaust"
+                  if absValueState > absValueNegativeBound
+                    then
+                      return $
+                        let message = "Value is smaller than " <> showAs minVal
+                         in FailedStatus message path startOffset
+                    else
+                      if testBit byte 6
+                        then decodeTailInNegativeMode 6 absValueState (plusPtr currentPtr 1) afterPtr
+                        else return $ EmittingStatus (negate absValueState) (plusPtr currentPtr 1) (succ startOffset)
+                else decodeTailInPositiveMode 6 absValueState (plusPtr currentPtr 1) afterPtr
+            else return $ ExhaustedStatus $ decodeHead
         decodeTailInNegativeMode !payloadBitOffset !absValueState currentPtr afterPtr =
           if currentPtr < afterPtr
             then do
               byte <- peek @Word8 currentPtr
               let updatedAbsValueState = absValueState .|. fromIntegral (byte .&. 0b01111111)
+                  updatedPayloadBitOffset = payloadBitOffset + 7
               if absValueState > absValueNegativeBound
                 then
                   return $
                     let message = "Value is smaller than " <> showAs minVal
-                     in FailedStatus message path currentPtr startOffset
+                     in FailedStatus message path startOffset
                 else
                   if testBit byte 7
-                    then decodeTailInNegativeMode (payloadBitOffset + 7) updatedAbsValueState (plusPtr currentPtr 1) afterPtr
-                    else error "TODO: finish"
-            else error "TODO: exhaust"
+                    then decodeTailInNegativeMode updatedPayloadBitOffset updatedAbsValueState (plusPtr currentPtr 1) afterPtr
+                    else return $ EmittingStatus (valOffset - updatedAbsValueState) (plusPtr currentPtr 1) (startOffset + Integer.bytesNeededForBits updatedPayloadBitOffset)
+            else return $ ExhaustedStatus $ decodeTailInNegativeMode payloadBitOffset absValueState
+        decodeTailInPositiveMode !payloadBitOffset !absValueState currentPtr afterPtr =
+          if currentPtr < afterPtr
+            then do
+              byte <- peek @Word8 currentPtr
+              let updatedAbsValueState = absValueState .|. fromIntegral (byte .&. 0b01111111)
+                  updatedPayloadBitOffset = payloadBitOffset + 7
+              if absValueState > absValuePositiveBound
+                then
+                  return $
+                    let message = "Value is larger than " <> showAs maxVal
+                     in FailedStatus message path startOffset
+                else
+                  if testBit byte 7
+                    then decodeTailInPositiveMode updatedPayloadBitOffset updatedAbsValueState (plusPtr currentPtr 1) afterPtr
+                    else return $ EmittingStatus (valOffset + updatedAbsValueState) (plusPtr currentPtr 1) (startOffset + Integer.bytesNeededForBits updatedPayloadBitOffset)
+            else return $ ExhaustedStatus $ decodeTailInPositiveMode payloadBitOffset absValueState
