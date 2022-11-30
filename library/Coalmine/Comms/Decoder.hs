@@ -137,7 +137,10 @@ varLengthSignedInteger minVal maxVal valOffset =
                 then
                   let absValueState = fromIntegral (byte .&. 0b00111111)
                    in if absValueState > absValueNegativeBound
-                        then error "TODO: handle value too large"
+                        then
+                          return $
+                            let message = "Value is smaller than " <> showAs minVal
+                             in FailedStatus message path currentPtr startOffset
                         else
                           if testBit byte 6
                             then decodeTailInNegativeMode 6 absValueState (plusPtr currentPtr 1) afterPtr
@@ -145,16 +148,17 @@ varLengthSignedInteger minVal maxVal valOffset =
                 else error "TODO: decode tail in positive mode"
             else error "TODO: exhaust"
         decodeTailInNegativeMode !payloadBitOffset !absValueState currentPtr afterPtr =
-          if absValueState > absValueNegativeBound
-            then
-              return $
-                let message = "Value is smaller than " <> showAs minVal
-                 in FailedStatus message path currentPtr startOffset
-            else
-              if currentPtr < afterPtr
-                then do
-                  byte <- peek currentPtr
+          if currentPtr < afterPtr
+            then do
+              byte <- peek @Word8 currentPtr
+              let updatedAbsValueState = absValueState .|. fromIntegral (byte .&. 0b01111111)
+              if absValueState > absValueNegativeBound
+                then
+                  return $
+                    let message = "Value is smaller than " <> showAs minVal
+                     in FailedStatus message path currentPtr startOffset
+                else
                   if testBit byte 7
-                    then error "TODO: loop"
+                    then decodeTailInNegativeMode (payloadBitOffset + 7) updatedAbsValueState (plusPtr currentPtr 1) afterPtr
                     else error "TODO: finish"
-                else error "TODO: exhaust"
+            else error "TODO: exhaust"
