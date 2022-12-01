@@ -112,6 +112,12 @@ library
     Coalmine.CharPredicates
     Coalmine.Collector
     Coalmine.Comms
+    Coalmine.Comms.Codec
+    Coalmine.Comms.Readers
+    Coalmine.Comms.Schema
+    Coalmine.Comms.Value
+    Coalmine.Comms.ValueClass
+    Coalmine.Comms.Writers
     Coalmine.ConduitExtras
     Coalmine.ContainersExtras.IntMap
     Coalmine.ContainersExtras.Map
@@ -175,6 +181,7 @@ library
     Coalmine.PtrKit.Streamer
     Coalmine.PtrKit.ValidatedEncoding
     Coalmine.PtrKit.Writer
+    Coalmine.PtrKitQuickCheck.Properties
     Coalmine.PureRandom.Seeded
     Coalmine.PureRandom.SizedSeeded
     Coalmine.QuickCheckExtras.Gens
@@ -218,12 +225,6 @@ library
     Coalmine.Yaml
 
   other-modules:
-    Coalmine.Comms.Codec
-    Coalmine.Comms.Readers
-    Coalmine.Comms.Schema
-    Coalmine.Comms.Value
-    Coalmine.Comms.ValueClass
-    Coalmine.Comms.Writers
     Coalmine.Inter.Deindentation
     Coalmine.Inter.Syntax.Model
     Coalmine.Inter.Syntax.Parsers
@@ -334,6 +335,7 @@ test-suite test
     TestSuites.MultilineTextBuilder
     TestSuites.Name
     TestSuites.NumericVersion
+    TestSuites.PtrKit
     TestSuites.TimeExtrasConversions
 
   build-depends:

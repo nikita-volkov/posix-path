@@ -12,6 +12,7 @@ import TestSuites.MegaparsecExtras qualified as MegaparsecExtras
 import TestSuites.MultilineTextBuilder qualified as MultilineTextBuilder
 import TestSuites.Name qualified as Name
 import TestSuites.NumericVersion qualified as NumericVersion
+import TestSuites.PtrKit qualified as PtrKit
 import TestSuites.TimeExtrasConversions qualified as TimeExtrasConversions
 
 main =
@@ -30,5 +31,6 @@ main =
       testGroup "BaseExtras" $
         [ testGroup "List" TestSuites.BaseExtras.List.tests
         ],
-      testGroup "MultilineTextBuilder" MultilineTextBuilder.tests
+      testGroup "MultilineTextBuilder" MultilineTextBuilder.tests,
+      testGroup "PtrKit" PtrKit.tests
     ]

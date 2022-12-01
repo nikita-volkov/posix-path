@@ -1,7 +1,8 @@
 module Coalmine.PtrKit.Reader where
 
-import Coalmine.InternalPrelude hiding (Reader)
+import Coalmine.InternalPrelude hiding (Failure, Reader)
 import Coalmine.PtrKit.Peeker qualified as Peeker
+import Data.ByteString.Internal qualified as ByteStringInternal
 
 -- | Result of processing one chunk of a streamed input.
 data Status a
@@ -32,6 +33,25 @@ data Status a
       )
   deriving (Functor)
 
+data Failure = Failure
+  { -- | Message.
+    message :: Text,
+    -- | Contexts.
+    contexts :: [Text],
+    -- | Total offset amongst all consumed inputs before the beginning of this value.
+    offset :: Int
+  }
+  deriving (Show, Eq)
+
+readTotalByteString :: Reader a -> ByteString -> IO (Either Failure a)
+readTotalByteString reader (ByteStringInternal.BS fp len) =
+  withForeignPtr fp $ \ptr ->
+    reader.run [] 0 ptr (plusPtr ptr len) <&> \case
+      EmittingStatus res ptrAfter totalOffset ->
+        if totalOffset == len
+          then Right res
+          else Left $ Failure "Did not consume in whole" [] totalOffset
+
 -- |
 -- Decoder which can read from multiple chunks of data
 -- represented in pointers.
@@ -45,7 +65,7 @@ newtype Reader a = Reader
       Int ->
       -- Pointer to read the data from.
       Ptr Word8 ->
-      -- Pointer after the data.
+      -- Last data pointer. Initial pointer plus length.
       Ptr Word8 ->
       -- Result of processing one chunk.
       IO (Status a)

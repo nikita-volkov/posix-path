@@ -33,8 +33,8 @@ varLengthSignedInteger minVal maxVal valOffset =
         then error "TODO: Fail with bad configuration"
         else decodeHead
       where
-        decodeHead currentPtr afterPtr =
-          if currentPtr < afterPtr
+        decodeHead currentPtr maxPtr =
+          if currentPtr <= maxPtr
             then do
               byte <- peek @Word8 currentPtr
               let absValueState = fromIntegral (byte .&. 0b00111111)
@@ -47,12 +47,12 @@ varLengthSignedInteger minVal maxVal valOffset =
                          in FailedStatus message path startOffset
                     else
                       if testBit byte 6
-                        then decodeTailInNegativeMode 6 absValueState (plusPtr currentPtr 1) afterPtr
+                        then decodeTailInNegativeMode 6 absValueState (plusPtr currentPtr 1) maxPtr
                         else return $ EmittingStatus (negate absValueState) (plusPtr currentPtr 1) (succ startOffset)
-                else decodeTailInPositiveMode 6 absValueState (plusPtr currentPtr 1) afterPtr
+                else decodeTailInPositiveMode 6 absValueState (plusPtr currentPtr 1) maxPtr
             else return $ ExhaustedStatus $ decodeHead
-        decodeTailInNegativeMode !payloadBitOffset !absValueState currentPtr afterPtr =
-          if currentPtr < afterPtr
+        decodeTailInNegativeMode !payloadBitOffset !absValueState currentPtr maxPtr =
+          if currentPtr <= maxPtr
             then do
               byte <- peek @Word8 currentPtr
               let updatedAbsValueState = absValueState .|. fromIntegral (byte .&. 0b01111111)
@@ -64,11 +64,11 @@ varLengthSignedInteger minVal maxVal valOffset =
                      in FailedStatus message path startOffset
                 else
                   if testBit byte 7
-                    then decodeTailInNegativeMode updatedPayloadBitOffset updatedAbsValueState (plusPtr currentPtr 1) afterPtr
+                    then decodeTailInNegativeMode updatedPayloadBitOffset updatedAbsValueState (plusPtr currentPtr 1) maxPtr
                     else return $ EmittingStatus (valOffset - updatedAbsValueState) (plusPtr currentPtr 1) (startOffset + Integer.bytesNeededForBits updatedPayloadBitOffset)
             else return $ ExhaustedStatus $ decodeTailInNegativeMode payloadBitOffset absValueState
-        decodeTailInPositiveMode !payloadBitOffset !absValueState currentPtr afterPtr =
-          if currentPtr < afterPtr
+        decodeTailInPositiveMode !payloadBitOffset !absValueState currentPtr maxPtr =
+          if currentPtr <= maxPtr
             then do
               byte <- peek @Word8 currentPtr
               let updatedAbsValueState = absValueState .|. fromIntegral (byte .&. 0b01111111)
@@ -80,6 +80,6 @@ varLengthSignedInteger minVal maxVal valOffset =
                      in FailedStatus message path startOffset
                 else
                   if testBit byte 7
-                    then decodeTailInPositiveMode updatedPayloadBitOffset updatedAbsValueState (plusPtr currentPtr 1) afterPtr
+                    then decodeTailInPositiveMode updatedPayloadBitOffset updatedAbsValueState (plusPtr currentPtr 1) maxPtr
                     else return $ EmittingStatus (valOffset + updatedAbsValueState) (plusPtr currentPtr 1) (startOffset + Integer.bytesNeededForBits updatedPayloadBitOffset)
             else return $ ExhaustedStatus $ decodeTailInPositiveMode payloadBitOffset absValueState
