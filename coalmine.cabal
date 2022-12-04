@@ -158,6 +158,7 @@ library
     Coalmine.Located.Rendering
     Coalmine.Logger
     Coalmine.MachinesExtras.Mealy
+    Coalmine.MarkRight
     Coalmine.MegaparsecExtras
     Coalmine.MtlExtras
     Coalmine.MultilineParser
@@ -230,6 +231,8 @@ library
     Coalmine.Inter.Syntax.Parsers
     Coalmine.Inter.TH
     Coalmine.InternalPrelude
+    Coalmine.MarkRight.Ast
+    Coalmine.MarkRight.Builder
     Coalmine.Name.Attoparsec
     Coalmine.Name.Charsets
     Coalmine.Name.Constants
