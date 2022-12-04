@@ -19,7 +19,6 @@ source-repository head
   type:     git
   location: git://github.com/nikita-volkov/coalmine.git
 
--- Make the test suites dump their template-haskell splices.
 flag doctest
   default: False
   manual:  True
@@ -89,7 +88,7 @@ common language-settings
 
 library
   import:          language-settings
-  hs-source-dirs:  library
+  hs-source-dirs:  libs/main
   exposed-modules:
     Coalmine.AppException
     Coalmine.ArgsParser
@@ -311,7 +310,7 @@ library
 test-suite doctest
   import:         language-settings
   type:           exitcode-stdio-1.0
-  hs-source-dirs: doctest
+  hs-source-dirs: tests/doctest
   main-is:        Main.hs
   other-modules:  Build_doctests
   build-depends:
@@ -321,10 +320,10 @@ test-suite doctest
   if !flag(doctest)
     buildable: False
 
-test-suite test
+test-suite tasty
   import:         language-settings
   type:           exitcode-stdio-1.0
-  hs-source-dirs: test
+  hs-source-dirs: tests/tasty
   main-is:        Main.hs
   other-modules:
     TestSuites.BaseExtras.List
@@ -355,7 +354,7 @@ test-suite test
 test-suite open-api-demo
   import:         language-settings
   type:           exitcode-stdio-1.0
-  hs-source-dirs: open-api-demo
+  hs-source-dirs: tests/open-api-demo
   main-is:        Main.hs
   other-modules:  OpenApiDemo.Model
   build-depends:  coalmine
