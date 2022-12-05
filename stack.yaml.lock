@@ -116,9 +116,20 @@ packages:
     version: 0.1.0.1
   original:
     url: https://github.com/nikita-volkov/structure-kit/archive/f6423d909d1fc65e15f128012e4940b3412e64fd.tar.gz
+- completed:
+    name: markright
+    pantry-tree:
+      sha256: f3a771716d054f336335a3db8ccd58e9ac9e70901f97c76eb2faf5b578515148
+      size: 669
+    sha256: edf20c8522c17ae564c90a54ca31fde8a5b5e0f945fe1b8c4140972d2a770f6b
+    size: 5064
+    url: https://github.com/nikita-volkov/markright/archive/f98e4b40a67aa79659ece048eb8d621f417e91ef.tar.gz
+    version: '0'
+  original:
+    url: https://github.com/nikita-volkov/markright/archive/f98e4b40a67aa79659ece048eb8d621f417e91ef.tar.gz
 snapshots:
 - completed:
-    sha256: d9aa443983dd03adb1b9af9b621240bfe8fbe938b25b0706267fb387028ce45c
-    size: 549867
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/11/26.yaml
-  original: nightly-2022-11-26
+    sha256: 82528ac28c568dcedfc74ea25fbc0078cde42a1b4ee04c4ff04fdea06b9869df
+    size: 558759
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/12/3.yaml
+  original: nightly-2022-12-03
