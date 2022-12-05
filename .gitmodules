@@ -1,0 +1,3 @@
+[submodule ".stack-snapshot"]
+	path = .stack-snapshot
+	url = https://github.com/nikita-volkov/stack-snapshot

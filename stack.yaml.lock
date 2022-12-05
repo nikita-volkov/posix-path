@@ -118,12 +118,6 @@ packages:
     url: https://github.com/nikita-volkov/structure-kit/archive/f6423d909d1fc65e15f128012e4940b3412e64fd.tar.gz
 snapshots:
 - completed:
-    sha256: 1a4df2c3da783aca49329d51c86d5a13ecc6927e56fc374a8784b75072f78560
-    size: 917
-    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/b47f005dadee4b513869c8465170f97ee8a1814d/snapshot.yaml
-  original:
-    url: https://raw.githubusercontent.com/nikita-volkov/stack-snapshot/b47f005dadee4b513869c8465170f97ee8a1814d/snapshot.yaml
-- completed:
     sha256: d9aa443983dd03adb1b9af9b621240bfe8fbe938b25b0706267fb387028ce45c
     size: 549867
     url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/11/26.yaml
