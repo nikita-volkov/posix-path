@@ -4,6 +4,10 @@ import Coalmine.BaseExtras.Integer qualified as Integer
 import Coalmine.InternalPrelude hiding (Reader)
 import Coalmine.PtrKit.Reader
 
+boolean :: Reader Bool
+boolean =
+  error "TODO"
+
 varLengthUnsignedInteger ::
   (Integral a, Bits a) =>
   -- | Minimum value.
