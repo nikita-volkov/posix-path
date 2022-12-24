@@ -13,10 +13,12 @@ module Coalmine.PtrKit.Streamer
 
     -- * Definition
     failure,
+    byteString,
+    writer,
   )
 where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (writer)
 import Coalmine.PtrKit.Writer qualified as Writer
 import Data.ByteString qualified as ByteString
 import Data.ByteString.Builder.Prim qualified as ByteStringBuilderPrim
@@ -24,9 +26,12 @@ import Data.ByteString.Builder.Prim.Internal qualified as ByteStringBuilderPrimI
 import Data.ByteString.Internal qualified as ByteStringInternal
 
 data Status
-  = -- | Pointer after the written data.
+  = -- | Wrote everything successfully.
     FinishedStatus
       (Ptr Word8)
+      -- ^ Pointer after the written data.
+      Int
+      -- ^ Capacity of that pointer.
   | -- | Need a pointer to continue writing to.
     ExhaustedStatus
       Streamer
@@ -37,6 +42,8 @@ data Status
       -- ^ Reason
       (Ptr Word8)
       -- ^ Pointer after the written data.
+      Int
+      -- ^ Capacity of that pointer.
 
 -- | Streaming poking operation.
 --
@@ -61,22 +68,23 @@ data Status
 --
 -- This abstraction is not the best choice for constructing
 -- a single strict 'ByteString', use 'Coalmine.PtrKit.ValidatedEncoding' for that.
-newtype Streamer = Streamer {run :: Ptr Word8 -> Ptr Word8 -> IO Status}
+newtype Streamer = Streamer {run :: Ptr Word8 -> Int -> IO Status}
 
 instance Semigroup Streamer where
   left <> right =
-    Streamer $ \ptr boundPtr ->
-      left.run ptr boundPtr >>= \case
-        FinishedStatus ptr ->
-          right.run ptr boundPtr
+    Streamer $ \ptr cap ->
+      left.run ptr cap >>= \case
+        FinishedStatus ptr cap ->
+          right.run ptr cap
         ExhaustedStatus nextLeftWrite ->
           return $ ExhaustedStatus $ nextLeftWrite <> right
-        FailedStatus err ptr ->
-          return $ FailedStatus err ptr
+        FailedStatus err ptr cap ->
+          return $ FailedStatus err ptr cap
 
 instance Monoid Streamer where
-  mempty = Streamer $ \ptr _ ->
-    pure $ FinishedStatus ptr
+  mempty =
+    Streamer $ \ptr cap ->
+      pure $ FinishedStatus ptr cap
 
 -- * Execution
 
@@ -110,17 +118,16 @@ streamThruBuffer ::
   IO (Maybe Text)
 streamThruBuffer poker bufSize send =
   allocaBytes bufSize $ \ptr ->
-    let boundPtr = plusPtr ptr bufSize
-        exhaust (Streamer run) =
-          run ptr boundPtr >>= \case
+    let exhaust (Streamer act) =
+          act ptr bufSize >>= \case
             ExhaustedStatus next -> do
               send ptr bufSize
               exhaust next
-            FinishedStatus ptrAfter -> do
+            FinishedStatus ptrAfter _ -> do
               when (ptrAfter > ptr) $
                 send ptr (minusPtr ptrAfter ptr)
               return Nothing
-            FailedStatus reason ptrAfter -> do
+            FailedStatus reason ptrAfter _ -> do
               when (ptrAfter > ptr) $
                 send ptr (minusPtr ptrAfter ptr)
               return $ Just reason
@@ -130,25 +137,31 @@ streamThruBuffer poker bufSize send =
 
 failure :: Text -> Streamer
 failure reason =
-  Streamer $ \ptr _ -> pure $ FailedStatus reason ptr
+  Streamer $ \ptr cap -> pure $ FailedStatus reason ptr cap
 
 byteString :: ByteString -> Streamer
 byteString input@(ByteStringInternal.BS inputFp inputSize) =
-  Streamer $ \ptr boundPtr ->
-    let capacity = minusPtr boundPtr ptr
-     in if capacity >= inputSize
-          then unsafeWithForeignPtr inputFp $ \inputPtr ->
-            ByteStringInternal.memcpy ptr inputPtr inputSize
-              $> FinishedStatus (plusPtr ptr inputSize)
-          else do
-            unsafeWithForeignPtr inputFp $ \inputPtr ->
-              ByteStringInternal.memcpy ptr inputPtr capacity
-            return $ ExhaustedStatus $ byteString $ ByteString.drop capacity input
+  Streamer $ \ptr cap ->
+    if cap >= inputSize
+      then unsafeWithForeignPtr inputFp $ \inputPtr ->
+        ByteStringInternal.memcpy ptr inputPtr inputSize
+          $> FinishedStatus (plusPtr ptr inputSize) inputSize
+      else do
+        unsafeWithForeignPtr inputFp $ \inputPtr ->
+          ByteStringInternal.memcpy ptr inputPtr cap
+        return $ ExhaustedStatus $ byteString $ ByteString.drop cap input
 
 writer :: Writer.Writer -> Streamer
 writer writer@(Writer.Writer size poke) =
-  Streamer $ \ptr boundPtr ->
-    let capacity = minusPtr boundPtr ptr
-     in if capacity >= size
-          then poke ptr <&> FinishedStatus
-          else (byteString (Writer.toByteString writer)).run ptr boundPtr
+  Streamer $ \ptr cap ->
+    if cap >= size
+      then
+        poke ptr <&> \ptrAfter ->
+          FinishedStatus
+            ptrAfter
+            (cap - minusPtr ptrAfter ptr)
+      else case Writer.toByteString writer of
+        input@(ByteStringInternal.BS inputFp inputSize) -> do
+          unsafeWithForeignPtr inputFp $ \inputPtr ->
+            ByteStringInternal.memcpy ptr inputPtr cap
+          return $ ExhaustedStatus $ byteString $ ByteString.drop cap input
