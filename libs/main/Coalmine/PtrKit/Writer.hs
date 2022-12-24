@@ -3,11 +3,17 @@ module Coalmine.PtrKit.Writer
 
     -- * Elimination
     toByteString,
+
+    -- * Construction
+    boundedPrim,
+    fixedPrim,
   )
 where
 
 import Coalmine.InternalPrelude hiding (Writer)
 import Coalmine.PtrKit.PtrIO qualified as PtrIO
+import Data.ByteString.Builder.Prim qualified as ByteStringBuilderPrim
+import Data.ByteString.Builder.Prim.Internal qualified as ByteStringBuilderPrimInternal
 import Data.ByteString.Internal qualified as ByteStringInternal
 
 data Writer =
@@ -57,3 +63,32 @@ toByteString (Writer maxSize poke) =
     actualSize <- withForeignPtr fp $ \p ->
       poke p <&> \pAfter -> minusPtr pAfter p
     evaluate (ByteStringInternal.BS fp actualSize)
+
+-- * Construction
+
+-- |
+-- \(\mathcal{O}(1)\).
+-- Lift a standard bytestring builder primitive that always
+-- results in sequence of bytes that is no longer than a pre-determined
+-- bound.
+{-# INLINE boundedPrim #-}
+boundedPrim :: ByteStringBuilderPrim.BoundedPrim a -> a -> Writer
+boundedPrim builder =
+  let !size = ByteStringBuilderPrimInternal.sizeBound builder
+   in \val ->
+        let poke = ByteStringBuilderPrimInternal.runB builder val
+         in Writer size poke
+
+-- |
+-- \(\mathcal{O}(1)\).
+-- Lift a standard bytestring builder primitive that always
+-- results in a sequence of bytes of a pre-determined, fixed size.
+{-# INLINE fixedPrim #-}
+fixedPrim :: ByteStringBuilderPrim.FixedPrim a -> a -> Writer
+fixedPrim builder =
+  let !size = ByteStringBuilderPrimInternal.size builder
+   in \val ->
+        let poke ptr =
+              ByteStringBuilderPrimInternal.runF builder val ptr
+                $> plusPtr ptr size
+         in Writer size poke

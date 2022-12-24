@@ -17,6 +17,11 @@ module Coalmine.PtrKit.Streamer
 where
 
 import Coalmine.InternalPrelude
+import Coalmine.PtrKit.Writer qualified as Writer
+import Data.ByteString qualified as ByteString
+import Data.ByteString.Builder.Prim qualified as ByteStringBuilderPrim
+import Data.ByteString.Builder.Prim.Internal qualified as ByteStringBuilderPrimInternal
+import Data.ByteString.Internal qualified as ByteStringInternal
 
 data Status
   = -- | Pointer after the written data.
@@ -60,10 +65,10 @@ newtype Streamer = Streamer {run :: Ptr Word8 -> Ptr Word8 -> IO Status}
 
 instance Semigroup Streamer where
   left <> right =
-    Streamer $ \ptr endPtr ->
-      left.run ptr endPtr >>= \case
+    Streamer $ \ptr boundPtr ->
+      left.run ptr boundPtr >>= \case
         FinishedStatus ptr ->
-          right.run ptr endPtr
+          right.run ptr boundPtr
         ExhaustedStatus nextLeftWrite ->
           return $ ExhaustedStatus $ nextLeftWrite <> right
         FailedStatus err ptr ->
@@ -105,9 +110,9 @@ streamThruBuffer ::
   IO (Maybe Text)
 streamThruBuffer poker bufSize send =
   allocaBytes bufSize $ \ptr ->
-    let endPtr = plusPtr ptr bufSize
+    let boundPtr = plusPtr ptr bufSize
         exhaust (Streamer run) =
-          run ptr endPtr >>= \case
+          run ptr boundPtr >>= \case
             ExhaustedStatus next -> do
               send ptr bufSize
               exhaust next
@@ -126,3 +131,24 @@ streamThruBuffer poker bufSize send =
 failure :: Text -> Streamer
 failure reason =
   Streamer $ \ptr _ -> pure $ FailedStatus reason ptr
+
+byteString :: ByteString -> Streamer
+byteString input@(ByteStringInternal.BS inputFp inputSize) =
+  Streamer $ \ptr boundPtr ->
+    let capacity = minusPtr boundPtr ptr
+     in if capacity >= inputSize
+          then unsafeWithForeignPtr inputFp $ \inputPtr ->
+            ByteStringInternal.memcpy ptr inputPtr inputSize
+              $> FinishedStatus (plusPtr ptr inputSize)
+          else do
+            unsafeWithForeignPtr inputFp $ \inputPtr ->
+              ByteStringInternal.memcpy ptr inputPtr capacity
+            return $ ExhaustedStatus $ byteString $ ByteString.drop capacity input
+
+writer :: Writer.Writer -> Streamer
+writer writer@(Writer.Writer size poke) =
+  Streamer $ \ptr boundPtr ->
+    let capacity = minusPtr boundPtr ptr
+     in if capacity >= size
+          then poke ptr <&> FinishedStatus
+          else (byteString (Writer.toByteString writer)).run ptr boundPtr
