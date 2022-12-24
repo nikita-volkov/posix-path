@@ -86,6 +86,9 @@ toLazyByteStringOfDefaultChunkSize =
 streamThruBuffer ::
   Streamer ->
   -- | Reused buffer size.
+  -- 
+  -- For TCP traffic @1380@ is the safe number derived from the widespread
+  -- MTU frame size of @1500@ sans the overhead of various possible headers.
   Int ->
   -- | Action to be repeatedly executed when the buffer is filled.
   -- The params are the pointer to read from and the length of data in it.
