@@ -12,6 +12,21 @@ where
 
 import Coalmine.InternalPrelude
 
+data Status
+  = -- | Pointer after the written data.
+    FinishedStatus
+      (Ptr Word8)
+  | -- | Need a pointer to continue writing to.
+    ExhaustedStatus
+      Streamer
+      -- ^ Next encoding to execute.
+  | -- | Encoding failure.
+    FailedStatus
+      Text
+      -- ^ Reason
+      (Ptr Word8)
+      -- ^ Pointer after the written data.
+
 -- | Streaming poking operation.
 --
 -- Fills the provided buffer up to the provided capacity and then gives back control.
@@ -35,22 +50,22 @@ import Coalmine.InternalPrelude
 --
 -- This abstraction is not the best choice for constructing
 -- a single strict 'ByteString', use 'Coalmine.PtrKit.ValidatedEncoding' for that.
-newtype Streamer = Streamer {run :: Ptr Word8 -> Int -> IO Status}
+newtype Streamer = Streamer {run :: Ptr Word8 -> Ptr Word8 -> IO Status}
 
 instance Semigroup Streamer where
   left <> right =
-    Streamer $ \ptr cap ->
-      left.run ptr cap >>= \case
-        FinishedStatus ptr cap ->
-          right.run ptr cap
+    Streamer $ \ptr endPtr ->
+      left.run ptr endPtr >>= \case
+        FinishedStatus ptr ->
+          right.run ptr endPtr
         ExhaustedStatus nextLeftWrite ->
           return $ ExhaustedStatus $ nextLeftWrite <> right
-        FailedStatus err ptr cap ->
-          return $ FailedStatus err ptr cap
+        FailedStatus err ptr ->
+          return $ FailedStatus err ptr
 
 instance Monoid Streamer where
-  mempty = Streamer $ \ptr cap ->
-    pure $ FinishedStatus ptr cap
+  mempty = Streamer $ \ptr _ ->
+    pure $ FinishedStatus ptr
 
 toLazyByteString ::
   -- | Chunk size.
@@ -79,16 +94,17 @@ streamThruBuffer ::
   IO (Maybe Text)
 streamThruBuffer poker bufSize send =
   allocaBytes bufSize $ \ptr ->
-    let exhaust (Streamer run) =
-          run ptr bufSize >>= \case
+    let endPtr = plusPtr ptr bufSize
+        exhaust (Streamer run) =
+          run ptr endPtr >>= \case
             ExhaustedStatus next -> do
               send ptr bufSize
               exhaust next
-            FinishedStatus ptrAfter _ -> do
+            FinishedStatus ptrAfter -> do
               when (ptrAfter > ptr) $
                 send ptr (minusPtr ptrAfter ptr)
               return Nothing
-            FailedStatus reason ptrAfter _ -> do
+            FailedStatus reason ptrAfter -> do
               when (ptrAfter > ptr) $
                 send ptr (minusPtr ptrAfter ptr)
               return $ Just reason
@@ -96,7 +112,7 @@ streamThruBuffer poker bufSize send =
 
 failure :: Text -> Streamer
 failure reason =
-  Streamer $ \ptr cap -> pure $ FailedStatus reason ptr cap
+  Streamer $ \ptr _ -> pure $ FailedStatus reason ptr
 
 varLengthUnsignedInteger :: (Integral a, Bits a) => a -> Streamer
 varLengthUnsignedInteger =
@@ -109,22 +125,3 @@ varLengthSignedInteger =
 constLengthInteger :: (Integral a, Bits a) => Int -> a -> Streamer
 constLengthInteger size =
   error "TODO"
-
-data Status
-  = FinishedStatus
-      (Ptr Word8)
-      -- ^ Pointer after the written data.
-      Int
-      -- ^ Capacity of that pointer.
-  | -- | Need a pointer to continue writing to.
-    ExhaustedStatus
-      Streamer
-      -- ^ Next encoding to execute.
-  | -- | Encoding failure.
-    FailedStatus
-      Text
-      -- ^ Reason
-      (Ptr Word8)
-      -- ^ Pointer after the written data.
-      Int
-      -- ^ Capacity of that pointer.
