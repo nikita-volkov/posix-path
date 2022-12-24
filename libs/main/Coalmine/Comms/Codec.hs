@@ -3,6 +3,7 @@ module Coalmine.Comms.Codec where
 import Coalmine.BaseExtras.Integer qualified as IntegerMath
 import Coalmine.Comms.Readers qualified as CommsReaders
 import Coalmine.Comms.Schema qualified as Schema
+import Coalmine.Comms.Streamers qualified as CommsStreamers
 import Coalmine.Comms.Writers qualified as CommsWriters
 import Coalmine.InternalPrelude hiding (product, sum)
 import Coalmine.PtrKit.Reader qualified as Reader
@@ -99,7 +100,7 @@ uniformlyDistributedInteger min deltaToMax =
     write val =
       CommsWriters.constLengthInteger byteSize (val - adaptedMin)
     stream val =
-      Streamer.constLengthInteger byteSize (val - adaptedMin)
+      CommsStreamers.constLengthInteger byteSize (val - adaptedMin)
     reader =
       error "TODO"
     -- Amount of bytes for the entire range.

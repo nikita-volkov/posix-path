@@ -114,6 +114,7 @@ library
     Coalmine.Comms.Codec
     Coalmine.Comms.Readers
     Coalmine.Comms.Schema
+    Coalmine.Comms.Streamers
     Coalmine.Comms.Value
     Coalmine.Comms.ValueClass
     Coalmine.Comms.Writers

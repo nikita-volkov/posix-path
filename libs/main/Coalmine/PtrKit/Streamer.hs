@@ -1,12 +1,18 @@
+-- |
+-- This module provides only on the means for definition, execution and
+-- composition of streamers. Specific definitions are to be defined
+-- by extensions. They depend on specific formats.
+-- Thus this library achieves stability and focus.
 module Coalmine.PtrKit.Streamer
-  ( Streamer,
+  ( Streamer (..),
+
+    -- * Execution
     toLazyByteString,
     toLazyByteStringOfDefaultChunkSize,
     streamThruBuffer,
+
+    -- * Definition
     failure,
-    varLengthUnsignedInteger,
-    varLengthSignedInteger,
-    constLengthInteger,
   )
 where
 
@@ -67,6 +73,8 @@ instance Monoid Streamer where
   mempty = Streamer $ \ptr _ ->
     pure $ FinishedStatus ptr
 
+-- * Execution
+
 toLazyByteString ::
   -- | Chunk size.
   Int ->
@@ -86,7 +94,7 @@ toLazyByteStringOfDefaultChunkSize =
 streamThruBuffer ::
   Streamer ->
   -- | Reused buffer size.
-  -- 
+  --
   -- For TCP traffic @1380@ is the safe number derived from the widespread
   -- MTU frame size of @1500@ sans the overhead of various possible headers.
   Int ->
@@ -113,18 +121,8 @@ streamThruBuffer poker bufSize send =
               return $ Just reason
      in exhaust poker
 
+-- * Definition
+
 failure :: Text -> Streamer
 failure reason =
   Streamer $ \ptr _ -> pure $ FailedStatus reason ptr
-
-varLengthUnsignedInteger :: (Integral a, Bits a) => a -> Streamer
-varLengthUnsignedInteger =
-  error "TODO"
-
-varLengthSignedInteger :: (Integral a, Bits a) => a -> Streamer
-varLengthSignedInteger =
-  error "TODO"
-
-constLengthInteger :: (Integral a, Bits a) => Int -> a -> Streamer
-constLengthInteger size =
-  error "TODO"
