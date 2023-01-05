@@ -176,10 +176,12 @@ select firstLineNum startCol endCol inputLines =
           -- Last line?
           if null linesTail
             then
-              caretLinePrefix <> Text.replicate startCol " "
+              caretLinePrefix
+                <> Text.replicate startCol " "
                 <> Text.replicate (endCol - startCol) "^"
             else
-              caretLinePrefix <> Text.replicate startCol " "
+              caretLinePrefix
+                <> Text.replicate startCol " "
                 <> Text.replicate (Text.length linesHead - startCol) "^"
         buildTail lineNum = \case
           linesHead : linesTail ->

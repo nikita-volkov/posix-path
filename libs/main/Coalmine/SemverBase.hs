@@ -25,7 +25,8 @@ data SemverBase = SemverBase
 
 instance CompactPrinting SemverBase where
   toCompactBuilder x =
-    toCompactBuilder x.major <> "."
+    toCompactBuilder x.major
+      <> "."
       <> toCompactBuilder x.minor
       <> "."
       <> toCompactBuilder x.patch

@@ -2,7 +2,7 @@ all: test-strictly
 
 format:
 	path=coalmine.cabal && cabal-fmt -c --indent 2 $$path || cabal-fmt -i --indent 2 $$path
-	ormolu --mode inplace -ce $$(find . -name "*.hs" -not -path "./.stack-snapshot/*" -not -path "./dist/*" -not -path "./dist-newstyle/*" -not -path "./*.stack-work/*" -not -path "./sketches/*")
+	ormolu --mode inplace -c $$(find . -name "*.hs" -not -path "./.stack-snapshot/*" -not -path "./dist/*" -not -path "./dist-newstyle/*" -not -path "./*.stack-work/*" -not -path "./sketches/*")
 
 build-fast: format
 	stack build --fast --test --no-run-tests --ghc-options "-j -threaded +RTS -A128m -n2m -RTS -fno-warn-typed-holes -fdefer-typed-holes"

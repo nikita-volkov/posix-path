@@ -10,4 +10,7 @@ import Test.QuickCheck
 writeReadRoundtrip :: (Show a, Eq a) => (a -> Writer) -> Reader a -> a -> Property
 writeReadRoundtrip writer reader value =
   (===) (Right value) $
-    unsafePerformIO $ Reader.readTotalByteString reader $ Writer.toByteString $ writer value
+    unsafePerformIO $
+      Reader.readTotalByteString reader $
+        Writer.toByteString $
+          writer value

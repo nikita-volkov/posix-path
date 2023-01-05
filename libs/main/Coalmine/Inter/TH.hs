@@ -44,8 +44,8 @@ lineExps = \case
             next (lit <> "$")
           D.PlaceholderContentSegment name ->
             prependLitIfNeeded lit $
-              indent indentation (placeholder name) :
-              next mempty
+              indent indentation (placeholder name)
+                : next mempty
       finish lit =
         prependLitIfNeeded lit []
       prependLitIfNeeded lit =
