@@ -12,7 +12,7 @@ import Coalmine.PtrKit.Streamer qualified as Streamer
 import Coalmine.PtrKit.Writer qualified as Writer
 
 -- |
--- Universal poker, which can be used to both effeciently construct
+-- Universal poker, which can be used to both efficiently construct
 -- immediate applications and streaming.
 --
 -- Implemented as a product of 'Writer.Writer'
