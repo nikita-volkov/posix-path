@@ -86,9 +86,9 @@ boundedPrim builder =
 {-# INLINE fixedPrim #-}
 fixedPrim :: ByteStringBuilderPrim.FixedPrim a -> a -> Writer
 fixedPrim builder =
-  let !size = ByteStringBuilderPrimInternal.size builder
-   in \val ->
-        let poke ptr =
-              ByteStringBuilderPrimInternal.runF builder val ptr
-                $> plusPtr ptr size
-         in Writer size poke
+  Writer size . poke
+  where
+    size = ByteStringBuilderPrimInternal.size builder
+    poke val ptr =
+      ByteStringBuilderPrimInternal.runF builder val ptr
+        $> plusPtr ptr size
