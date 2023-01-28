@@ -1,7 +1,7 @@
 all: test-strictly
 
 format:
-	path=coalmine.cabal && cabal-fmt -c --indent 2 $$path || cabal-fmt -i --indent 2 $$path
+	path=coalmine.cabal && cabal-fmt -c $$path || cabal-fmt -i $$path
 	ormolu --mode inplace -c $$(find . -name "*.hs" -not -path "./.stack-snapshot/*" -not -path "./dist/*" -not -path "./dist-newstyle/*" -not -path "./*.stack-work/*" -not -path "./sketches/*")
 
 build-fast: format
