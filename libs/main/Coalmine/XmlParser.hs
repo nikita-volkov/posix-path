@@ -33,11 +33,9 @@ newtype ParseName a
 
 parsedName :: (Maybe Text -> Text -> Either Text a) -> ParseName a
 parsedName k =
-  ParseName $ join $ A.name $ \a b ->
-    case ( case b of
-             Nothing -> k Nothing a
-             Just b -> k (Just a) b
-         ) of
+  ParseName $ do
+    res <- A.name k
+    case res of
       Left err -> fail (toList err)
       Right res -> return res
 
