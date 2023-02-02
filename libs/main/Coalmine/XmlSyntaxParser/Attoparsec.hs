@@ -1,4 +1,4 @@
-module Coalmine.XmlParser.Attoparsec where
+module Coalmine.XmlSyntaxParser.Attoparsec where
 
 import Coalmine.InternalPrelude
 import Data.Attoparsec.Text

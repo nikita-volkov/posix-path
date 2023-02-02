@@ -222,7 +222,7 @@ library
     Coalmine.UserResult
     Coalmine.VectorExtras.Generic
     Coalmine.VectorExtras.Generic.Mutable
-    Coalmine.XmlParser
+    Coalmine.XmlSyntaxParser
     Coalmine.Yaml
 
   other-modules:
@@ -236,7 +236,7 @@ library
     Coalmine.Name.Constants
     Coalmine.Name.Gens
     Coalmine.Name.Megaparsec
-    Coalmine.XmlParser.Attoparsec
+    Coalmine.XmlSyntaxParser.Attoparsec
 
   build-depends:
     , acc

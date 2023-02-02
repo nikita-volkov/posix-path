@@ -5,10 +5,10 @@
 -- The performance is achieved by sacrificing the alternative instance.
 -- It still takes on most of the heavy lifting of parsing efficiently
 -- and provides a simple and highly flexible API.
-module Coalmine.XmlParser where
+module Coalmine.XmlSyntaxParser where
 
 import Coalmine.InternalPrelude
-import Coalmine.XmlParser.Attoparsec qualified as A
+import Coalmine.XmlSyntaxParser.Attoparsec qualified as A
 import Data.Attoparsec.Text qualified as A
 
 data ParseNodes a
