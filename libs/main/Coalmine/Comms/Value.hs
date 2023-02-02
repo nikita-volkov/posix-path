@@ -1,3 +1,4 @@
+-- | Dynamically typed value.
 module Coalmine.Comms.Value where
 
 import Coalmine.Comms.Readers qualified as Readers

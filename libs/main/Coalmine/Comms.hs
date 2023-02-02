@@ -19,6 +19,15 @@ deserializeByteString :: Serialization a => ByteString -> Either Text a
 deserializeByteString =
   error "TODO"
 
+-- |
+-- Lawful serialization typeclass.
+--
+-- The laws are:
+-- - Serializing using any method and deserializing must produce the original value.
+-- - Serializing using all methods must be convertible to identical bytestrings.
+-- - Serializing a value, then deserializing a dynamically typed value using schema,
+-- then serializing the dynamic value, must produce the same bytestring as the one
+-- after the first serialization.
 class Serialization a where
   schema :: Schema a
 
