@@ -1,9 +1,10 @@
--- | High-performance streaming single-pass parser
--- with a high-level API.
--- That is achieved by sacrificing the alternative instance,
--- which however still takes on most of the heavy lifting
--- of parsing in a single pass with a typesafe,
--- yet simple and highly flexible API.
+-- |
+-- High-performance streaming single-pass exclusively
+-- syntactic parser with a high-level API.
+--
+-- The performance is achieved by sacrificing the alternative instance.
+-- It still takes on most of the heavy lifting of parsing efficiently
+-- and provides a simple and highly flexible API.
 module Coalmine.XmlParser where
 
 import Coalmine.InternalPrelude
@@ -31,17 +32,17 @@ text =
 newtype ParseName a
   = ParseName (A.Parser a)
 
-parsedName :: (Maybe Text -> Text -> Either Text a) -> ParseName a
-parsedName k =
+refinedName :: (Maybe Text -> Text -> Either Text a) -> ParseName a
+refinedName k =
   ParseName $ do
     res <- A.name k
     case res of
       Left err -> fail (toList err)
       Right res -> return res
 
-anyName :: ParseName ()
-anyName =
-  ParseName $ A.name $ const $ const ()
+anyName :: (Maybe Text -> Text -> a) -> ParseName a
+anyName k =
+  ParseName $ A.name k
 
 data ParseAttributes a
 
@@ -50,3 +51,11 @@ attribute =
   error "TODO"
 
 data ParseContent a
+
+freeFormContent :: ParseContent Text
+freeFormContent =
+  error "TODO"
+
+qNameContent :: ParseName a -> ParseContent a
+qNameContent =
+  error "TODO"
