@@ -206,6 +206,7 @@ library
     Coalmine.Tasty.TestTrees
     Coalmine.Tasty.TestTrees.Cereal
     Coalmine.Tasty.TestTrees.HeadedMegaparsec
+    Coalmine.TastyMonadic
     Coalmine.TextAppender
     Coalmine.TextExtras.Text
     Coalmine.TH.Exp

@@ -2,6 +2,7 @@ module Main where
 
 import Coalmine.Prelude
 import Coalmine.Tasty
+import Coalmine.TastyMonadic
 import TestSuites.BaseExtras.List qualified
 import TestSuites.CerealExtras.Compact qualified
 import TestSuites.ConduitExtras qualified as ConduitExtras
@@ -16,21 +17,21 @@ import TestSuites.PtrKit qualified as PtrKit
 import TestSuites.TimeExtrasConversions qualified as TimeExtrasConversions
 
 main =
-  defaultMain . testGroup "All" $
-    [ testGroup "Inter" Inter.tests,
-      testGroup "LocatedRendering" LocatedRendering.tests,
-      testGroup "MegaparsecExtras" MegaparsecExtras.tests,
-      testGroup "TimeExtrasConversions" TimeExtrasConversions.tests,
-      testGroup "EvenSimplerPaths" EvenSimplerPaths.tests,
-      testGroup "ConduitExtras" ConduitExtras.tests,
-      testGroup "Name" Name.tests,
-      testGroup "NumericVersion" NumericVersion.tests,
-      testGroup "CerealExtras" $
-        [ testGroup "Compact" TestSuites.CerealExtras.Compact.tests
-        ],
-      testGroup "BaseExtras" $
-        [ testGroup "List" TestSuites.BaseExtras.List.tests
-        ],
-      testGroup "MultilineTextBuilder" MultilineTextBuilder.tests,
-      testGroup "PtrKit" PtrKit.tests
-    ]
+  declareTestGroupDefaultMain "All" do
+    declareListTestGroup "Inter" Inter.tests
+    declareListTestGroup "LocatedRendering" LocatedRendering.tests
+    declareListTestGroup "MegaparsecExtras" MegaparsecExtras.tests
+    declareListTestGroup "TimeExtrasConversions" TimeExtrasConversions.tests
+    declareListTestGroup "EvenSimplerPaths" EvenSimplerPaths.tests
+    declareListTestGroup "ConduitExtras" ConduitExtras.tests
+    declareListTestGroup "Name" Name.tests
+    declareListTestGroup "NumericVersion" NumericVersion.tests
+    declareTestGroup "CerealExtras" do
+      declareListTestGroup "Compact" TestSuites.CerealExtras.Compact.tests
+    declareTestGroup "BaseExtras" do
+      declareListTestGroup "List" TestSuites.BaseExtras.List.tests
+    declareListTestGroup "MultilineTextBuilder" MultilineTextBuilder.tests
+    declareListTestGroup "PtrKit" PtrKit.tests
+
+declareListTestGroup name =
+  declareTestGroup name . traverse_ declareTestTree
