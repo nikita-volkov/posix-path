@@ -9,6 +9,8 @@ module Coalmine.TerminalMarkup
     -- ** Construction
     plainText,
     bold,
+    green,
+    red,
   )
 where
 
@@ -51,6 +53,22 @@ plainText content =
 bold :: TerminalMarkup -> TerminalMarkup
 bold (TerminalMarkup nodes) =
   TerminalMarkup $ pure $ BoldTerminalMarkupNode nodes
+
+green :: TerminalMarkup -> TerminalMarkup
+green =
+  error "TODO"
+
+red :: TerminalMarkup -> TerminalMarkup
+red =
+  error "TODO"
+
+white :: TerminalMarkup -> TerminalMarkup
+white =
+  error "TODO"
+
+grey :: TerminalMarkup -> TerminalMarkup
+grey =
+  error "TODO"
 
 -- * Batteries (Integrations)
 
