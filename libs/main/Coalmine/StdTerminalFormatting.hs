@@ -21,6 +21,36 @@ instance StdTerminalFormatting TerminalMarkup.TerminalMarkup where
 instance StdTerminalFormatting Text where
   toStdTerminalMarkup = TerminalMarkup.plainText
 
+instance StdTerminalFormatting Int where
+  toStdTerminalMarkup = TerminalMarkup.plainText . fromString . show
+
+instance StdTerminalFormatting Int8 where
+  toStdTerminalMarkup = TerminalMarkup.plainText . fromString . show
+
+instance StdTerminalFormatting Int16 where
+  toStdTerminalMarkup = TerminalMarkup.plainText . fromString . show
+
+instance StdTerminalFormatting Int32 where
+  toStdTerminalMarkup = TerminalMarkup.plainText . fromString . show
+
+instance StdTerminalFormatting Int64 where
+  toStdTerminalMarkup = TerminalMarkup.plainText . fromString . show
+
+instance StdTerminalFormatting Word where
+  toStdTerminalMarkup = TerminalMarkup.plainText . fromString . show
+
+instance StdTerminalFormatting Word8 where
+  toStdTerminalMarkup = TerminalMarkup.plainText . fromString . show
+
+instance StdTerminalFormatting Word16 where
+  toStdTerminalMarkup = TerminalMarkup.plainText . fromString . show
+
+instance StdTerminalFormatting Word32 where
+  toStdTerminalMarkup = TerminalMarkup.plainText . fromString . show
+
+instance StdTerminalFormatting Word64 where
+  toStdTerminalMarkup = TerminalMarkup.plainText . fromString . show
+
 -- * Execution
 
 outputToStdout :: StdTerminalFormatting a => a -> IO ()
