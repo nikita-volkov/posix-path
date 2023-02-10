@@ -200,6 +200,7 @@ library
     Coalmine.ScientificExtras
     Coalmine.SemverBase
     Coalmine.Serialization
+    Coalmine.StdTerminalFormatting
     Coalmine.StmExtras.TQueue
     Coalmine.Streamer
     Coalmine.Tasty
