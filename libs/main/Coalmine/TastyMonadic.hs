@@ -13,6 +13,11 @@ module Coalmine.TastyMonadic
     declareTestGroup,
     declareTestCase,
     declareTestProperty,
+
+    -- ** Nifty operators
+    (?:),
+    (?!),
+    (?*),
   )
 where
 
@@ -51,3 +56,15 @@ declareTestCase name body =
 declareTestProperty :: Testable prop => String -> prop -> DeclareTestGroup ()
 declareTestProperty name body =
   declareTestTree $ testProperty name body
+
+-- | Alias to 'declareTestGroup'.
+(?:) :: String -> DeclareTestGroup () -> DeclareTestGroup ()
+(?:) = declareTestGroup
+
+-- | Alias to 'declareTestCase'.
+(?!) :: String -> IO () -> DeclareTestGroup ()
+(?!) = declareTestCase
+
+-- | Alias to 'declareTestProperty'.
+(?*) :: Testable prop => String -> prop -> DeclareTestGroup ()
+(?*) = declareTestProperty

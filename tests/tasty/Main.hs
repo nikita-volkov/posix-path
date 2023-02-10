@@ -18,20 +18,20 @@ import TestSuites.TimeExtrasConversions qualified as TimeExtrasConversions
 
 main =
   declareTestGroupDefaultMain "All" do
-    declareListTestGroup "Inter" Inter.tests
-    declareListTestGroup "LocatedRendering" LocatedRendering.tests
-    declareListTestGroup "MegaparsecExtras" MegaparsecExtras.tests
-    declareListTestGroup "TimeExtrasConversions" TimeExtrasConversions.tests
-    declareListTestGroup "EvenSimplerPaths" EvenSimplerPaths.tests
-    declareListTestGroup "ConduitExtras" ConduitExtras.tests
-    declareListTestGroup "Name" Name.tests
-    declareListTestGroup "NumericVersion" NumericVersion.tests
-    declareTestGroup "CerealExtras" do
-      declareListTestGroup "Compact" TestSuites.CerealExtras.Compact.tests
-    declareTestGroup "BaseExtras" do
-      declareListTestGroup "List" TestSuites.BaseExtras.List.tests
-    declareListTestGroup "MultilineTextBuilder" MultilineTextBuilder.tests
-    declareListTestGroup "PtrKit" PtrKit.tests
+    "Inter" ?:: Inter.tests
+    "LocatedRendering" ?:: LocatedRendering.tests
+    "MegaparsecExtras" ?:: MegaparsecExtras.tests
+    "TimeExtrasConversions" ?:: TimeExtrasConversions.tests
+    "EvenSimplerPaths" ?:: EvenSimplerPaths.tests
+    "ConduitExtras" ?:: ConduitExtras.tests
+    "Name" ?:: Name.tests
+    "NumericVersion" ?:: NumericVersion.tests
+    "CerealExtras" ?: do
+      "Compact" ?:: TestSuites.CerealExtras.Compact.tests
+    "BaseExtras" ?: do
+      "List" ?:: TestSuites.BaseExtras.List.tests
+    "MultilineTextBuilder" ?:: MultilineTextBuilder.tests
+    "PtrKit" ?:: PtrKit.tests
 
-declareListTestGroup name =
+(?::) name =
   declareTestGroup name . traverse_ declareTestTree
