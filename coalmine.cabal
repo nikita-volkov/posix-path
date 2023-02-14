@@ -276,7 +276,6 @@ library
     , leb128-cereal
     , lens
     , machines
-    , markright
     , megaparsec
     , mmorph
     , natural-sort
