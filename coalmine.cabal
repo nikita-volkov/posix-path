@@ -10,25 +10,11 @@ maintainer:         Nikita Volkov <nikita.y.volkov@mail.ru>
 copyright:          (c) 2019 Nikita Volkov
 license:            MIT
 license-file:       LICENSE
-build-type:         Custom
-extra-source-files:
-  domain/*.domain.yaml
-  Setup.hs
+extra-source-files: domain/*.domain.yaml
 
 source-repository head
   type:     git
   location: git://github.com/nikita-volkov/coalmine.git
-
-flag doctest
-  default: False
-  manual:  True
-
-custom-setup
-  setup-depends:
-    , base           >=4.7  && <5
-    , Cabal          >=1.10 && <4
-    , cabal-doctest  ^>=1
-    , filepath
 
 common language-settings
   default-language:   Haskell2010
@@ -309,19 +295,6 @@ library
     , warp
     , witherable
     , yaml
-
-test-suite doctest
-  import:         language-settings
-  type:           exitcode-stdio-1.0
-  hs-source-dirs: tests/doctest
-  main-is:        Main.hs
-  other-modules:  Build_doctests
-  build-depends:
-    , doctest
-    , rerebase
-
-  if !flag(doctest)
-    buildable: False
 
 test-suite tasty
   import:         language-settings
