@@ -123,6 +123,7 @@ library
     Coalmine.FoldlExtras.Fold
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
+    Coalmine.GithubActionKit
     Coalmine.HandleService
     Coalmine.HappyPathIO
     Coalmine.HashableExtras
