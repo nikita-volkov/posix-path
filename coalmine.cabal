@@ -95,6 +95,9 @@ library
     Coalmine.CerealExtras.Instances
     Coalmine.CerealExtras.Put
     Coalmine.CharPredicates
+    Coalmine.CliKit.Clio
+    Coalmine.CliKit.Clio.TerminalMarkup
+    Coalmine.CliKit.Echo
     Coalmine.Collector
     Coalmine.Comms
     Coalmine.Comms.Codec
@@ -271,6 +274,7 @@ library
     , network-ip
     , optics
     , optics-core
+    , optparse-applicative
     , primitive
     , QuickCheck
     , quickcheck-instances
