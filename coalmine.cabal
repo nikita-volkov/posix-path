@@ -124,6 +124,7 @@ library
     Coalmine.Fileset
     Coalmine.FileSystem
     Coalmine.FoldlExtras.Fold
+    Coalmine.Format
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
     Coalmine.GithubActionKit
