@@ -9,8 +9,8 @@ import Data.Attoparsec.Text qualified as Attoparsec
 -- The law is that formatting a value and parsing
 -- should produce the original value.
 class Format a where
-  formatParser :: Attoparsec.Parser a
-  formatAsTextBuilder :: a -> TextBuilder
+  parser :: Attoparsec.Parser a
+  render :: a -> TextBuilder
 
 validateLaws :: (Format a, Eq a) => a -> Bool
 validateLaws val =
