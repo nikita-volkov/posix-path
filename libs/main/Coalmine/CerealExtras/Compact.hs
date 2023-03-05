@@ -62,7 +62,7 @@ instance (Serialize k, Serialize v, Ord k) => Serialize (Compact (Map k v)) wher
   put (Compact map) = CerealExtrasPut.ordMap put put map
   get = CerealExtrasGet.ordMap get get <&> Compact
 
-instance Serialize a => Serialize (Compact (BVec.Vector a)) where
+instance (Serialize a) => Serialize (Compact (BVec.Vector a)) where
   put (Compact vec) = CerealExtrasPut.vec put vec
   get = CerealExtrasGet.vec get <&> Compact
 

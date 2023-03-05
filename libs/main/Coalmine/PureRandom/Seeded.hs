@@ -39,7 +39,7 @@ oneOf :: BVec.Vector (Seeded a) -> Seeded a
 oneOf vec =
   join $ uniformElement vec
 
-vectorOfLength :: GVec.Vector v a => Int -> Seeded a -> Seeded (v a)
+vectorOfLength :: (GVec.Vector v a) => Int -> Seeded a -> Seeded (v a)
 vectorOfLength length =
   error "TODO"
 

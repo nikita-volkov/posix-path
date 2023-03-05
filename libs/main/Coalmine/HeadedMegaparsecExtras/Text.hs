@@ -14,5 +14,5 @@ import Text.Megaparsec.Char.Lexer qualified as MegaparsecLexer
 
 type Parser e = HeadedParsec e Text
 
-eol :: Ord e => Parser e Text
+eol :: (Ord e) => Parser e Text
 eol = parse MegaparsecChar.eol

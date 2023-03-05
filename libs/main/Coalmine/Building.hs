@@ -3,7 +3,7 @@ module Coalmine.Building where
 import Coalmine.InternalPrelude
 import TextBuilderDev qualified as TextBuilderDev
 
-class Monoid builder => Building builder where
+class (Monoid builder) => Building builder where
   type BuilderTarget builder
   toBuilder :: BuilderTarget builder -> builder
   fromBuilder :: builder -> BuilderTarget builder

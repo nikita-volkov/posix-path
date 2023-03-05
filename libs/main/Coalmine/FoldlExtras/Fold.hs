@@ -7,7 +7,7 @@ import Data.Vector.Unboxed qualified as UVec
 
 -- |
 -- Apply to unboxed vector.
-foldUVec :: Unbox i => Fold i o -> UVec i -> o
+foldUVec :: (Unbox i) => Fold i o -> UVec i -> o
 foldUVec (Fold step init extract) vec =
   UVec.foldl' step init vec & extract
 

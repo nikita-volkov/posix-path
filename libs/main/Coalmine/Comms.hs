@@ -11,11 +11,11 @@ import Coalmine.PtrKit.Reader qualified as Reader
 import Coalmine.PtrKit.Streamer qualified as Streamer
 import Coalmine.PtrKit.Writer qualified as Writer
 
-serializeAsByteStringWithSchema :: Serialization a => a -> ByteString
+serializeAsByteStringWithSchema :: (Serialization a) => a -> ByteString
 serializeAsByteStringWithSchema =
   error "TODO"
 
-deserializeByteString :: Serialization a => ByteString -> Either Text a
+deserializeByteString :: (Serialization a) => ByteString -> Either Text a
 deserializeByteString =
   error "TODO"
 

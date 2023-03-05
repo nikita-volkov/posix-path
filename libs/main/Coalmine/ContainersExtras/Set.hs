@@ -10,7 +10,7 @@ asSingleton a =
       a -> Just a
     _ -> Nothing
 
-insertLookup :: Ord a => a -> Set a -> (Bool, Set a)
+insertLookup :: (Ord a) => a -> Set a -> (Bool, Set a)
 insertLookup =
   alterF $ \present ->
     if present

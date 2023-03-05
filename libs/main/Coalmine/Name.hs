@@ -93,7 +93,7 @@ allAlphaFirstQuickCheckGen maxParts maxBytesInPart =
 attoparsec :: Attoparsec.Parser Name
 attoparsec = Attoparsec.parts <&> Name
 
-megaparsec :: Ord err => Megaparsec.Parsec err Text Name
+megaparsec :: (Ord err) => Megaparsec.Parsec err Text Name
 megaparsec = Megaparsec.nameWords <&> Name
 
 -- * --

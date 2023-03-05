@@ -1,7 +1,7 @@
 module Coalmine.TimeExtras.Conversions where
 
 import Coalmine.InternalPrelude
-import Data.Time.Clock.System qualified as Time
+import Data.Time.Clock.System
 
 millisecondsSinceEpochUTCTime :: Integer -> UTCTime
 millisecondsSinceEpochUTCTime time =
@@ -36,3 +36,42 @@ dayMillisecondsSinceEpoch =
 utcTimeMillisecondsSinceEpoch :: UTCTime -> Integer
 utcTimeMillisecondsSinceEpoch (UTCTime day diffTime) =
   dayMillisecondsSinceEpoch day + diffTimeMilliseconds diffTime
+
+-- | Extract flat components of UTC
+utcTimeComponents :: UTCTime -> (Integer, Int, Int, Int, Int, Pico)
+utcTimeComponents (UTCTime day dayTime) =
+  let (year, month, monthDay) = toGregorian day
+      TimeOfDay hour min sec = timeToTimeOfDay dayTime
+   in (year, month, monthDay, hour, min, sec)
+
+-- * SystemTime
+
+{-# NOINLINE [1] systemTimeMillisSinceEpoch #-}
+systemTimeMillisSinceEpoch :: (Num value) => SystemTime -> value
+systemTimeMillisSinceEpoch (MkSystemTime s ns) =
+  fromIntegral (div ns 1000000) + fromIntegral (s * 1000)
+
+{-# RULES
+"systemTimeMillisSinceEpoch/Int64"
+  systemTimeMillisSinceEpoch =
+    systemTimeInt64MillisSinceEpoch
+  #-}
+
+systemTimeInt64MillisSinceEpoch :: SystemTime -> Int64
+systemTimeInt64MillisSinceEpoch (MkSystemTime s ns) =
+  fromIntegral (div ns 1000000) + s * 1000
+
+{-# RULES
+"systemTimeMicrosSinceEpoch/Int64"
+  systemTimeMicrosSinceEpoch =
+    systemTimeInt64MicrosSinceEpoch
+  #-}
+
+{-# NOINLINE [1] systemTimeMicrosSinceEpoch #-}
+systemTimeMicrosSinceEpoch :: (Num value) => SystemTime -> value
+systemTimeMicrosSinceEpoch (MkSystemTime s ns) =
+  fromIntegral (div ns 1000) + fromIntegral (s * 1000000)
+
+systemTimeInt64MicrosSinceEpoch :: SystemTime -> Int64
+systemTimeInt64MicrosSinceEpoch (MkSystemTime s ns) =
+  fromIntegral (div ns 1000) + s * 1000000

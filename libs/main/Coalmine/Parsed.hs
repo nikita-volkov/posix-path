@@ -69,33 +69,33 @@ newtype Interpreting e m a
 instance MonadTrans (Interpreting e) where
   lift = Interpreting . lift . lift
 
-runInterpretingWithTextErr :: Functor m => Interpreting Text m a -> m (Either Text a)
+runInterpretingWithTextErr :: (Functor m) => Interpreting Text m a -> m (Either Text a)
 runInterpretingWithTextErr =
   fmap (first renderInMegaparsecStyle) . runInterpreting
 
-runInterpreting :: Functor m => Interpreting e m a -> m (Either (Parsed e) a)
+runInterpreting :: (Functor m) => Interpreting e m a -> m (Either (Parsed e) a)
 runInterpreting (Interpreting m) =
   runStateT (runExceptT m) (pure ())
     <&> \(either, parsed) -> first (parsed $>) either
 
-scope :: Monad m => Parsed a -> Interpreting e m a
+scope :: (Monad m) => Parsed a -> Interpreting e m a
 scope parsed =
   Interpreting $ put (void parsed) $> extract parsed
 
 -- |
 -- Associate a value with the current context
 -- by putting it in an associated Parsed.
-associate :: Monad m => a -> Interpreting e m (Parsed a)
+associate :: (Monad m) => a -> Interpreting e m (Parsed a)
 associate = Interpreting . gets . fmap . const
 
-associateEither :: Monad m => Either e r -> Interpreting e m (Parsed r)
+associateEither :: (Monad m) => Either e r -> Interpreting e m (Parsed r)
 associateEither = either throwError associate
 
-scopeAndAssociateEither :: Monad m => Parsed (Either e r) -> Interpreting e m (Parsed r)
+scopeAndAssociateEither :: (Monad m) => Parsed (Either e r) -> Interpreting e m (Parsed r)
 scopeAndAssociateEither parsed =
   scope parsed >>= associateEither
 
-scopeAndAssociateEitherK :: Monad m => Parsed a -> (a -> Either e b) -> Interpreting e m (Parsed b)
+scopeAndAssociateEitherK :: (Monad m) => Parsed a -> (a -> Either e b) -> Interpreting e m (Parsed b)
 scopeAndAssociateEitherK parsed cont =
   scopeAndAssociateEither $ fmap cont parsed
 

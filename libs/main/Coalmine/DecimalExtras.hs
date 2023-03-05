@@ -10,7 +10,7 @@ getMantissaOfDecimals expectedDecimals (Decimal places mantissa) =
     then Just mantissa
     else Nothing
 
-toFixed :: HasResolution res => Decimal -> Maybe (Fixed res)
+toFixed :: (HasResolution res) => Decimal -> Maybe (Fixed res)
 toFixed (Decimal places mantissa) =
   let fixed = MkFixed mantissa
    in if resolution fixed == fromIntegral places

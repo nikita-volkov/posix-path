@@ -2,7 +2,7 @@ module Coalmine.TransformersExtras.State where
 
 import Coalmine.InternalPrelude
 
-liftModifyM :: Functor m => (s -> m s) -> StateT s m ()
+liftModifyM :: (Functor m) => (s -> m s) -> StateT s m ()
 liftModifyM modify =
   StateT $ fmap (fmap pure) modify
 

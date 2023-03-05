@@ -12,13 +12,13 @@ recurseExtending base suffix = do
     (recurseExtending (suffix _base) suffix)
     (return _base)
 
-buildUp :: MonadPlus m => (a -> m a) -> a -> m a
+buildUp :: (MonadPlus m) => (a -> m a) -> a -> m a
 buildUp k = go
   where
     go !a =
       join (mplus (go <$> k a) (pure (pure a)))
 
-foldlMany :: MonadPlus m => (s -> a -> s) -> s -> m a -> m s
+foldlMany :: (MonadPlus m) => (s -> a -> s) -> s -> m a -> m s
 foldlMany _step _acc _get =
   _go _acc
   where
@@ -27,7 +27,7 @@ foldlMany _step _acc _get =
         (_get >>= _go . _step _acc)
         (return _acc)
 
-reverseMany :: MonadPlus m => m a -> m [a]
+reverseMany :: (MonadPlus m) => m a -> m [a]
 reverseMany element = go []
   where
     go !acc =
@@ -35,11 +35,11 @@ reverseMany element = go []
         (element >>= go . (: acc))
         (return acc)
 
-reverseSepBy :: MonadPlus m => m a -> m b -> m [a]
+reverseSepBy :: (MonadPlus m) => m a -> m b -> m [a]
 reverseSepBy element sep =
   reverseSepBy1 element sep <|> pure []
 
-reverseSepBy1 :: MonadPlus m => m a -> m b -> m [a]
+reverseSepBy1 :: (MonadPlus m) => m a -> m b -> m [a]
 reverseSepBy1 element sep =
   element >>= go . pure
   where
@@ -48,7 +48,7 @@ reverseSepBy1 element sep =
         (sep >> element >>= go . (: acc))
         (return acc)
 
-reverseManyTillPreserving :: MonadPlus m => m part -> m end -> m ([part], end)
+reverseManyTillPreserving :: (MonadPlus m) => m part -> m end -> m ([part], end)
 reverseManyTillPreserving repeated end = go []
   where
     go list =

@@ -98,12 +98,12 @@ type SVec = Data.Vector.Storable.Vector
 
 -- * --
 
-parseTextLeniently :: LenientParser a => Text -> Either Text a
+parseTextLeniently :: (LenientParser a) => Text -> Either Text a
 parseTextLeniently =
   first fromString
     . Data.Attoparsec.Text.parseOnly (lenientParser <* Data.Attoparsec.Text.endOfInput)
 
-renderAsYamlText :: Data.Aeson.ToJSON a => a -> Text
+renderAsYamlText :: (Data.Aeson.ToJSON a) => a -> Text
 renderAsYamlText =
   Data.Text.Encoding.decodeUtf8
     . Data.Yaml.encode
@@ -116,19 +116,19 @@ decodeUtf8 = Data.Text.Encoding.decodeUtf8'
 -- * MonadError
 
 -- | 'MonadError' analogue to the 'Control.Exception.try' function.
-tryError :: MonadError e m => m a -> m (Either e a)
+tryError :: (MonadError e m) => m a -> m (Either e a)
 tryError action = (Right <$> action) `catchError` (pure . Left)
 
 -- | 'MonadError' analogue to the 'withExceptT' function.
 -- Modify the value (but not the type) of an error.  The type is
 -- fixed because of the functional dependency @m -> e@.  If you need
 -- to change the type of @e@ use 'mapError'.
-withError :: MonadError e m => (e -> e) -> m a -> m a
+withError :: (MonadError e m) => (e -> e) -> m a -> m a
 withError f action = tryError action >>= either (throwError . f) pure
 
 -- | As 'handle' is flipped 'Control.Exception.catch', 'handleError'
 -- is flipped 'catchError'.
-handleError :: MonadError e m => (e -> m a) -> m a -> m a
+handleError :: (MonadError e m) => (e -> m a) -> m a -> m a
 handleError = flip catchError
 
 -- | 'MonadError' analogue of the 'mapExceptT' function.  The

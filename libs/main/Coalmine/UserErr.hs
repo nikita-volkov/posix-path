@@ -79,7 +79,7 @@ addContextInEither :: Name -> Either UserErr a -> Either UserErr a
 addContextInEither context =
   first $ addContext context
 
-addContextInMonadError :: MonadError UserErr m => Name -> m a -> m a
+addContextInMonadError :: (MonadError UserErr m) => Name -> m a -> m a
 addContextInMonadError context =
   handleError $ throwError . addContext context
 
@@ -87,17 +87,17 @@ addContexts :: [Name] -> UserErr -> UserErr
 addContexts contexts appException =
   appException {contexts = contexts <> appException.contexts}
 
-addContextsInMonadError :: MonadError UserErr m => [Name] -> m a -> m a
+addContextsInMonadError :: (MonadError UserErr m) => [Name] -> m a -> m a
 addContextsInMonadError contexts =
   handleError $ throwError . addContexts contexts
 
 -- * Ops
 
-throwInMonadError :: MonadError UserErr m => Text -> Text -> [Name] -> m a
+throwInMonadError :: (MonadError UserErr m) => Text -> Text -> [Name] -> m a
 throwInMonadError reason suggestion contexts =
   throwError $ UserErr reason suggestion contexts
 
-nestInMonadError :: MonadError UserErr m => Name -> Either UserErr a -> m a
+nestInMonadError :: (MonadError UserErr m) => Name -> Either UserErr a -> m a
 nestInMonadError context = \case
   Right a -> return a
   Left err -> throwError $ addContext context err

@@ -53,7 +53,7 @@ declareTestCase :: String -> IO () -> DeclareTestGroup ()
 declareTestCase name body =
   declareTestTree $ testCase name body
 
-declareTestProperty :: Testable prop => String -> prop -> DeclareTestGroup ()
+declareTestProperty :: (Testable prop) => String -> prop -> DeclareTestGroup ()
 declareTestProperty name body =
   declareTestTree $ testProperty name body
 
@@ -66,5 +66,5 @@ declareTestProperty name body =
 (?!) = declareTestCase
 
 -- | Alias to 'declareTestProperty'.
-(?*) :: Testable prop => String -> prop -> DeclareTestGroup ()
+(?*) :: (Testable prop) => String -> prop -> DeclareTestGroup ()
 (?*) = declareTestProperty

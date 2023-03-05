@@ -4,7 +4,7 @@ import Coalmine.InternalPrelude hiding (empty, insert)
 import Data.HashMap.Strict
 
 {-# INLINE traverse_ #-}
-traverse_ :: Applicative m => (k -> v -> m ()) -> HashMap k v -> m ()
+traverse_ :: (Applicative m) => (k -> v -> m ()) -> HashMap k v -> m ()
 traverse_ m =
   foldrWithKey step init
   where

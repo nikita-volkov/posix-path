@@ -42,11 +42,11 @@ scan1 step =
 
 -- |
 -- Change indicator.
-change :: Eq a => Mealy a Bool
+change :: (Eq a) => Mealy a Bool
 change =
   Mealy $ \first -> (False, changeWithFirst first)
 
-changeWithFirst :: Eq a => a -> Mealy a Bool
+changeWithFirst :: (Eq a) => a -> Mealy a Bool
 changeWithFirst prev =
   Mealy $ \inp ->
     if inp == prev

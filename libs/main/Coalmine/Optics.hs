@@ -40,7 +40,7 @@ foldedCounting =
   where
     folder i =
       feedingFoldable i countEach & extract & HashMap.toList
-    feedingFoldable :: Foldable f => f a -> Moore a b -> Moore a b
+    feedingFoldable :: (Foldable f) => f a -> Moore a b -> Moore a b
     feedingFoldable =
       foldr step id
       where

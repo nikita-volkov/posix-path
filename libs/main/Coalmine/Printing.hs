@@ -13,16 +13,16 @@ import TextBuilderDev qualified as Ub
 printCompactAs :: (IsomorphicTo b TextBuilder, CompactPrinting a) => a -> b
 printCompactAs = to . toCompactBuilder
 
-printCompactAsText :: CompactPrinting a => a -> Text
+printCompactAsText :: (CompactPrinting a) => a -> Text
 printCompactAsText = printCompactAs
 
-printCompactAsString :: CompactPrinting a => a -> String
+printCompactAsString :: (CompactPrinting a) => a -> String
 printCompactAsString = printCompactAs
 
-printCompactToStdOut :: CompactPrinting a => a -> IO ()
+printCompactToStdOut :: (CompactPrinting a) => a -> IO ()
 printCompactToStdOut = TextIO.putStr . printCompactAs
 
-printLnCompactToStdOut :: CompactPrinting a => a -> IO ()
+printLnCompactToStdOut :: (CompactPrinting a) => a -> IO ()
 printLnCompactToStdOut = TextIO.putStrLn . printCompactAs
 
 -- ** --
@@ -76,16 +76,16 @@ instance CompactPrinting Word64 where
 printBroadAs :: (IsomorphicTo b Mb.Builder, BroadPrinting a) => a -> b
 printBroadAs = to . toBroadBuilder
 
-printBroadAsText :: BroadPrinting a => a -> Text
+printBroadAsText :: (BroadPrinting a) => a -> Text
 printBroadAsText = printBroadAs
 
-printBroadAsString :: BroadPrinting a => a -> String
+printBroadAsString :: (BroadPrinting a) => a -> String
 printBroadAsString = printBroadAs
 
-printBroadToStdOut :: BroadPrinting a => a -> IO ()
+printBroadToStdOut :: (BroadPrinting a) => a -> IO ()
 printBroadToStdOut = TextIO.putStr . printBroadAs
 
-printLnBroadToStdOut :: BroadPrinting a => a -> IO ()
+printLnBroadToStdOut :: (BroadPrinting a) => a -> IO ()
 printLnBroadToStdOut = TextIO.putStrLn . printBroadAs
 
 -- ** --

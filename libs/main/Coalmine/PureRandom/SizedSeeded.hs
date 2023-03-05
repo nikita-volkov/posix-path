@@ -25,7 +25,7 @@ nest (SizedSeeded run) = SizedSeeded $ \reductionFactor maxSize ->
 seeded :: Seeded.Seeded a -> SizedSeeded a
 seeded = SizedSeeded . const . const
 
-vectorOf :: GVec.Vector v a => SizedSeeded a -> SizedSeeded (v a)
+vectorOf :: (GVec.Vector v a) => SizedSeeded a -> SizedSeeded (v a)
 vectorOf (SizedSeeded runElement) = SizedSeeded $ \reductionFactor maxSize -> do
   actualSize <- Seeded.smallerSeed maxSize
   Seeded.vectorOfLength

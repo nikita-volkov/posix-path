@@ -257,13 +257,13 @@ setCurrentDirectory path =
 
 -- * Traversers (or Van Laarhoven lenses)
 
-traverseLastComponent :: Functor f => (Component -> f Component) -> Path -> f Path
+traverseLastComponent :: (Functor f) => (Component -> f Component) -> Path -> f Path
 traverseLastComponent traverser (Path abs components) =
   case components of
     h : t -> traverser h <&> \h -> Path abs (h : t)
     _ -> traverser (Component "" []) <&> \h -> Path abs [h]
 
-traverseExtensions :: Functor f => ([Text] -> f [Text]) -> Path -> f Path
+traverseExtensions :: (Functor f) => ([Text] -> f [Text]) -> Path -> f Path
 traverseExtensions traverser =
   traverseLastComponent $ \(Component name extensions) ->
     traverser extensions <&> \extensions ->

@@ -276,7 +276,7 @@ sepBy1 step map sep elem =
         else return acc
 
 vecSepBy1 ::
-  Vector v elem =>
+  (Vector v elem) =>
   -- |
   -- Separator parser signaling whether a separator has been
   -- successfully consumed.

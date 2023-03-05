@@ -33,7 +33,7 @@ list :: Get a -> Get [a]
 list element =
   size >>= \size -> replicateM size element
 
-vec :: GVec.Vector v a => Get a -> Get (v a)
+vec :: (GVec.Vector v a) => Get a -> Get (v a)
 vec element =
   size >>= \size -> GVec.replicateM size element
 
@@ -43,17 +43,17 @@ map :: ([(k, v)] -> map) -> Get k -> Get v -> Get map
 map fromDistinctAscList key val =
   list ((,) <$> key <*> val) <&> fromDistinctAscList
 
-ordMap :: Ord k => Get k -> Get v -> Get (Map k v)
+ordMap :: (Ord k) => Get k -> Get v -> Get (Map k v)
 ordMap = map Map.fromDistinctAscList
 
 intMap :: Get Int -> Get v -> Get (IntMap.IntMap v)
 intMap = map IntMap.fromDistinctAscList
 
-failWithException :: Exception e => e -> Get any
+failWithException :: (Exception e) => e -> Get any
 failWithException = fail . displayException
 
 secureCompactVec ::
-  GVec.Vector v a =>
+  (GVec.Vector v a) =>
   -- | Max size.
   Int ->
   Get a ->

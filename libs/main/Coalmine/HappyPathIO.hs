@@ -43,14 +43,14 @@ readOneOf = go []
                 "- " <> printCompactAs path
 
 -- | Load and parse a required environment variable.
-loadRequiredEnv :: LenientParser a => Text -> IO a
+loadRequiredEnv :: (LenientParser a) => Text -> IO a
 loadRequiredEnv name = do
   loadNonRequiredEnv name >>= \case
     Nothing -> die [i|Env var $name not found|]
     Just res -> return res
 
 -- | Load and parse a non-required environment variable.
-loadNonRequiredEnv :: LenientParser a => Text -> IO (Maybe a)
+loadNonRequiredEnv :: (LenientParser a) => Text -> IO (Maybe a)
 loadNonRequiredEnv name = do
   env <- fmap to <$> lookupEnv (to name)
   case env of

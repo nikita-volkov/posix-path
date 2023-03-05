@@ -53,14 +53,14 @@ instance StdTerminalFormatting Word64 where
 
 -- * Execution
 
-outputToStdout :: StdTerminalFormatting a => a -> IO ()
+outputToStdout :: (StdTerminalFormatting a) => a -> IO ()
 outputToStdout =
   TerminalMarkup.outputToStdout . toStdTerminalMarkup
 
-outputToStderr :: StdTerminalFormatting a => a -> IO ()
+outputToStderr :: (StdTerminalFormatting a) => a -> IO ()
 outputToStderr =
   TerminalMarkup.outputToStderr . toStdTerminalMarkup
 
-outputAndTerminate :: StdTerminalFormatting a => a -> IO ()
+outputAndTerminate :: (StdTerminalFormatting a) => a -> IO ()
 outputAndTerminate =
   TerminalMarkup.outputAndTerminate . toStdTerminalMarkup

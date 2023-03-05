@@ -5,10 +5,10 @@ import Coalmine.InternalPrelude
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 
-nubSort :: Ord a => [a] -> [a]
+nubSort :: (Ord a) => [a] -> [a]
 nubSort = nubSortOn id
 
-nubSortOn :: Ord b => (a -> b) -> [a] -> [a]
+nubSortOn :: (Ord b) => (a -> b) -> [a] -> [a]
 nubSortOn mapper = Map.elems . foldr (\a -> Map.insert (mapper a) a) Map.empty
 
 -- |
@@ -35,13 +35,13 @@ mapHeadAndTail :: (a -> b) -> ([a] -> [b]) -> [a] -> [b]
 mapHeadAndTail hMapper tMapper =
   eliminate [] (\h t -> hMapper h : tMapper t)
 
-foldMapHeadAndTail :: Monoid b => (a -> b) -> ([a] -> b) -> [a] -> b
+foldMapHeadAndTail :: (Monoid b) => (a -> b) -> ([a] -> b) -> [a] -> b
 foldMapHeadAndTail hMapper tMapper =
   eliminate mempty (\h t -> hMapper h <> tMapper t)
 
 -- |
 -- Same as 'foldMap', but applies a different mapping function to head.
-foldMapHeadAndEachOfTail :: Monoid b => (a -> b) -> (a -> b) -> [a] -> b
+foldMapHeadAndEachOfTail :: (Monoid b) => (a -> b) -> (a -> b) -> [a] -> b
 foldMapHeadAndEachOfTail hMapper tMapper =
   eliminate mempty (\h t -> foldl' (\acc t -> acc <> tMapper t) (hMapper h) t)
 
@@ -126,10 +126,10 @@ zipWithTotally pair left right =
 -- A more generic version of the original list-specialized version:
 --
 -- > intercalate :: [a] -> [[a]] -> [a]
-intercalate :: Monoid a => a -> [a] -> a
+intercalate :: (Monoid a) => a -> [a] -> a
 intercalate = mapIntercalate id
 
-mapIntercalate :: Monoid m => (a -> m) -> m -> [a] -> m
+mapIntercalate :: (Monoid m) => (a -> m) -> m -> [a] -> m
 mapIntercalate proj separator = \case
   [] -> mempty
   head : tail ->
@@ -200,11 +200,11 @@ isShorterThan = atLength (const False) True
 traverseConcat :: (Applicative f, Monoid a) => [f a] -> f a
 traverseConcat = fmap mconcat . sequenceA
 
-isDistinct :: Ord a => [a] -> Bool
+isDistinct :: (Ord a) => [a] -> Bool
 isDistinct xs =
   Set.size (Set.fromList xs) == length xs
 
-streamUniqueDuplicates :: Ord a => [a] -> [a]
+streamUniqueDuplicates :: (Ord a) => [a] -> [a]
 streamUniqueDuplicates list =
   foldr step extract list Map.empty
   where

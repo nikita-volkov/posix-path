@@ -11,7 +11,7 @@ import TextBuilderDev qualified
 
 --
 
-instance IsomorphicTo a b => IsomorphicTo (Deque a) (Deque b) where
+instance (IsomorphicTo a b) => IsomorphicTo (Deque a) (Deque b) where
   to = fmap to
 
 instance IsomorphicTo (Deque a) [a] where

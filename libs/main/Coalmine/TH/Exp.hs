@@ -9,6 +9,6 @@ mconcatExp :: [Exp] -> Exp
 mconcatExp exps =
   AppE (VarE 'mconcat) (ListE exps)
 
-liftPurely :: Lift a => a -> Exp
+liftPurely :: (Lift a) => a -> Exp
 liftPurely =
   unsafePerformIO . runQ . lift

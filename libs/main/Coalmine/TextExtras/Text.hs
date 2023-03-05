@@ -24,13 +24,13 @@ toNaturalSortKey =
 
 -- * Basic extras
 
-nonNull :: Alternative f => Text -> f Text
+nonNull :: (Alternative f) => Text -> f Text
 nonNull text =
   if null text
     then pure text
     else empty
 
-mapNonNull :: Alternative f => (Text -> a) -> Text -> f a
+mapNonNull :: (Alternative f) => (Text -> a) -> Text -> f a
 mapNonNull fn text =
   if null text
     then pure (fn text)

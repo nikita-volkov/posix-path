@@ -26,7 +26,7 @@ sized toSize toPut a =
 -- General sequence with compact encoding of the size metadata.
 sizedSequence ::
   -- | Implementation of 'foldMap'.
-  (forall x. Monoid x => (a -> x) -> seq -> x) ->
+  (forall x. (Monoid x) => (a -> x) -> seq -> x) ->
   -- | Size accessor.
   (seq -> Int) ->
   -- | Element putter.
@@ -38,7 +38,7 @@ sizedSequence foldMap measureSize putElement =
 
 -- * Specifics
 
-vec :: GVec.Vector v a => (a -> Put) -> v a -> Put
+vec :: (GVec.Vector v a) => (a -> Put) -> v a -> Put
 vec =
   sizedSequence GVec.foldMap GVec.length
 

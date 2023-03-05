@@ -12,7 +12,7 @@ toTextRefiner p = left (fromString . errorBundlePretty) . runParser (p <* eof) "
 
 -- * --
 
-liftEither :: Stream s => Either Text a -> Parsec e s a
+liftEither :: (Stream s) => Either Text a -> Parsec e s a
 liftEither = \case
   Left err -> fail . to $ err
   Right res -> return res
@@ -90,6 +90,6 @@ locate' p = do
 -- A grouping of the head-tail pattern.
 -- Where there is a parser that determines the choice producing a continuation
 -- which does not participate in the choice.
-altTry :: MonadParsec e s m => [m (m a)] -> m a
+altTry :: (MonadParsec e s m) => [m (m a)] -> m a
 altTry =
   join . msum . fmap try
