@@ -1,6 +1,6 @@
 cabal-version:      3.0
 name:               coalmine
-version:            0.1.0.18
+version:            0.2
 synopsis:           My evolving toolkit that I come to projects with
 description:        Collection of unpolished utils for application development.
 homepage:           https://github.com/nikita-volkov/coalmine
