@@ -205,6 +205,17 @@ instance Syntax.Syntax Path where
 
 -- * --
 
+normalize :: Path -> Path
+normalize (Path abs components) =
+  Path abs filteredComponents
+  where
+    filteredComponents =
+      filter
+        ( \(Component name extensions) ->
+            not (Text.null name && null extensions)
+        )
+        components
+
 -- | Helper for dealing with APIs for FilePath from base.
 toString :: Path -> String
 toString = to . toCompactBuilder
