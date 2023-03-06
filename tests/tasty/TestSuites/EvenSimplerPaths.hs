@@ -2,6 +2,7 @@ module TestSuites.EvenSimplerPaths where
 
 import Coalmine.EvenSimplerPaths
 import Coalmine.Prelude
+import Coalmine.SyntaxModellingLaws qualified as SyntaxModellingLaws
 import Coalmine.Tasty
 import Coalmine.Tasty.TestTrees.Cereal
 
@@ -57,5 +58,6 @@ tests =
           (Right "src/main")
           (parseTextLeniently @Path "src///main")
       ],
-    testEncodeDecode @Path Proxy
+    testEncodeDecode @Path Proxy,
+    testProperties "Syntax" $ SyntaxModellingLaws.properties $ Proxy @Path
   ]

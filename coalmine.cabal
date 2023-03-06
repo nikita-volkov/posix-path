@@ -122,6 +122,7 @@ library
     Coalmine.EvenSimplerPaths.IsomorphismClassHelpers
     Coalmine.EvenSimplerPaths.QuickCheckGens
     Coalmine.EvenSimplerPathsClasses
+    Coalmine.EvenSimplerPathsClassesLaws
     Coalmine.Fileset
     Coalmine.FileSystem
     Coalmine.FoldlExtras.Fold

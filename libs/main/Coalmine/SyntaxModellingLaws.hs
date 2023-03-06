@@ -9,7 +9,7 @@ import Test.QuickCheck qualified as QuickCheck
 properties ::
   (SyntaxModelling.Syntax a, QuickCheck.Arbitrary a, Eq a, Show a) =>
   Proxy a ->
-  [(Text, QuickCheck.Property)]
+  [(String, QuickCheck.Property)]
 properties proxy =
   [ ( "Partial isomorphism",
       QuickCheck.property $ \a ->

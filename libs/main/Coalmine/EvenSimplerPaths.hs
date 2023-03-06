@@ -30,6 +30,7 @@ import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
 import Coalmine.InternalPrelude
 import Coalmine.NameConversion
 import Coalmine.Printing
+import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.Serialize qualified as Cereal
 import Data.Text qualified as Text
@@ -140,23 +141,10 @@ instance Monoid Path where
     Path False []
 
 instance CompactPrinting Path where
-  toCompactBuilder (Path _abs _components) =
-    if _abs
-      then "/" <> _relative
-      else case _components of
-        [] -> "."
-        _ -> _relative
-    where
-      _relative =
-        TextBuilderDev.intercalate "/" . fmap _fromComponent . reverse $ _components
-      _fromComponent (Component _name _extensions) =
-        foldl'
-          (\_output _extension -> _output <> "." <> to _extension)
-          (to _name)
-          (reverse _extensions)
+  toCompactBuilder = Syntax.textBuilder
 
 instance BroadPrinting Path where
-  toBroadBuilder = to . toCompactBuilder
+  toBroadBuilder = to . Syntax.textBuilder
 
 instance ToJSON Path where
   toJSON = toJSON . printCompactAsText
@@ -168,7 +156,20 @@ instance Show Path where
   show = show . printCompactAsText
 
 instance LenientParser Path where
-  lenientParser = do
+  lenientParser = Syntax.attoparsec
+
+instance IsString Path where
+  fromString =
+    either error id
+      . Attoparsec.parseOnly (lenientParser <* Attoparsec.endOfInput)
+      . fromString
+
+instance FromName Path where
+  fromNameIn casing name =
+    Path False [Component (fromNameIn casing name) []]
+
+instance Syntax.Syntax Path where
+  attoparsec = do
     _abs <- Attoparsec.char '/' $> True <|> pure False
     _components <-
       catMaybes
@@ -182,16 +183,20 @@ instance LenientParser Path where
         if Text.null _baseName && null _extensions
           then Nothing <$ Attoparsec.char '.' <|> pure Nothing
           else return $ Just $ Component _baseName _extensions
-
-instance IsString Path where
-  fromString =
-    either error id
-      . Attoparsec.parseOnly (lenientParser <* Attoparsec.endOfInput)
-      . fromString
-
-instance FromName Path where
-  fromNameIn casing name =
-    Path False [Component (fromNameIn casing name) []]
+  textBuilder (Path _abs _components) =
+    if _abs
+      then "/" <> _relative
+      else case _components of
+        [] -> "."
+        _ -> _relative
+    where
+      _relative =
+        TextBuilderDev.intercalate "/" . fmap _fromComponent . reverse $ _components
+      _fromComponent (Component _name _extensions) =
+        foldl'
+          (\_output _extension -> _output <> "." <> to _extension)
+          (to _name)
+          (reverse _extensions)
 
 -- * --
 
