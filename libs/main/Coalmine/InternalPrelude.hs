@@ -34,7 +34,6 @@ import Acc.NeAcc as Exports (NeAcc)
 import Attoparsec.Data as Exports (LenientParser (..))
 import Control.Foldl as Exports (EndoM (..))
 import Control.FromSum as Exports
-import Control.Monad.Morph as Exports
 import Data.Aeson as Exports (FromJSON (..), ToJSON (..), ToJSONKey (..))
 import Data.Aeson qualified
 import Data.Attoparsec.Text qualified

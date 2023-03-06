@@ -121,6 +121,7 @@ library
     Coalmine.EvenSimplerPaths.Charsets
     Coalmine.EvenSimplerPaths.IsomorphismClassHelpers
     Coalmine.EvenSimplerPaths.QuickCheckGens
+    Coalmine.EvenSimplerPathsClasses
     Coalmine.Fileset
     Coalmine.FileSystem
     Coalmine.FoldlExtras.Fold
