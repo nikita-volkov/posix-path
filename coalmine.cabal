@@ -124,7 +124,6 @@ library
     Coalmine.Fileset
     Coalmine.FileSystem
     Coalmine.FoldlExtras.Fold
-    Coalmine.Format
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
     Coalmine.GithubActionKit
@@ -195,6 +194,7 @@ library
     Coalmine.StdTerminalFormatting
     Coalmine.StmExtras.TQueue
     Coalmine.Streamer
+    Coalmine.SyntaxModelling
     Coalmine.Tasty
     Coalmine.Tasty.TestTrees
     Coalmine.Tasty.TestTrees.Cereal
