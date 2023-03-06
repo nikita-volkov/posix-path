@@ -1,5 +1,5 @@
 -- |
--- Collection of standard isomorphisms under the interface of classes.
+-- Collection of isomorphism flavours under the interface of classes.
 --
 -- Compared to Lingua does not force a single association
 -- by letting the user disambiguate in ambiguous cases via TypeApplications.
