@@ -4,7 +4,7 @@ import Coalmine.InternalPrelude
 import Data.Attoparsec.Text qualified as Attoparsec
 
 -- |
--- Unary syntactic representation for a data-type.
+-- Canonical syntactic representation for a data-type.
 --
 -- The data-types are supposed to be provided via newtype-wrappers
 -- to provide various syntaxes for data-types.
@@ -16,9 +16,3 @@ import Data.Attoparsec.Text qualified as Attoparsec
 class Syntax a where
   attoparsec :: Attoparsec.Parser a
   textBuilder :: a -> TextBuilder
-
-validateLaws :: (Syntax a, Eq a) => a -> Bool
-validateLaws val =
-  case Attoparsec.parseOnly (attoparsec <* Attoparsec.endOfInput) (to @Text (textBuilder val)) of
-    Right parsedVal -> parsedVal == val
-    Left _ -> False
