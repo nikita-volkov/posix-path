@@ -55,6 +55,9 @@ instance QuickCheck.Arbitrary Component where
     name <- QuickCheckGens.fileName
     fileExtensions <- QuickCheckGens.fileExtensions
     return $ Component name fileExtensions
+  shrink (Component name extensions) =
+    QuickCheck.shrink (name, extensions) <&> \(name, extensions) ->
+      Component name extensions
 
 instance Cereal.Serialize Component where
   put (Component name extensions) = do
@@ -105,6 +108,8 @@ instance QuickCheck.Arbitrary Path where
       components = do
         size <- QuickCheck.chooseInt (0, 20)
         QuickCheck.vectorOf size QuickCheck.arbitrary
+  shrink (Path absolute components) =
+    Path absolute <$> QuickCheck.shrink components
 
 instance Cereal.Serialize Path where
   put (Path abs components) = do
