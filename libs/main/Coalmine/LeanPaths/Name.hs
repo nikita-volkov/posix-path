@@ -36,7 +36,7 @@ instance QuickCheck.Arbitrary Name where
     return $ Name base fileExtensions
   shrink (Name base extensions) =
     QuickCheck.shrink (base, extensions) <&> \(base, extensions) ->
-      Name base extensions
+      Name base (List.filter (not . Text.null) extensions)
 
 instance Cereal.Serialize Name where
   put (Name base extensions) = do
