@@ -9,6 +9,12 @@ import Coalmine.Tasty.TestTrees.Cereal qualified as Cereal
 tests =
   [ Cereal.testEncodeDecode @NormalizedPath Proxy,
     testProperties "Syntax" $ SyntaxModellingLaws.properties $ Proxy @NormalizedPath,
+    testGroup "Essentials" $
+      [ eqTestCase
+          "Component decomposition works and keeps order"
+          ["src", "main", "java"]
+          (decompose "src/main/java")
+      ],
     testGroup "Empty" $
       [ eqTestCase @NormalizedPath
           "equals empty"
@@ -33,7 +39,11 @@ tests =
       [ eqTestCase @NormalizedPath
           "Same as without it"
           "src/main/java"
-          "src/main/java/"
+          "src/main/java/",
+        eqTestCase
+          "Doesn't produce a trailing component"
+          ["src", "main", "java"]
+          (decompose "src/main/java/")
       ],
     testGroup "Multislash" $
       [ eqTestCase @NormalizedPath

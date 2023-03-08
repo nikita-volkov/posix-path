@@ -3,6 +3,7 @@ module Coalmine.LeanPaths.NormalizedPath
     fromPath,
     toPath,
     absolute,
+    decompose,
   )
 where
 
@@ -157,3 +158,18 @@ toPath = \case
 absolute :: NormalizedPath
 absolute =
   AbsNormalizedPath []
+
+-- |
+-- Explode into individual components.
+decompose :: NormalizedPath -> [NormalizedPath]
+decompose = \case
+  AbsNormalizedPath names ->
+    case reverse names of
+      head : tail ->
+        AbsNormalizedPath [head]
+          : fmap (RelNormalizedPath 0 . pure) tail
+      _ ->
+        [AbsNormalizedPath []]
+  RelNormalizedPath movesUp names ->
+    replicate movesUp (RelNormalizedPath 1 [])
+      <> fmap (RelNormalizedPath 0 . pure) (reverse names)
