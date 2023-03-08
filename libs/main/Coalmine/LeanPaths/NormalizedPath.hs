@@ -63,7 +63,7 @@ instance Semigroup NormalizedPath where
         RelNormalizedPath lMovesUp lNames ->
           case List.dropPedantically rMovesUp lNames of
             Left rMovesUp -> RelNormalizedPath (rMovesUp + lMovesUp) rNames
-            Right lNames -> RelNormalizedPath lMovesUp (lNames <> rNames)
+            Right lNames -> RelNormalizedPath lMovesUp (rNames <> lNames)
         AbsNormalizedPath lNames ->
           AbsNormalizedPath (rNames <> drop rMovesUp lNames)
 
