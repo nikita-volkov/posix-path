@@ -205,10 +205,10 @@ instance Syntax.Syntax Path where
       _relative =
         TextBuilderDev.intercalate "/" . fmap _fromComponent . reverse $ _components
       _fromComponent (Component _name _extensions) =
-        foldl'
-          (\_output _extension -> _output <> "." <> to _extension)
+        foldr
+          (\_extension _next -> _next <> "." <> to _extension)
           (to _name)
-          (reverse _extensions)
+          _extensions
 
 -- * --
 
