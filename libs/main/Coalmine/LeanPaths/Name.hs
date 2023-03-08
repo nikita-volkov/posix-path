@@ -1,5 +1,5 @@
 module Coalmine.LeanPaths.Name
-  ( Name,
+  ( Name (..),
     null,
   )
 where
@@ -27,7 +27,7 @@ data Name = Name
     -- | Extensions in reverse order.
     extensions :: ![Text]
   }
-  deriving (Eq)
+  deriving (Eq, Show)
 
 instance QuickCheck.Arbitrary Name where
   arbitrary = do
