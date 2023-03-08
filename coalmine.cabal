@@ -157,6 +157,7 @@ library
     Coalmine.MultilineTextBuilder
     Coalmine.Name
     Coalmine.NameConversion
+    Coalmine.NormalizedPath
     Coalmine.NumericVersion
     Coalmine.OpenApi
     Coalmine.Optics
@@ -323,6 +324,7 @@ test-suite tasty
     TestSuites.MegaparsecExtras
     TestSuites.MultilineTextBuilder
     TestSuites.Name
+    TestSuites.NormalizedPath
     TestSuites.NumericVersion
     TestSuites.PtrKit
     TestSuites.TimeExtrasConversions

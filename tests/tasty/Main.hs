@@ -12,6 +12,7 @@ import TestSuites.LocatedRendering qualified as LocatedRendering
 import TestSuites.MegaparsecExtras qualified as MegaparsecExtras
 import TestSuites.MultilineTextBuilder qualified as MultilineTextBuilder
 import TestSuites.Name qualified as Name
+import TestSuites.NormalizedPath qualified as NormalizedPath
 import TestSuites.NumericVersion qualified as NumericVersion
 import TestSuites.PtrKit qualified as PtrKit
 import TestSuites.TimeExtrasConversions qualified as TimeExtrasConversions
@@ -32,6 +33,7 @@ main =
       "List" ?:: TestSuites.BaseExtras.List.tests
     "MultilineTextBuilder" ?:: MultilineTextBuilder.tests
     "PtrKit" ?:: PtrKit.tests
+    "NormalizedPath" ?:: NormalizedPath.tests
 
 (?::) name =
   declareTestGroup name . traverse_ declareTestTree
