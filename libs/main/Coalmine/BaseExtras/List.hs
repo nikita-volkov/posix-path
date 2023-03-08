@@ -5,6 +5,17 @@ import Coalmine.InternalPrelude
 import Data.Map.Strict qualified as Map
 import Data.Set qualified as Set
 
+dropPedantically :: Int -> [a] -> Either Int [a]
+dropPedantically amount =
+  if amount > 0
+    then \case
+      head : tail -> dropPedantically (pred amount) tail
+      _ -> Left amount
+    else
+      if amount == 0
+        then Right
+        else const $ Left amount
+
 nubSort :: (Ord a) => [a] -> [a]
 nubSort = nubSortOn id
 
