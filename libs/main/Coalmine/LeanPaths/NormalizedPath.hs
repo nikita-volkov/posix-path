@@ -34,7 +34,7 @@ data NormalizedPath
       -- ^ Preceding go up commands.
       ![Name.Name]
       -- ^ Components in reverse order.
-  deriving (Eq)
+  deriving (Eq, Show)
 
 instance Ord NormalizedPath where
   compare = \case
@@ -46,10 +46,6 @@ instance Ord NormalizedPath where
       RelNormalizedPath rMovesUp rNames -> case compare lMovesUp rMovesUp of
         EQ -> compare lNames rNames
         res -> res
-
-instance Show NormalizedPath where
-  show =
-    show . to @Text . Syntax.textBuilder
 
 instance IsString NormalizedPath where
   fromString =
@@ -128,7 +124,10 @@ fromPath (Path.Path absolute components) =
         Component.NameComponent name ->
           if collectedMovesUp > 0
             then next (pred collectedMovesUp) collectedNames
-            else next collectedMovesUp (name : collectedNames)
+            else
+              if Name.null name
+                then next collectedMovesUp collectedNames
+                else next collectedMovesUp (name : collectedNames)
         Component.DotComponent ->
           next collectedMovesUp collectedNames
         Component.DotDotComponent ->
