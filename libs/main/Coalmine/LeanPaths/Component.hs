@@ -28,5 +28,7 @@ instance Syntax.Syntax Component where
           )
           (pure (NameComponent name))
       else pure (NameComponent name)
-  textBuilder =
-    error "TODO"
+  textBuilder = \case
+    NameComponent name -> Syntax.textBuilder name
+    DotComponent -> "."
+    DotDotComponent -> ".."
