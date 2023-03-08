@@ -5,11 +5,13 @@ import Coalmine.Prelude hiding (Path)
 import Coalmine.SyntaxModellingLaws qualified as SyntaxModellingLaws
 import Coalmine.Tasty
 import Coalmine.Tasty.TestTrees.Cereal qualified as Cereal
+import Test.QuickCheck.Classes qualified as QuickcheckClasses
 
 tests =
   [ testGroup "NormalizedPath" $
       [ Cereal.testEncodeDecode @NormalizedPath Proxy,
         testProperties "Syntax" $ SyntaxModellingLaws.properties $ Proxy @NormalizedPath,
+        testLaws (QuickcheckClasses.monoidLaws (Proxy @NormalizedPath)),
         testGroup "Essentials" $
           [ eqTestCase
               "Component decomposition works and keeps order"

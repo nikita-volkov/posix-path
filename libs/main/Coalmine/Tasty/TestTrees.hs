@@ -1,6 +1,7 @@
 module Coalmine.Tasty.TestTrees where
 
 import Coalmine.InternalPrelude
+import Test.QuickCheck.Classes qualified as QuickcheckClasses
 import Test.Tasty
 import Test.Tasty.HUnit
 import Test.Tasty.QuickCheck
@@ -21,3 +22,7 @@ eitherIOEqTestCase name expected getActual =
     getActual >>= \case
       Right actual -> assertEqual "" expected actual
       Left err -> assertFailure $ to err
+
+testLaws :: QuickcheckClasses.Laws -> TestTree
+testLaws laws =
+  testProperties (QuickcheckClasses.lawsTypeclass laws) (QuickcheckClasses.lawsProperties laws)
