@@ -252,3 +252,8 @@ traverseHeadWithDefault :: (Functor f) => a -> (a -> f a) -> [a] -> f [a]
 traverseHeadWithDefault def f = \case
   head : tail -> (: tail) <$> f head
   _ -> pure <$> f def
+
+headOr :: a -> [a] -> a
+headOr def = \case
+  head : _ -> head
+  _ -> def

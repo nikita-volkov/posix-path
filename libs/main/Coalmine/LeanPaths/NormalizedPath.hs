@@ -1,11 +1,17 @@
 module Coalmine.LeanPaths.NormalizedPath
   ( NormalizedPath (..),
-    toFilePath,
-    fromPath,
-    toPath,
+
+    -- * Constructors
     root,
-    decompose,
+    fromPath,
     addExtension,
+
+    -- * Accessors
+    toFilePath,
+    toPath,
+    decompose,
+    basename,
+    extensions,
   )
 where
 
@@ -183,6 +189,8 @@ decompose = \case
     replicate movesUp (RelNormalizedPath 1 [])
       <> fmap (RelNormalizedPath 0 . pure) (reverse names)
 
+-- * Traversers (aka Van Laarhoven lenses)
+
 traverseNames :: (Functor f) => ([Name.Name] -> f [Name.Name]) -> NormalizedPath -> f NormalizedPath
 traverseNames f = \case
   AbsNormalizedPath names ->
@@ -198,6 +206,8 @@ traverseExtensions :: (Functor f) => ([Text] -> f [Text]) -> NormalizedPath -> f
 traverseExtensions =
   traverseLastName . Name.traverseExtensions
 
+-- * Mappers
+
 mapExtensions :: ([Text] -> [Text]) -> NormalizedPath -> NormalizedPath
 mapExtensions mapper =
   runIdentity . traverseExtensions (Identity . mapper)
@@ -205,3 +215,21 @@ mapExtensions mapper =
 -- | Add file extension to the last component of the path.
 addExtension :: Text -> NormalizedPath -> NormalizedPath
 addExtension ext = mapExtensions (ext :)
+
+-- * Accessors
+
+names :: NormalizedPath -> [Name.Name]
+names = \case
+  AbsNormalizedPath names -> names
+  RelNormalizedPath _ names -> names
+
+-- | File name sans extensions.
+basename :: NormalizedPath -> Text
+basename path =
+  case names path of
+    head : _ -> head.base
+    _ -> mempty
+
+extensions :: NormalizedPath -> [Text]
+extensions =
+  reverse . (.extensions) . List.headOr Name.empty . names
