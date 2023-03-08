@@ -51,10 +51,13 @@ data Component = Component
   deriving (Eq)
 
 instance QuickCheck.Arbitrary Component where
-  arbitrary = do
-    name <- QuickCheckGens.fileName
-    fileExtensions <- QuickCheckGens.fileExtensions
-    return $ Component name fileExtensions
+  arbitrary = QuickCheck.suchThat gen predicate
+    where
+      gen = do
+        name <- QuickCheckGens.fileName
+        fileExtensions <- QuickCheckGens.fileExtensions
+        return $ Component name fileExtensions
+      predicate = not . componentNull
   shrink (Component name extensions) =
     QuickCheck.shrink (name, extensions) <&> \(name, extensions) ->
       Component name extensions
@@ -91,6 +94,10 @@ instance Ord Component where
 componentNameSortKey = NaturalSort.sortKey . (.name)
 
 componentExtensionsSortKey = reverse . fmap NaturalSort.sortKey . (.extensions)
+
+componentNull :: Component -> Bool
+componentNull (Component name extensions) =
+  Text.null name && null extensions
 
 -- * --
 
@@ -204,17 +211,6 @@ instance Syntax.Syntax Path where
           (reverse _extensions)
 
 -- * --
-
-normalize :: Path -> Path
-normalize (Path abs components) =
-  Path abs filteredComponents
-  where
-    filteredComponents =
-      filter
-        ( \(Component name extensions) ->
-            not (Text.null name && null extensions)
-        )
-        components
 
 -- | Helper for dealing with APIs for FilePath from base.
 toString :: Path -> String
