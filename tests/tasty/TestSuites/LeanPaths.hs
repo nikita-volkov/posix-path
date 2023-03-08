@@ -69,6 +69,12 @@ tests =
               "Absolute is prefixed with slash"
               "/a"
               (toFilePath (root <> "a"))
+          ],
+        testGroup "Dot-dot" $
+          [ eqTestCase @NormalizedPath
+              "Intermediate ones get squashed"
+              "a/c/f"
+              "a/b/../c/d/e/../../f"
           ]
       ]
   ]
