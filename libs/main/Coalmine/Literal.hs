@@ -34,6 +34,9 @@ class Literal a where
 --
 -- Examples:
 --
+-- > examplePath :: Path
+-- > examplePath = $$(l "/usr/local/bin")
+--
 -- > exampleOrg :: URL
 -- > exampleOrg = $$(l "http://example.org")
 --
