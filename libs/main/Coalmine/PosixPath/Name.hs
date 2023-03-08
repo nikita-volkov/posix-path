@@ -1,4 +1,4 @@
-module Coalmine.LeanPaths.Name
+module Coalmine.PosixPath.Name
   ( Name (..),
     null,
     empty,

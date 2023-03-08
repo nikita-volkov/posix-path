@@ -1,6 +1,6 @@
-module TestSuites.LeanPaths where
+module TestSuites.PosixPath where
 
-import Coalmine.LeanPaths.NormalizedPath
+import Coalmine.PosixPath.NormalizedPath
 import Coalmine.Prelude hiding (Path)
 import Coalmine.SyntaxModellingLaws qualified as SyntaxModellingLaws
 import Coalmine.Tasty

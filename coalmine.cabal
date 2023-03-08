@@ -145,10 +145,6 @@ library
     Coalmine.Json
     Coalmine.JsonEncoder
     Coalmine.JsonSchema
-    Coalmine.LeanPaths.Component
-    Coalmine.LeanPaths.Name
-    Coalmine.LeanPaths.NormalizedPath
-    Coalmine.LeanPaths.Path
     Coalmine.Lingua
     Coalmine.Literal
     Coalmine.Located
@@ -167,6 +163,10 @@ library
     Coalmine.Parsed
     Coalmine.Parsing
     Coalmine.PartialEndo
+    Coalmine.PosixPath.Component
+    Coalmine.PosixPath.Name
+    Coalmine.PosixPath.NormalizedPath
+    Coalmine.PosixPath.Path
     Coalmine.Predicates
     Coalmine.Prelude
     Coalmine.Printer
@@ -324,12 +324,12 @@ test-suite tasty
     TestSuites.EvenSimplerPaths
     TestSuites.Inter
     TestSuites.Inter.Regressions.FromFormatica
-    TestSuites.LeanPaths
     TestSuites.LocatedRendering
     TestSuites.MegaparsecExtras
     TestSuites.MultilineTextBuilder
     TestSuites.Name
     TestSuites.NumericVersion
+    TestSuites.PosixPath
     TestSuites.PtrKit
     TestSuites.TimeExtrasConversions
 

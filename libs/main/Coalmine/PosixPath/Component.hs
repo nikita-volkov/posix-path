@@ -1,11 +1,11 @@
-module Coalmine.LeanPaths.Component
+module Coalmine.PosixPath.Component
   ( Component (..),
   )
 where
 
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.InternalPrelude
-import Coalmine.LeanPaths.Name qualified as Name
+import Coalmine.PosixPath.Name qualified as Name
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
 

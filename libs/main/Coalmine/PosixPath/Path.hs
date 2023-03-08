@@ -1,4 +1,4 @@
-module Coalmine.LeanPaths.Path
+module Coalmine.PosixPath.Path
   ( Path (..),
   )
 where
@@ -8,8 +8,8 @@ import Coalmine.BaseExtras.MonadPlus
 import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
 import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
 import Coalmine.InternalPrelude hiding (null)
-import Coalmine.LeanPaths.Component qualified as Component
-import Coalmine.LeanPaths.Name qualified as Name
+import Coalmine.PosixPath.Component qualified as Component
+import Coalmine.PosixPath.Name qualified as Name
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List

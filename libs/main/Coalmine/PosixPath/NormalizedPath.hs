@@ -1,4 +1,4 @@
-module Coalmine.LeanPaths.NormalizedPath
+module Coalmine.PosixPath.NormalizedPath
   ( NormalizedPath (..),
 
     -- * Constructors
@@ -20,9 +20,9 @@ import Coalmine.BaseExtras.MonadPlus
 import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
 import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
 import Coalmine.InternalPrelude hiding (null)
-import Coalmine.LeanPaths.Component qualified as Component
-import Coalmine.LeanPaths.Name qualified as Name
-import Coalmine.LeanPaths.Path qualified as Path
+import Coalmine.PosixPath.Component qualified as Component
+import Coalmine.PosixPath.Name qualified as Name
+import Coalmine.PosixPath.Path qualified as Path
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List
