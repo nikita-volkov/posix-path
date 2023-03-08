@@ -70,17 +70,35 @@ tests =
             eqTestCase
               "Absolute is prefixed with slash"
               "/a"
-              (toFilePath (root <> "a"))
+              (toFilePath "/a")
           ],
-        testGroup "Dot-dot" $
+        testGroup "fromString" $
           [ eqTestCase @NormalizedPath
               "Intermediate ones get squashed"
               "a/c/f"
               "a/b/../c/d/e/../../f",
             eqTestCase @NormalizedPath
-              "Concatenation"
+              "Absolute followed by dot-dot"
+              "/a"
+              "/../a"
+          ],
+        testGroup "mappend" $
+          [ eqTestCase @NormalizedPath
+              "Dot-dot"
               "a/d"
-              ("a/b/c" <> "../../d")
+              ("a/b/c" <> "../../d"),
+            eqTestCase @NormalizedPath
+              "Second absolute"
+              "/d"
+              ("a/b/c" <> "/d"),
+            eqTestCase @NormalizedPath
+              "First absolute and dot-dot too high"
+              "/a"
+              ("/" <> "../a"),
+            eqTestCase @NormalizedPath
+              "Absolute is prefixed with slash"
+              "/a"
+              (root <> "a")
           ]
       ]
   ]
