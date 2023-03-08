@@ -47,11 +47,13 @@ import Data.Groupoid as Exports
 import Data.Machine.Mealy as Exports
 import Data.Machine.Moore as Exports
 import Data.Semialign as Exports
+import Data.Serialize.Text ()
 import Data.Text.Encoding qualified
 import Data.Tuple.All as Exports hiding (only)
 import Data.Vector qualified
 import Data.Vector.Generic as Exports (Vector)
 import Data.Vector.Instances as Exports
+import Data.Vector.Serialize ()
 import Data.Vector.Storable qualified
 import Data.Vector.Unboxed as Exports (Unbox)
 import Data.Vector.Unboxed qualified

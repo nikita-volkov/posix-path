@@ -4,8 +4,6 @@ import Cereal.UnorderedContainers.Serialize ()
 import Coalmine.InternalPrelude hiding (get, put)
 import Data.Scientific qualified as Scientific
 import Data.Serialize
-import Data.Serialize.Text ()
-import Data.Vector.Serialize ()
 
 instance Serialize Scientific where
   put x = do
