@@ -55,6 +55,20 @@ tests =
               "Triple"
               "src/main"
               "src///main"
+          ],
+        testGroup "toFilePath" $
+          [ eqTestCase
+              "Empty renders as dot"
+              "."
+              (toFilePath mempty),
+            eqTestCase
+              "Relative is prefixed with dot"
+              "./a"
+              (toFilePath "a"),
+            eqTestCase
+              "Absolute is prefixed with slash"
+              "/a"
+              (toFilePath (root <> "a"))
           ]
       ]
   ]

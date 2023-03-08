@@ -1,8 +1,9 @@
 module Coalmine.LeanPaths.NormalizedPath
   ( NormalizedPath (..),
+    toFilePath,
     fromPath,
     toPath,
-    absolute,
+    root,
     decompose,
   )
 where
@@ -59,9 +60,12 @@ instance Semigroup NormalizedPath where
     AbsNormalizedPath _ -> rPath
     RelNormalizedPath rMovesUp rNames ->
       case lPath of
-        RelNormalizedPath lMovesUp lNames -> case List.dropPedantically rMovesUp lNames of
-          Left rMovesUp -> RelNormalizedPath (rMovesUp + lMovesUp) rNames
-          Right lNames -> RelNormalizedPath lMovesUp (lNames <> rNames)
+        RelNormalizedPath lMovesUp lNames ->
+          case List.dropPedantically rMovesUp lNames of
+            Left rMovesUp -> RelNormalizedPath (rMovesUp + lMovesUp) rNames
+            Right lNames -> RelNormalizedPath lMovesUp (lNames <> rNames)
+        AbsNormalizedPath lNames ->
+          AbsNormalizedPath (rNames <> drop rMovesUp lNames)
 
 instance Monoid NormalizedPath where
   mempty =
@@ -115,10 +119,14 @@ instance Syntax.Syntax NormalizedPath where
   textBuilder =
     Syntax.textBuilder . toPath
 
+-- | Compile to standard file path string.
+toFilePath :: NormalizedPath -> FilePath
+toFilePath = to @String . Syntax.textBuilder
+
 -- |
 -- Normalize a path.
 fromPath :: Path.Path -> NormalizedPath
-fromPath (Path.Path absolute components) =
+fromPath (Path.Path root components) =
   foldr step finish components 0 []
   where
     step component next !collectedMovesUp !collectedNames =
@@ -135,7 +143,7 @@ fromPath (Path.Path absolute components) =
         Component.DotDotComponent ->
           next (succ collectedMovesUp) collectedNames
     finish collectedMovesUp collectedNames =
-      if absolute
+      if root
         then AbsNormalizedPath (reverse collectedNames)
         else RelNormalizedPath collectedMovesUp (reverse collectedNames)
 
@@ -155,8 +163,8 @@ toPath = \case
 
 -- |
 -- Prepending it to a relative path will make it absolute.
-absolute :: NormalizedPath
-absolute =
+root :: NormalizedPath
+root =
   AbsNormalizedPath []
 
 -- |
