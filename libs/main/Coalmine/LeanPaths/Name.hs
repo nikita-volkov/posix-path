@@ -69,14 +69,14 @@ instance Ord Name where
 
 instance Syntax.Syntax Name where
   attoparsec = do
-    _baseName <- AttoparsecHelpers.fileName
-    _extensions <- reverseMany AttoparsecHelpers.extension
-    return $ Name _baseName _extensions
-  textBuilder (Name _name _extensions) =
-    foldl'
-      (\_output _extension -> _output <> "." <> to _extension)
-      (to _name)
-      (reverse _extensions)
+    base <- AttoparsecHelpers.fileName
+    extensions <- reverseMany AttoparsecHelpers.extension
+    return $ Name base extensions
+  textBuilder (Name base extensions) =
+    foldr
+      (\extension next -> next <> "." <> to extension)
+      (to base)
+      extensions
 
 baseSortKey :: Name -> NaturalSort.SortKey
 baseSortKey = NaturalSort.sortKey . (.base)
