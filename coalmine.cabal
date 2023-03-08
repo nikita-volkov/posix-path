@@ -167,6 +167,7 @@ library
     Coalmine.PosixPath.Name
     Coalmine.PosixPath.NormalizedPath
     Coalmine.PosixPath.Path
+    Coalmine.PosixPathClasses
     Coalmine.Predicates
     Coalmine.Prelude
     Coalmine.Printer
