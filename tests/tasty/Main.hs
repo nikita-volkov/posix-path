@@ -8,11 +8,11 @@ import TestSuites.CerealExtras.Compact qualified
 import TestSuites.ConduitExtras qualified as ConduitExtras
 import TestSuites.EvenSimplerPaths qualified as EvenSimplerPaths
 import TestSuites.Inter qualified as Inter
+import TestSuites.LeanPaths qualified as LeanPaths
 import TestSuites.LocatedRendering qualified as LocatedRendering
 import TestSuites.MegaparsecExtras qualified as MegaparsecExtras
 import TestSuites.MultilineTextBuilder qualified as MultilineTextBuilder
 import TestSuites.Name qualified as Name
-import TestSuites.NormalizedPath qualified as NormalizedPath
 import TestSuites.NumericVersion qualified as NumericVersion
 import TestSuites.PtrKit qualified as PtrKit
 import TestSuites.TimeExtrasConversions qualified as TimeExtrasConversions
@@ -33,7 +33,7 @@ main =
       "List" ?:: TestSuites.BaseExtras.List.tests
     "MultilineTextBuilder" ?:: MultilineTextBuilder.tests
     "PtrKit" ?:: PtrKit.tests
-    "NormalizedPath" ?:: NormalizedPath.tests
+    "LeanPaths" ?:: LeanPaths.tests
 
 (?::) name =
   declareTestGroup name . traverse_ declareTestTree
