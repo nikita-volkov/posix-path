@@ -147,6 +147,7 @@ library
     Coalmine.JsonSchema
     Coalmine.LeanPaths.Component
     Coalmine.LeanPaths.Name
+    Coalmine.LeanPaths.Path
     Coalmine.Lingua
     Coalmine.Literal
     Coalmine.Located
