@@ -84,7 +84,8 @@ instance QuickCheck.Arbitrary NormalizedPath where
     AbsNormalizedPath names ->
       AbsNormalizedPath <$> QuickCheck.shrink names
     RelNormalizedPath movesUp names ->
-      RelNormalizedPath movesUp <$> QuickCheck.shrink names
+      QuickCheck.shrink (movesUp, names) <&> \(movesUp, names) ->
+        RelNormalizedPath movesUp names
 
 instance Cereal.Serialize NormalizedPath where
   put = \case
