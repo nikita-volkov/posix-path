@@ -76,7 +76,11 @@ tests =
           [ eqTestCase @NormalizedPath
               "Intermediate ones get squashed"
               "a/c/f"
-              "a/b/../c/d/e/../../f"
+              "a/b/../c/d/e/../../f",
+            eqTestCase @NormalizedPath
+              "Concatenation"
+              "a/d"
+              ("a/b/c" <> "../../d")
           ]
       ]
   ]
