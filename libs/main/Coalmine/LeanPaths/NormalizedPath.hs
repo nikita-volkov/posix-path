@@ -5,6 +5,7 @@ module Coalmine.LeanPaths.NormalizedPath
     toPath,
     root,
     decompose,
+    addExtension,
   )
 where
 
@@ -181,3 +182,26 @@ decompose = \case
   RelNormalizedPath movesUp names ->
     replicate movesUp (RelNormalizedPath 1 [])
       <> fmap (RelNormalizedPath 0 . pure) (reverse names)
+
+traverseNames :: (Functor f) => ([Name.Name] -> f [Name.Name]) -> NormalizedPath -> f NormalizedPath
+traverseNames f = \case
+  AbsNormalizedPath names ->
+    AbsNormalizedPath <$> f names
+  RelNormalizedPath movesUp names ->
+    RelNormalizedPath movesUp <$> f names
+
+traverseLastName :: (Functor f) => (Name.Name -> f Name.Name) -> NormalizedPath -> f NormalizedPath
+traverseLastName =
+  traverseNames . List.traverseHeadWithDefault Name.empty
+
+traverseExtensions :: (Functor f) => ([Text] -> f [Text]) -> NormalizedPath -> f NormalizedPath
+traverseExtensions =
+  traverseLastName . Name.traverseExtensions
+
+mapExtensions :: ([Text] -> [Text]) -> NormalizedPath -> NormalizedPath
+mapExtensions mapper =
+  runIdentity . traverseExtensions (Identity . mapper)
+
+-- | Add file extension to the last component of the path.
+addExtension :: Text -> NormalizedPath -> NormalizedPath
+addExtension ext = mapExtensions (ext :)

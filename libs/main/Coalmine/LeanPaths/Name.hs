@@ -1,6 +1,8 @@
 module Coalmine.LeanPaths.Name
   ( Name (..),
     null,
+    empty,
+    traverseExtensions,
   )
 where
 
@@ -10,7 +12,7 @@ import Coalmine.BaseExtras.MonadPlus
 import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
 import Coalmine.EvenSimplerPaths.IsomorphismClassHelpers qualified as IsomorphismClassHelpers
 import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
-import Coalmine.InternalPrelude hiding (null)
+import Coalmine.InternalPrelude hiding (empty, null)
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List
@@ -87,3 +89,11 @@ extensionsSortKey = reverse . fmap NaturalSort.sortKey . (.extensions)
 null :: Name -> Bool
 null (Name name extensions) =
   Text.null name && List.null extensions
+
+empty :: Name
+empty =
+  Name mempty mempty
+
+traverseExtensions :: (Functor f) => ([Text] -> f [Text]) -> Name -> f Name
+traverseExtensions f (Name base extensions) =
+  Name base <$> f extensions

@@ -242,3 +242,13 @@ findLast pred = go
         Just res -> Just res
         Nothing -> go t
       _ -> Nothing
+
+traverseHead :: (Applicative f) => (a -> f a) -> [a] -> f [a]
+traverseHead f = \case
+  head : tail -> (: tail) <$> f head
+  _ -> pure []
+
+traverseHeadWithDefault :: (Functor f) => a -> (a -> f a) -> [a] -> f [a]
+traverseHeadWithDefault def f = \case
+  head : tail -> (: tail) <$> f head
+  _ -> pure <$> f def
