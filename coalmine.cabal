@@ -202,7 +202,7 @@ library
     Coalmine.StmExtras.TQueue
     Coalmine.Streamer
     Coalmine.SyntaxModelling
-    Coalmine.SyntaxModellingLaws
+    Coalmine.SyntaxModellingQuickCheck
     Coalmine.Tasty
     Coalmine.Tasty.TestTrees
     Coalmine.Tasty.TestTrees.Cereal

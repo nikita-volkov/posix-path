@@ -2,7 +2,7 @@ module TestSuites.PosixPath where
 
 import Coalmine.PosixPath.NormalizedPath
 import Coalmine.Prelude hiding (Path)
-import Coalmine.SyntaxModellingLaws qualified as SyntaxModellingLaws
+import Coalmine.SyntaxModellingQuickCheck qualified as SyntaxModellingQuickCheck
 import Coalmine.Tasty
 import Coalmine.Tasty.TestTrees.Cereal qualified as Cereal
 import Test.QuickCheck.Classes qualified as QuickcheckClasses
@@ -10,7 +10,7 @@ import Test.QuickCheck.Classes qualified as QuickcheckClasses
 tests =
   [ testGroup "NormalizedPath" $
       [ Cereal.testEncodeDecode @NormalizedPath Proxy,
-        testProperties "Syntax" $ SyntaxModellingLaws.properties $ Proxy @NormalizedPath,
+        testProperties "Syntax" $ SyntaxModellingQuickCheck.all $ Proxy @NormalizedPath,
         testLaws (QuickcheckClasses.monoidLaws (Proxy @NormalizedPath)),
         testGroup "Essentials" $
           [ eqTestCase
