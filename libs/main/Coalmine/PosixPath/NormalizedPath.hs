@@ -24,7 +24,6 @@ import Coalmine.PosixPath.Component qualified as Component
 import Coalmine.PosixPath.Name qualified as Name
 import Coalmine.PosixPath.Path qualified as Path
 import Coalmine.SyntaxModelling qualified as Syntax
-import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List
 import Data.Serialize qualified as Cereal
 import Data.Text qualified as Text
@@ -57,10 +56,7 @@ instance Ord NormalizedPath where
         res -> res
 
 instance IsString NormalizedPath where
-  fromString =
-    either error id
-      . Attoparsec.parseOnly (Syntax.attoparsec <* Attoparsec.endOfInput)
-      . fromString
+  fromString = Syntax.fromStringUnsafe
 
 instance Semigroup NormalizedPath where
   lPath <> rPath = case rPath of
@@ -121,14 +117,14 @@ instance Cereal.Serialize NormalizedPath where
       _ -> fail $ "Invalid tag: " <> show tag
 
 instance Syntax.Syntax NormalizedPath where
-  attoparsec =
-    fromPath <$> Syntax.attoparsec
-  textBuilder =
-    Syntax.textBuilder . toPath
+  attoparsecParser =
+    fromPath <$> Syntax.attoparsecParser
+  toTextBuilder =
+    Syntax.toTextBuilder . toPath
 
 -- | Compile to standard file path string.
 toFilePath :: NormalizedPath -> FilePath
-toFilePath = to @String . Syntax.textBuilder
+toFilePath = to @String . Syntax.toTextBuilder
 
 -- |
 -- Normalize a path.

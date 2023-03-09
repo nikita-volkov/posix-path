@@ -14,8 +14,7 @@ properties proxy =
   [ ( "Partial isomorphism",
       QuickCheck.property $ \a ->
         Right (asProxyTypeOf a proxy)
-          QuickCheck.=== Attoparsec.parseOnly
-            (SyntaxModelling.attoparsec <* Attoparsec.endOfInput)
-            (freeze (SyntaxModelling.textBuilder a))
+          QuickCheck.=== SyntaxModelling.fromTextInEither
+            (SyntaxModelling.toText a)
     )
   ]

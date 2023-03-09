@@ -153,10 +153,10 @@ instance Monoid Path where
     Path False []
 
 instance CompactPrinting Path where
-  toCompactBuilder = Syntax.textBuilder
+  toCompactBuilder = Syntax.toTextBuilder
 
 instance BroadPrinting Path where
-  toBroadBuilder = to . Syntax.textBuilder
+  toBroadBuilder = to . Syntax.toTextBuilder
 
 instance ToJSON Path where
   toJSON = toJSON . printCompactAsText
@@ -168,7 +168,7 @@ instance Show Path where
   show = show . printCompactAsText
 
 instance LenientParser Path where
-  lenientParser = Syntax.attoparsec
+  lenientParser = Syntax.attoparsecParser
 
 instance IsString Path where
   fromString =
@@ -181,7 +181,7 @@ instance FromName Path where
     Path False [Component (fromNameIn casing name) []]
 
 instance Syntax.Syntax Path where
-  attoparsec = do
+  attoparsecParser = do
     _abs <- Attoparsec.char '/' $> True <|> pure False
     _components <-
       catMaybes
@@ -195,7 +195,7 @@ instance Syntax.Syntax Path where
         if Text.null _baseName && null _extensions
           then Nothing <$ Attoparsec.char '.' <|> pure Nothing
           else return $ Just $ Component _baseName _extensions
-  textBuilder (Path _abs _components) =
+  toTextBuilder (Path _abs _components) =
     if _abs
       then "/" <> _relative
       else case _components of

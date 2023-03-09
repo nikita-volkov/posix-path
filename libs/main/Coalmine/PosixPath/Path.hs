@@ -22,14 +22,14 @@ data Path
   = Path Bool [Component.Component]
 
 instance Syntax.Syntax Path where
-  attoparsec = do
+  attoparsecParser = do
     abs <- Attoparsec.char '/' $> True <|> pure False
-    components <- reverseSepBy Syntax.attoparsec (Attoparsec.char '/')
+    components <- reverseSepBy Syntax.attoparsecParser (Attoparsec.char '/')
     return $ Path abs components
-  textBuilder (Path abs components) =
+  toTextBuilder (Path abs components) =
     if abs
       then "/" <> relative
       else relative
     where
       relative =
-        TextBuilderDev.intercalate "/" . fmap Syntax.textBuilder . reverse $ components
+        TextBuilderDev.intercalate "/" . fmap Syntax.toTextBuilder . reverse $ components

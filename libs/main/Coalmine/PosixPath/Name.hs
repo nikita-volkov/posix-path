@@ -70,11 +70,11 @@ instance Ord Name where
       rb = extensionsSortKey r
 
 instance Syntax.Syntax Name where
-  attoparsec = do
+  attoparsecParser = do
     base <- AttoparsecHelpers.fileName
     extensions <- reverseMany AttoparsecHelpers.extension
     return $ Name base extensions
-  textBuilder (Name base extensions) =
+  toTextBuilder (Name base extensions) =
     foldr
       (\extension next -> next <> "." <> to extension)
       (to base)

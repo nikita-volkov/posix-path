@@ -15,8 +15,8 @@ data Component
   | DotDotComponent
 
 instance Syntax.Syntax Component where
-  attoparsec = do
-    name <- Syntax.attoparsec
+  attoparsecParser = do
+    name <- Syntax.attoparsecParser
     if Name.null name
       then do
         mplus
@@ -28,7 +28,7 @@ instance Syntax.Syntax Component where
           )
           (pure (NameComponent name))
       else pure (NameComponent name)
-  textBuilder = \case
-    NameComponent name -> Syntax.textBuilder name
+  toTextBuilder = \case
+    NameComponent name -> Syntax.toTextBuilder name
     DotComponent -> "."
     DotDotComponent -> ".."
