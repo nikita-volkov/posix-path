@@ -13,6 +13,7 @@ module Coalmine.PosixPath.NormalizedPath
     basename,
     extensions,
     parent,
+    last,
     deabsolutize,
   )
 where
@@ -21,7 +22,7 @@ import Coalmine.BaseExtras.List qualified as List
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
 import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
-import Coalmine.InternalPrelude hiding (null)
+import Coalmine.InternalPrelude hiding (null, last)
 import Coalmine.PosixPath.Component qualified as Component
 import Coalmine.PosixPath.Name qualified as Name
 import Coalmine.PosixPath.Path qualified as Path
