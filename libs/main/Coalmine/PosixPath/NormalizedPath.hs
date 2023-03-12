@@ -245,3 +245,10 @@ deabsolutize :: NormalizedPath -> NormalizedPath
 deabsolutize = \case
   AbsNormalizedPath names -> RelNormalizedPath 0 names
   relPath -> relPath
+
+last :: NormalizedPath -> NormalizedPath
+last = fromNames . names
+  where
+    fromNames = \case
+      head : _ -> RelNormalizedPath 0 [head]
+      _ -> RelNormalizedPath 0 []

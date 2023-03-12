@@ -82,6 +82,17 @@ extensions = NormalizedPath.extensions . coerce
 parent :: Path -> Path
 parent = mapNormalizedPath NormalizedPath.parent
 
+-- |
+-- >>> last "/a/b" == "b"
+-- 
+-- >>> last "a/b" == "b"
+-- 
+-- >>> last "../a/b" == "b"
+-- 
+-- >>> last "." == "."
+last :: Path -> Path
+last = mapNormalizedPath NormalizedPath.last
+
 mapNormalizedPath ::
   (NormalizedPath.NormalizedPath -> NormalizedPath.NormalizedPath) -> 
   Path -> Path
