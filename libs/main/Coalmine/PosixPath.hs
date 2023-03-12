@@ -22,6 +22,73 @@ import Test.QuickCheck qualified as QuickCheck
 
 -- |
 -- Composable automatically normalized path.
+--
+-- It has an instance of 'IsString',
+-- so you can use string literals to define it.
+-- It also has a 'toFilePath' conversion,
+-- which lets you easily integrate it with any 'FilePath'-oriented libs.
+--
+-- == Composition
+--
+-- It provides a 'Monoid' instance,
+-- which lets you trivially do things like the following:
+--
+-- >>> "a" <> "b" :: Path
+-- "a/b"
+--
+-- >>> "/a/b" <> "c.d" :: Path
+-- "/a/b/c.d"
+--
+-- >>> "/a/b" <> "../c" :: Path
+-- "/a/c"
+--
+-- >>> "/a/b" <> "/c" :: Path
+-- "/c"
+--
+-- == Normalization
+--
+-- The trailing slash doesn't matter:
+--
+-- >>> "a/" :: Path
+-- "a"
+--
+-- Multislash doesn't matter:
+--
+-- >>> "a//b" :: Path
+-- "a/b"
+--
+-- Dot-dot gets immediately applied:
+--
+-- >>> "a/../c" :: Path
+-- "c"
+--
+-- Same does the single dot:
+--
+-- >>> "a/./c" :: Path
+-- "a/c"
+--
+-- Attempts to move out of root in absolute paths are ignored:
+--
+-- >>> "/../a" :: Path
+-- "/a"
+--
+-- Attempts to move out of the beginning of a relative path on the other hand are preserved:
+--
+-- >>> "a/../../.." :: Path
+-- "../.."
+--
+-- Dot as the first component of the path is the same as if there's none:
+--
+-- >>> "./a" :: Path
+-- "a"
+--
+-- Empty path is the same as dot:
+--
+-- >>> "" :: Path
+-- "."
+--
+-- Internally 'Path' is always represented in a normalized form.
+-- That's what makes these equalities hold.
 newtype Path = Path {underlying :: NormalizedPath.NormalizedPath}
   deriving newtype (Eq, Ord, IsString, Semigroup, Monoid, Arbitrary, Cereal.Serialize, Syntax.Syntax)
 
@@ -58,14 +125,13 @@ extensions = NormalizedPath.extensions . coerce
 
 -- | Get the parent directory.
 --
--- If the path is absolute and it points to root,
--- the same path will be returned:
+-- If the path is root, the same path will be returned:
 --
 -- >>> parent "/"
 -- "/"
 --
 -- If the path is relative and is either empty or points outside,
--- another level up will be added.
+-- another level will be added.
 --
 -- >>> parent "."
 -- ".."
