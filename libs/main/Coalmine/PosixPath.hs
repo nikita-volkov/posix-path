@@ -42,7 +42,7 @@ null :: Path -> Bool
 null =
   error "TODO"
 
-{-| Whether the path starts from root. -}
+-- | Whether the path starts from root.
 absolute :: Path -> Bool
 absolute =
   error "TODO"
@@ -57,46 +57,58 @@ extensions = NormalizedPath.extensions . coerce
 -- * Mappers
 
 -- | Get the parent directory.
--- 
+--
 -- If the path is absolute and it points to root,
 -- the same path will be returned:
--- 
--- >>> parent "/" == "/"
--- 
+--
+-- >>> parent "/"
+-- "/"
+--
 -- If the path is relative and is either empty or points outside,
 -- another level up will be added.
--- 
--- >>> parent "." == ".."
--- 
--- >>> parent ".." == "../.."
--- 
+--
+-- >>> parent "."
+-- ".."
+--
+-- >>> parent ".."
+-- "../.."
+--
 -- For all other cases the behaviour should be self-evident:
--- 
--- >>> parent "/a/b" == "/a"
--- 
--- >>> parent "a/b" == "a"
--- 
--- >>> parent "a" == "."
--- 
--- >>> parent "../a" == ".."
+--
+-- >>> parent "/a/b"
+-- "/a"
+--
+-- >>> parent "a/b"
+-- "a"
+--
+-- >>> parent "a"
+-- "."
+--
+-- >>> parent "../a"
+-- ".."
 parent :: Path -> Path
 parent = mapNormalizedPath NormalizedPath.parent
 
 -- |
--- >>> last "/a/b" == "b"
--- 
--- >>> last "a/b" == "b"
--- 
--- >>> last "../a/b" == "b"
--- 
--- >>> last "." == "."
+-- >>> last "/a/b"
+-- "b"
+--
+-- >>> last "a/b"
+-- "b"
+--
+-- >>> last "../a/b"
+-- "b"
+--
+-- >>> last "."
+-- "."
 last :: Path -> Path
 last = mapNormalizedPath NormalizedPath.last
 
 mapNormalizedPath ::
-  (NormalizedPath.NormalizedPath -> NormalizedPath.NormalizedPath) -> 
-  Path -> Path
-mapNormalizedPath f = 
+  (NormalizedPath.NormalizedPath -> NormalizedPath.NormalizedPath) ->
+  Path ->
+  Path
+mapNormalizedPath f =
   Path . f . coerce
 
 mapBasename :: (Text -> Text) -> Path -> Path
