@@ -163,6 +163,7 @@ library
     Coalmine.Parsed
     Coalmine.Parsing
     Coalmine.PartialEndo
+    Coalmine.PosixPath
     Coalmine.PosixPath.Component
     Coalmine.PosixPath.Name
     Coalmine.PosixPath.NormalizedPath
