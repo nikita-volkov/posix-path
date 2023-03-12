@@ -28,31 +28,17 @@ import Test.QuickCheck qualified as QuickCheck
 -- It also has a 'toFilePath' conversion,
 -- which lets you easily integrate it with any 'FilePath'-oriented libs.
 --
--- == Composition
---
--- It provides a 'Monoid' instance,
--- which lets you trivially do things like the following:
---
--- >>> "a" <> "b" :: Path
--- "a/b"
---
--- >>> "/a/b" <> "c.d" :: Path
--- "/a/b/c.d"
---
--- >>> "/a/b" <> "../c" :: Path
--- "/a/c"
---
--- >>> "/a/b" <> "/c" :: Path
--- "/c"
---
 -- == Normalization
 --
--- The trailing slash doesn't matter:
+-- Internally 'Path' models a normalized form,
+-- making it easier to reason about and allowing to achieve the following behaviour.
+--
+-- The trailing slash gets ignored:
 --
 -- >>> "a/" :: Path
 -- "a"
 --
--- Multislash doesn't matter:
+-- Multislash gets squashed:
 --
 -- >>> "a//b" :: Path
 -- "a/b"
@@ -86,9 +72,25 @@ import Test.QuickCheck qualified as QuickCheck
 --
 -- >>> "" :: Path
 -- "."
+-- 
+-- == Composition
 --
--- Internally 'Path' is always represented in a normalized form.
--- That's what makes these equalities hold.
+-- The 'Monoid' instance makes paths composable and provides the following behaviour.
+--
+-- Appending a relative path nests it:
+-- 
+-- >>> "/a/b" <> "c.d" :: Path
+-- "/a/b/c.d"
+--
+-- Appending a path with dot-dot, immediately applies it:
+-- 
+-- >>> "/a/b" <> "../c" :: Path
+-- "/a/c"
+--
+-- Appending an absolute path replaces the whole thing:
+-- 
+-- >>> "/a/b" <> "/c" :: Path
+-- "/c"
 newtype Path = Path {underlying :: NormalizedPath.NormalizedPath}
   deriving newtype (Eq, Ord, IsString, Semigroup, Monoid, Arbitrary, Cereal.Serialize, Syntax.Syntax)
 
