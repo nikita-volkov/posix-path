@@ -12,6 +12,8 @@ module Coalmine.PosixPath.NormalizedPath
     decompose,
     basename,
     extensions,
+    parent,
+    deabsolutize,
   )
 where
 
@@ -229,3 +231,17 @@ basename path =
 extensions :: NormalizedPath -> [Text]
 extensions =
   reverse . (.extensions) . List.headOr Name.empty . names
+
+parent :: NormalizedPath -> NormalizedPath
+parent = \case
+  AbsNormalizedPath names -> case names of
+    _ : tail -> AbsNormalizedPath tail
+    [] -> AbsNormalizedPath []
+  RelNormalizedPath movesUp names -> case names of
+    _ : tail -> RelNormalizedPath movesUp tail
+    [] -> RelNormalizedPath (succ movesUp) []
+
+deabsolutize :: NormalizedPath -> NormalizedPath
+deabsolutize = \case
+  AbsNormalizedPath names -> RelNormalizedPath 0 names
+  relPath -> relPath

@@ -38,9 +38,60 @@ root = Path NormalizedPath.root
 toFilePath :: Path -> FilePath
 toFilePath = NormalizedPath.toFilePath . coerce
 
+null :: Path -> Bool
+null =
+  error "TODO"
+
+{-| Whether the path starts from root. -}
+absolute :: Path -> Bool
+absolute =
+  error "TODO"
+
 -- | File name sans extensions.
 basename :: Path -> Text
 basename = NormalizedPath.basename . coerce
 
 extensions :: Path -> [Text]
 extensions = NormalizedPath.extensions . coerce
+
+-- * Mappers
+
+-- | Get the parent directory.
+-- 
+-- If the path is absolute and it points to root,
+-- the same path will be returned:
+-- 
+-- >>> parent "/" == "/"
+-- 
+-- If the path is relative and is either empty or points outside,
+-- another level up will be added.
+-- 
+-- >>> parent "." == ".."
+-- 
+-- >>> parent ".." == "../.."
+-- 
+-- For all other cases the behaviour should be self-evident:
+-- 
+-- >>> parent "/a/b" == "/a"
+-- 
+-- >>> parent "a/b" == "a"
+-- 
+-- >>> parent "a" == "."
+-- 
+-- >>> parent "../a" == ".."
+parent :: Path -> Path
+parent = mapNormalizedPath NormalizedPath.parent
+
+mapNormalizedPath ::
+  (NormalizedPath.NormalizedPath -> NormalizedPath.NormalizedPath) -> 
+  Path -> Path
+mapNormalizedPath f = 
+  Path . f . coerce
+
+mapBasename :: (Text -> Text) -> Path -> Path
+mapBasename =
+  error "TODO"
+
+mapExtensions :: ([Text] -> [Text]) -> Path -> Path
+mapExtensions =
+  error "TODO"
