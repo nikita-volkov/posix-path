@@ -1,7 +1,7 @@
 all: test-strictly
 
 format:
-	for path in $$(git diff --staged --name-only -- '*.cabal'); do if test -f $$path; then cabal-fmt --no-tabular -c $$path || cabal-fmt --no-tabular -i $$path; done
+	for path in $$(git diff --staged --name-only -- '*.cabal'); do if test -f $$path; then cabal-fmt --no-tabular -c $$path || cabal-fmt --no-tabular -i $$path; fi; done
 	for path in $$(git diff --staged --name-only -- '*.hs'); do if test -f $$path; then ormolu -ic $$path; fi; done
 
 build-fast: format
