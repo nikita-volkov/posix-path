@@ -13,8 +13,8 @@ module Coalmine.PosixPath.NormalizedPath
     basename,
     extensions,
     parent,
-    last,
     deabsolutize,
+    dropParent,
     dropExtension,
   )
 where
@@ -23,7 +23,7 @@ import Coalmine.BaseExtras.List qualified as List
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
 import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
-import Coalmine.InternalPrelude hiding (last, null)
+import Coalmine.InternalPrelude hiding (null)
 import Coalmine.PosixPath.Component qualified as Component
 import Coalmine.PosixPath.Name qualified as Name
 import Coalmine.PosixPath.Path qualified as Path
@@ -239,7 +239,7 @@ mapExtensions :: ([Text] -> [Text]) -> NormalizedPath -> NormalizedPath
 mapExtensions mapper =
   runIdentity . traverseExtensions (Identity . mapper)
 
--- | Add file extension to the last component of the path.
+-- | Add file extension to the dropParent component of the path.
 addExtension :: Text -> NormalizedPath -> NormalizedPath
 addExtension ext = mapExtensions (ext :)
 
@@ -275,12 +275,14 @@ deabsolutize = \case
   AbsNormalizedPath names -> RelNormalizedPath 0 names
   relPath -> relPath
 
-last :: NormalizedPath -> NormalizedPath
-last = fromNames . names
+-- | Drop path to the parent directory.
+dropParent :: NormalizedPath -> NormalizedPath
+dropParent = fromNames . names
   where
     fromNames = \case
       head : _ -> RelNormalizedPath 0 [head]
       _ -> RelNormalizedPath 0 []
 
+-- | Drop last extension.
 dropExtension :: NormalizedPath -> NormalizedPath
 dropExtension = mapHeadName $ Name.mapExtensions $ List.drop 1

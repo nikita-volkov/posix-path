@@ -158,19 +158,25 @@ parent :: Path -> Path
 parent = mapNormalizedPath NormalizedPath.parent
 
 -- |
--- >>> last "/a/b"
+-- >>> dropParent "/a/b"
 -- "b"
 --
--- >>> last "a/b"
+-- >>> dropParent "a/b"
 -- "b"
 --
--- >>> last "../a/b"
+-- >>> dropParent "../a/b"
 -- "b"
 --
--- >>> last "."
+-- >>> dropParent ".."
+-- ".."
+--
+-- >>> dropParent "."
 -- "."
-last :: Path -> Path
-last = mapNormalizedPath NormalizedPath.last
+--
+-- >>> dropParent "/"
+-- "/"
+dropParent :: Path -> Path
+dropParent = mapNormalizedPath NormalizedPath.dropParent
 
 dropExtension :: Path -> Path
 dropExtension = mapNormalizedPath NormalizedPath.dropExtension
