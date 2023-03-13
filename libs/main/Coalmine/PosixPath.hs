@@ -28,7 +28,7 @@ import Test.QuickCheck qualified as QuickCheck
 -- It also has a 'toFilePath' conversion,
 -- which lets you easily integrate it with any 'FilePath'-oriented libs.
 --
--- == Normalization
+-- === Normalization
 --
 -- Internally 'Path' models a normalized form,
 -- making it easier to reason about and allowing to achieve the following behaviour.
@@ -73,7 +73,7 @@ import Test.QuickCheck qualified as QuickCheck
 -- >>> "" :: Path
 -- "."
 -- 
--- == Composition
+-- === Composition
 --
 -- The 'Monoid' instance makes paths composable and provides the following behaviour.
 --
