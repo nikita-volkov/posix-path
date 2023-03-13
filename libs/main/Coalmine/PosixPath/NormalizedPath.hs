@@ -22,7 +22,7 @@ import Coalmine.BaseExtras.List qualified as List
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
 import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
-import Coalmine.InternalPrelude hiding (null, last)
+import Coalmine.InternalPrelude hiding (last, null)
 import Coalmine.PosixPath.Component qualified as Component
 import Coalmine.PosixPath.Name qualified as Name
 import Coalmine.PosixPath.Path qualified as Path
@@ -124,6 +124,21 @@ instance Syntax.Syntax NormalizedPath where
     fromPath <$> Syntax.attoparsecParser
   toTextBuilder =
     Syntax.toTextBuilder . toPath
+
+instance Hashable NormalizedPath where
+  hashWithSalt salt = \case
+    AbsNormalizedPath names ->
+      salt
+        & extendHash @Int 0
+        & extendHash names
+    RelNormalizedPath movesUp names ->
+      salt
+        & extendHash @Int 1
+        & extendHash movesUp
+        & extendHash names
+    where
+      extendHash :: (Hashable a) => a -> Int -> Int
+      extendHash = flip hashWithSalt
 
 -- | Compile to standard file path string.
 toFilePath :: NormalizedPath -> FilePath

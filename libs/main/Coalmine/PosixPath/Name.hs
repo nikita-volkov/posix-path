@@ -80,6 +80,14 @@ instance Syntax.Syntax Name where
       (to base)
       extensions
 
+instance Hashable Name where
+  hashWithSalt salt Name {..} =
+    salt
+      & extendHash base
+      & extendHash extensions
+    where
+      extendHash = flip hashWithSalt
+
 baseSortKey :: Name -> NaturalSort.SortKey
 baseSortKey = NaturalSort.sortKey . (.base)
 

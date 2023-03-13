@@ -92,7 +92,7 @@ import Test.QuickCheck qualified as QuickCheck
 -- >>> "/a/b" <> "/c" :: Path
 -- "/c"
 newtype Path = Path {underlying :: NormalizedPath.NormalizedPath}
-  deriving newtype (Eq, Ord, IsString, Semigroup, Monoid, Arbitrary, Cereal.Serialize, Syntax.Syntax)
+  deriving newtype (Eq, Ord, IsString, Semigroup, Monoid, Arbitrary, Cereal.Serialize, Syntax.Syntax, Hashable)
 
 -- * Constructors
 
