@@ -6,6 +6,7 @@ module Coalmine.PosixPath
 
     -- * Accessors
     toFilePath,
+    toText,
     basename,
     extensions,
   )
@@ -106,6 +107,10 @@ root = Path NormalizedPath.root
 -- | Compile to standard file path string.
 toFilePath :: Path -> FilePath
 toFilePath = NormalizedPath.toFilePath . coerce
+
+-- | Compile to text.
+toText :: Path -> Text
+toText = NormalizedPath.toText . coerce
 
 null :: Path -> Bool
 null =

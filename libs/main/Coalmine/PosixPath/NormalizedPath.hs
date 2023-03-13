@@ -8,6 +8,7 @@ module Coalmine.PosixPath.NormalizedPath
 
     -- * Accessors
     toFilePath,
+    toText,
     toPath,
     decompose,
     basename,
@@ -144,6 +145,10 @@ instance Hashable NormalizedPath where
 -- | Compile to standard file path string.
 toFilePath :: NormalizedPath -> FilePath
 toFilePath = to @String . Syntax.toTextBuilder
+
+-- | Compile to text.
+toText :: NormalizedPath -> Text
+toText = to . Syntax.toTextBuilder
 
 -- |
 -- Normalize a path.
