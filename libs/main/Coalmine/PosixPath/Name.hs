@@ -3,6 +3,7 @@ module Coalmine.PosixPath.Name
     null,
     empty,
     traverseExtensions,
+    mapExtensions,
   )
 where
 
@@ -105,3 +106,7 @@ empty =
 traverseExtensions :: (Functor f) => ([Text] -> f [Text]) -> Name -> f Name
 traverseExtensions f (Name base extensions) =
   Name base <$> f extensions
+
+mapExtensions :: ([Text] -> [Text]) -> Name -> Name
+mapExtensions f (Name base extensions) =
+  Name base (f extensions)

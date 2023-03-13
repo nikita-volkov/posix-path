@@ -72,23 +72,23 @@ import Test.QuickCheck qualified as QuickCheck
 --
 -- >>> "" :: Path
 -- "."
--- 
+--
 -- === Composition
 --
 -- The 'Monoid' instance makes paths composable and provides the following behaviour.
 --
 -- Appending a relative path nests it:
--- 
+--
 -- >>> "/a/b" <> "c.d" :: Path
 -- "/a/b/c.d"
 --
 -- Appending a path with dot-dot, immediately applies it:
--- 
+--
 -- >>> "/a/b" <> "../c" :: Path
 -- "/a/c"
 --
 -- Appending an absolute path replaces the whole thing:
--- 
+--
 -- >>> "/a/b" <> "/c" :: Path
 -- "/c"
 newtype Path = Path {underlying :: NormalizedPath.NormalizedPath}
@@ -171,6 +171,9 @@ parent = mapNormalizedPath NormalizedPath.parent
 -- "."
 last :: Path -> Path
 last = mapNormalizedPath NormalizedPath.last
+
+dropExtension :: Path -> Path
+dropExtension = mapNormalizedPath NormalizedPath.dropExtension
 
 mapNormalizedPath ::
   (NormalizedPath.NormalizedPath -> NormalizedPath.NormalizedPath) ->

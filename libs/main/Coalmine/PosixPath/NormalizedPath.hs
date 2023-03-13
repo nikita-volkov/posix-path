@@ -15,6 +15,7 @@ module Coalmine.PosixPath.NormalizedPath
     parent,
     last,
     deabsolutize,
+    dropExtension,
   )
 where
 
@@ -222,6 +223,18 @@ traverseExtensions =
 
 -- * Mappers
 
+mapNames :: ([Name.Name] -> [Name.Name]) -> NormalizedPath -> NormalizedPath
+mapNames f = \case
+  AbsNormalizedPath names ->
+    AbsNormalizedPath (f names)
+  RelNormalizedPath movesUp names ->
+    RelNormalizedPath movesUp (f names)
+
+mapHeadName :: (Name.Name -> Name.Name) -> NormalizedPath -> NormalizedPath
+mapHeadName f = mapNames $ \case
+  head : tail -> f head : tail
+  [] -> []
+
 mapExtensions :: ([Text] -> [Text]) -> NormalizedPath -> NormalizedPath
 mapExtensions mapper =
   runIdentity . traverseExtensions (Identity . mapper)
@@ -268,3 +281,6 @@ last = fromNames . names
     fromNames = \case
       head : _ -> RelNormalizedPath 0 [head]
       _ -> RelNormalizedPath 0 []
+
+dropExtension :: NormalizedPath -> NormalizedPath
+dropExtension = mapHeadName $ Name.mapExtensions $ List.drop 1
