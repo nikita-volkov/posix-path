@@ -1,0 +1,142 @@
+cabal-version: 3.0
+name:          posix-path-classes
+version:       0
+author:        Nikita Volkov <nikita.y.volkov@mail.ru>
+maintainer:    Nikita Volkov <nikita.y.volkov@mail.ru>
+copyright:     (c) 2023 Nikita Volkov
+license:       MIT
+license-file:  LICENSE
+
+common language-settings
+  default-language:   Haskell2010
+  default-extensions:
+    NoFieldSelectors
+    NoImplicitPrelude
+    NoMonomorphismRestriction
+    ApplicativeDo
+    Arrows
+    BangPatterns
+    BinaryLiterals
+    BlockArguments
+    ConstraintKinds
+    DataKinds
+    DefaultSignatures
+    DeriveDataTypeable
+    DeriveFoldable
+    DeriveFunctor
+    DeriveGeneric
+    DeriveLift
+    DeriveTraversable
+    DerivingVia
+    DuplicateRecordFields
+    EmptyCase
+    EmptyDataDecls
+    FlexibleContexts
+    FlexibleInstances
+    FunctionalDependencies
+    GADTs
+    GeneralizedNewtypeDeriving
+    HexFloatLiterals
+    ImportQualifiedPost
+    LambdaCase
+    LiberalTypeSynonyms
+    MultiParamTypeClasses
+    MultiWayIf
+    NumericUnderscores
+    OverloadedLabels
+    OverloadedRecordDot
+    OverloadedStrings
+    ParallelListComp
+    PatternGuards
+    PatternSynonyms
+    QuasiQuotes
+    RankNTypes
+    RecordWildCards
+    ScopedTypeVariables
+    StandaloneDeriving
+    StrictData
+    TemplateHaskell
+    TupleSections
+    TypeApplications
+    TypeFamilies
+    TypeOperators
+    UndecidableInstances
+    ViewPatterns
+
+library
+  import:          language-settings
+  hs-source-dirs:  library
+  exposed-modules: PosixPathClasses
+  other-modules:
+  build-depends:
+    , acc
+    , aeson
+    , aeson-value-parser
+    , attoparsec
+    , attoparsec-data
+    , case-insensitive
+    , cereal
+    , cereal-text
+    , cereal-unordered-containers
+    , cereal-vector
+    , coalmine
+    , comonad
+    , conduit
+    , data-default
+    , data-dword
+    , Decimal
+    , deferred-folds
+    , deque
+    , directory
+    , domain
+    , domain-aeson
+    , domain-cereal
+    , domain-optics
+    , filepath
+    , foldl
+    , from-sum
+    , ghc
+    , headed-megaparsec
+    , http-media
+    , http-types
+    , isomorphism-class
+    , jsonifier
+    , leb128-cereal
+    , lens
+    , machines
+    , megaparsec
+    , mmorph
+    , natural-sort
+    , neat-interpolation
+    , network-ip
+    , optics
+    , optics-core
+    , optparse-applicative
+    , posix-path
+    , primitive
+    , QuickCheck
+    , quickcheck-classes
+    , quickcheck-instances
+    , rerebase
+    , semialign
+    , structure-kit
+    , tasty
+    , tasty-hunit
+    , tasty-quickcheck
+    , template-haskell
+    , temporary
+    , text-builder
+    , text-builder-dev
+    , th-lego
+    , time
+    , tuple
+    , turtle
+    , vector-builder
+    , vector-extras
+    , vector-th-unbox
+    , wai
+    , wai-app-static
+    , wai-cors
+    , warp
+    , witherable
+    , yaml

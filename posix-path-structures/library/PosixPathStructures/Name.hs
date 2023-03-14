@@ -1,4 +1,4 @@
-module Coalmine.PosixPath.Name
+module PosixPathStructures.Name
   ( Name (..),
     null,
     empty,
@@ -13,7 +13,7 @@ import Coalmine.BaseExtras.MonadPlus
 import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
 import Coalmine.EvenSimplerPaths.IsomorphismClassHelpers qualified as IsomorphismClassHelpers
 import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
-import Coalmine.InternalPrelude hiding (empty, null)
+import Coalmine.Prelude hiding (empty, null, Name)
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List

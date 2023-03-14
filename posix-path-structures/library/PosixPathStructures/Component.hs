@@ -1,11 +1,11 @@
-module Coalmine.PosixPath.Component
+module PosixPathStructures.Component
   ( Component (..),
   )
 where
 
 import Coalmine.BaseExtras.MonadPlus
-import Coalmine.InternalPrelude
-import Coalmine.PosixPath.Name qualified as Name
+import Coalmine.Prelude
+import PosixPathStructures.Name qualified as Name
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
 

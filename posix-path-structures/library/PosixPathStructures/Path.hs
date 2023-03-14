@@ -1,4 +1,4 @@
-module Coalmine.PosixPath.Path
+module PosixPathStructures.Path
   ( Path (..),
   )
 where
@@ -7,9 +7,9 @@ import Coalmine.BaseExtras.List qualified as List
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
 import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
-import Coalmine.InternalPrelude hiding (null)
-import Coalmine.PosixPath.Component qualified as Component
-import Coalmine.PosixPath.Name qualified as Name
+import Coalmine.Prelude hiding (null, Path)
+import PosixPathStructures.Component qualified as Component
+import PosixPathStructures.Name qualified as Name
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List

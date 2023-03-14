@@ -13,7 +13,6 @@ import TestSuites.MegaparsecExtras qualified as MegaparsecExtras
 import TestSuites.MultilineTextBuilder qualified as MultilineTextBuilder
 import TestSuites.Name qualified as Name
 import TestSuites.NumericVersion qualified as NumericVersion
-import TestSuites.PosixPath qualified as PosixPath
 import TestSuites.PtrKit qualified as PtrKit
 import TestSuites.TimeExtrasConversions qualified as TimeExtrasConversions
 
@@ -33,7 +32,6 @@ main =
       "List" ?:: TestSuites.BaseExtras.List.tests
     "MultilineTextBuilder" ?:: MultilineTextBuilder.tests
     "PtrKit" ?:: PtrKit.tests
-    "PosixPath" ?:: PosixPath.tests
 
 (?::) name =
   declareTestGroup name . traverse_ declareTestTree

@@ -12,10 +12,6 @@ license:            MIT
 license-file:       LICENSE
 extra-source-files: domain/*.domain.yaml
 
-source-repository head
-  type:     git
-  location: git://github.com/nikita-volkov/coalmine.git
-
 common language-settings
   default-language:   Haskell2010
   default-extensions:
@@ -163,12 +159,6 @@ library
     Coalmine.Parsed
     Coalmine.Parsing
     Coalmine.PartialEndo
-    Coalmine.PosixPath
-    Coalmine.PosixPath.Component
-    Coalmine.PosixPath.Name
-    Coalmine.PosixPath.NormalizedPath
-    Coalmine.PosixPath.Path
-    Coalmine.PosixPathClasses
     Coalmine.Predicates
     Coalmine.Prelude
     Coalmine.Printer
@@ -331,7 +321,6 @@ test-suite tasty
     TestSuites.MultilineTextBuilder
     TestSuites.Name
     TestSuites.NumericVersion
-    TestSuites.PosixPath
     TestSuites.PtrKit
     TestSuites.TimeExtrasConversions
 

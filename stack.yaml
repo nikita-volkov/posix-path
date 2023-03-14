@@ -1,3 +1,6 @@
 resolver: .stack-snapshot/snapshot.yaml
 packages:
   - coalmine
+  - posix-path
+  - posix-path-classes
+  - posix-path-structures

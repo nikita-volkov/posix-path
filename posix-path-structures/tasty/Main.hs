@@ -1,13 +1,18 @@
-module TestSuites.PosixPath where
+module Main where
 
-import Coalmine.PosixPath.NormalizedPath
+import PosixPathStructures.NormalizedPath
 import Coalmine.Prelude hiding (Path)
 import Coalmine.SyntaxModellingQuickCheck qualified as SyntaxModellingQuickCheck
 import Coalmine.Tasty
 import Coalmine.Tasty.TestTrees.Cereal qualified as Cereal
 import Test.QuickCheck.Classes qualified as QuickcheckClasses
 
-tests =
+import Coalmine.Prelude
+import Coalmine.Tasty
+import Coalmine.TastyMonadic
+
+main =
+  defaultMain . testGroup "PosixPathStructures" $
   [ testGroup "NormalizedPath" $
       [ Cereal.testEncodeDecode @NormalizedPath Proxy,
         testProperties "Syntax" $ SyntaxModellingQuickCheck.all $ Proxy @NormalizedPath,
