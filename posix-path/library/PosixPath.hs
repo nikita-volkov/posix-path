@@ -35,22 +35,22 @@ import PosixPathStructures.NormalizedPath qualified as NormalizedPath
 -- The trailing slash gets ignored:
 --
 -- >>> "a/" :: Path
--- "a"
+-- "./a"
 --
 -- Multislash gets squashed:
 --
 -- >>> "a//b" :: Path
--- "a/b"
+-- "./a/b"
 --
 -- Dot-dot gets immediately applied:
 --
 -- >>> "a/../c" :: Path
--- "c"
+-- "./c"
 --
 -- Same does the single dot:
 --
 -- >>> "a/./c" :: Path
--- "a/c"
+-- "./a/c"
 --
 -- Attempts to move out of root in absolute paths are ignored:
 --
@@ -65,7 +65,7 @@ import PosixPathStructures.NormalizedPath qualified as NormalizedPath
 -- Dot as the first component of the path is the same as if there's none:
 --
 -- >>> "./a" :: Path
--- "a"
+-- "./a"
 --
 -- Empty path is the same as dot:
 --
@@ -91,7 +91,7 @@ import PosixPathStructures.NormalizedPath qualified as NormalizedPath
 -- >>> "/a/b" <> "/c" :: Path
 -- "/c"
 newtype Path = Path {underlying :: NormalizedPath.NormalizedPath}
-  deriving newtype (Eq, Ord, IsString, Semigroup, Monoid, Arbitrary, Cereal.Serialize, Syntax.Syntax, Hashable)
+  deriving newtype (Eq, Ord, Show, IsString, Semigroup, Monoid, Arbitrary, Cereal.Serialize, Syntax.Syntax, Hashable)
 
 -- * Constructors
 

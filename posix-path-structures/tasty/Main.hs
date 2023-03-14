@@ -101,6 +101,12 @@ main =
                 "Absolute is prefixed with slash"
                 "/a"
                 (root <> "a")
+            ],
+          testGroup "toText" $
+            [ eqTestCase "Trailing slash" "./a" (toText "a/"),
+              eqTestCase "Multislash" "./a/b" (toText "a//b"),
+              eqTestCase "Empty" "." (toText ""),
+              eqTestCase "Move up" ".." (toText "..")
             ]
         ]
     ]
