@@ -87,7 +87,9 @@ instance QuickCheck.Arbitrary NormalizedPath where
             QuickCheck.chooseInt (0, 3)
       names = do
         size <- QuickCheck.chooseInt (0, 20)
-        QuickCheck.vectorOf size QuickCheck.arbitrary
+        QuickCheck.vectorOf size $
+          QuickCheck.suchThat QuickCheck.arbitrary $
+            not . Name.null
   shrink = \case
     AbsNormalizedPath names ->
       AbsNormalizedPath <$> QuickCheck.shrink names
