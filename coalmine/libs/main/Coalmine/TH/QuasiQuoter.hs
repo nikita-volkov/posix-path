@@ -3,7 +3,6 @@ module Coalmine.TH.QuasiQuoter where
 import Coalmine.InternalPrelude hiding (exp, lift)
 import Coalmine.TH.Exp
 import Data.Attoparsec.Text qualified as Atto
-import Language.Haskell.TH.Quote
 import Language.Haskell.TH.Syntax
 
 mapFromExp :: ((String -> Q Exp) -> (String -> Q Exp)) -> QuasiQuoter -> QuasiQuoter

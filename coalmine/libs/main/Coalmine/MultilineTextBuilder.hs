@@ -17,7 +17,7 @@ where
 import Coalmine.BaseExtras.List qualified as List
 import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
-import Coalmine.IsomorphismClassInstances
+import Coalmine.IsomorphismClassInstances ()
 import Data.Text qualified as Text
 import Data.Text.Lazy qualified as TextLazy
 import Data.Text.Lazy.Builder qualified as TextLazyBuilder

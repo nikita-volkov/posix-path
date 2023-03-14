@@ -7,7 +7,6 @@ module Coalmine.NumericVersion
 where
 
 import Coalmine.InternalPrelude
-import Coalmine.Parsing
 import Coalmine.Printing
 import Coalmine.TH.QuasiQuoter qualified as QuasiQuoter
 import Data.Attoparsec.Text qualified as Attoparsec

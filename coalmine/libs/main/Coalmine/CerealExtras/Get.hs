@@ -7,7 +7,6 @@ import Data.Map.Strict qualified as Map
 import Data.Serialize.Get
 import Data.Serialize.LEB128 qualified as Leb128
 import Data.Text.Encoding qualified as TextEncoding
-import Data.Vector qualified as BVec
 import Data.Vector.Generic qualified as GVec
 
 runCompletely :: Get a -> ByteString -> Either Text a
@@ -43,7 +42,7 @@ map :: ([(k, v)] -> map) -> Get k -> Get v -> Get map
 map fromDistinctAscList key val =
   list ((,) <$> key <*> val) <&> fromDistinctAscList
 
-ordMap :: (Ord k) => Get k -> Get v -> Get (Map k v)
+ordMap :: Get k -> Get v -> Get (Map k v)
 ordMap = map Map.fromDistinctAscList
 
 intMap :: Get Int -> Get v -> Get (IntMap.IntMap v)

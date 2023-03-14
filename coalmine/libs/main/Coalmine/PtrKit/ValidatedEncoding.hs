@@ -15,7 +15,6 @@ where
 
 import Coalmine.InternalPrelude
 import Coalmine.PtrKit.Encoding qualified as Encoding
-import Data.ByteString.Internal qualified as ByteStringInternal
 
 data Err = Err
   { reason :: Text,

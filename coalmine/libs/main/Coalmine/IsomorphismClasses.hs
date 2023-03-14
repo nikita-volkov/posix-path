@@ -5,9 +5,6 @@
 -- by letting the user disambiguate in ambiguous cases via TypeApplications.
 module Coalmine.IsomorphismClasses where
 
-import Coalmine.InternalPrelude
-import Data.Map qualified
-import Data.Map.Strict qualified
 import Data.Text qualified
 import Data.Text.Lazy qualified
 import Data.Text.Lazy.Builder qualified

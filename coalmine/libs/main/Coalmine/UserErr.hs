@@ -3,7 +3,6 @@ module Coalmine.UserErr where
 import Coalmine.BaseExtras.List qualified as ListExtras
 import Coalmine.Inter
 import Coalmine.InternalPrelude
-import Coalmine.MultilineTextBuilder qualified as Printer
 import Coalmine.Name (Name)
 import Coalmine.Printing
 import Data.Text qualified as Text

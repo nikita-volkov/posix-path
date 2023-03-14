@@ -1,6 +1,5 @@
 module Coalmine.EvenSimplerPathsClassesLaws where
 
-import Coalmine.EvenSimplerPaths
 import Coalmine.EvenSimplerPathsClasses
 import Coalmine.InternalPrelude
 import Test.QuickCheck qualified as QuickCheck

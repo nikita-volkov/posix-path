@@ -8,19 +8,15 @@ module PosixPathStructures.Name
 where
 
 import Algorithms.NaturalSort qualified as NaturalSort
-import Coalmine.BaseExtras.List qualified as List
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
-import Coalmine.EvenSimplerPaths.IsomorphismClassHelpers qualified as IsomorphismClassHelpers
 import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
-import Coalmine.Prelude hiding (empty, null, Name)
+import Coalmine.Prelude hiding (Name, empty, null)
 import Coalmine.SyntaxModelling qualified as Syntax
-import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List
 import Data.Serialize qualified as Cereal
 import Data.Text qualified as Text
 import Test.QuickCheck qualified as QuickCheck
-import TextBuilderDev qualified as TextBuilderDev
 
 -- |
 -- Structured base of a single component of a path.

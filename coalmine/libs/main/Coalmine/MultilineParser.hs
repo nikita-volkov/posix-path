@@ -7,9 +7,6 @@ import Coalmine.InternalPrelude hiding (maybe)
 import Coalmine.VectorExtras.Generic qualified as Vec
 import Data.Attoparsec.Text qualified as A
 import Data.Text qualified as Text
-import Text.Megaparsec qualified as M
-import Text.Megaparsec.Char qualified as M
-import Text.Megaparsec.Char.Lexer qualified as M
 
 -- * --
 

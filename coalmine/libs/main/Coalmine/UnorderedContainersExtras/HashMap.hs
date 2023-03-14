@@ -12,7 +12,7 @@ traverse_ m =
     step k v acc = m k v *> acc
 
 {-# INLINE replicateM #-}
-replicateM :: (Monad m, Eq k, Hashable k) => Int -> m (k, v) -> m (HashMap k v)
+replicateM :: (Monad m, Hashable k) => Int -> m (k, v) -> m (HashMap k v)
 replicateM amount m =
   let iterate index !state =
         if index < amount

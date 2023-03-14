@@ -3,11 +3,10 @@ module TestSuites.PtrKit where
 import Coalmine.Comms.Readers qualified as Readers
 import Coalmine.Comms.Writers qualified as Writers
 import Coalmine.Prelude hiding (choose)
-import Coalmine.PtrKit.Reader qualified as Reader
-import Coalmine.PtrKit.Writer qualified as Writer
 import Coalmine.PtrKitQuickCheck.Properties qualified as PtrKitProperties
 import Coalmine.Tasty
 
+tests :: [TestTree]
 tests =
   []
 

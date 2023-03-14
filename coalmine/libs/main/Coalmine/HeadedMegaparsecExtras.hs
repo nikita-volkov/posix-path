@@ -2,13 +2,12 @@
 -- Generic helpers for HeadedMegaparsec.
 module Coalmine.HeadedMegaparsecExtras where
 
-import Coalmine.InternalPrelude hiding (bit, expr, filter, head, option, some, sortBy, tail, try)
+import Coalmine.InternalPrelude hiding (bit, filter, head, some, sortBy, tail, try)
 import Coalmine.Located qualified as Located
 import Coalmine.MegaparsecExtras qualified as MegaparsecExtras
-import Coalmine.Printing
-import Data.CaseInsensitive (CI, FoldCase)
-import HeadedMegaparsec hiding (string)
-import Text.Megaparsec (Parsec, Stream, TraversableStream, VisualStream)
+import Data.CaseInsensitive (FoldCase)
+import HeadedMegaparsec
+import Text.Megaparsec (Stream, TraversableStream, VisualStream)
 import Text.Megaparsec qualified as Megaparsec
 import Text.Megaparsec.Char qualified as MegaparsecChar
 import Text.Megaparsec.Char.Lexer qualified as MegaparsecLexer
@@ -21,7 +20,7 @@ import Text.Megaparsec.Char.Lexer qualified as MegaparsecLexer
 -- |
 -- Execute as single input chunk refiner.
 toRefiner ::
-  (Ord err, VisualStream strm, TraversableStream strm, Megaparsec.ShowErrorComponent err) =>
+  (VisualStream strm, TraversableStream strm, Megaparsec.ShowErrorComponent err) =>
   HeadedParsec err strm a ->
   strm ->
   Either Text a
@@ -87,21 +86,21 @@ float = parse MegaparsecLexer.float
 
 -- * Combinators
 
-sep :: (Ord err, Stream strm, Megaparsec.Token strm ~ Char) => HeadedParsec err strm separtor -> HeadedParsec err strm a -> HeadedParsec err strm [a]
+sep :: (Ord err, Stream strm) => HeadedParsec err strm separtor -> HeadedParsec err strm a -> HeadedParsec err strm [a]
 sep _separator _parser = do
   _head <- _parser
   endHead
   _tail <- many $ _separator *> _parser
   return (_head : _tail)
 
-sep1 :: (Ord err, Stream strm, Megaparsec.Token strm ~ Char) => HeadedParsec err strm separtor -> HeadedParsec err strm a -> HeadedParsec err strm (NonEmpty a)
+sep1 :: (Ord err, Stream strm) => HeadedParsec err strm separtor -> HeadedParsec err strm a -> HeadedParsec err strm (NonEmpty a)
 sep1 _separator _parser = do
   _head <- _parser
   endHead
   _tail <- many $ _separator *> _parser
   return (_head :| _tail)
 
-sepEnd1 :: (Ord err, Stream strm, Megaparsec.Token strm ~ Char) => HeadedParsec err strm separator -> HeadedParsec err strm end -> HeadedParsec err strm el -> HeadedParsec err strm (NonEmpty el, end)
+sepEnd1 :: (Ord err, Stream strm) => HeadedParsec err strm separator -> HeadedParsec err strm end -> HeadedParsec err strm el -> HeadedParsec err strm (NonEmpty el, end)
 sepEnd1 sepP endP elP = do
   headEl <- elP
   let loop !list = do

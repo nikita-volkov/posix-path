@@ -4,6 +4,7 @@ module Coalmine.PureRandom.SizedSeeded
     vectorOf,
     seed,
     uniformElement,
+    nest,
   )
 where
 

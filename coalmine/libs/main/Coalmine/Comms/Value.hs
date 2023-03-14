@@ -1,7 +1,6 @@
 -- | Dynamically typed value.
 module Coalmine.Comms.Value where
 
-import Coalmine.Comms.Readers qualified as Readers
 import Coalmine.Comms.Schema qualified as Schema
 import Coalmine.InternalPrelude
 import Coalmine.PtrKit.Reader qualified as Reader

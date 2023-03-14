@@ -6,9 +6,6 @@ import Coalmine.InternalPrelude
 import Coalmine.RestEasy.AdaptedRequest.Model
 import Coalmine.RestEasy.MimeTypeLists qualified as MimeTypeLists
 import Network.HTTP.Media qualified as HttpMedia
-import Network.HTTP.Types qualified as HttpTypes
-import Network.Wai qualified as Wai
-import Network.Wai.Handler.Warp qualified as Warp
 
 contentType :: ByteString -> Maybe Type
 contentType = HttpMedia.mapContentMedia mimeTypeListAssocs

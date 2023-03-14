@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-missing-signatures #-}
+
 module Coalmine.EvenSimplerPaths.AttoparsecHelpers where
 
 import Coalmine.AttoparsecExtras.Text

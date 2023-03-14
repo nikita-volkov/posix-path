@@ -5,6 +5,7 @@ import Coalmine.Prelude hiding (choose)
 import Coalmine.Tasty
 import Data.Text qualified as Text
 
+tests :: [TestTree]
 tests =
   [ testProperty "Concatting lifted texts equals concatting originals" $
       \(texts :: [Text]) ->

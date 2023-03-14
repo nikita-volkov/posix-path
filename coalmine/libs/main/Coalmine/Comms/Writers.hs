@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
+
 module Coalmine.Comms.Writers where
 
 import Coalmine.InternalPrelude hiding (Writer)

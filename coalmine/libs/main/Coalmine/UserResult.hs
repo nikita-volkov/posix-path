@@ -1,18 +1,14 @@
 module Coalmine.UserResult
   ( UserResult,
+    run,
     inContext,
   )
 where
 
-import Coalmine.BaseExtras.List qualified as ListExtras
-import Coalmine.Inter
 import Coalmine.InternalPrelude
-import Coalmine.MultilineTextBuilder qualified as Printer
 import Coalmine.Name (Name)
-import Coalmine.Printing
 import Coalmine.UserErr (UserErr (..))
 import Coalmine.UserErr qualified as UserErr
-import Data.Text qualified as Text
 
 -- |
 -- Consider it a 'Maybe' with extended information about the error.

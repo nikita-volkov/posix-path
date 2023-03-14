@@ -3,15 +3,9 @@ module TestSuites.Inter.Regressions.FromFormatica where
 import Coalmine.Inter
 import Coalmine.MultilineTextBuilder qualified as B
 import Coalmine.Prelude
-import Data.Text qualified as Text
-import Test.QuickCheck qualified as QuickCheck
-import Test.QuickCheck.Instances
-import Test.QuickCheck.Property qualified as QuickCheck
-import Test.Tasty
-import Test.Tasty.HUnit
-import Test.Tasty.QuickCheck
-import Test.Tasty.Runners
+import Coalmine.Tasty
 
+tests :: [TestTree]
 tests =
   [ testCase "Nested indentation" $
       let expected =

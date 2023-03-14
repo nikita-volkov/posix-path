@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 module Coalmine.TransformersExtras.State where
 
 import Coalmine.InternalPrelude

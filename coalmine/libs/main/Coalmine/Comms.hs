@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-unused-top-binds -Wno-redundant-constraints #-}
+
 module Coalmine.Comms
   ( serializeAsByteStringWithSchema,
     deserializeByteString,

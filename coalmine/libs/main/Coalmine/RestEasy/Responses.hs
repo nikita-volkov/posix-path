@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-missing-signatures #-}
+
 module Coalmine.RestEasy.Responses where
 
 import Coalmine.Prelude

@@ -52,7 +52,6 @@ import Data.Text.Encoding qualified
 import Data.Tuple.All as Exports hiding (only)
 import Data.Vector qualified
 import Data.Vector.Generic as Exports (Vector)
-import Data.Vector.Instances as Exports
 import Data.Vector.Serialize ()
 import Data.Vector.Storable qualified
 import Data.Vector.Unboxed as Exports (Unbox)
@@ -70,7 +69,7 @@ import GHC.Utils.Misc as Exports (applyWhen, nTimes, nubSort)
 import IsomorphismClass as Exports
 import Language.Haskell.TH.Quote as Exports (QuasiQuoter (..))
 import Language.Haskell.TH.Syntax as Exports (Lift, Q)
-import Network.IP.Addr as Exports (IP (..), IP4 (..), IP6 (..), InetAddr (..), InetPort (..), NetAddr (..))
+import Network.IP.Addr as Exports (IP, IP4 (..), IP6 (..), InetAddr (..), InetPort (..), NetAddr)
 import System.IO as Exports
 import Test.QuickCheck.Arbitrary as Exports (Arbitrary)
 import Test.QuickCheck.Instances ()
@@ -113,7 +112,8 @@ renderAsYamlText =
 
 -- * UTF8
 
-decodeUtf8 = Data.Text.Encoding.decodeUtf8'
+decodeUtf8 :: ByteString -> Maybe Text
+decodeUtf8 = either (const Nothing) Just . Data.Text.Encoding.decodeUtf8'
 
 -- * MonadError
 

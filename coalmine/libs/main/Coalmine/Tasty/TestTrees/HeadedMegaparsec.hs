@@ -5,10 +5,8 @@ import Coalmine.InternalPrelude
 import Coalmine.Printing
 import Data.Text.IO qualified as TextIO
 import HeadedMegaparsec
-import Test.QuickCheck.Instances
 import Test.Tasty
 import Test.Tasty.HUnit
-import Test.Tasty.QuickCheck
 import Text.Megaparsec qualified as Megaparsec
 
 testParserToSucceed ::
@@ -24,7 +22,7 @@ testParserToSucceed name expectation parser input =
     Left err -> assertFailure . to $ err
 
 testParserToFail ::
-  (Eq a, Show a, Megaparsec.VisualStream i, Megaparsec.TraversableStream i, Megaparsec.ShowErrorComponent e) =>
+  (Show a, Megaparsec.VisualStream i, Megaparsec.TraversableStream i, Megaparsec.ShowErrorComponent e) =>
   TestName ->
   Text ->
   HeadedParsec e i a ->

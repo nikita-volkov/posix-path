@@ -5,6 +5,7 @@ import Coalmine.Prelude
 import Coalmine.Tasty
 import Data.Set qualified as Set
 
+tests :: [TestTree]
 tests =
   [ testGroup "streamUniqueDuplicates" $
       [ testProperty "produces unique elements" $ \(list :: [Word]) ->

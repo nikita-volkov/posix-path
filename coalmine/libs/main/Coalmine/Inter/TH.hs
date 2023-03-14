@@ -28,6 +28,7 @@ linesExp =
 
 -- * --
 
+lineExps :: D.Line -> [Exp]
 lineExps = \case
   D.BlankLine ->
     []

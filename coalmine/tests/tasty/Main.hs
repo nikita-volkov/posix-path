@@ -16,6 +16,7 @@ import TestSuites.NumericVersion qualified as NumericVersion
 import TestSuites.PtrKit qualified as PtrKit
 import TestSuites.TimeExtrasConversions qualified as TimeExtrasConversions
 
+main :: IO ()
 main =
   declareTestGroupDefaultMain "All" do
     "Inter" ?:: Inter.tests
@@ -33,5 +34,6 @@ main =
     "MultilineTextBuilder" ?:: MultilineTextBuilder.tests
     "PtrKit" ?:: PtrKit.tests
 
+(?::) :: String -> [TestTree] -> DeclareTestGroup ()
 (?::) name =
   declareTestGroup name . traverse_ declareTestTree

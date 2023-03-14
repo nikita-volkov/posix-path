@@ -6,6 +6,7 @@ import Coalmine.Prelude
 import Coalmine.Tasty
 import Data.Text qualified as Text
 
+tests :: [TestTree]
 tests =
   [ testGroup "select" $
       [ testCase "multiline" $

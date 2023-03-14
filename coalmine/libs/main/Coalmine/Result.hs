@@ -1,7 +1,5 @@
 module Coalmine.Result where
 
-import Coalmine.InternalPrelude
-
 data Result context err res
   = FailureResult
       [context]

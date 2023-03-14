@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
+
 module Coalmine.Comms.Readers where
 
 import Coalmine.BaseExtras.Integer qualified as Integer

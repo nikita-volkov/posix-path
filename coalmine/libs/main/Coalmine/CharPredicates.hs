@@ -1,6 +1,6 @@
 module Coalmine.CharPredicates where
 
-import Coalmine.InternalPrelude hiding (both, either)
+import Coalmine.InternalPrelude hiding (either)
 import Coalmine.Predicates
 
 isSpaceOrTab :: Char -> Bool

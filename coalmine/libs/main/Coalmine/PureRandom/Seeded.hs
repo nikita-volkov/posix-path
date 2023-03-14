@@ -6,7 +6,7 @@ import Data.Vector.Generic qualified as GVec
 
 -- |
 -- General randomizer, which can be easily adapted to all standard randomization libs
--- like \"QuickGen\" or \"random\".
+-- like \"QuickCheck\" or \"random\".
 newtype Seeded a
   = Seeded ((Word -> Word) -> Word -> (a, Word))
   deriving (Functor)
@@ -41,7 +41,7 @@ oneOf vec =
 
 vectorOfLength :: (GVec.Vector v a) => Int -> Seeded a -> Seeded (v a)
 vectorOfLength length =
-  error "TODO"
+  GVec.replicateM length
 
 uniformElement :: BVec.Vector a -> Seeded a
 uniformElement vec =

@@ -1,13 +1,10 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 -- |
 -- Instances for the externally defined data-types used across this lib.
 module Coalmine.IsomorphismClassInstances where
 
 import Coalmine.InternalPrelude
-import Coalmine.TimeExtras.Conversions qualified as TimeConversions
-import Data.Ratio ((%))
-import Data.Vector.Generic qualified as VectorGeneric
-import Data.Vector.Unboxed qualified as VectorUnboxed
-import TextBuilderDev qualified
 
 --
 

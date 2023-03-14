@@ -7,8 +7,6 @@ module Coalmine.Literal where
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
 import Data.Attoparsec.Text qualified as Attoparsec
-import Data.Text qualified as Text
-import Language.Haskell.TH.Quote qualified as TH
 import Language.Haskell.TH.Syntax qualified as TH
 import TextBuilderDev qualified
 

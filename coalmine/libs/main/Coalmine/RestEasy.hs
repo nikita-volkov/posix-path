@@ -1,22 +1,14 @@
 module Coalmine.RestEasy where
 
 import AesonValueParser qualified
-import Coalmine.BaseExtras.List qualified as List
 import Coalmine.InternalPrelude
-import Coalmine.Parsing
 import Coalmine.RestEasy.BodyConsumers qualified as BodyConsumers
 import Coalmine.RestEasy.MimeTypeLists qualified as MimeTypeLists
 import Coalmine.RestEasy.Responses qualified as Responses
 import Data.Attoparsec.Text qualified as Attoparsec
-import Data.ByteString qualified as ByteString
 import Data.Serialize qualified as Cereal
-import Data.Text qualified as Text
-import Data.Vector qualified as BVec
 import Jsonifier qualified
-import Network.HTTP.Media qualified as HttpMedia
-import Network.HTTP.Types qualified as HttpTypes
 import Network.Wai qualified as Wai
-import Network.Wai.Handler.Warp qualified as Warp
 
 -- * Execution
 
@@ -42,7 +34,8 @@ data RequestBody a
       -- ^ Consumer. Calls the provided chunk-producing action until it
       -- produces an empty chunk.
 
-instance Functor RequestBody
+instance Functor RequestBody where
+  fmap = error "TODO"
 
 jsonRequestBody :: AesonValueParser.Value a -> RequestBody a
 jsonRequestBody parser =

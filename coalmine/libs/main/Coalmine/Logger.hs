@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
+
 module Coalmine.Logger
   ( -- * Logger
     Logger,
@@ -18,9 +20,7 @@ module Coalmine.Logger
   )
 where
 
-import Coalmine.BaseExtras.List qualified as List
 import Coalmine.InternalPrelude hiding (Writer)
-import Coalmine.StmExtras.TQueue qualified as TQueue
 import Data.Text.IO qualified as TextIO
 
 data Logger = Logger

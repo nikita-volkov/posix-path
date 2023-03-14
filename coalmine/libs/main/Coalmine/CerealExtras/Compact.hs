@@ -11,7 +11,6 @@ import Coalmine.CerealExtras.Get qualified as CerealExtrasGet
 import Coalmine.CerealExtras.Put qualified as CerealExtrasPut
 import Coalmine.InternalPrelude hiding (get, put)
 import Data.ByteString qualified as ByteString
-import Data.Map.Strict qualified as Map
 import Data.Serialize (Serialize (..))
 import Data.Serialize qualified as Cereal
 import Data.Serialize.LEB128 qualified as Leb128
@@ -58,7 +57,7 @@ instance Serialize (Compact Text) where
       Right res -> return $ Compact res
       Left exc -> CerealExtrasGet.failWithException exc
 
-instance (Serialize k, Serialize v, Ord k) => Serialize (Compact (Map k v)) where
+instance (Serialize k, Serialize v) => Serialize (Compact (Map k v)) where
   put (Compact map) = CerealExtrasPut.ordMap put put map
   get = CerealExtrasGet.ordMap get get <&> Compact
 

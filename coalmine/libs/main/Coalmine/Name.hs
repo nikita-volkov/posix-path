@@ -1,10 +1,8 @@
 module Coalmine.Name where
 
-import Coalmine.CerealExtras.Compact qualified as CerealExtrasCompact
 import Coalmine.CerealExtras.Get qualified as CerealExtrasGet
 import Coalmine.CerealExtras.Put qualified as CerealExtrasPut
 import Coalmine.InternalPrelude
-import Coalmine.MultilineTextBuilder qualified as MultilineTextBuilder
 import Coalmine.Name.Attoparsec qualified as Attoparsec
 import Coalmine.Name.Constants qualified as Constants
 import Coalmine.Name.Gens qualified as Gens
@@ -93,7 +91,7 @@ allAlphaFirstQuickCheckGen maxParts maxBytesInPart =
 attoparsec :: Attoparsec.Parser Name
 attoparsec = Attoparsec.parts <&> Name
 
-megaparsec :: (Ord err) => Megaparsec.Parsec err Text Name
+megaparsec :: Megaparsec.Parsec Void Text Name
 megaparsec = Megaparsec.nameWords <&> Name
 
 -- * --

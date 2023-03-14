@@ -13,7 +13,6 @@ module Coalmine.Interpreter
 where
 
 import Coalmine.EvenSimplerPaths (Path)
-import Coalmine.EvenSimplerPaths qualified as Path
 import Coalmine.InternalPrelude hiding (fail)
 import Coalmine.Located (Located)
 import Coalmine.Located qualified as Located

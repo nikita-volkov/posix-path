@@ -1,6 +1,7 @@
+-- | Collection of predicate combinators.
 module Coalmine.Predicates where
 
-import Coalmine.InternalPrelude hiding (all, both, either)
+import Coalmine.InternalPrelude hiding (all, either)
 
 -- * Combinators
 

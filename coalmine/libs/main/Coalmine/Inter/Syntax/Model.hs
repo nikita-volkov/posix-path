@@ -2,7 +2,6 @@ module Coalmine.Inter.Syntax.Model where
 
 import Coalmine.InternalPrelude
 import Domain qualified
-import DomainOptics qualified
 
 Domain.declare
   Nothing

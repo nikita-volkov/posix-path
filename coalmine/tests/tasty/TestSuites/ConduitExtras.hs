@@ -5,6 +5,7 @@ import Coalmine.Prelude
 import Coalmine.Tasty
 import Conduit
 
+tests :: [TestTree]
 tests =
   [ testCase "Discretization" $
       let conduit =
@@ -30,5 +31,5 @@ tests =
             ]
           reality =
             runConduitPure conduit
-       in assertEqual "" expectation reality
+       in assertEqual @[(Int, Int)] "" expectation reality
   ]

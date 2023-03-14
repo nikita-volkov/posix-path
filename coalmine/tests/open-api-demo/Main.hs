@@ -7,6 +7,7 @@ import OpenApiDemo.Model qualified as M
 
 -- * --
 
+main :: IO ()
 main =
   return ()
 

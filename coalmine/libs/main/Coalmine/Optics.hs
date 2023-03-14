@@ -4,7 +4,6 @@ import Coalmine.InternalPrelude
 import Coalmine.UnorderedContainersExtras.HashSet qualified as HashSet
 import Data.HashMap.Strict qualified as HashMap
 import Data.Map.Strict qualified as Map
-import Data.Set.Optics
 import Optics
 
 feedingMooreOf :: Fold a b -> Moore b c -> a -> Moore b c
@@ -18,7 +17,7 @@ feedingMooreOf optic =
 --
 -- >>> toListOf foldedDuplicated [1,2,1,3,5,4,3,1]
 -- [1,3]
-foldedDuplicated :: (Eq a, Hashable a, Foldable f) => Fold (f a) a
+foldedDuplicated :: (Hashable a, Foldable f) => Fold (f a) a
 foldedDuplicated =
   foldedFilteringByCount (> 1)
 
@@ -26,15 +25,15 @@ foldedDuplicated =
 --
 -- >>> toListOf foldedSingleton [1,2,1,3,5,4,3,1]
 -- [2,4,5]
-foldedSingleton :: (Eq a, Hashable a, Foldable f) => Fold (f a) a
+foldedSingleton :: (Hashable a, Foldable f) => Fold (f a) a
 foldedSingleton =
   foldedFilteringByCount (== 1)
 
-foldedFilteringByCount :: (Eq a, Hashable a, Foldable f) => (Int -> Bool) -> Fold (f a) a
+foldedFilteringByCount :: (Hashable a, Foldable f) => (Int -> Bool) -> Fold (f a) a
 foldedFilteringByCount p =
   foldedCounting % filtered (p . snd) % _1
 
-foldedCounting :: (Eq a, Hashable a, Foldable f) => Fold (f a) (a, Int)
+foldedCounting :: (Hashable a, Foldable f) => Fold (f a) (a, Int)
 foldedCounting =
   folding folder
   where
@@ -46,7 +45,7 @@ foldedCounting =
       where
         step a next (Moore _ !progress) =
           next (progress a)
-    countEach :: (Eq a, Hashable a) => Moore a (HashMap a Int)
+    countEach :: (Hashable a) => Moore a (HashMap a Int)
     countEach =
       loop HashMap.empty
       where
@@ -59,7 +58,7 @@ foldedCounting =
 --
 -- >>> toListOf foldedUnique [1,2,1,3,1,4,2]
 -- [1,2,3,4]
-foldedUnique :: (Eq a, Hashable a, Foldable f) => Fold (f a) a
+foldedUnique :: (Hashable a, Foldable f) => Fold (f a) a
 foldedUnique =
   folding HashSet.fromFoldable
 

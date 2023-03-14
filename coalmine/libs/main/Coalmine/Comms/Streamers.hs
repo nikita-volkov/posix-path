@@ -1,9 +1,9 @@
+{-# OPTIONS_GHC -Wno-redundant-constraints #-}
+
 module Coalmine.Comms.Streamers where
 
 import Coalmine.InternalPrelude
-import Coalmine.PtrKit.PtrIO qualified as PtrIO
 import Coalmine.PtrKit.Streamer
-import Coalmine.PtrKit.Streamer qualified as Streamer
 
 -- |
 -- Variable length representation of unsigned integers.

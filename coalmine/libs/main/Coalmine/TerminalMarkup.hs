@@ -11,6 +11,12 @@ module Coalmine.TerminalMarkup
     bold,
     green,
     red,
+    grey,
+    white,
+
+    -- *** Integrations
+    Markdown,
+    markdown,
   )
 where
 

@@ -3,6 +3,7 @@ module Coalmine.PtrKit.Writer
 
     -- * Elimination
     toByteString,
+    run,
 
     -- * Construction
     boundedPrim,
@@ -11,7 +12,6 @@ module Coalmine.PtrKit.Writer
 where
 
 import Coalmine.InternalPrelude hiding (Writer)
-import Coalmine.PtrKit.PtrIO qualified as PtrIO
 import Data.ByteString.Builder.Prim qualified as ByteStringBuilderPrim
 import Data.ByteString.Builder.Prim.Internal qualified as ByteStringBuilderPrimInternal
 import Data.ByteString.Internal qualified as ByteStringInternal

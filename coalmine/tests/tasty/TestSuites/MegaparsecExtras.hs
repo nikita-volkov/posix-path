@@ -5,10 +5,9 @@ import Coalmine.Located qualified as Located
 import Coalmine.MegaparsecExtras
 import Coalmine.Prelude
 import Coalmine.Tasty
-import Data.Text qualified as Text
-import Text.Megaparsec
 import Text.Megaparsec.Char
 
+tests :: [TestTree]
 tests =
   [ testCase "locate" $
       let input =

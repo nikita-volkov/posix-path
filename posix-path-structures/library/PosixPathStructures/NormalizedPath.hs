@@ -21,19 +21,14 @@ module PosixPathStructures.NormalizedPath
 where
 
 import Coalmine.BaseExtras.List qualified as List
-import Coalmine.BaseExtras.MonadPlus
-import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
-import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
 import Coalmine.Prelude hiding (null)
-import PosixPathStructures.Component qualified as Component
-import PosixPathStructures.Name qualified as Name
-import PosixPathStructures.Path qualified as Path
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.List qualified as List
 import Data.Serialize qualified as Cereal
-import Data.Text qualified as Text
+import PosixPathStructures.Component qualified as Component
+import PosixPathStructures.Name qualified as Name
+import PosixPathStructures.Path qualified as Path
 import Test.QuickCheck qualified as QuickCheck
-import TextBuilderDev qualified as TextBuilderDev
 
 -- |
 -- Composable automatically normalized path.

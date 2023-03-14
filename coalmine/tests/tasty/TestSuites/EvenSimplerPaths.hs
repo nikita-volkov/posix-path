@@ -6,6 +6,7 @@ import Coalmine.SyntaxModellingQuickCheck qualified as SyntaxModellingQuickCheck
 import Coalmine.Tasty
 import Coalmine.Tasty.TestTrees.Cereal
 
+tests :: [TestTree]
 tests =
   [ testGroup
       "Essentials"

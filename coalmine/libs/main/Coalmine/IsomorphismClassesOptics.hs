@@ -1,6 +1,5 @@
 module Coalmine.IsomorphismClassesOptics where
 
-import Coalmine.InternalPrelude
 import Coalmine.IsomorphismClasses
 import Optics
 

@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-unused-imports #-}
+
 module Coalmine.Formatting where
 
 import Coalmine.BaseExtras.List qualified as List

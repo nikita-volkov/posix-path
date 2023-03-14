@@ -1,13 +1,7 @@
 module Coalmine.OpenApi where
 
-import AesonValueParser qualified
-import Coalmine.BaseExtras.List qualified as List
 import Coalmine.InternalPrelude
 import Coalmine.JsonSchema
-import Coalmine.Parsing
-import Data.Text qualified as Text
-import Data.Vector qualified as BVec
-import Jsonifier qualified
 
 -- * Execution
 
@@ -48,7 +42,8 @@ authenticator =
 
 data RequestBody i
 
-instance Functor RequestBody
+instance Functor RequestBody where
+  fmap = error "TODO"
 
 jsonRequestBody :: Schema i -> RequestBody i
 jsonRequestBody =

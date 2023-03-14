@@ -11,7 +11,6 @@ module Coalmine.Located.Rendering where
 import Coalmine.BaseExtras.Integer qualified as Integer
 import Coalmine.Inter
 import Coalmine.InternalPrelude hiding (select)
-import Coalmine.TextAppender qualified as TextAppender
 import Data.Text qualified as Text
 import TextBuilderDev qualified as TextBuilder
 
@@ -156,13 +155,12 @@ render input startOffset endOffset explanation =
               input
                 & Text.drop currentLineStart
                 & Text.take (fromMaybe currentOffset earlyEnd - currentLineStart)
-
-megaparsecErrorMessageLayout startLine startColumn quote explanation =
-  [i|
-    $startLine:$startColumn:
-    $quote
-    $explanation
-  |]
+        megaparsecErrorMessageLayout startLine startColumn quote explanation =
+          [i|
+            $startLine:$startColumn:
+            $quote
+            $explanation
+          |]
 
 select :: Int -> Int -> Int -> [Text] -> [Text]
 select firstLineNum startCol endCol inputLines =

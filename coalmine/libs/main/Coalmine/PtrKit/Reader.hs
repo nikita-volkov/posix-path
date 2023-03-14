@@ -51,6 +51,7 @@ readTotalByteString reader (ByteStringInternal.BS fp len) =
         if totalOffset == len
           then Right res
           else Left $ Failure "Did not consume in whole" [] totalOffset
+      _ -> error "TODO"
 
 -- |
 -- Decoder which can read from multiple chunks of data
@@ -92,6 +93,8 @@ instance Monad Reader where
             ExhaustedStatus runNextL ->
               return . ExhaustedStatus $ \ptr ptr' ->
                 runNextL ptr ptr' >>= processStatusL
+            FailedStatus _ _ _ ->
+              error "TODO"
 
 liftPeeker :: Peeker.Peeker a -> Reader a
 liftPeeker =

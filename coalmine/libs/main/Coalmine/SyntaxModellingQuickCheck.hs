@@ -15,7 +15,7 @@ all proxy =
   ]
 
 partialIsomorphism ::
-  (SyntaxModelling.Syntax a, Arbitrary a, Eq a, Show a) =>
+  (SyntaxModelling.Syntax a, Eq a, Show a) =>
   a ->
   Property
 partialIsomorphism a =

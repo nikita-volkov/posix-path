@@ -1,9 +1,6 @@
 module Coalmine.Formatting.Rendering where
 
-import Coalmine.BaseExtras.List qualified as List
-import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
-import Data.Text qualified as Text
 import TextBuilderDev qualified as Tb
 
 -- |

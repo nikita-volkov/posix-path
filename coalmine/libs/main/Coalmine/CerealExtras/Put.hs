@@ -7,7 +7,6 @@ import Data.Map.Strict qualified as Map
 import Data.Serialize.LEB128 (putLEB128)
 import Data.Serialize.Put
 import Data.Text.Encoding qualified as TextEncoding
-import Data.Vector qualified as BVec
 import Data.Vector.Generic qualified as GVec
 
 -- * Helpers

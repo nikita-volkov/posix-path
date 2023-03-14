@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-unused-top-binds #-}
+
 module PosixPath
   ( Path,
 
@@ -15,11 +17,7 @@ where
 import Coalmine.Prelude hiding (Path)
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Serialize qualified as Cereal
-import PosixPathStructures.Component qualified as Component
-import PosixPathStructures.Name qualified as Name
 import PosixPathStructures.NormalizedPath qualified as NormalizedPath
-import PosixPathStructures.Path qualified as Path
-import Test.QuickCheck qualified as QuickCheck
 
 -- |
 -- Composable automatically normalized path.

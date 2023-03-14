@@ -6,7 +6,7 @@ import Data.Scientific
 scaleToDecimals :: Int -> Scientific -> Integer
 scaleToDecimals decimals a =
   if decimalsDiff >= 0
-    then coefficient a * fromIntegral (10 ^ decimalsDiff)
-    else div (coefficient a) (fromIntegral (10 ^ negate decimalsDiff))
+    then coefficient a * 10 ^ decimalsDiff
+    else div (coefficient a) (10 ^ negate decimalsDiff)
   where
     decimalsDiff = decimals + base10Exponent a

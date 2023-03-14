@@ -3,7 +3,6 @@ module Coalmine.JsonSchema where
 import AesonValueParser qualified
 import Coalmine.InternalPrelude
 import Data.Text qualified as Text
-import Data.Vector qualified as BVec
 import Jsonifier qualified
 
 -- |
@@ -107,11 +106,15 @@ oneOfSchemaVariant = OneOfSchemaVariant
 
 data ObjectSchema i o
 
-instance Profunctor ObjectSchema
+instance Profunctor ObjectSchema where
+  dimap = error "TODO"
 
-instance Functor (ObjectSchema i)
+instance Functor (ObjectSchema i) where
+  fmap = error "TODO"
 
-instance Applicative (ObjectSchema i)
+instance Applicative (ObjectSchema i) where
+  pure = error "TODO"
+  (<*>) = error "TODO"
 
 requiredSchemaField :: Text -> Schema a -> ObjectSchema a a
 requiredSchemaField =

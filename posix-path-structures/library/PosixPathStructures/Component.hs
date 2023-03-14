@@ -3,11 +3,10 @@ module PosixPathStructures.Component
   )
 where
 
-import Coalmine.BaseExtras.MonadPlus
 import Coalmine.Prelude
-import PosixPathStructures.Name qualified as Name
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
+import PosixPathStructures.Name qualified as Name
 
 data Component
   = NameComponent Name.Name

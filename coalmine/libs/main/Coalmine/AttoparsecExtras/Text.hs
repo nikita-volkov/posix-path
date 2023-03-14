@@ -15,6 +15,12 @@ module Coalmine.AttoparsecExtras.Text
     -- * --
     countWhile,
     countWhile1,
+
+    -- * Validation
+    validated,
+    Validator,
+    notSmallerThanValidator,
+    notLargerThanValidator,
   )
 where
 

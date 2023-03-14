@@ -69,7 +69,6 @@ sum variants =
       case decodersVec BVec.!? tag of
         Just decoder -> decoder
         Nothing -> fail "Invalid tag"
-    variantsLength = BVec.length decodersVec
     decodersVec = BVec.fromList $ fmap variantGet variants
 
 -- |

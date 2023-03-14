@@ -1,6 +1,6 @@
 module Coalmine.BaseExtras.NonEmpty where
 
-import Coalmine.InternalPrelude hiding (cons, fromList, head, init, last, reverse, tail, uncons)
+import Coalmine.InternalPrelude hiding (fromList, head, init, last, reverse, tail)
 import Data.List.NonEmpty
 
 -- |

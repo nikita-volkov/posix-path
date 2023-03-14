@@ -217,7 +217,7 @@ isDistinct xs =
 
 streamUniqueDuplicates :: (Ord a) => [a] -> [a]
 streamUniqueDuplicates list =
-  foldr step extract list Map.empty
+  foldr step extract list (Map.empty @_ @Int)
   where
     step a next map =
       case Map.insertLookup (+) a 1 map of

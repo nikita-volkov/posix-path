@@ -25,7 +25,6 @@ import Algorithms.NaturalSort qualified as NaturalSort
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.CerealExtras.Compact qualified as CerealExtrasCompact
 import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
-import Coalmine.EvenSimplerPaths.IsomorphismClassHelpers qualified as IsomorphismClassHelpers
 import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
 import Coalmine.InternalPrelude
 import Coalmine.NameConversion
@@ -90,10 +89,8 @@ instance Ord Component where
       lb = componentExtensionsSortKey l
       ra = componentNameSortKey r
       rb = componentExtensionsSortKey r
-
-componentNameSortKey = NaturalSort.sortKey . (.name)
-
-componentExtensionsSortKey = reverse . fmap NaturalSort.sortKey . (.extensions)
+      componentNameSortKey = NaturalSort.sortKey . (.name)
+      componentExtensionsSortKey = reverse . fmap NaturalSort.sortKey . (.extensions)
 
 componentNull :: Component -> Bool
 componentNull (Component name extensions) =

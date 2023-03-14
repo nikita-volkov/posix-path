@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 module Coalmine.DecimalExtras.Instances where
 
 import Coalmine.InternalPrelude

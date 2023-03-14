@@ -5,7 +5,6 @@ import Coalmine.EvenSimplerPaths (Path)
 import Coalmine.EvenSimplerPaths qualified as Path
 import Coalmine.InternalPrelude hiding (readFile, writeFile)
 import Coalmine.TerminalMarkup (TerminalMarkup)
-import Coalmine.TerminalMarkup qualified as TerminalMarkup
 import Data.Text.IO qualified as TextIO
 import Options.Applicative qualified as OptparseApplicative
 

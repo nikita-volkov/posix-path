@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 module Coalmine.TransformersExtras.Except where
 
 import Coalmine.InternalPrelude

@@ -1,8 +1,9 @@
+{-# OPTIONS_GHC -Wno-missing-signatures #-}
+
 module Coalmine.RestEasy.Statuses where
 
 import Coalmine.Prelude
 import Data.Text qualified as Text
-import Data.Text.Encoding qualified as Text
 import Network.HTTP.Types.Status
 
 ok = textual 200

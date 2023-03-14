@@ -10,10 +10,8 @@ module Coalmine.SemverBase
 where
 
 import Coalmine.InternalPrelude
-import Coalmine.Parsing
 import Coalmine.Printing
 import Coalmine.TH.QuasiQuoter qualified as QuasiQuoter
-import Coalmine.UserErr (UserErr (..))
 import Data.Attoparsec.Text qualified as Attoparsec
 
 data SemverBase = SemverBase
@@ -71,7 +69,3 @@ bumpPatch x =
 
 fromComponents :: Word -> Word -> Word -> SemverBase
 fromComponents = SemverBase
-
-parseIntList :: [Int] -> Either UserErr SemverBase
-parseIntList =
-  error "TODO"

@@ -21,8 +21,6 @@ where
 import Coalmine.InternalPrelude hiding (writer)
 import Coalmine.PtrKit.Writer qualified as Writer
 import Data.ByteString qualified as ByteString
-import Data.ByteString.Builder.Prim qualified as ByteStringBuilderPrim
-import Data.ByteString.Builder.Prim.Internal qualified as ByteStringBuilderPrimInternal
 import Data.ByteString.Internal qualified as ByteStringInternal
 
 data Status
