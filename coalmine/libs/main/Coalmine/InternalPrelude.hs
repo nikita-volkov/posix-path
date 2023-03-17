@@ -20,6 +20,7 @@ module Coalmine.InternalPrelude
     -- * UTF8
     Data.Text.Encoding.encodeUtf8,
     decodeUtf8,
+    Data.Text.Encoding.decodeUtf8Lenient,
 
     -- * MonadError
     tryError,
