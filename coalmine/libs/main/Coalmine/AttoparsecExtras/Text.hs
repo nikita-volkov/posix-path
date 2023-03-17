@@ -1,5 +1,8 @@
 module Coalmine.AttoparsecExtras.Text
   ( -- * --
+    labelled,
+
+    -- * --
     variableLengthUnsignedDecimal,
     unboundedFixedLengthUnsignedDecimal,
     boundedFixedLengthUnsignedDecimal,
@@ -29,6 +32,10 @@ import Coalmine.InternalPrelude hiding (takeWhile)
 import Data.Attoparsec.Text
 import Data.Text qualified as Text
 import StructureKit.Charset qualified as Charset
+
+labelled :: String -> Parser a -> Parser a
+labelled label parser =
+  parser <?> label
 
 -- * --
 
