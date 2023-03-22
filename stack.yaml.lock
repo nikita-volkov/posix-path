@@ -64,14 +64,14 @@ packages:
 - completed:
     name: coalmine
     pantry-tree:
-      sha256: 09b422c0efce89994131525ff9dd7f74b9c0854245cf403311643a0789a70203
-      size: 12969
-    sha256: 623b54f11452182cb1e5dc1cfd9e073738488824a1be4519e5bbd1655f7e6439
-    size: 75996
-    url: https://github.com/nikita-volkov/coalmine/archive/dabdf64f7429c7b239eec14e0eb98a61451b0852.tar.gz
+      sha256: f7ac1c67efe11cc07c3195757b1a5be4fb3243d0bf7a0fd9108f8142d9d88033
+      size: 13728
+    sha256: 9b88bae52acbe2141f1b3796aa4efafd4d72a980c51f77eae1653c7b2414c93d
+    size: 80091
+    url: https://github.com/nikita-volkov/coalmine/archive/d923b49a8d2bcf85a84e7850515892cc7a93eec2.tar.gz
     version: 0.1.0.18
   original:
-    url: https://github.com/nikita-volkov/coalmine/archive/dabdf64f7429c7b239eec14e0eb98a61451b0852.tar.gz
+    url: https://github.com/nikita-volkov/coalmine/archive/d923b49a8d2bcf85a84e7850515892cc7a93eec2.tar.gz
 - completed:
     name: curly
     pantry-tree:
@@ -118,7 +118,7 @@ packages:
     url: https://github.com/nikita-volkov/structure-kit/archive/f6423d909d1fc65e15f128012e4940b3412e64fd.tar.gz
 snapshots:
 - completed:
-    sha256: 1d25e3e0e2edb856951e8903821e0199a1112ab48b76c83f814e4f7596961e89
-    size: 598120
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2023/2/14.yaml
-  original: nightly-2023-02-14
+    sha256: 9e4385fe456ee45340f0af388507d416ab96dba8cde75d187de83c2be8c31246
+    size: 599891
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2023/3/22.yaml
+  original: nightly-2023-03-22
