@@ -1,6 +1,7 @@
 resolver: .stack-snapshot/snapshot.yaml
 packages:
   - coalmine
+  - command-event
   - posix-path
   - posix-path-classes
   - posix-path-structures
