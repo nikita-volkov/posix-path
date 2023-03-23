@@ -27,6 +27,9 @@ module Coalmine.InternalPrelude
     withError,
     handleError,
     mapError,
+
+    -- * Contravariant
+    contrafilter,
   )
 where
 
@@ -139,3 +142,9 @@ handleError = flip catchError
 -- the result is lifted into the second 'MonadError' instance.
 mapError :: (MonadError e m, MonadError e' n) => (m (Either e a) -> n (Either e' b)) -> m a -> n b
 mapError f action = f (tryError action) >>= liftEither
+
+-- * Contravariant
+
+contrafilter :: (Decidable f) => (a -> Maybe b) -> f b -> f a
+contrafilter f =
+  choose (maybe (Left undefined) Right . f) lost
