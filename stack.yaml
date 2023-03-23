@@ -1,5 +1,6 @@
 resolver: .stack-snapshot/snapshot.yaml
 packages:
+  - actor-system
   - coalmine
   - command-event
   - posix-path
