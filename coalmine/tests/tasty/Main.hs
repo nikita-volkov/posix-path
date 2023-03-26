@@ -14,6 +14,7 @@ import TestSuites.MultilineTextBuilder qualified as MultilineTextBuilder
 import TestSuites.Name qualified as Name
 import TestSuites.NumericVersion qualified as NumericVersion
 import TestSuites.PtrKit qualified as PtrKit
+import TestSuites.ScientificExtras qualified as ScientificExtras
 import TestSuites.TimeExtrasConversions qualified as TimeExtrasConversions
 
 main :: IO ()
@@ -33,6 +34,7 @@ main =
       "List" ?:: TestSuites.BaseExtras.List.tests
     "MultilineTextBuilder" ?:: MultilineTextBuilder.tests
     "PtrKit" ?:: PtrKit.tests
+    "ScientificExtras" ?:: ScientificExtras.tests
 
 (?::) :: String -> [TestTree] -> DeclareTestGroup ()
 (?::) name =
