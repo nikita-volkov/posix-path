@@ -30,3 +30,10 @@ maxBitOffset =
 bytesNeededForBits :: (Integral a) => a -> a
 bytesNeededForBits bits =
   succ (div (pred bits) 8)
+
+{-# INLINE toNatural #-}
+toNatural :: Integer -> Maybe Natural
+toNatural a =
+  if a < 0
+    then Nothing
+    else Just (fromIntegral a)
