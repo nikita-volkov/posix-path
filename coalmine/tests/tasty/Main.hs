@@ -34,7 +34,7 @@ main =
       "List" ?:: TestSuites.BaseExtras.List.tests
     "MultilineTextBuilder" ?:: MultilineTextBuilder.tests
     "PtrKit" ?:: PtrKit.tests
-    "ScientificExtras" ?:: ScientificExtras.tests
+    "ScientificExtras" ?: ScientificExtras.declare
 
 (?::) :: String -> [TestTree] -> DeclareTestGroup ()
 (?::) name =
