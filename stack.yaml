@@ -3,6 +3,7 @@ packages:
   - actor-system
   - coalmine
   - command-event
+  - partial-isomorphism-class
   - posix-path
   - posix-path-classes
   - posix-path-structures
