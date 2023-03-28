@@ -8,6 +8,8 @@ import Coalmine.TastyMonadic
 declare :: DeclareTestGroup ()
 declare = do
   "scaleToDecimalsClipping" ?: do
+    "Handles 0 resolution fine" ?! do
+      assertEqual "" 33 $ ScientificExtras.scaleToDecimalsClipping 0 33
     "Normal" ?! do
       assertEqual "" 33 $ ScientificExtras.scaleToDecimalsClipping 2 0.33
       assertEqual "" 330 $ ScientificExtras.scaleToDecimalsClipping 3 0.33
