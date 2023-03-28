@@ -23,17 +23,17 @@ declare = do
       assertEqual "" (-324988) $ ScientificExtras.scaleToDecimalsClipping 3 (-324.98768)
       assertEqual "" (-324988) $ ScientificExtras.scaleToDecimalsClipping 3 (-324.9876)
       assertEqual "" (-324988) $ ScientificExtras.scaleToDecimalsClipping 3 (-324.9874)
-  "scaleToDecimals" ?: do
+  "scaleToDecimalsIfFits" ?: do
     "Normal" ?! do
-      assertEqual "" (Just 33) $ ScientificExtras.scaleToDecimals 2 0.33
-      assertEqual "" (Just 330) $ ScientificExtras.scaleToDecimals 3 0.33
-      assertEqual "" (Just 324987) $ ScientificExtras.scaleToDecimals 3 324.987
-      assertEqual "" (Just (-330)) $ ScientificExtras.scaleToDecimals 3 (-0.33)
-      assertEqual "" (Just (-324987)) $ ScientificExtras.scaleToDecimals 3 (-324.987)
-    "Clips anything down" ?! do
-      assertEqual "" Nothing $ ScientificExtras.scaleToDecimals 3 324.98768
-      assertEqual "" Nothing $ ScientificExtras.scaleToDecimals 3 324.9876
-      assertEqual "" Nothing $ ScientificExtras.scaleToDecimals 3 324.9874
-      assertEqual "" Nothing $ ScientificExtras.scaleToDecimals 3 (-324.98768)
-      assertEqual "" Nothing $ ScientificExtras.scaleToDecimals 3 (-324.9876)
-      assertEqual "" Nothing $ ScientificExtras.scaleToDecimals 3 (-324.9874)
+      assertEqual "" (Just 33) $ ScientificExtras.scaleToDecimalsIfFits 2 0.33
+      assertEqual "" (Just 330) $ ScientificExtras.scaleToDecimalsIfFits 3 0.33
+      assertEqual "" (Just 324987) $ ScientificExtras.scaleToDecimalsIfFits 3 324.987
+      assertEqual "" (Just (-330)) $ ScientificExtras.scaleToDecimalsIfFits 3 (-0.33)
+      assertEqual "" (Just (-324987)) $ ScientificExtras.scaleToDecimalsIfFits 3 (-324.987)
+    "Fails when appropriate" ?! do
+      assertEqual "" Nothing $ ScientificExtras.scaleToDecimalsIfFits 3 324.98768
+      assertEqual "" Nothing $ ScientificExtras.scaleToDecimalsIfFits 3 324.9876
+      assertEqual "" Nothing $ ScientificExtras.scaleToDecimalsIfFits 3 324.9874
+      assertEqual "" Nothing $ ScientificExtras.scaleToDecimalsIfFits 3 (-324.98768)
+      assertEqual "" Nothing $ ScientificExtras.scaleToDecimalsIfFits 3 (-324.9876)
+      assertEqual "" Nothing $ ScientificExtras.scaleToDecimalsIfFits 3 (-324.9874)
