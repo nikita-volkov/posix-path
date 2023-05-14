@@ -1,3 +1,4 @@
+-- | Conversions between various data-types in 'Data.Time'.
 module Coalmine.TimeExtras.Conversions where
 
 import Coalmine.InternalPrelude
@@ -6,6 +7,10 @@ millisecondsSinceEpochUTCTime :: Integer -> UTCTime
 millisecondsSinceEpochUTCTime time =
   let (day, dayTime) = divMod time 86400000
    in UTCTime (sinceEpochDay day) (millisecondsDiffTime dayTime)
+
+millisecondsSinceEpochDay :: Integer -> Day
+millisecondsSinceEpochDay time =
+  sinceEpochDay $ div time 86400000
 
 picosecondsSinceEpochUTCTime :: Integer -> UTCTime
 picosecondsSinceEpochUTCTime time =
@@ -31,6 +36,10 @@ daySinceEpoch =
 dayMillisecondsSinceEpoch :: Day -> Integer
 dayMillisecondsSinceEpoch =
   (* 86400000) . daySinceEpoch
+
+utcTimeDay :: UTCTime -> Day
+utcTimeDay =
+  utctDay
 
 utcTimeMillisecondsSinceEpoch :: UTCTime -> Integer
 utcTimeMillisecondsSinceEpoch (UTCTime day diffTime) =
