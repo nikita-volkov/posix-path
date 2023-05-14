@@ -300,7 +300,6 @@ test-suite tasty
     TestSuites.CerealExtras.Compact
     TestSuites.ConduitExtras
     TestSuites.EvenSimplerPaths
-    TestSuites.ScientificExtras
     TestSuites.Inter
     TestSuites.Inter.Regressions.FromFormatica
     TestSuites.LocatedRendering
@@ -309,6 +308,7 @@ test-suite tasty
     TestSuites.Name
     TestSuites.NumericVersion
     TestSuites.PtrKit
+    TestSuites.ScientificExtras
     TestSuites.TimeExtrasConversions
 
   build-depends:
