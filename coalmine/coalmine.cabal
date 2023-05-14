@@ -83,6 +83,7 @@ library
     Coalmine.BaseExtras.List
     Coalmine.BaseExtras.MonadPlus
     Coalmine.BaseExtras.Monoid
+    Coalmine.BaseExtras.Natural
     Coalmine.BaseExtras.NonEmpty
     Coalmine.Building
     Coalmine.CasedText
