@@ -1,8 +1,13 @@
 cabal-version: 3.0
 name:          actor-system
 version:       0
+author:        Nikita Volkov <nikita.y.volkov@mail.ru>
+maintainer:    Nikita Volkov <nikita.y.volkov@mail.ru>
+copyright:     (c) 2023 Nikita Volkov
+license:       MIT
+license-file:  LICENSE
 
-common language-settings
+common base
   default-language:   Haskell2010
   default-extensions:
     NoFieldSelectors
@@ -59,7 +64,7 @@ common language-settings
     ViewPatterns
 
 library
-  import:          language-settings
+  import:          base
   hs-source-dirs:  library
   exposed-modules: ActorSystem
   build-depends:   coalmine

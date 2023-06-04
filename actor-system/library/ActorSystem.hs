@@ -1,31 +1,36 @@
--- |
--- Defines an actor model with initialization and usage phases clearly separated.
---
--- First you spawn the actors and only then do you
 module ActorSystem where
 
 import Coalmine.Prelude
 
-data ActorSystem
+-- | Context, in which actors are hired and arranged.
+data ActorSystem a
 
--- | Start an actor system running actors specified using 'Spawn'.
-start :: Spawn () -> IO ActorSystem
-start =
+-- | Block running the actor system until any of its actors throw an exception.
+runActorSystem :: ActorSystem () -> IO ()
+runActorSystem =
   error "TODO"
 
--- | Stop the actor system.
-stop :: ActorSystem -> IO ()
-stop =
+-- | Handle to a thread that executes a machine.
+data Actor cmd = Actor
+  { queue :: TBQueue cmd
+  }
+
+spawn ::
+  -- | Initialization procedure.
+  -- Use it to acquire process-wide resources.
+  IO state ->
+  -- | Step function that handles commands.
+  -- Throwing exceptions will terminate the running actor system and get escalated.
+  -- All other actors will be killed.
+  (cmd -> state -> IO state) ->
+  -- | Clean up procedure.
+  -- For releasing resources when an exception gets thrown by this actor
+  -- or when the actor system terminates due to another actor throwing an exception.
+  (state -> IO ()) ->
+  ActorSystem (Actor cmd)
+spawn =
   error "TODO"
 
-data Spawn actor
-
-statefulActor :: state -> (state -> cmd -> IO ()) -> (state -> IO ()) -> Spawn (Actor cmd)
-statefulActor =
-  error "TODO"
-
-data Actor cmd
-
-tell :: Actor cmd -> cmd -> IO ()
-tell =
+command :: Actor cmd -> cmd -> IO ()
+command =
   error "TODO"
