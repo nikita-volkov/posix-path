@@ -3,6 +3,7 @@ packages:
   - actor-system
   - coalmine
   - command-event
+  - company
   - list-t-optics
   - partial-isomorphism-class
   - posix-path
