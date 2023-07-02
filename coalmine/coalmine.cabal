@@ -111,6 +111,7 @@ library
     Coalmine.ContainersExtras.Set
     Coalmine.DecimalExtras
     Coalmine.DecimalExtras.Instances
+    Coalmine.Distribution
     Coalmine.Domain
     Coalmine.ErrBuilder
     Coalmine.EvenSimplerPaths
