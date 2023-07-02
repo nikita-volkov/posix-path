@@ -118,7 +118,7 @@ packages:
     url: https://github.com/nikita-volkov/structure-kit/archive/f6423d909d1fc65e15f128012e4940b3412e64fd.tar.gz
 snapshots:
 - completed:
-    sha256: 9e4385fe456ee45340f0af388507d416ab96dba8cde75d187de83c2be8c31246
-    size: 599891
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2023/3/22.yaml
-  original: nightly-2023-03-22
+    sha256: 170c1c74f9b4531349ba1ae58a3fe98b7d8970800f8ae88cdcf7440ec67ecceb
+    size: 539330
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2023/7/1.yaml
+  original: nightly-2023-07-01
