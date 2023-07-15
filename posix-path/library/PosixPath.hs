@@ -67,6 +67,9 @@ import PosixPathStructures.NormalizedPath qualified as NormalizedPath
 -- >>> "./a" :: Path
 -- "./a"
 --
+-- >>> "a" :: Path
+-- "./a"
+--
 -- Empty path is the same as dot:
 --
 -- >>> "" :: Path
