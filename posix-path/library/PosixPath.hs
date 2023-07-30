@@ -5,6 +5,7 @@ module PosixPath
 
     -- * Constructors
     root,
+    fromFilePath,
 
     -- * Accessors
     toFilePath,
@@ -102,6 +103,10 @@ newtype Path = Path {underlying :: NormalizedPath.NormalizedPath}
 -- Prepending it to a relative path will make it absolute.
 root :: Path
 root = Path NormalizedPath.root
+
+-- | Parse file path.
+fromFilePath :: FilePath -> Maybe Path
+fromFilePath = Syntax.fromTextInMaybe . fromString
 
 -- * Accessors
 
