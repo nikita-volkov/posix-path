@@ -8,4 +8,5 @@ packages:
   - partial-isomorphism-class
   - posix-path
   - posix-path-classes
+  - posix-path-directory
   - posix-path-structures
