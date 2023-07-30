@@ -13,7 +13,7 @@ module PosixPath
     basename,
     extensions,
 
-    -- * Mappers
+    -- * Algebra
     parent,
     sansParent,
   )
@@ -138,7 +138,7 @@ basename = NormalizedPath.basename . coerce
 extensions :: Path -> [Text]
 extensions = NormalizedPath.extensions . coerce
 
--- * Mappers
+-- * Algebra
 
 -- | Get the parent directory.
 --
@@ -213,4 +213,35 @@ mapBasename =
 
 mapExtensions :: ([Text] -> [Text]) -> Path -> Path
 mapExtensions =
+  error "TODO"
+
+-- | Given a destination path and context path, compute a path that leads from context to destination.
+--
+-- >>> relativeTo "a/b" "a/b/c"
+-- ".."
+--
+-- >>> relativeTo "a/b" "a/c"
+-- "../b"
+--
+-- >>> relativeTo "a" "b"
+-- "../a"
+--
+-- >>> relativeTo "." "b"
+-- ".."
+--
+-- >>> relativeTo "a" "."
+-- "a"
+--
+-- >>> relativeTo "/a" "b"
+-- "/a"
+--
+-- >>> relativeTo "a" "/b"
+-- "a"
+--
+-- You can view this as a sort of a subtraction operation.
+relativeTo ::
+  Path ->
+  Path ->
+  Path
+relativeTo =
   error "TODO"
