@@ -164,28 +164,28 @@ parent :: Path -> Path
 parent = mapNormalizedPath NormalizedPath.parent
 
 -- |
--- >>> dropParent "/a/b"
+-- >>> sansParent "/a/b"
 -- "b"
 --
--- >>> dropParent "a/b"
+-- >>> sansParent "a/b"
 -- "b"
 --
--- >>> dropParent "../a/b"
+-- >>> sansParent "../a/b"
 -- "b"
 --
--- >>> dropParent ".."
+-- >>> sansParent ".."
 -- ".."
 --
--- >>> dropParent "."
+-- >>> sansParent "."
 -- "."
 --
--- >>> dropParent "/"
+-- >>> sansParent "/"
 -- "/"
-dropParent :: Path -> Path
-dropParent = mapNormalizedPath NormalizedPath.dropParent
+sansParent :: Path -> Path
+sansParent = mapNormalizedPath NormalizedPath.dropParent
 
-dropExtension :: Path -> Path
-dropExtension = mapNormalizedPath NormalizedPath.dropExtension
+sansExtension :: Path -> Path
+sansExtension = mapNormalizedPath NormalizedPath.dropExtension
 
 mapNormalizedPath ::
   (NormalizedPath.NormalizedPath -> NormalizedPath.NormalizedPath) ->
