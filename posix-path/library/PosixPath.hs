@@ -12,6 +12,10 @@ module PosixPath
     toText,
     basename,
     extensions,
+
+    -- * Mappers
+    parent,
+    sansParent,
   )
 where
 
@@ -137,6 +141,10 @@ extensions = NormalizedPath.extensions . coerce
 -- * Mappers
 
 -- | Get the parent directory.
+--
+-- Is essentially the same as the following idiom:
+--
+-- >parent a == a <> ".."
 --
 -- If the path is root, the same path will be returned:
 --
