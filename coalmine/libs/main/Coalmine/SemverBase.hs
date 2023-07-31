@@ -21,6 +21,12 @@ data SemverBase = SemverBase
   }
   deriving (Eq, Ord, Show, Generic, Lift)
 
+instance IsString SemverBase where
+  fromString =
+    either (const (fromComponents 0 0 0)) id
+      . parseTextLeniently
+      . fromString
+
 instance CompactPrinting SemverBase where
   toCompactBuilder x =
     toCompactBuilder x.major
