@@ -107,6 +107,16 @@ main =
               eqTestCase "Multislash" "./a/b" (toText "a//b"),
               eqTestCase "Empty" "." (toText ""),
               eqTestCase "Move up" ".." (toText "..")
+            ],
+          testGroup "relativeTo" $
+            [ eqTestCase "" (Just "..") (relativeTo "a/b" "a/b/c"),
+              eqTestCase "" (Just "../b") (relativeTo "a/b" "a/c"),
+              eqTestCase "" (Just "../a") (relativeTo "a" "b"),
+              eqTestCase "" (Just "..") (relativeTo "." "b"),
+              eqTestCase "" (Just "a") (relativeTo "a" "."),
+              eqTestCase "" (Just "/a") (relativeTo "/a" "b"),
+              eqTestCase "" Nothing (relativeTo "a" "/b"),
+              eqTestCase "" Nothing (relativeTo "a" "..")
             ]
         ]
     ]

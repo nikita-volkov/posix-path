@@ -17,6 +17,7 @@ module PosixPathStructures.NormalizedPath
     deabsolutize,
     dropParent,
     dropExtension,
+    relativeTo,
   )
 where
 
@@ -288,3 +289,47 @@ dropParent = fromNames . names
 -- | Drop last extension.
 dropExtension :: NormalizedPath -> NormalizedPath
 dropExtension = mapHeadName $ Name.mapExtensions $ List.drop 1
+
+-- | Given a destination path and context path, compute a path that leads from context to destination.
+--
+-- >>> relativeTo "a/b" "a/b/c"
+-- Just ".."
+--
+-- >>> relativeTo "a/b" "a/c"
+-- Just "../b"
+--
+-- >>> relativeTo "a" "b"
+-- Just "../a"
+--
+-- >>> relativeTo "." "b"
+-- Just ".."
+--
+-- >>> relativeTo "a" "."
+-- Just "a"
+--
+-- >>> relativeTo "/a" "b"
+-- Just "/a"
+--
+-- >>> relativeTo "/a" "/a/b"
+-- Just ".."
+--
+-- >>> relativeTo "a" "/b"
+-- Nothing
+--
+-- It's impossible to derive a diff from outside.
+-- >>> relativeTo "a" ".."
+-- Nothing
+--
+-- You can view this as a sort of a subtraction operation.
+relativeTo ::
+  NormalizedPath ->
+  NormalizedPath ->
+  Maybe NormalizedPath
+relativeTo = \case
+  RelNormalizedPath _targetMovesUp _targetComponents -> \case
+    RelNormalizedPath _sourceMovesUp _sourceComponents ->
+      error "TODO"
+    AbsNormalizedPath _sourceComponents ->
+      error "TODO"
+  AbsNormalizedPath _targetComponents ->
+    error "TODO"
