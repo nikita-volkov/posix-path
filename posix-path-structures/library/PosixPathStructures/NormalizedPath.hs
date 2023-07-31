@@ -43,7 +43,7 @@ data NormalizedPath
       -- ^ Preceding go up commands.
       ![Name.Name]
       -- ^ Components in reverse order.
-  deriving (Eq, Show)
+  deriving (Eq)
 
 instance Ord NormalizedPath where
   compare = \case
@@ -58,6 +58,9 @@ instance Ord NormalizedPath where
 
 instance IsString NormalizedPath where
   fromString = Syntax.fromStringUnsafe
+
+instance Show NormalizedPath where
+  show = show . Syntax.toTextBuilder
 
 instance Semigroup NormalizedPath where
   lPath <> rPath = case rPath of
