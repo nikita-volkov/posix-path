@@ -1,29 +1,34 @@
 module Download
-  ( downloadToFile,
+  ( download,
+    downloadProcessing,
+    Processing (..),
   )
 where
 
+import Conduit qualified
 import Data.ByteString qualified as ByteString
-import Network.HTTP.Client qualified as Hc
+import Download.Conduits qualified as Conduits
+import Network.HTTP.Client qualified as HttpClient
+import Network.HTTP.Simple qualified as HttpConduit
 import PosixPath (Path)
 import PosixPath qualified as Path
 import System.IO qualified
 import Prelude
 
-downloadToFile ::
+download ::
   -- | URL.
   Text ->
   -- | Local path.
   Path ->
   IO ()
-downloadToFile url localPath = do
-  request <- Hc.parseRequest $ toList url
-  manager <- Hc.newManager Hc.defaultManagerSettings
-  Hc.withResponse request manager (consumeBodyReaderToFile localPath . Hc.responseBody)
+download url localPath = do
+  request <- HttpClient.parseRequest $ toList url
+  manager <- HttpClient.newManager HttpClient.defaultManagerSettings
+  HttpClient.withResponse request manager (consumeBodyReaderToFile localPath . HttpClient.responseBody)
 
 consumeBodyReaderToFile ::
   Path ->
-  Hc.BodyReader ->
+  HttpClient.BodyReader ->
   IO ()
 consumeBodyReaderToFile localPath read = do
   handle <- System.IO.openFile (Path.toFilePath localPath) System.IO.WriteMode
@@ -35,3 +40,31 @@ consumeBodyReaderToFile localPath read = do
             ByteString.hPut handle chunk
             stream
   finally stream (System.IO.hClose handle)
+
+data Processing
+  = UnxzProcessing
+
+downloadProcessing ::
+  -- | Stages of intermediate processing.
+  [Processing] ->
+  -- | Untar.
+  Bool ->
+  -- | URL.
+  Text ->
+  -- | Local path.
+  Path ->
+  IO ()
+downloadProcessing stages untar url localPath = do
+  request <- HttpClient.parseRequest $ toList url
+  Conduit.runResourceT $ HttpConduit.httpSink request $ \_ -> sink
+  where
+    sink =
+      foldr cons nil stages
+      where
+        cons =
+          Conduit.fuse . \case
+            UnxzProcessing -> Conduits.unxzPipe
+        nil =
+          if untar
+            then Conduits.untarSink localPath
+            else Conduits.fileSink localPath

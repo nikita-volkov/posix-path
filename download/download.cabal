@@ -62,8 +62,13 @@ library
   import:          language-settings
   hs-source-dirs:  library
   exposed-modules: Download
-  other-modules:
+  other-modules:   Download.Conduits
   build-depends:
+    , conduit
+    , conduit-extra
     , http-client
+    , http-conduit
+    , lzma-conduit
     , posix-path
     , rerebase
+    , tar-conduit
