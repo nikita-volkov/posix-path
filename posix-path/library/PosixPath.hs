@@ -5,7 +5,8 @@ module PosixPath
 
     -- * Constructors
     root,
-    fromFilePath,
+    parseText,
+    parseFilePath,
 
     -- * Accessors
     toFilePath,
@@ -16,7 +17,6 @@ module PosixPath
     -- * Algebra
     parent,
     sansParent,
-    relativeTo,
   )
 where
 
@@ -109,9 +109,13 @@ newtype Path = Path {underlying :: NormalizedPath.NormalizedPath}
 root :: Path
 root = Path NormalizedPath.root
 
+-- | Parse text.
+parseText :: Text -> Maybe Path
+parseText = Syntax.fromTextInMaybe
+
 -- | Parse file path.
-fromFilePath :: FilePath -> Maybe Path
-fromFilePath = Syntax.fromTextInMaybe . fromString
+parseFilePath :: FilePath -> Maybe Path
+parseFilePath = parseText . fromString
 
 -- * Accessors
 
