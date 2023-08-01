@@ -60,7 +60,7 @@ instance IsString NormalizedPath where
   fromString = Syntax.fromStringUnsafe
 
 instance Show NormalizedPath where
-  show = show . Syntax.toTextBuilder
+  show = show . Syntax.toText
 
 instance Semigroup NormalizedPath where
   lPath <> rPath = case rPath of
