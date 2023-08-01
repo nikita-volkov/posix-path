@@ -18,6 +18,7 @@ module PosixPathStructures.NormalizedPath
     dropParent,
     dropExtension,
     relativeTo,
+    without,
   )
 where
 
@@ -336,3 +337,25 @@ relativeTo = \case
       error "TODO"
   AbsNormalizedPath _targetComponents ->
     error "TODO"
+
+-- |
+-- >>> without "b/c" "a/b/c"
+-- Just "./a"
+--
+-- >>> without "b/c" "/a/b/c"
+-- Just "./a"
+--
+-- >>> without "b/c" "a/b"
+-- Nothing
+--
+-- >>> without "/b/c" "/a/b/c"
+-- Nothing
+--
+-- >>> without "a" "a"
+-- .
+--
+-- >>> without "/b/c" "/b/c"
+-- .
+without :: NormalizedPath -> NormalizedPath -> Maybe NormalizedPath
+without =
+  error "TODO"
