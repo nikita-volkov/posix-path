@@ -19,6 +19,7 @@ module PosixPathStructures.NormalizedPath
     dropExtension,
     relativeTo,
     without,
+    inverted,
   )
 where
 
@@ -296,32 +297,35 @@ dropExtension = mapHeadName $ Name.mapExtensions $ List.drop 1
 
 -- | Given a destination path and context path, compute a path that leads from context to destination.
 --
--- >>> relativeTo "a/b" "a/b/c"
+-- >>> relativeTo "a/b/c" "a/b"
 -- Just ".."
 --
--- >>> relativeTo "a/b" "a/c"
+-- >>> relativeTo "a/c" "a/b"
 -- Just "../b"
 --
--- >>> relativeTo "a" "b"
+-- >>> relativeTo "b" "a"
 -- Just "../a"
 --
--- >>> relativeTo "." "b"
+-- >>> relativeTo "b" "."
 -- Just ".."
 --
--- >>> relativeTo "a" "."
+-- >>> relativeTo "." "a"
 -- Just "a"
 --
--- >>> relativeTo "/a" "b"
+-- >>> relativeTo "b" "/a"
 -- Just "/a"
 --
--- >>> relativeTo "/a" "/a/b"
+-- >>> relativeTo "/a/b" "/a"
 -- Just ".."
 --
--- >>> relativeTo "a" "/b"
+-- It's impossible to derive a diff from an absolute path to a relative path:
+--
+-- >>> relativeTo "/b" "a"
 -- Nothing
 --
--- It's impossible to derive a diff from outside.
--- >>> relativeTo "a" ".."
+-- It's impossible to derive a diff from outside:
+--
+-- >>> relativeTo ".." "a"
 -- Nothing
 --
 -- You can view this as a sort of a subtraction operation.
@@ -358,4 +362,16 @@ relativeTo = \case
 -- .
 without :: NormalizedPath -> NormalizedPath -> Maybe NormalizedPath
 without =
+  error "TODO"
+
+-- |
+-- > mappend someRelativePath <$> inverted someRelativePath == Just "."
+--
+-- >>> inverted "a/b"
+-- Just "../.."
+--
+-- >>> inverted "/a/b"
+-- Nothing
+inverted :: NormalizedPath -> Maybe NormalizedPath
+inverted =
   error "TODO"

@@ -17,6 +17,7 @@ module PosixPath
     -- * Algebra
     parent,
     sansParent,
+    relativeTo,
   )
 where
 
@@ -222,32 +223,35 @@ mapExtensions =
 
 -- | Given a destination path and context path, compute a path that leads from context to destination.
 --
--- >>> relativeTo "a/b" "a/b/c"
+-- >>> relativeTo "a/b/c" "a/b"
 -- Just ".."
 --
--- >>> relativeTo "a/b" "a/c"
+-- >>> relativeTo "a/c" "a/b"
 -- Just "../b"
 --
--- >>> relativeTo "a" "b"
+-- >>> relativeTo "b" "a"
 -- Just "../a"
 --
--- >>> relativeTo "." "b"
+-- >>> relativeTo "b" "."
 -- Just ".."
 --
--- >>> relativeTo "a" "."
+-- >>> relativeTo "." "a"
 -- Just "a"
 --
--- >>> relativeTo "/a" "b"
+-- >>> relativeTo "b" "/a"
 -- Just "/a"
 --
--- >>> relativeTo "/a" "/a/b"
+-- >>> relativeTo "/a/b" "/a"
 -- Just ".."
 --
--- >>> relativeTo "a" "/b"
+-- It's impossible to derive a diff from an absolute path to a relative path:
+--
+-- >>> relativeTo "/b" "a"
 -- Nothing
 --
--- It's impossible to derive a diff from outside.
--- >>> relativeTo "a" ".."
+-- It's impossible to derive a diff from outside:
+--
+-- >>> relativeTo ".." "a"
 -- Nothing
 --
 -- You can view this as a sort of a subtraction operation.
