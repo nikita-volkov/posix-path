@@ -62,7 +62,14 @@ library
   import:          language-settings
   hs-source-dirs:  library
   exposed-modules: Contextually
-  other-modules:   Contextually.Handles.ThreadStates
+  build-depends:   rerebase
+
+test-suite hspec
+  import:         language-settings
+  type:           exitcode-stdio-1.0
+  hs-source-dirs: hspec
+  main-is:        Main.hs
   build-depends:
+    , contextually
+    , hspec
     , rerebase
-    , stm-containers

@@ -1,28 +1,23 @@
 module Contextually where
 
-import Contextually.Handles.ThreadStates qualified as ThreadStates
+import Data.Text qualified as Text
 import Prelude
 
-data Contextualized a = Contextualized
+data ContextualizedException = ContextualizedException
   { contexts :: [Text],
-    payload :: a
+    cause :: SomeException
   }
+  deriving (Show)
 
-{-# NOINLINE globalThreadStates #-}
-globalThreadStates :: ThreadStates.Handle
-globalThreadStates = unsafePerformIO $ ThreadStates.acquire
+instance Exception ContextualizedException where
+  toException = SomeException
+  fromException (SomeException exception) = cast exception
+  displayException e =
+    toList (Text.intercalate "/" e.contexts) <> ": " <> displayException e.cause
 
 contextually :: Text -> IO a -> IO a
-contextually context action = do
-  threadId <- myThreadId
-  ThreadStates.enterContext globalThreadStates threadId context
-  try @SomeException action >>= \case
-    Right result -> do
-      ThreadStates.exitContext globalThreadStates threadId
-      return result
-    Left exception -> do
-      error "TODO"
-
-getContexts :: IO [Text]
-getContexts =
-  error "TODO"
+contextually context action =
+  catch action \someException ->
+    case fromException someException of
+      Just ContextualizedException {..} -> throwIO (ContextualizedException (context : contexts) cause)
+      Nothing -> throwIO (ContextualizedException [context] someException)
