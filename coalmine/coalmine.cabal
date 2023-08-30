@@ -126,6 +126,7 @@ library
     Coalmine.FoldlExtras.Fold
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
+    Coalmine.Gen
     Coalmine.GithubActionKit
     Coalmine.HandleService
     Coalmine.HappyPathIO
