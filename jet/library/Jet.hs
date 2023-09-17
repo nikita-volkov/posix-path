@@ -6,14 +6,15 @@ import Coalmine.Prelude
 import ListT (ListT (..))
 
 dispatch :: Source a -> Sink b -> StateMachine a b -> IO ()
-dispatch gen actor StateMachine {..} = go start
+dispatch source sink StateMachine {..} = go start
   where
     go !state = do
-      input <- atomically gen.listen
+      input <- atomically source.listen
       case transition input state of
-        (outputs, state) -> do
-          atomically $ forM_ outputs actor.tell
-          forM_ state go
+        Just (outputs, state) -> do
+          atomically $ forM_ outputs sink.tell
+          go state
+        Nothing -> return ()
 
 data Source a = Source
   { listen :: STM a
@@ -52,5 +53,25 @@ startReactor =
 data StateMachine i o = forall state.
   StateMachine
   { start :: state,
-    transition :: i -> state -> ([o], Maybe state)
+    transition :: i -> state -> Maybe ([o], state)
   }
+
+instance Category StateMachine where
+  id =
+    StateMachine
+      { start = (),
+        transition = \i state -> Just ([i], state)
+      }
+  StateMachine leftStart leftTransition . StateMachine rightStart rightTransition =
+    StateMachine
+      { start = (leftStart, rightStart),
+        transition = \a (leftState, rightState) -> do
+          (rightOutputs, rightState) <- rightTransition a rightState
+          let go !leftOutputPacks !leftState rightOutputs = case rightOutputs of
+                rightOutputsHead : rightOutputsTail -> do
+                  (leftOutputs, leftState) <- leftTransition rightOutputsHead leftState
+                  go (leftOutputs : leftOutputPacks) leftState rightOutputsTail
+                _ ->
+                  pure (mconcat (reverse leftOutputPacks), (leftState, rightState))
+           in go [] leftState rightOutputs
+      }
