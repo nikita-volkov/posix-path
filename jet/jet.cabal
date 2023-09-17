@@ -71,4 +71,6 @@ library
     Jet.Demo
 
   other-modules:
-  build-depends:   coalmine
+  build-depends:
+    , coalmine
+    , list-t

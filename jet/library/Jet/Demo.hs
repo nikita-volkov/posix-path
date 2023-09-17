@@ -33,24 +33,31 @@ data Event
   | ActionChosenEvent Action
 
 -- | Integrate reactors into a process.
-dispatch ::
-  Reactor () UserEvent ->
-  Reactor Action WorkerEvent ->
-  Reactor View () ->
-  Reactor Cmd Event ->
-  IO ()
-dispatch userActions worker drawer logic =
-  runDispatch $
-    asum
-      [ do
-          userEvent <- listen userActions
-          tell logic (ProcessUserEventCmd userEvent),
-        do
-          workerEvent <- listen worker
-          tell logic (ProcessWorkerEventCmd workerEvent),
-        do
-          event <- listen logic
-          case event of
-            ActionChosenEvent action -> tell worker action
-            UiEvent view -> tell drawer view
-      ]
+run :: StateMachine Cmd Event -> IO ()
+run machine = do
+  (workerSink, workerSource) <- startWorker
+  userActionsSource <- startUserActions
+  uiDrawerSink <- startUiDrawer
+  let source =
+        asum
+          [ ProcessWorkerEventCmd <$> workerSource,
+            ProcessUserEventCmd <$> userActionsSource
+          ]
+      sink =
+        mconcat
+          [ (error "TODO: contrafilter") uiDrawerSink,
+            (error "TODO: contrafilter") workerSink
+          ]
+  dispatch source sink machine
+
+startWorker :: IO (Sink Action, Source WorkerEvent)
+startWorker =
+  error "TODO"
+
+startUserActions :: IO (Source UserEvent)
+startUserActions =
+  error "TODO"
+
+startUiDrawer :: IO (Sink View)
+startUiDrawer =
+  error "TODO"

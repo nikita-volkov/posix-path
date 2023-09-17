@@ -3,77 +3,50 @@
 module Jet where
 
 import Coalmine.Prelude
+import ListT (ListT (..))
 
-runDispatch :: Dispatch a -> IO a
-runDispatch (Dispatch run) =
-  go
+dispatch :: Source a -> Sink b -> StateMachine a b -> IO ()
+dispatch gen actor StateMachine {..} = go start
   where
-    go =
-      atomically run >>= maybe go return
+    go !state = do
+      input <- atomically gen.listen
+      case transition input state of
+        (outputs, state) -> do
+          atomically $ forM_ outputs actor.tell
+          forM_ state go
 
-newtype Dispatch a
-  = -- | Result of nothing means termination.
-    Dispatch (STM (Maybe a))
-
-instance Functor Dispatch
-
-instance Applicative Dispatch
-
-instance Alternative Dispatch
-
-instance Monad Dispatch
-
-tell :: Reactor i o -> i -> Dispatch ()
-tell = error "TODO"
-
-listen :: Reactor i o -> Dispatch o
-listen = error "TODO"
-
--- | Handler producing series of effects,
--- emitting outputs.
---
--- Runs on dedicated threads.
-data Reactor i o =
-  -- TODO: Add clean up
-  Reactor
-  { tell :: i -> STM (),
-    listen :: STM [o]
+data Source a = Source
+  { listen :: STM a
   }
 
-startStateMachineReactor :: StateMachine i o -> IO (Reactor i o)
-startStateMachineReactor (StateMachine start transition) = do
-  inQueue <- newTBQueueIO 100
-  outQueue <- newTBQueueIO 100
-  forkIO $ do
-    let fetch !state = do
-          inputs <- atomically $ flushTBQueue inQueue
-          processInputs state inputs
-        processInputs !state inputs = do
-          case inputs of
-            head : tail ->
-              case transition head state of
-                (outputs, state) -> do
-                  atomically $ forM_ outputs $ writeTBQueue outQueue
-                  case state of
-                    Nothing -> return ()
-                    Just state -> processInputs state tail
-            _ ->
-              fetch state
-     in fetch start
-  return
-    Reactor
-      { tell = writeTBQueue inQueue,
-        listen = flushTBQueue outQueue
-      }
+instance Functor Source
 
-startStdinReactor :: IO (Reactor Void ByteString)
-startStdinReactor = error "TODO"
+instance Applicative Source
 
-startKeyPressesReactor :: IO (Reactor Void Char)
-startKeyPressesReactor = error "TODO"
+instance Alternative Source
 
-startStdoutReactor :: IO (Reactor ByteString ())
-startStdoutReactor = error "TODO"
+instance Monad Source
+
+data Sink a = Sink
+  { tell :: a -> STM ()
+  }
+
+instance Semigroup (Sink a)
+
+instance Monoid (Sink a)
+
+startStdin :: IO (Source ByteString)
+startStdin = error "TODO"
+
+startKeyPresses :: IO (Source Char)
+startKeyPresses = error "TODO"
+
+startStdout :: IO (Sink ByteString)
+startStdout = error "TODO"
+
+startReactor :: (i -> ListT IO o) -> IO (Sink i, Source o)
+startReactor =
+  error "TODO"
 
 -- | Pure state machine.
 data StateMachine i o = forall state.
