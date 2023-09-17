@@ -32,23 +32,25 @@ data Event
   = UiEvent View
   | ActionChosenEvent Action
 
+-- | Integrate reactors into a process.
 dispatch ::
   Reactor () UserEvent ->
   Reactor Action WorkerEvent ->
   Reactor View () ->
   Reactor Cmd Event ->
-  Dispatch ()
+  IO ()
 dispatch userActions worker drawer logic =
-  asum
-    [ do
-        userEvent <- listen userActions
-        tell logic (ProcessUserEventCmd userEvent),
-      do
-        workerEvent <- listen worker
-        tell logic (ProcessWorkerEventCmd workerEvent),
-      do
-        event <- listen logic
-        case event of
-          ActionChosenEvent action -> tell worker action
-          UiEvent view -> tell drawer view
-    ]
+  runDispatch $
+    asum
+      [ do
+          userEvent <- listen userActions
+          tell logic (ProcessUserEventCmd userEvent),
+        do
+          workerEvent <- listen worker
+          tell logic (ProcessWorkerEventCmd workerEvent),
+        do
+          event <- listen logic
+          case event of
+            ActionChosenEvent action -> tell worker action
+            UiEvent view -> tell drawer view
+      ]

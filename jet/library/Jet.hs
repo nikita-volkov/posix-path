@@ -27,6 +27,8 @@ listen = error "TODO"
 
 -- | Handler producing series of effects,
 -- emitting outputs.
+--
+-- Runs on dedicated threads.
 newtype Reactor i o
   = -- TODO: Add clean up
     Reactor (i -> ListT IO o)
