@@ -4,6 +4,7 @@ packages:
   - coalmine
   - command-event
   - contextually
+  - jet
   - download
   - easings-dot-net
   - list-t-optics
