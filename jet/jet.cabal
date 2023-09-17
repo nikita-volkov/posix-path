@@ -72,5 +72,6 @@ library
 
   other-modules:
   build-depends:
+    , bytestring
     , coalmine
     , list-t

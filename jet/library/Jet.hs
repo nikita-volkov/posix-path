@@ -3,38 +3,51 @@
 module Jet where
 
 import Coalmine.Prelude
+import Data.ByteString qualified as ByteString
 import ListT (ListT (..))
+import ListT qualified
 
 dispatch :: Source a -> Sink b -> StateMachine a b -> IO ()
-dispatch source sink StateMachine {..} = go start
-  where
-    go !state = do
-      input <- atomically source.listen
-      case transition input state of
-        Just (outputs, state) -> do
-          atomically $ forM_ outputs sink.tell
-          go state
-        Nothing -> return ()
+dispatch source sink _ =
+  error "TODO"
 
-data Source a = Source
-  { listen :: STM a
+-- | Output port of a stream producer.
+newtype Source a = Source
+  { drain :: (a -> IO Bool) -> IO ()
   }
 
 instance Functor Source
 
 instance Applicative Source
 
-instance Alternative Source
+instance Alternative Source where
+  empty =
+    Source
+      { drain = \_ -> return ()
+      }
+  left <|> right =
+    Source
+      { drain = \emit -> do
+          forkIO $ left.drain emit
+          right.drain emit
+      }
 
 instance Monad Source
 
+-- | Input port of a stream consumer.
 data Sink a = Sink
-  { tell :: a -> STM ()
+  { tell :: Maybe a -> IO ()
   }
 
 instance Semigroup (Sink a)
 
 instance Monoid (Sink a)
+
+instance Contravariant Sink
+
+instance Divisible Sink
+
+instance Decidable Sink
 
 startStdin :: IO (Source ByteString)
 startStdin = error "TODO"
@@ -43,11 +56,34 @@ startKeyPresses :: IO (Source Char)
 startKeyPresses = error "TODO"
 
 startStdout :: IO (Sink ByteString)
-startStdout = error "TODO"
+startStdout = do
+  inputChannel <- newTBQueueIO 100
+  forkIO $
+    let go = do
+          chunk <- atomically $ readTBQueue inputChannel
+          case chunk of
+            Just chunk -> do
+              ByteString.hPut stdout chunk
+              go
+            Nothing -> return ()
+     in go
+  return
+    Sink
+      { tell = atomically . writeTBQueue inputChannel
+      }
 
 startReactor :: (i -> ListT IO o) -> IO (Sink i, Source o)
-startReactor =
-  error "TODO"
+startReactor reactor = do
+  inputChannel <- newTBQueueIO 100
+  let tell = atomically . writeTBQueue inputChannel
+      drain emit =
+        let go = do
+              input <- atomically $ readTBQueue inputChannel
+              forM_ input $ \input -> do
+                ListT.traverse_ (void . emit) (reactor input)
+                go
+         in go
+  return (Sink {..}, Source {..})
 
 -- | Pure state machine.
 data StateMachine i o = forall state.

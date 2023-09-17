@@ -29,7 +29,7 @@ data Cmd
   | ProcessWorkerEventCmd WorkerEvent
 
 data Event
-  = UiEvent View
+  = ViewReplacedEvent View
   | ActionChosenEvent Action
 
 -- | Integrate reactors into a process.
@@ -45,13 +45,17 @@ run machine = do
           ]
       sink =
         mconcat
-          [ (error "TODO: contrafilter") uiDrawerSink,
-            (error "TODO: contrafilter") workerSink
+          [ contrafilter
+              (\case ViewReplacedEvent view -> Just view; _ -> Nothing)
+              uiDrawerSink,
+            contrafilter
+              (\case ActionChosenEvent action -> Just action; _ -> Nothing)
+              workerSink
           ]
   dispatch source sink machine
 
 startWorker :: IO (Sink Action, Source WorkerEvent)
-startWorker =
+startWorker = do
   error "TODO"
 
 startUserActions :: IO (Source UserEvent)
