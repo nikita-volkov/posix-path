@@ -69,6 +69,7 @@ library
   exposed-modules:
     Jet
     Jet.Demo
+    Jet.Demo.Drawer.Logic
 
   other-modules:
   build-depends:
