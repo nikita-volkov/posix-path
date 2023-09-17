@@ -3,13 +3,17 @@
 module Jet where
 
 import Coalmine.Prelude
-import ListT (ListT (..))
 
 runDispatch :: Dispatch a -> IO a
-runDispatch =
-  error "TODO"
+runDispatch (Dispatch run) =
+  go
+  where
+    go =
+      atomically run >>= maybe go return
 
-data Dispatch a
+newtype Dispatch a
+  = -- | Result of nothing means termination.
+    Dispatch (STM (Maybe a))
 
 instance Functor Dispatch
 
@@ -29,12 +33,38 @@ listen = error "TODO"
 -- emitting outputs.
 --
 -- Runs on dedicated threads.
-newtype Reactor i o
-  = -- TODO: Add clean up
-    Reactor (i -> ListT IO o)
+data Reactor i o =
+  -- TODO: Add clean up
+  Reactor
+  { tell :: i -> STM (),
+    listen :: STM [o]
+  }
 
 startStateMachineReactor :: StateMachine i o -> IO (Reactor i o)
-startStateMachineReactor = error "TODO"
+startStateMachineReactor (StateMachine start transition) = do
+  inQueue <- newTBQueueIO 100
+  outQueue <- newTBQueueIO 100
+  forkIO $ do
+    let fetch !state = do
+          inputs <- atomically $ flushTBQueue inQueue
+          processInputs state inputs
+        processInputs !state inputs = do
+          case inputs of
+            head : tail ->
+              case transition head state of
+                (outputs, state) -> do
+                  atomically $ forM_ outputs $ writeTBQueue outQueue
+                  case state of
+                    Nothing -> return ()
+                    Just state -> processInputs state tail
+            _ ->
+              fetch state
+     in fetch start
+  return
+    Reactor
+      { tell = writeTBQueue inQueue,
+        listen = flushTBQueue outQueue
+      }
 
 startStdinReactor :: IO (Reactor Void ByteString)
 startStdinReactor = error "TODO"
