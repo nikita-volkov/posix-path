@@ -70,6 +70,7 @@ library
     Jet
     Jet.Demo
     Jet.Demo.Drawer.Logic
+    Jet.ReactorResearchLib
 
   other-modules:
   build-depends:

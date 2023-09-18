@@ -12,8 +12,9 @@ dispatch source sink _ =
   error "TODO"
 
 -- | Output port of a stream producer.
-newtype Source a = Source
-  { drain :: (a -> IO Bool) -> IO ()
+data Source a = Source
+  { listen :: STM (Maybe a),
+    stop :: STM ()
   }
 
 instance Functor Source
@@ -23,20 +24,21 @@ instance Applicative Source
 instance Alternative Source where
   empty =
     Source
-      { drain = \_ -> return ()
+      { listen = pure Nothing,
+        stop = pure ()
       }
   left <|> right =
     Source
-      { drain = \emit -> do
-          forkIO $ left.drain emit
-          right.drain emit
+      { listen = left.listen <|> right.listen,
+        stop = left.stop *> right.stop
       }
 
 instance Monad Source
 
 -- | Input port of a stream consumer.
 data Sink a = Sink
-  { tell :: Maybe a -> IO ()
+  { tell :: a -> STM (),
+    stop :: STM ()
   }
 
 instance Semigroup (Sink a)
@@ -69,20 +71,25 @@ startStdout = do
      in go
   return
     Sink
-      { tell = atomically . writeTBQueue inputChannel
+      { tell = writeTBQueue inputChannel . Just,
+        stop = writeTBQueue inputChannel Nothing
       }
 
 startReactor :: (i -> ListT IO o) -> IO (Sink i, Source o)
 startReactor reactor = do
   inputChannel <- newTBQueueIO 100
-  let tell = atomically . writeTBQueue inputChannel
-      drain emit =
-        let go = do
-              input <- atomically $ readTBQueue inputChannel
-              forM_ input $ \input -> do
-                ListT.traverse_ (void . emit) (reactor input)
-                go
-         in go
+  outputChannel <- newTBQueueIO 100
+  forkIO $
+    let go = do
+          input <- atomically $ readTBQueue inputChannel
+          forM_ input $ \input -> do
+            ListT.traverse_ (atomically . writeTBQueue outputChannel . error "TODO") (reactor input)
+            go
+     in go
+  let tell = writeTBQueue inputChannel . Just
+      stop = writeTBQueue inputChannel Nothing
+      listen = readTBQueue outputChannel
+
   return (Sink {..}, Source {..})
 
 -- | Pure state machine.
