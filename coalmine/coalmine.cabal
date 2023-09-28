@@ -265,6 +265,7 @@ library
     , isomorphism-class
     , jsonifier
     , leb128-cereal
+    , lift-instances
     , machines
     , megaparsec
     , natural-sort

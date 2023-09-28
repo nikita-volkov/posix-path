@@ -4,9 +4,10 @@ packages:
   - coalmine
   - command-event
   - contextually
-  - jet
   - download
   - easings-dot-net
+  - jet
+  - lift-instances
   - list-t-optics
   - partial-isomorphism-class
   - posix-path

@@ -68,6 +68,7 @@ import GHC.Utils.Misc as Exports (nTimes, nubSort)
 import IsomorphismClass as Exports
 import Language.Haskell.TH.Quote as Exports (QuasiQuoter (..))
 import Language.Haskell.TH.Syntax as Exports (Lift, Q)
+import LiftInstances ()
 import Network.IP.Addr as Exports (IP, IP4 (..), IP6 (..), InetAddr (..), InetPort (..), NetAddr)
 import System.IO as Exports
 import Test.QuickCheck.Arbitrary as Exports (Arbitrary)
