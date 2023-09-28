@@ -205,6 +205,7 @@ library
     Coalmine.TerminalMarkup
     Coalmine.TextAppender
     Coalmine.TextExtras.Text
+    Coalmine.TH.Code
     Coalmine.TH.Exp
     Coalmine.TH.QuasiQuoter
     Coalmine.TimeExtras.Conversions
