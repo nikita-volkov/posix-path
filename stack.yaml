@@ -14,3 +14,4 @@ packages:
   - posix-path-classes
   - posix-path-directory
   - posix-path-structures
+  - resilient-io
