@@ -55,15 +55,15 @@ packages:
     git: https://github.com/nikita-volkov/coalmine
     subdir: posix-path-structures
 - completed:
-    commit: 6176e6b5e6322a293473626821142e08673b4a39
+    commit: 25db128fe428595b5d4cb2a4a4335fc36e112255
     git: https://github.com/nikita-volkov/structure-kit
     name: structure-kit
     pantry-tree:
-      sha256: a5f4d67b5a7d4cc001c48d85ad165e0df172bfc278b7af68461b55fdf5bc3b18
-      size: 3699
+      sha256: e32c5eea142a8e7ee93392506daa7676df1c9ec6c22928279978fd34d49a6aaf
+      size: 3773
     version: 0.1.0.1
   original:
-    commit: 6176e6b5e6322a293473626821142e08673b4a39
+    commit: 25db128fe428595b5d4cb2a4a4335fc36e112255
     git: https://github.com/nikita-volkov/structure-kit
 - completed:
     commit: 02f1d9ffea90522a3a0968305793a7f507c7da59
@@ -153,7 +153,7 @@ packages:
     hackage: timestamp-0.2
 snapshots:
 - completed:
-    sha256: ed939332c49fe1012b1dfb841f55df60603452efcbf3e36c3ea62bb8c1c427ac
-    size: 669536
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2023/9/27.yaml
-  original: nightly-2023-09-27
+    sha256: 335361d1946f6a7b4563c9a98e1ea988f26a387fd7aaef137040e0e1ceb66dd3
+    size: 689849
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2023/10/13.yaml
+  original: nightly-2023-10-13

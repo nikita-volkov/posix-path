@@ -1,6 +1,6 @@
 module Coalmine.Json where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (ArrayJson, BoolJson, Json, NullJson, NumberJson, ObjectJson, StringJson)
 import Jsonifier qualified as Jf
 
 -- |

@@ -26,22 +26,22 @@ import Data.ByteString.Internal qualified as ByteStringInternal
 data Status
   = -- | Wrote everything successfully.
     FinishedStatus
+      -- | Pointer after the written data.
       (Ptr Word8)
-      -- ^ Pointer after the written data.
+      -- | Capacity of that pointer.
       Int
-      -- ^ Capacity of that pointer.
   | -- | Need a pointer to continue writing to.
     ExhaustedStatus
+      -- | Next encoding to execute.
       Streamer
-      -- ^ Next encoding to execute.
   | -- | Encoding failure.
     FailedStatus
+      -- | Reason
       Text
-      -- ^ Reason
+      -- | Pointer after the written data.
       (Ptr Word8)
-      -- ^ Pointer after the written data.
+      -- | Capacity of that pointer.
       Int
-      -- ^ Capacity of that pointer.
 
 -- | Streaming poking operation.
 --
@@ -122,12 +122,12 @@ streamThruBuffer poker bufSize send =
               send ptr bufSize
               exhaust next
             FinishedStatus ptrAfter _ -> do
-              when (ptrAfter > ptr) $
-                send ptr (minusPtr ptrAfter ptr)
+              when (ptrAfter > ptr)
+                $ send ptr (minusPtr ptrAfter ptr)
               return Nothing
             FailedStatus reason ptrAfter _ -> do
-              when (ptrAfter > ptr) $
-                send ptr (minusPtr ptrAfter ptr)
+              when (ptrAfter > ptr)
+                $ send ptr (minusPtr ptrAfter ptr)
               return $ Just reason
      in exhaust poker
 
@@ -142,11 +142,11 @@ byteString input@(ByteStringInternal.BS inputFp inputSize) =
   Streamer $ \ptr cap ->
     if cap >= inputSize
       then unsafeWithForeignPtr inputFp $ \inputPtr ->
-        ByteStringInternal.memcpy ptr inputPtr inputSize
+        copyBytes ptr inputPtr inputSize
           $> FinishedStatus (plusPtr ptr inputSize) inputSize
       else do
         unsafeWithForeignPtr inputFp $ \inputPtr ->
-          ByteStringInternal.memcpy ptr inputPtr cap
+          copyBytes ptr inputPtr cap
         return $ ExhaustedStatus $ byteString $ ByteString.drop cap input
 
 writer :: Writer.Writer -> Streamer
@@ -161,5 +161,5 @@ writer writer@(Writer.Writer size poke) =
       else case Writer.toByteString writer of
         input@(ByteStringInternal.BS inputFp inputSize) -> do
           unsafeWithForeignPtr inputFp $ \inputPtr ->
-            ByteStringInternal.memcpy ptr inputPtr cap
+            copyBytes ptr inputPtr cap
           return $ ExhaustedStatus $ byteString $ ByteString.drop cap input

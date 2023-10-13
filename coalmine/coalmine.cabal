@@ -240,6 +240,7 @@ library
   build-depends:
     , acc
     , aeson
+    , aeson-unqualified-ast
     , aeson-value-parser
     , attoparsec
     , attoparsec-data

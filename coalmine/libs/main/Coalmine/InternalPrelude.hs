@@ -35,6 +35,7 @@ import Control.FromSum as Exports
 import Control.Monad.Trans.Maybe as Exports (MaybeT (MaybeT, runMaybeT), exceptToMaybeT, hoistMaybe, mapMaybeT, maybeToExceptT)
 import Data.Aeson as Exports (FromJSON (..), ToJSON (..), ToJSONKey (..))
 import Data.Aeson qualified
+import Data.Aeson.UnqualifiedAst as Exports
 import Data.Attoparsec.Text qualified
 import Data.ByteString.Lazy as Exports (LazyByteString)
 import Data.Decimal as Exports (Decimal)
@@ -61,6 +62,7 @@ import DeferredFolds.Unfoldr as Exports (Unfoldr (..))
 import Deque.Strict as Exports (Deque)
 import Foreign.C.Types as Exports
 import Foreign.Marshal.Alloc as Exports
+import Foreign.Marshal.Utils as Exports (copyBytes)
 import GHC.Exts as Exports (IsList (..))
 import GHC.ForeignPtr as Exports (mallocPlainForeignPtrBytes, unsafeWithForeignPtr)
 import GHC.Stack as Exports
