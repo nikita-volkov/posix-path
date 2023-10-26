@@ -3,16 +3,16 @@
 module PosixPath
   ( Path,
 
-    -- * Constructors
-    root,
-    parseText,
-    parseFilePath,
-
     -- * Accessors
     toFilePath,
     toText,
     basename,
     extensions,
+
+    -- * Constructors
+    root,
+    parseText,
+    parseFilePath,
 
     -- * Algebra
     parent,
