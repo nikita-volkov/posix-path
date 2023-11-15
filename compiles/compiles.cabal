@@ -1,5 +1,5 @@
 cabal-version: 3.0
-name:          frost
+name:          compiles
 version:       0
 author:        Nikita Volkov <nikita.y.volkov@mail.ru>
 maintainer:    Nikita Volkov <nikita.y.volkov@mail.ru>
@@ -66,7 +66,7 @@ common language-settings
 library
   import:          language-settings
   hs-source-dirs:  library
-  exposed-modules: Frost
+  exposed-modules: Compiles
   other-modules:
   build-depends:
     , rerebase

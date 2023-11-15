@@ -3,11 +3,11 @@ packages:
   - actor-system
   - coalmine
   - command-event
+  - compiles
   - contextually
   - download
   - easings-dot-net
   - jet
-  - frost
   - lift-instances
   - list-t-optics
   - partial-isomorphism-class
