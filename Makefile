@@ -30,3 +30,5 @@ build: build-fast
 test: test-fast
 
 run: run-fast
+
+.PHONY: format

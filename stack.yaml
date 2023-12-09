@@ -4,6 +4,7 @@ packages:
   - coalmine
   - command-event
   - compiles
+  - format
   - contextually
   - download
   - easings-dot-net
