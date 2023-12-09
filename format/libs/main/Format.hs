@@ -3,6 +3,7 @@ module Format where
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.Text (Text)
 import Data.Text qualified as Text
+import Data.Time
 import TextBuilderDev (TextBuilder)
 import TextBuilderDev qualified
 import Prelude hiding (print)
@@ -29,6 +30,27 @@ data DecimalFormat = DecimalFormat
   }
 
 instance Format DecimalFormat Double where
+  formatPrinter =
+    error "TODO"
+  formatParser =
+    error "TODO"
+
+data Iso8601Format = Iso8601Format
+  {}
+
+instance Format Iso8601Format UTCTime where
+  formatPrinter =
+    error "TODO"
+  formatParser =
+    error "TODO"
+
+instance Format Iso8601Format Day where
+  formatPrinter =
+    error "TODO"
+  formatParser =
+    error "TODO"
+
+instance Format Iso8601Format LocalTime where
   formatPrinter =
     error "TODO"
   formatParser =

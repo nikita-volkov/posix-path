@@ -67,3 +67,4 @@ library
     , base
     , text
     , text-builder-dev
+    , time
