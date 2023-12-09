@@ -62,5 +62,8 @@ library
   import:          base
   hs-source-dirs:  libs/main
   exposed-modules: Format
-  build-depends:   base
-    , text-builder-dev,attoparsec
+  build-depends:
+    , attoparsec
+    , base
+    , text
+    , text-builder-dev
