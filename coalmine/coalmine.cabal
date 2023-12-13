@@ -241,6 +241,7 @@ library
     , acc
     , aeson
     , aeson-unqualified-ast
+    , attoparsec-aeson
     , aeson-value-parser
     , attoparsec
     , attoparsec-data
