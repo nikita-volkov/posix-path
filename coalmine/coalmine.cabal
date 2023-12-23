@@ -207,7 +207,6 @@ library
     Coalmine.TextExtras.Text
     Coalmine.TH.Code
     Coalmine.TH.Exp
-    Coalmine.TH.QuasiQuoter
     Coalmine.TimeExtras.Conversions
     Coalmine.TimeExtras.IO
     Coalmine.TransformersExtras.Cont
@@ -241,9 +240,9 @@ library
     , acc
     , aeson
     , aeson-unqualified-ast
-    , attoparsec-aeson
     , aeson-value-parser
     , attoparsec
+    , attoparsec-aeson
     , attoparsec-data
     , case-insensitive
     , cereal
@@ -275,6 +274,7 @@ library
     , network-ip
     , optics
     , optparse-applicative
+    , qq-extras
     , QuickCheck
     , quickcheck-classes
     , quickcheck-instances

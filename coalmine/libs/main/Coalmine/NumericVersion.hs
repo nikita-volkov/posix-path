@@ -8,8 +8,8 @@ where
 
 import Coalmine.InternalPrelude
 import Coalmine.Printing
-import Coalmine.TH.QuasiQuoter qualified as QuasiQuoter
 import Data.Attoparsec.Text qualified as Attoparsec
+import QqExtras qualified as QuasiQuoter
 
 data NumericVersion = NumericVersion
   { head :: !Word,

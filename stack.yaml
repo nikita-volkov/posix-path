@@ -16,4 +16,5 @@ packages:
   - posix-path-classes
   - posix-path-directory
   - posix-path-structures
+  - qq-extras
   - resilient-io

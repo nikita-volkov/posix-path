@@ -1,9 +1,14 @@
-module Coalmine.TH.QuasiQuoter where
+module QqExtras where
 
-import Coalmine.InternalPrelude hiding (exp, lift)
-import Coalmine.TH.Exp
+import Attoparsec.Data (LenientParser (..))
+import Control.Monad
 import Data.Attoparsec.Text qualified as Atto
+import Data.Proxy (Proxy, asProxyTypeOf)
+import Data.String (fromString)
+import Language.Haskell.TH.Quote
 import Language.Haskell.TH.Syntax
+import System.IO.Unsafe (unsafePerformIO)
+import Prelude hiding (exp)
 
 mapFromExp :: ((String -> Q Exp) -> (String -> Q Exp)) -> QuasiQuoter -> QuasiQuoter
 mapFromExp mapper qq =
@@ -41,3 +46,6 @@ pureAttoparsedExp parser =
 lenientLiteral :: (LenientParser a, Lift a) => Proxy a -> QuasiQuoter
 lenientLiteral proxy =
   pureAttoparsedExp . fmap (liftPurely . flip asProxyTypeOf proxy) $ lenientParser
+  where
+    liftPurely :: (Lift a) => a -> Exp
+    liftPurely = unsafePerformIO . runQ . lift
