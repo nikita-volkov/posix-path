@@ -9,6 +9,7 @@ module Coalmine.MultilineTextBuilder
     indent,
     prefixEachLine,
     intercalate,
+    intercalateNonNull,
     uniline,
     newline,
   )
@@ -134,8 +135,9 @@ mapBuilder mapper (Builder a b) =
 --     j
 indent :: Int -> Builder -> Builder
 indent amount =
-  prefixEachLine . to $
-    Text.replicate amount (Text.singleton ' ')
+  prefixEachLine
+    . to
+    $ Text.replicate amount (Text.singleton ' ')
 
 prefixEachLine ::
   -- | Line prefix.
@@ -158,6 +160,16 @@ intercalate (Builder _sepNull _sepRender) _builders =
       Tb.intercalate
         (_sepRender _indent)
         (fmap (\(Builder _ _render) -> _render _indent) _builders)
+
+intercalateNonNull :: Builder -> [Builder] -> Builder
+intercalateNonNull (Builder _sepNull _sepRender) _builders =
+  Builder _null _render
+  where
+    _null = _sepNull && all null _builders
+    _render _indent =
+      Tb.intercalate
+        (_sepRender _indent)
+        (fmap (\(Builder _ _render) -> _render _indent) (filter (not . null) _builders))
 
 -- * Construction
 
