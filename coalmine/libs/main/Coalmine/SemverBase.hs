@@ -10,6 +10,7 @@ module Coalmine.SemverBase
 where
 
 import Coalmine.InternalPrelude
+import Coalmine.Literal
 import Coalmine.Printing
 import Data.Attoparsec.Text qualified as Attoparsec
 import QqExtras qualified as QuasiQuoter
@@ -52,6 +53,10 @@ instance LenientParser SemverBase where
     Attoparsec.char '.'
     patch <- Attoparsec.decimal
     return (SemverBase major minor patch)
+
+instance Literal SemverBase where
+  literalParser = lenientParser
+  literalTextBuilder = toCompactBuilder
 
 lit :: QuasiQuoter
 lit =
