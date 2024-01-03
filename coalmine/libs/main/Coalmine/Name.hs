@@ -16,6 +16,8 @@ import Test.QuickCheck qualified as QuickCheck
 import Text.Megaparsec qualified as Megaparsec
 import TextBuilderDev qualified as TextBuilder
 
+type Slug = Name
+
 -- |
 -- Case-agnostic name with words separated and consisting only of digits and Latin letters.
 newtype Name = Name {nameParts :: BVec Text}
