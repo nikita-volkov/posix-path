@@ -193,6 +193,7 @@ library
     Coalmine.SemverBase
     Coalmine.Serialization
     Coalmine.StdTerminalFormatting
+    Coalmine.StmExtras.TBQueue
     Coalmine.StmExtras.TQueue
     Coalmine.Streamer
     Coalmine.SyntaxModelling
