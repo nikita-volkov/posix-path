@@ -21,6 +21,7 @@ module Coalmine.EvenSimplerPaths
   )
 where
 
+import AesonValueParser qualified
 import Algorithms.NaturalSort qualified as NaturalSort
 import Coalmine.BaseExtras.MonadPlus
 import Coalmine.CerealExtras.Compact qualified as CerealExtrasCompact
@@ -100,10 +101,10 @@ componentNull (Component name extensions) =
 
 data Path
   = Path
+      -- | Is it absolute?
       !Bool
-      -- ^ Is it absolute?
+      -- | Components in reverse order.
       ![Component]
-      -- ^ Components in reverse order.
   deriving (Eq)
 
 instance QuickCheck.Arbitrary Path where
@@ -154,6 +155,9 @@ instance CompactPrinting Path where
 
 instance BroadPrinting Path where
   toBroadBuilder = to . Syntax.toTextBuilder
+
+instance FromJSON Path where
+  parseJSON = AesonValueParser.runAsValueParser $ AesonValueParser.string $ AesonValueParser.attoparsedText lenientParser
 
 instance ToJSON Path where
   toJSON = toJSON . printCompactAsText
