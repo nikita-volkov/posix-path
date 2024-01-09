@@ -9,6 +9,7 @@ module Coalmine.SemverBase
   )
 where
 
+import AesonValueParser qualified
 import Coalmine.InternalPrelude
 import Coalmine.Literal
 import Coalmine.Printing
@@ -38,6 +39,9 @@ instance CompactPrinting SemverBase where
 
 instance BroadPrinting SemverBase where
   toBroadBuilder = to . toCompactBuilder
+
+instance FromJSON SemverBase where
+  parseJSON = AesonValueParser.runAsValueParser $ AesonValueParser.string $ AesonValueParser.attoparsedText lenientParser
 
 instance ToJSON SemverBase where
   toJSON = toJSON . printCompactAs @Text
