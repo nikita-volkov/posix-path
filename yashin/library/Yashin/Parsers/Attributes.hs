@@ -1,4 +1,4 @@
-module Yashin.AttributesParser where
+module Yashin.Parsers.Attributes where
 
 import Amazonka qualified as Azk
 import Amazonka.DynamoDB qualified as Azk

@@ -62,7 +62,9 @@ library
   import:          base
   hs-source-dirs:  library
   exposed-modules:
-    Yashin.AttributesParser
+    Yashin.Operation
+    Yashin.Operations.GetItem.Parser
+    Yashin.Parsers.Attributes
     Yashin.Session
 
   build-depends:
