@@ -5,13 +5,17 @@ import Amazonka.DynamoDB.GetItem qualified as Azk
 import Coalmine.Prelude hiding (String)
 import Yashin.Parsers.Attributes qualified as Attributes
 
-data Response a = Response
-  { run :: Azk.GetItemResponse -> Either Error a
+newtype Response a = Response
+  { run :: Azk.GetItemResponse -> Either [Error] a
   }
+  deriving
+    (Functor, Applicative, Monad)
+    via -- via (ExceptT [Error]((->) Azk.GetItemResponse ))
+    (ReaderT Azk.GetItemResponse (Except [Error]))
 
 data Error
   = AttributesError [Attributes.AttributesError]
-  | NotFoundError
+  | AttributesNotFoundError
 
 attributes :: Attributes.Attributes a -> Response a
 attributes parser =
@@ -20,5 +24,5 @@ attributes parser =
       case response.item of
         Just item -> case parser.parser item of
           Right res -> Right res
-          Left err -> Left (AttributesError err)
-        Nothing -> Left NotFoundError
+          Left err -> Left [AttributesError err]
+        Nothing -> Left [AttributesNotFoundError]
