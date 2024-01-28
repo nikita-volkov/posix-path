@@ -3,6 +3,7 @@ module Yashin.Parsers.Attributes where
 import Amazonka qualified as Azk
 import Amazonka.DynamoDB qualified as Azk
 import Coalmine.Prelude hiding (String)
+import Data.Attoparsec.Text qualified as Attoparsec
 import Data.HashMap.Strict qualified as HashMap
 import Data.Vector qualified as BVec
 
@@ -21,6 +22,8 @@ data ValueError
   = MissingValueError
   | UnexpectedAttributeTypeValueError UnexpectedAttributeType
   | ListValueError ListError
+  | NumberValueError Text
+  | NumberSetValueError SetError
   | BinaryValueError Text
   | BinarySetValueError SetError
   | StringValueError Text
@@ -34,6 +37,8 @@ data UnexpectedAttributeType = UnexpectedAttributeType
 
 data AttributeType
   = ListAttributeType
+  | NumberAttributeType
+  | NumberSetAttributeType
   | BinaryAttributeType
   | BinarySetAttributeType
   | StringAttributeType
@@ -42,6 +47,8 @@ data AttributeType
 
 data Value a = Value
   { list :: Maybe (BVec Azk.AttributeValue -> Either ListError a),
+    number :: Maybe (Text -> Either Text a),
+    numberSet :: Maybe (BVec Text -> Either SetError a),
     binary :: Maybe (Azk.Base64 -> Either Text a),
     binarySet :: Maybe (BVec Azk.Base64 -> Either SetError a),
     string :: Maybe (Text -> Either Text a),
@@ -107,6 +114,8 @@ instance Semigroup (Value a) where
   (<>) left right =
     Value
       { list = left.list <|> right.list,
+        number = left.number <|> right.number,
+        numberSet = left.numberSet <|> right.numberSet,
         binary = left.binary <|> right.binary,
         binarySet = left.binarySet <|> right.binarySet,
         string = left.string <|> right.string,
@@ -115,7 +124,7 @@ instance Semigroup (Value a) where
       }
 
 instance Monoid (Value a) where
-  mempty = Value Nothing Nothing Nothing Nothing Nothing Nothing
+  mempty = Value Nothing Nothing Nothing Nothing Nothing Nothing Nothing Nothing
 
 -- ** Functions
 
@@ -131,6 +140,10 @@ runValue parser = \case
     match (.stringSet) StringSetAttributeType StringSetValueError input
   Azk.BOOL input ->
     match (.bool) BoolAttributeType BoolValueError input
+  Azk.N input ->
+    match (.number) NumberAttributeType NumberValueError input
+  Azk.NS input ->
+    match (.numberSet) NumberSetAttributeType NumberSetValueError input
   _ ->
     error "TODO"
   where
@@ -179,6 +192,26 @@ list element =
         fmap (fromList . toList)
           $ BVec.iforM vec
           $ \i -> first (ListError i) . runValue element
+    }
+
+number :: (Scientific -> Either Text a) -> Value a
+number cont =
+  mempty
+    { number = Just \text ->
+        case Attoparsec.parseOnly (Attoparsec.scientific <* Attoparsec.endOfInput) text of
+          Right res -> cont res
+          Left err -> Left (to err)
+    }
+
+numberSet :: (Ord a) => (Scientific -> Either Text a) -> Value (Set a)
+numberSet elemParser =
+  mempty
+    { numberSet = Just \vec ->
+        fmap (fromList . toList) $ BVec.iforM vec $ \i text ->
+          first (SetError i)
+            $ case Attoparsec.parseOnly (Attoparsec.scientific <* Attoparsec.endOfInput) text of
+              Right res -> elemParser res
+              Left err -> Left (to err)
     }
 
 binary :: (ByteString -> Either Text a) -> Value a
