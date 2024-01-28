@@ -181,13 +181,25 @@ list element =
           $ \i -> first (ListError i) . runValue element
     }
 
-stringValue :: (Text -> Either Text a) -> Value a
-stringValue =
+binary :: (ByteString -> Either Text a) -> Value a
+binary =
   error "TODO"
 
-stringSetValue :: (Ord a) => (Text -> Either Text a) -> Value (Set a)
-stringSetValue elemParser =
+binarySet :: (ByteString -> Either Text a) -> Value a
+binarySet =
+  error "TODO"
+
+string :: (Text -> Either Text a) -> Value a
+string =
+  error "TODO"
+
+stringSet :: (Ord a) => (Text -> Either Text a) -> Value (Set a)
+stringSet elemParser =
   mempty
     { stringSet = Just \vec ->
         fmap (fromList . toList) $ BVec.iforM vec $ \i -> first (SetError i) . elemParser
     }
+
+bool :: (Bool -> Maybe a) -> Value a
+bool =
+  error "TODO"
