@@ -61,10 +61,14 @@ common base
 library
   import:          base
   hs-source-dirs:  library
-  exposed-modules: Yashin.AttributesParser
+  exposed-modules:
+    Yashin.AttributesParser
+    Yashin.Session
+
   build-depends:
     , amazonka
     , amazonka-dynamodb
     , coalmine
+    , conduit
     , unordered-containers
     , vector
