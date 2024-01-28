@@ -19,28 +19,39 @@ data AttributesError = AttributesError
 
 data ValueError
   = MissingValueError
-  | InvalidAttributeTypeValueError InvalidAttributeType
+  | UnexpectedAttributeTypeValueError UnexpectedAttributeType
+  | ListValueError ListError
   | BinaryValueError Text
   | BinarySetValueError SetError
   | StringValueError Text
   | StringSetValueError SetError
+  | BoolValueError Text
 
-data InvalidAttributeType = InvalidAttributeType
+data UnexpectedAttributeType = UnexpectedAttributeType
   { actual :: AttributeType,
     expected :: Set AttributeType
   }
 
 data AttributeType
-  = BinaryAttributeType
+  = ListAttributeType
+  | BinaryAttributeType
   | BinarySetAttributeType
   | StringAttributeType
   | StringSetAttributeType
+  | BoolAttributeType
 
 data Value a = Value
-  { binary :: Maybe (Azk.Base64 -> Either Text a),
+  { list :: Maybe (BVec Azk.AttributeValue -> Either ListError a),
+    binary :: Maybe (Azk.Base64 -> Either Text a),
     binarySet :: Maybe (BVec Azk.Base64 -> Either SetError a),
     string :: Maybe (Text -> Either Text a),
-    stringSet :: Maybe (BVec Text -> Either SetError a)
+    stringSet :: Maybe (BVec Text -> Either SetError a),
+    bool :: Maybe (Bool -> Either Text a)
+  }
+
+data ListError = ListError
+  { index :: Int,
+    error :: ValueError
   }
 
 data SetError = SetError
@@ -93,52 +104,82 @@ instance Alternative Attributes where
 deriving instance Functor Value
 
 instance Semigroup (Value a) where
-  (<>) = error "TODO"
+  (<>) left right =
+    Value
+      { list = left.list <|> right.list,
+        binary = left.binary <|> right.binary,
+        binarySet = left.binarySet <|> right.binarySet,
+        string = left.string <|> right.string,
+        stringSet = left.stringSet <|> right.stringSet,
+        bool = left.bool <|> right.bool
+      }
 
 instance Monoid (Value a) where
-  mempty = Value Nothing Nothing Nothing Nothing
+  mempty = Value Nothing Nothing Nothing Nothing Nothing Nothing
 
 -- ** Functions
+
+runValue :: forall a. Value a -> Azk.AttributeValue -> Either ValueError a
+runValue parser = \case
+  Azk.B input ->
+    match (.binary) BinaryAttributeType BinaryValueError input
+  Azk.BS input ->
+    match (.binarySet) BinarySetAttributeType BinarySetValueError input
+  Azk.S input ->
+    match (.string) StringAttributeType StringValueError input
+  Azk.SS input ->
+    match (.stringSet) StringSetAttributeType StringSetValueError input
+  Azk.BOOL input ->
+    match (.bool) BoolAttributeType BoolValueError input
+  _ ->
+    error "TODO"
+  where
+    match ::
+      (Value a -> Maybe (input -> Either error a)) ->
+      AttributeType ->
+      (error -> ValueError) ->
+      input ->
+      Either ValueError a
+    match parserSelector actualType errorAdapter input =
+      case parserSelector parser of
+        Nothing ->
+          Left
+            ( UnexpectedAttributeTypeValueError
+                UnexpectedAttributeType
+                  { actual = actualType,
+                    expected =
+                      fromList
+                        ( catMaybes
+                            [ parser.binary $> BinaryAttributeType
+                            ]
+                        )
+                  }
+            )
+        Just parser -> case parser input of
+          Left parserError -> Left (errorAdapter parserError)
+          Right res -> Right res
 
 attribute :: Text -> Value a -> Attributes a
 attribute name parser =
   Attributes \map -> case HashMap.lookup name map of
-    Nothing -> valueError MissingValueError
-    Just attributeValue -> case attributeValue of
-      Azk.B base64 -> case parser.binary of
-        Nothing -> invalidAttributeType BinaryAttributeType
-        Just parser -> case parser base64 of
-          Left binaryError -> valueError (BinaryValueError binaryError)
-          Right res -> Right res
-      Azk.BS base64Vec -> case parser.binarySet of
-        Nothing -> invalidAttributeType BinarySetAttributeType
-        Just parser -> case parser base64Vec of
-          Left binaryError -> valueError (BinarySetValueError binaryError)
-          Right res -> Right res
-      _ ->
-        error "TODO"
+    Nothing -> Left (valueError MissingValueError)
+    Just attributeValue -> first valueError $ runValue parser attributeValue
   where
-    valueError valueError =
-      Left
-        [ AttributesError
-            { attribute = name,
-              valueError = valueError
-            }
-        ]
-    invalidAttributeType actual =
-      valueError
-        ( InvalidAttributeTypeValueError
-            ( InvalidAttributeType
-                { actual = actual,
-                  expected =
-                    fromList
-                      ( catMaybes
-                          [ parser.binary $> BinaryAttributeType
-                          ]
-                      )
-                }
-            )
-        )
+    valueError x =
+      [ AttributesError
+          { attribute = name,
+            valueError = x
+          }
+      ]
+
+list :: Value a -> Value (BVec a)
+list element =
+  mempty
+    { list = Just \vec ->
+        fmap (fromList . toList)
+          $ BVec.iforM vec
+          $ \i -> first (ListError i) . runValue element
+    }
 
 stringValue :: (Text -> Either Text a) -> Value a
 stringValue =
