@@ -143,7 +143,7 @@ attribute name parser =
           Left binaryError -> valueError (BinaryValueError binaryError)
           Right res -> Right res
       Azk.BS base64Vec -> case parser.binarySet of
-        Nothing -> invalidAttributeType BinaryAttributeType
+        Nothing -> invalidAttributeType BinarySetAttributeType
         Just parser -> case parser.parser base64Vec of
           Left binaryError -> valueError (BinarySetValueError binaryError)
           Right res -> Right res

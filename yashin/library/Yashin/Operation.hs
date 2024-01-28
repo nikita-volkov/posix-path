@@ -13,9 +13,6 @@ newtype Operation i o = Operation
 data OpError
   = GetItemParserOpError [GetItem.Parser.Error]
 
-exchange :: (Azk.AWSRequest request, Typeable request, Typeable (Azk.AWSResponse request)) => Operation request (Azk.AWSResponse request)
-exchange = Operation (fmap Right . Session.exchange)
-
 getItem :: GetItem.Parser.Response a -> Operation Azk.GetItem a
 getItem parser =
   Operation
