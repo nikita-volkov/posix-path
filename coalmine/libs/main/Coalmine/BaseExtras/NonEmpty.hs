@@ -1,7 +1,7 @@
 module Coalmine.BaseExtras.NonEmpty where
 
-import Coalmine.InternalPrelude hiding (fromList, unsnoc, head, init, last, reverse, tail)
-import Data.List.NonEmpty hiding (unsnoc)
+import Coalmine.InternalPrelude hiding (fromList, head, init, last, reverse, tail, unsnoc)
+import Data.List.NonEmpty
 
 -- |
 -- >>> intersperseFoldMap ", " id (fromList ["a"])
