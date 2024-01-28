@@ -185,7 +185,7 @@ binary :: (ByteString -> Either Text a) -> Value a
 binary =
   error "TODO"
 
-binarySet :: (ByteString -> Either Text a) -> Value a
+binarySet :: (ByteString -> Either Text a) -> Value (Set a)
 binarySet =
   error "TODO"
 
