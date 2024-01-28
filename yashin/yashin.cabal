@@ -71,6 +71,6 @@ library
     , amazonka
     , amazonka-dynamodb
     , coalmine
-    , conduit
+    , resourcet
     , unordered-containers
     , vector
