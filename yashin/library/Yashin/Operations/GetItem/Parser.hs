@@ -9,9 +9,8 @@ newtype Response a = Response
   { run :: Azk.GetItemResponse -> Either [Error] a
   }
   deriving
-    (Functor, Applicative, Monad)
-    via -- via (ExceptT [Error]((->) Azk.GetItemResponse ))
-    (ReaderT Azk.GetItemResponse (Except [Error]))
+    (Functor, Applicative, Alternative, Monad, MonadPlus)
+    via (ReaderT Azk.GetItemResponse (Except [Error]))
 
 data Error
   = AttributesError [Attributes.AttributesError]
