@@ -1,6 +1,5 @@
 module Yashin.Operation where
 
-import Amazonka qualified as Azk
 import Amazonka.DynamoDB.GetItem qualified as Azk
 import Coalmine.Prelude hiding (String)
 import Yashin.Operations.GetItem.Parser qualified as GetItem.Parser

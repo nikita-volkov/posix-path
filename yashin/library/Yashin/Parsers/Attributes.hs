@@ -37,26 +37,10 @@ data AttributeType
   | StringSetAttributeType
 
 data Value a = Value
-  { binary :: Maybe (Binary a),
-    binarySet :: Maybe (BinarySet a),
-    string :: Maybe (String a),
-    stringSet :: Maybe (StringSet a)
-  }
-
-newtype Binary a = Binary
-  { parser :: Azk.Base64 -> Either Text a
-  }
-
-newtype BinarySet a = BinarySet
-  { parser :: BVec Azk.Base64 -> Either SetError a
-  }
-
-newtype String a = String
-  { parser :: Text -> Either Text a
-  }
-
-newtype StringSet a = StringSet
-  { parser :: BVec Text -> Either SetError a
+  { binary :: Maybe (Azk.Base64 -> Either Text a),
+    binarySet :: Maybe (BVec Azk.Base64 -> Either SetError a),
+    string :: Maybe (Text -> Either Text a),
+    stringSet :: Maybe (BVec Text -> Either SetError a)
   }
 
 data SetError = SetError
@@ -114,22 +98,6 @@ instance Semigroup (Value a) where
 instance Monoid (Value a) where
   mempty = Value Nothing Nothing Nothing Nothing
 
--- *** Binary
-
-deriving instance Functor Binary
-
--- *** BinarySet
-
-deriving instance Functor BinarySet
-
--- *** String
-
-deriving instance Functor String
-
--- *** StringSet
-
-deriving instance Functor StringSet
-
 -- ** Functions
 
 attribute :: Text -> Value a -> Attributes a
@@ -139,12 +107,12 @@ attribute name parser =
     Just attributeValue -> case attributeValue of
       Azk.B base64 -> case parser.binary of
         Nothing -> invalidAttributeType BinaryAttributeType
-        Just parser -> case parser.parser base64 of
+        Just parser -> case parser base64 of
           Left binaryError -> valueError (BinaryValueError binaryError)
           Right res -> Right res
       Azk.BS base64Vec -> case parser.binarySet of
         Nothing -> invalidAttributeType BinarySetAttributeType
-        Just parser -> case parser.parser base64Vec of
+        Just parser -> case parser base64Vec of
           Left binaryError -> valueError (BinarySetValueError binaryError)
           Right res -> Right res
       _ ->
@@ -179,6 +147,6 @@ stringValue =
 stringSetValue :: (Ord a) => (Text -> Either Text a) -> Value (Set a)
 stringSetValue elemParser =
   mempty
-    { stringSet = Just $ StringSet $ \vec ->
+    { stringSet = Just \vec ->
         fmap (fromList . toList) $ BVec.iforM vec $ \i -> first (SetError i) . elemParser
     }
