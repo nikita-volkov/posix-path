@@ -9,6 +9,12 @@ newtype Operation i o = Operation
   { run :: i -> Session.Session (Either OpError o)
   }
 
+deriving instance Functor (Operation i)
+
+instance Profunctor Operation where
+  lmap f op = Operation (op.run . f)
+  rmap f op = Operation (fmap (fmap f) . op.run)
+
 data OpError
   = GetItemParserOpError [GetItem.Parser.Error]
 
