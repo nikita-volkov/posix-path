@@ -2,28 +2,28 @@ module Logic where
 
 import Coalmine.Prelude
 
-newtype Logic fx res
-  = Logic (forall m. (Monad m) => fx m -> m res)
+newtype Logic ctx res
+  = Logic (forall m. (Monad m) => ctx m -> m res)
 
-instance Functor (Logic fx) where
+instance Functor (Logic ctx) where
   fmap f (Logic run) =
     Logic (liftM f . run)
 
-instance Applicative (Logic fx) where
+instance Applicative (Logic ctx) where
   pure a =
     Logic (\_ -> pure a)
   Logic runL <*> Logic runR =
-    Logic (\fx -> runL fx <*> runR fx)
+    Logic (\ctx -> runL ctx <*> runR ctx)
 
-instance Monad (Logic fx) where
+instance Monad (Logic ctx) where
   return = pure
   Logic runL >>= k =
     Logic
-      ( \fx -> do
-          param <- runL fx
+      ( \ctx -> do
+          param <- runL ctx
           case k param of
-            Logic runR -> runR fx
+            Logic runR -> runR ctx
       )
 
-run :: (Monad m) => Logic fx res -> fx m -> m res
+run :: (Monad m) => Logic ctx res -> ctx m -> m res
 run (Logic run) = run
