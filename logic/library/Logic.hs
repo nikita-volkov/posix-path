@@ -27,3 +27,6 @@ instance Monad (Logic ctx) where
 
 run :: (Monad m) => Logic ctx res -> ctx m -> m res
 run (Logic run) = run
+
+runOnIdentity :: Logic ctx res -> ctx Identity -> res
+runOnIdentity (Logic run) = runIdentity . run
