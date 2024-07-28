@@ -6,6 +6,7 @@ module Coalmine.InternalPrelude
     traceMap,
 
     -- * --
+    List,
     E8,
 
     -- * --
@@ -114,6 +115,8 @@ traceMap :: (a -> String) -> a -> a
 traceMap f a = trace (f a) a
 
 -- * --
+
+type List = []
 
 data E8
 
