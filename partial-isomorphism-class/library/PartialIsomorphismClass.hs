@@ -2,6 +2,7 @@ module PartialIsomorphismClass where
 
 import Coalmine.Prelude
 import Data.Aeson qualified as Aeson
+import Data.Aeson.Text qualified as Aeson
 import Data.ByteString.Lazy qualified as ByteString.Lazy
 import Data.Text.Encoding qualified as TextEncoding
 import Data.Text.Lazy qualified as Text.Lazy
@@ -35,13 +36,13 @@ instance GeneralizationOf Text ByteString where
   specializeTo = either (const Nothing) Just . TextEncoding.decodeUtf8'
 
 instance GeneralizationOf Aeson.Value Text where
-  generalizeFrom = Text.Lazy.toStrict . Aeson.encodeText
+  generalizeFrom = Text.Lazy.toStrict . Aeson.encodeToLazyText
   specializeTo = either (const Nothing) Just . Aeson.eitherDecodeStrictText
 
 instance GeneralizationOf Aeson.Value LazyByteString where
   generalizeFrom = Aeson.encode
-  specializeTo = either (const Nothing) Just . Aeson.decode
+  specializeTo = Aeson.decode
 
 instance GeneralizationOf Aeson.Value ByteString where
   generalizeFrom = ByteString.Lazy.toStrict . Aeson.encode
-  specializeTo = either (const Nothing) Just . Aeson.decodeStrict
+  specializeTo = Aeson.decodeStrict

@@ -2,7 +2,9 @@ module PartialIsomorphismClassV2 where
 
 import Coalmine.Prelude
 import Data.Aeson qualified as Aeson
-import Data.Text.Encoding qualified as TextEncoding
+import Data.Aeson.Text qualified as Aeson
+import Data.Text.Encoding qualified as Text.Encoding
+import Data.Text.Encoding.Error qualified as Text.Encoding
 import Data.Text.Lazy qualified as Text.Lazy
 
 -- TODO: Rename to refinement.
@@ -16,12 +18,12 @@ class Specialization a where
 
 instance Specialization Text where
   type General Text = ByteString
-  type SpecializationError Text = _
-  generalize = TextEncoding.encodeUtf8
-  specialize = TextEncoding.decodeUtf8'
+  type SpecializationError Text = Text.Encoding.UnicodeException
+  generalize = Text.Encoding.encodeUtf8
+  specialize = Text.Encoding.decodeUtf8'
 
 instance Specialization Aeson.Value where
   type General Aeson.Value = Text
   type SpecializationError Aeson.Value = Text
-  generalize = Text.Lazy.toStrict . Aeson.encodeText
+  generalize = Text.Lazy.toStrict . Aeson.encodeToLazyText
   specialize = first fromString . Aeson.eitherDecodeStrictText

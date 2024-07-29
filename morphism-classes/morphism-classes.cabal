@@ -1,5 +1,5 @@
 cabal-version: 3.0
-name:          partial-isomorphism-class-v2
+name:          morphism-classes
 version:       0
 
 common language-settings
@@ -61,8 +61,8 @@ common language-settings
 library
   import:          language-settings
   hs-source-dirs:  library
-  exposed-modules: PartialIsomorphismClassV2
+  exposed-modules: MorphismClasses
   build-depends:
-    , aeson
     , coalmine
     , text
+    , text-builder-dev

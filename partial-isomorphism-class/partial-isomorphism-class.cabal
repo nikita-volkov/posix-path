@@ -63,5 +63,7 @@ library
   hs-source-dirs:  library
   exposed-modules: PartialIsomorphismClass
   build-depends:
+    , aeson
+    , bytestring
     , coalmine
     , text
