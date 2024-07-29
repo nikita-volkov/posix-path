@@ -74,41 +74,12 @@ import Language.Haskell.TH.Quote as Exports (QuasiQuoter (..))
 import Language.Haskell.TH.Syntax as Exports (Lift, Q)
 import LiftInstances ()
 import Network.IP.Addr as Exports (IP, IP4 (..), IP6 (..), InetAddr (..), InetPort (..), NetAddr)
-import StmFixed.TBQueue as Exports
 import System.IO as Exports
 import Test.QuickCheck.Arbitrary as Exports (Arbitrary)
 import Test.QuickCheck.Instances ()
 import TextBuilderDev as Exports (IsomorphicToTextBuilder (..), TextBuilder, buildText)
 import Witherable as Exports
-import Prelude hiding
-  ( List,
-    TBQueue,
-    Vector,
-    capacityTBQueue,
-    catMaybes,
-    chosen,
-    filter,
-    flushTBQueue,
-    isEmptyTBQueue,
-    isFullTBQueue,
-    lengthTBQueue,
-    mapMaybe,
-    newTBQueue,
-    newTBQueueIO,
-    peekTBQueue,
-    readTBQueue,
-    repeat,
-    toList,
-    tryPeekTBQueue,
-    tryReadTBQueue,
-    unGetTBQueue,
-    uncons,
-    unzip,
-    writeTBQueue,
-    zip,
-    zipWith,
-    (%),
-  )
+import Prelude hiding (List, Vector, catMaybes, chosen, filter, mapMaybe, repeat, toList, uncons, unzip, zip, zipWith, (%))
 
 -- * --
 
