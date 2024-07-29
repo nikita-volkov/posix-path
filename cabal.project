@@ -3,73 +3,10 @@ with-compiler: ghc-9.8
 packages:
   */*.cabal
 
--- source-repository-package
---   type: git
---   location: https://github.com/nikita-volkov/coalmine
---   tag: 16f60cdb8f7eec18687dfff8804d2d996b6086fa
---   subdir:
---     coalmine
---     lift-instances
---     posix-path
---     posix-path-directory
---     posix-path-structures
-
 source-repository-package
   type: git
   location: https://github.com/nikita-volkov/structure-kit
   tag: cc9daa205e87d5a7bd16687e1994addaee78c1a7
 
--- source-repository-package
---   type: git
---   location: https://github.com/nikita-volkov/canapi
---   tag: e3d437f59d46675146fc7da03ee426b60e9ea69c
-
--- source-repository-package
---   type: git
---   location: https://github.com/nikita-volkov/lean-http-client
---   tag: 3d0b2316de6d9df530432fb52448286aba12959e
-
--- source-repository-package
---   type: git
---   location: https://github.com/nikita-volkov/distillery
---   tag: 87b0d8ca9065e8235068892798b6e1d8f801e2b0
-
--- -- source-repository-package
--- --   type: git
--- --   location: https://github.com/metrix-ai/acquire
--- --   tag: e56d29744602f48d7719114aa42fad185b694fbb
-
--- source-repository-package
---   type: git
---   location: https://github.com/pgenie-io/client
---   tag: 739e297f3f36601dfabe80d8e40bb4690bbbb104
-
--- source-repository-package
---   type: git
---   location: https://github.com/nikita-volkov/codegen-kit
---   tag: dcb0b5802f03208dc17739a810ba8a5667dccd6d
---   subdir:
---     packages/legacy
---     packages/haskell-package
-
-source-repository-package
-  type: git
-  location: https://github.com/endgame/amazonka
-  tag: 0c1813fe8e48d726a91e7dcf239ac9e6db64dff3
-  subdir:
-    lib/services/amazonka-dynamodb
-    lib/services/amazonka-sesv2
-    lib/services/amazonka-sso
-    lib/services/amazonka-sts
-
 allow-newer:
--- --   -- , *:base
--- --   , *:bytestring
--- --   -- , *:deepseq
-  , quickcheck-classes:primitive
--- --   -- , *:text
-  , exceptions:*
   , lzma-conduit:*
-
--- constraints:
---   acquire >=0.3.1.2
