@@ -1,4 +1,4 @@
-with-compiler: ghc-9.8
+with-compiler: ghc-9.10
 
 packages:
   */*.cabal
@@ -6,7 +6,7 @@ packages:
 source-repository-package
   type: git
   location: https://github.com/nikita-volkov/structure-kit
-  tag: cc9daa205e87d5a7bd16687e1994addaee78c1a7
+  tag: 33229b4e548300fd858096e9835b8eceee999b16
 
 allow-newer:
   , lzma-conduit:*

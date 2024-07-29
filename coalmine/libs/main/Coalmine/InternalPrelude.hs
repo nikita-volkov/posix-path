@@ -81,7 +81,8 @@ import Test.QuickCheck.Instances ()
 import TextBuilderDev as Exports (IsomorphicToTextBuilder (..), TextBuilder, buildText)
 import Witherable as Exports
 import Prelude hiding
-  ( TBQueue,
+  ( List,
+    TBQueue,
     Vector,
     capacityTBQueue,
     catMaybes,
