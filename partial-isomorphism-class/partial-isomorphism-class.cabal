@@ -65,6 +65,7 @@ library
     PartialIsomorphismClass.V1
     PartialIsomorphismClass.V2
     PartialIsomorphismClass.V3
+    PartialIsomorphismClass.V4
 
   build-depends:
     , aeson
