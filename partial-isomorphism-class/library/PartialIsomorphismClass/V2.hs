@@ -1,4 +1,4 @@
-module PartialIsomorphismClassV2 where
+module PartialIsomorphismClass.V2 where
 
 import Coalmine.Prelude
 import Data.Aeson qualified as Aeson

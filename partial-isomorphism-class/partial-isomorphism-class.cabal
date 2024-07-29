@@ -61,7 +61,11 @@ common language-settings
 library
   import:          language-settings
   hs-source-dirs:  library
-  exposed-modules: PartialIsomorphismClass
+  exposed-modules:
+    PartialIsomorphismClass.V1
+    PartialIsomorphismClass.V2
+    PartialIsomorphismClass.V3
+
   build-depends:
     , aeson
     , bytestring
