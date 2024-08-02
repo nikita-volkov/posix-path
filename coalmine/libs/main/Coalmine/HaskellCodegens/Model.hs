@@ -8,20 +8,14 @@ compileModelModules =
   error "TODO"
 
 data Model = Model
-  { -- An open protocol for custom extensions with a set of standard ones provided out of the box.
-    --
-    -- FIXME: It's premature.
-    -- Switch to closed protocol instead. There should be a finite set of useful features.
-    -- Until people start requesting it, avoid providing such a feature.
-    features :: [Feature],
+  { features :: Features,
     structures :: [Structure]
   }
 
-data Feature = Feature
-  { isClassInstance :: Bool,
-    orderingKey :: Text,
-    structureModuleCode :: Structure -> Maybe Code,
-    customClassDeclaration :: Maybe Code
+data Features = Features
+  { aeson :: Bool,
+    literal :: Bool,
+    anonymization :: Bool
   }
 
 data Structure = Structure
