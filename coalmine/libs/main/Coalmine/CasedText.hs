@@ -1,3 +1,4 @@
+-- TODO: Consider renaming to Uncased.
 module Coalmine.CasedText where
 
 import Coalmine.InternalPrelude
