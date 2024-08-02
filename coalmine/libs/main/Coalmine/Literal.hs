@@ -1,3 +1,5 @@
+-- TODO: Consider renaming: 'literalParser' to 'parseLiteral' and 'literalTextBuilder' to 'printLiteral'.
+
 -- |
 -- Common interface for custom data-types which can be represented with a custom textual literal.
 --
@@ -35,17 +37,23 @@ class Literal a where
 -- > examplePath :: Path
 -- > examplePath = $$(l "/usr/local/bin")
 --
--- > exampleOrg :: URL
+-- > exampleOrg :: Url
 -- > exampleOrg = $$(l "http://example.org")
 --
 -- > userAtExampleOrg :: Email
 -- > userAtExampleOrg = $$(l "user@example.org")
 --
--- > exampleUUID :: UUID
--- > exampleUUID = $$(l "123e4567-e89b-12d3-a456-426614174000")
+-- > phoneNumber :: PhoneNumber
+-- > phoneNumber = $$(l "+79160123456")
+--
+-- > samePhoneNumber :: PhoneNumber
+-- > samePhoneNumber = $$(l "+7(916)012-3456")
+--
+-- > exampleUuid :: Uuid
+-- > exampleUuid = $$(l "123e4567-e89b-12d3-a456-426614174000")
 --
 -- > -- | Construct text not by converting from a string literal,
--- > -- but by packing a byte-array literal, which is more efficient.
+-- > -- but by packing a byte-array literal, which could be more efficient.
 -- > exampleText :: Text
 -- > exampleText = $$(l "Example text")
 l :: (Literal a, Lift a) => String -> TH.Q (TH.TExp a)
