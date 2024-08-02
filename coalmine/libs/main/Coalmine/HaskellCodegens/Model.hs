@@ -29,12 +29,18 @@ data StructureDefinition
 
 data RefinedType
   = IntegerRefinedType IntegerRestrictions
+  | FloatRefinedType FloatRestrictions
   | StringRefinedType StringRestrictions
   | VectorRefinedType VectorRestrictions
 
 data IntegerRestrictions = IntegerRestrictions
   { min :: Maybe Integer,
     max :: Maybe Integer
+  }
+
+data FloatRestrictions = FloatRestrictions
+  { min :: Maybe Float,
+    max :: Maybe Float
   }
 
 data StringRestrictions = StringRestrictions
