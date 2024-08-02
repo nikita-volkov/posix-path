@@ -131,6 +131,8 @@ library
     Coalmine.HandleService
     Coalmine.HappyPathIO
     Coalmine.HashableExtras
+    Coalmine.HaskellCodegens.Base
+    Coalmine.HaskellCodegens.Model
     Coalmine.HCurrying
     Coalmine.HeadedMegaparsecExtras
     Coalmine.HeadedMegaparsecExtras.Text
