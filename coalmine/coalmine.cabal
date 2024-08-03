@@ -157,6 +157,7 @@ library
     Coalmine.MegaparsecExtras
     Coalmine.Modeliero.Codegens.Model
     Coalmine.Modeliero.Codegens.Structure
+    Coalmine.Modeliero.Compilers.ReexportsModule
     Coalmine.MtlExtras
     Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder
