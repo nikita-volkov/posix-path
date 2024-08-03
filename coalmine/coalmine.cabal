@@ -131,8 +131,8 @@ library
     Coalmine.HandleService
     Coalmine.HappyPathIO
     Coalmine.HashableExtras
-    Coalmine.HaskellCodegens.Base
-    Coalmine.HaskellCodegens.Model
+    Coalmine.HaskellCodegenKit.Code
+    Coalmine.HaskellCodegenKit.Package
     Coalmine.HCurrying
     Coalmine.HeadedMegaparsecExtras
     Coalmine.HeadedMegaparsecExtras.Text
@@ -153,6 +153,7 @@ library
     Coalmine.Logger
     Coalmine.MachinesExtras.Mealy
     Coalmine.MegaparsecExtras
+    Coalmine.Modeliero.Codegens.Model
     Coalmine.MtlExtras
     Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder

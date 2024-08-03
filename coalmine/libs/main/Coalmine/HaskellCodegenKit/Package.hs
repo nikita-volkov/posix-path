@@ -1,4 +1,4 @@
-module Coalmine.HaskellCodegens.Base where
+module Coalmine.HaskellCodegenKit.Package where
 
 import Coalmine.InternalPrelude hiding (writeFile)
 

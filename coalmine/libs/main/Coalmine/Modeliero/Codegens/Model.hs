@@ -1,6 +1,6 @@
-module Coalmine.HaskellCodegens.Model where
+module Coalmine.Modeliero.Codegens.Model where
 
-import Coalmine.HaskellCodegens.Base
+import Coalmine.HaskellCodegenKit.Package
 import Coalmine.InternalPrelude
 
 compileModelModules :: Model -> [Module]
@@ -69,6 +69,8 @@ data Type
   = ModelType Text
   | MaybeType Type
   | VectorType Type
+  | MapType Type Type
+  | SetType Type
   | IntType
   | FloatType
   | ScientificType
@@ -76,27 +78,5 @@ data Type
   | UuidType
   | EmailType
   | UrlType
+  | PosixPathType
   | IpType
-
-data Code = Code
-  { importRequests :: [ImportRequest],
-    printer :: (Import -> Text) -> TextBuilder
-  }
-
-data ImportRequest = ImportRequest
-  { import_ :: Import,
-    alias :: Text
-  }
-
-data Import = Import
-  { -- | Possible external dependency.
-    -- Affects the Cabal-file.
-    --
-    -- Nothing means that the module is from this package.
-    dependency :: Maybe Dependency,
-    name :: Text
-  }
-
--- * Feature Gens
-
--- ** Literal Feature Gen
