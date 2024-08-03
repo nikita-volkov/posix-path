@@ -156,6 +156,7 @@ library
     Coalmine.MachinesExtras.Mealy
     Coalmine.MegaparsecExtras
     Coalmine.Modeliero.Codegens.Model
+    Coalmine.Modeliero.Codegens.Structure
     Coalmine.MtlExtras
     Coalmine.MultilineParser
     Coalmine.MultilineTextBuilder
