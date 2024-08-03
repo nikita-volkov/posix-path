@@ -3,19 +3,18 @@ module Coalmine.Modeliero.Codegens.Model where
 import Coalmine.HaskellCodegenKit.Package
 import Coalmine.InternalPrelude
 
-compileModelModules :: Model -> [Module]
-compileModelModules =
-  error "TODO"
-
 data Model = Model
   { features :: Features,
     structures :: [Structure]
   }
 
 data Features = Features
-  { aeson :: Bool,
+  { arbitrary :: Bool,
+    aeson :: Bool,
     literal :: Bool,
-    anonymization :: Bool
+    anonymization :: Bool,
+    lens :: Bool,
+    optics :: Bool
   }
 
 data Structure = Structure
@@ -80,3 +79,37 @@ data Type
   | UrlType
   | PosixPathType
   | IpType
+
+compileModelModules ::
+  -- | Prefix namespace.
+  [Text] ->
+  Model ->
+  Modules
+compileModelModules namespace model =
+  Modules
+    { public =
+        mconcat
+          [ [ compileFacadeModule namespace model
+            ],
+            maybeToList (compileClassesModule namespace model),
+            maybeToList (compileAnonymizationClassModule namespace model)
+          ],
+      private =
+        fmap (compileStructureModule namespace) model.structures
+    }
+
+compileFacadeModule :: [Text] -> Model -> Module
+compileFacadeModule =
+  error "TODO"
+
+compileClassesModule :: [Text] -> Model -> Maybe Module
+compileClassesModule =
+  error "TODO"
+
+compileAnonymizationClassModule :: [Text] -> Model -> Maybe Module
+compileAnonymizationClassModule =
+  error "TODO"
+
+compileStructureModule :: [Text] -> Structure -> Module
+compileStructureModule =
+  error "TODO"

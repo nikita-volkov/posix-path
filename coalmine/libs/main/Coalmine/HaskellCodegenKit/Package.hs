@@ -45,8 +45,12 @@ compilePackageCabalFile =
 data Package = Package
   { name :: Text,
     synopsis :: Text,
-    publicModules :: [Module],
-    privateModules :: [Module]
+    modules :: Modules
+  }
+
+data Modules = Modules
+  { public :: [Module],
+    private :: [Module]
   }
 
 data Module = Module
@@ -55,4 +59,4 @@ data Module = Module
     content :: Text
   }
 
-data Dependency
+data Dependency = Dependency

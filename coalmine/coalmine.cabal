@@ -47,6 +47,7 @@ common language-settings
     LiberalTypeSynonyms
     MultiParamTypeClasses
     MultiWayIf
+    NamedFieldPuns
     NumericUnderscores
     OverloadedLabels
     OverloadedRecordDot
