@@ -133,6 +133,7 @@ library
     Coalmine.HappyPathIO
     Coalmine.HashableExtras
     Coalmine.HaskellCodegenKit.Code
+    Coalmine.HaskellCodegenKit.Namespace
     Coalmine.HaskellCodegenKit.Package
     Coalmine.HCurrying
     Coalmine.HeadedMegaparsecExtras

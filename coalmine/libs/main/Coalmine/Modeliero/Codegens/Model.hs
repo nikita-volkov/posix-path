@@ -1,10 +1,16 @@
+{-# OPTIONS_GHC -Wno-unused-binds -Wno-unused-imports -Wno-name-shadowing #-}
+
 module Coalmine.Modeliero.Codegens.Model where
 
+import Coalmine.HaskellCodegenKit.Namespace (Namespace)
+import Coalmine.HaskellCodegenKit.Namespace qualified as Namespace
 import Coalmine.HaskellCodegenKit.Package
 import Coalmine.InternalPrelude
+import Coalmine.Slug (Slug)
 
 data Model = Model
-  { features :: Features,
+  { rootNamespace :: Namespace,
+    features :: Features,
     structures :: [Structure]
   }
 
