@@ -21,12 +21,13 @@ import Coalmine.Interval as Exports (Interval)
 import Coalmine.IsomorphismClassInstances as Exports ()
 import Coalmine.MtlExtras as Exports
 import Coalmine.MultilineTextBuilder as Exports (MultilineTextBuilder, Splice)
-import Coalmine.Name as Exports (Name, Slug)
+import Coalmine.Name as Exports (Name)
 import Coalmine.NameConversion as Exports
 import Coalmine.NumericVersion as Exports (NumericVersion)
 import Coalmine.Parsing as Exports
 import Coalmine.Printing as Exports
 import Coalmine.SemverBase as Exports (SemverBase)
+import Coalmine.Slug as Exports (Slug)
 import Coalmine.TransformersExtras.Except as Exports ()
 import Coalmine.TransformersExtras.Reader as Exports ()
 import Coalmine.TransformersExtras.State as Exports ()
