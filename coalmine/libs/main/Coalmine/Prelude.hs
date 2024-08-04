@@ -20,7 +20,7 @@ import Coalmine.InternalPrelude as Exports
 import Coalmine.Interval as Exports (Interval)
 import Coalmine.IsomorphismClassInstances as Exports ()
 import Coalmine.MtlExtras as Exports
-import Coalmine.MultilineTextBuilder as Exports (MultilineTextBuilder, Splice)
+import Coalmine.MultilineTextBuilder as Exports (MultilineTextBuilder, Splice, TextBlock)
 import Coalmine.Name as Exports (Name)
 import Coalmine.NameConversion as Exports
 import Coalmine.NumericVersion as Exports (NumericVersion)
