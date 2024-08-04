@@ -18,6 +18,8 @@ data NumericVersion = NumericVersion
   }
   deriving (Eq, Show, Generic, Lift)
 
+instance Hashable NumericVersion
+
 instance Ord NumericVersion where
   compare l r =
     compare (parts l) (parts r)
