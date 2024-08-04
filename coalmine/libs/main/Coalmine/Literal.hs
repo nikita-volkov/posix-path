@@ -9,7 +9,7 @@ module Coalmine.Literal where
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
 import Data.Attoparsec.Text qualified as Attoparsec
-import Language.Haskell.TH.Syntax qualified as TH
+import Language.Haskell.TH.Syntax qualified as Th
 import TextBuilderDev qualified
 
 -- | Value that has a textual representation.
@@ -56,12 +56,12 @@ class Literal a where
 -- > -- but by packing a byte-array literal, which could be more efficient.
 -- > exampleText :: Text
 -- > exampleText = $$(l "Example text")
-l :: (Literal a, Lift a) => String -> TH.Q (TH.TExp a)
-l literal = do
+l :: (Literal a, Lift a) => String -> Th.Code Th.Q a
+l literal = Th.Code do
   literal <- case parseWith literalParser (to literal) of
     Right literal -> return literal
     Left err -> fail $ to err
-  TH.examineCode $ TH.liftTyped literal
+  Th.examineCode $ Th.liftTyped literal
 
 toText :: (Literal a) => a -> Text
 toText = to . literalTextBuilder
