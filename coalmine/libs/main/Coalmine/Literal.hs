@@ -62,3 +62,11 @@ l literal = do
     Right literal -> return literal
     Left err -> fail $ to err
   TH.examineCode $ TH.liftTyped literal
+
+toText :: (Literal a) => a -> Text
+toText = to . literalTextBuilder
+
+parseText :: (Literal a) => Text -> Either Text a
+parseText =
+  first fromString
+    . Attoparsec.parseOnly (literalParser <* Attoparsec.endOfInput)
