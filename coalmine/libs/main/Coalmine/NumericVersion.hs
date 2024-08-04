@@ -7,6 +7,7 @@ module Coalmine.NumericVersion
 where
 
 import Coalmine.InternalPrelude
+import Coalmine.Literal qualified as Literal
 import Coalmine.Printing
 import Data.Attoparsec.Text qualified as Attoparsec
 import QqExtras qualified as QuasiQuoter
@@ -22,9 +23,7 @@ instance Ord NumericVersion where
     compare (parts l) (parts r)
 
 instance CompactPrinting NumericVersion where
-  toCompactBuilder (NumericVersion h t) =
-    toCompactBuilder h
-      <> foldMap (mappend "." . toCompactBuilder) t
+  toCompactBuilder = Literal.literalTextBuilder
 
 instance BroadPrinting NumericVersion where
   toBroadBuilder = to . toCompactBuilder
@@ -36,7 +35,13 @@ instance ToJSONKey NumericVersion where
   toJSONKey = printCompactAs @Text >$< toJSONKey
 
 instance LenientParser NumericVersion where
-  lenientParser = do
+  lenientParser = Literal.literalParser
+
+instance Literal.Literal NumericVersion where
+  literalTextBuilder (NumericVersion h t) =
+    toCompactBuilder h
+      <> foldMap (mappend "." . toCompactBuilder) t
+  literalParser = do
     head <- Attoparsec.decimal
     tail <- many tailSegmentParser
     return (NumericVersion head tail)
