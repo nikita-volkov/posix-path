@@ -1,3 +1,4 @@
+-- TODO: Rename to Picoseconds, since essentially that's what it is.
 module Coalmine.Interval where
 
 import Coalmine.InternalPrelude
