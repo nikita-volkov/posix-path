@@ -1,5 +1,5 @@
 module Coalmine.NumericVersion
-  ( NumericVersion,
+  ( NumericVersion(..),
     lit,
     parts,
     bump,
