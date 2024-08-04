@@ -105,6 +105,9 @@ instance BroadPrinting String where
 instance BroadPrinting TextBuilder where
   toBroadBuilder = to
 
+instance BroadPrinting Integer where
+  toBroadBuilder = toBroadBuilder . Ub.decimal
+
 instance BroadPrinting Int where
   toBroadBuilder = toBroadBuilder . Ub.decimal
 
@@ -118,6 +121,9 @@ instance BroadPrinting Int32 where
   toBroadBuilder = toBroadBuilder . Ub.decimal
 
 instance BroadPrinting Int64 where
+  toBroadBuilder = toBroadBuilder . Ub.decimal
+
+instance BroadPrinting Natural where
   toBroadBuilder = toBroadBuilder . Ub.decimal
 
 instance BroadPrinting Word where
