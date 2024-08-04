@@ -1,5 +1,6 @@
 module Coalmine.MultilineTextBuilder
   ( -- * --
+    TextBlock,
     Splice,
     MultilineTextBuilder,
     Builder,
@@ -25,6 +26,8 @@ import Data.Text.Lazy.Builder qualified as TextLazyBuilder
 import TextBuilderDev qualified as Tb
 
 -- * --
+
+type TextBlock = Builder
 
 type Splice = Builder
 
