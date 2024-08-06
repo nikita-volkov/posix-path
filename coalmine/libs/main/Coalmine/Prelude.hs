@@ -7,6 +7,7 @@ import Coalmine.BaseExtras.Alternative as Exports
 import Coalmine.BaseExtras.Applicative as Exports
 import Coalmine.BaseExtras.Function as Exports
 import Coalmine.BaseExtras.MonadPlus as Exports
+import Coalmine.BaseExtras.Monoid as Exports
 import Coalmine.Building as Exports
 import Coalmine.CerealExtras.Instances as Exports ()
 import Coalmine.DecimalExtras.Instances as Exports ()
