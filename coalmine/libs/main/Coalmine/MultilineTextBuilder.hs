@@ -7,6 +7,7 @@ module Coalmine.MultilineTextBuilder
 
     -- * --
     null,
+    ifNotNull,
     indent,
     prefixEachLine,
     intercalate,
@@ -105,6 +106,13 @@ null (Builder a _) =
   a
 
 -- * Transformation
+
+-- | Apply a transformation only if the input is not empty.
+ifNotNull :: (Builder -> Builder) -> Builder -> Builder
+ifNotNull tx builder =
+  if null builder
+    then builder
+    else tx builder
 
 mapBuilder ::
   ( (Tb.TextBuilder -> Tb.TextBuilder) ->
