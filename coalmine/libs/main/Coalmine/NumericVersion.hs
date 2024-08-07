@@ -1,5 +1,6 @@
 module Coalmine.NumericVersion
-  ( NumericVersion(..),
+  ( NumericVersion (..),
+    fromNonEmpty,
     lit,
     parts,
     bump,
@@ -51,6 +52,10 @@ instance Literal.Literal NumericVersion where
       tailSegmentParser = do
         Attoparsec.char '.'
         Attoparsec.decimal
+
+fromNonEmpty :: NonEmpty Word -> NumericVersion
+fromNonEmpty (head :| tail) =
+  NumericVersion {head, tail}
 
 lit :: QuasiQuoter
 lit =
