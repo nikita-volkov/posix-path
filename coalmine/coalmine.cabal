@@ -194,6 +194,7 @@ library
     Coalmine.SemverBase
     Coalmine.Serialization
     Coalmine.Slug
+    Coalmine.Special
     Coalmine.Stage
     Coalmine.StdTerminalFormatting
     Coalmine.StmExtras.TBQueue
