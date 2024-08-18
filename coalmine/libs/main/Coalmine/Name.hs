@@ -3,6 +3,7 @@ module Coalmine.Name where
 import Coalmine.CerealExtras.Get qualified as CerealExtrasGet
 import Coalmine.CerealExtras.Put qualified as CerealExtrasPut
 import Coalmine.InternalPrelude
+import Coalmine.Literal qualified as Literal
 import Coalmine.Name.Attoparsec qualified as Attoparsec
 import Coalmine.Name.Constants qualified as Constants
 import Coalmine.Name.Gens qualified as Gens
@@ -73,6 +74,10 @@ instance CompactPrinting Name where
 
 instance BroadPrinting Name where
   toBroadBuilder = fromTextBuilder . toCompactBuilder
+
+instance Literal.Literal Name where
+  literalParser = attoparsec
+  literalTextBuilder = toSnakeCaseTextBuilder
 
 -- * QuickCheck
 
