@@ -10,6 +10,7 @@ import Coalmine.Name.Gens qualified as Gens
 import Coalmine.Name.Megaparsec qualified as Megaparsec
 import Coalmine.Parsing
 import Coalmine.Printing
+import Coalmine.Special qualified as Special
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.Serialize qualified as Cereal
 import Data.Text qualified as Text
@@ -78,6 +79,12 @@ instance BroadPrinting Name where
 instance Literal.Literal Name where
   literalParser = attoparsec
   literalTextBuilder = toSnakeCaseTextBuilder
+
+instance Special.Special Name where
+  type GeneralizationOf Name = Text
+  type SpecializationErrorOf Name = Text
+  specialize = refineText
+  generalize = to . toSnakeCaseTextBuilder
 
 -- * QuickCheck
 

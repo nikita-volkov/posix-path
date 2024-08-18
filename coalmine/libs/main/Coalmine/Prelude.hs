@@ -30,6 +30,7 @@ import Coalmine.Parsing as Exports
 import Coalmine.Printing as Exports
 import Coalmine.SemverBase as Exports (SemverBase)
 import Coalmine.Slug as Exports (Slug)
+import Coalmine.Special as Exports
 import Coalmine.TransformersExtras.Except as Exports ()
 import Coalmine.TransformersExtras.Reader as Exports ()
 import Coalmine.TransformersExtras.State as Exports ()
