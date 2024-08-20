@@ -11,6 +11,7 @@ import Coalmine.Name.Megaparsec qualified as Megaparsec
 import Coalmine.Parsing
 import Coalmine.Printing
 import Coalmine.Special qualified as Special
+import Data.Aeson.Types qualified as Aeson
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.Serialize qualified as Cereal
 import Data.Text qualified as Text
@@ -69,6 +70,14 @@ instance ToJSON Name where
 
 instance ToJSONKey Name where
   toJSONKey = contramap (to @Text . toCompactBuilder) toJSONKey
+
+instance FromJSON Name where
+  parseJSON = \case
+    Aeson.String string ->
+      case refineText string of
+        Right name -> pure name
+        Left err -> fail (to err)
+    json -> Aeson.typeMismatch "String" json
 
 instance CompactPrinting Name where
   toCompactBuilder = toSpinalCaseTextBuilder
