@@ -83,8 +83,8 @@ instance Literal.Literal Name where
 instance Special.Special Name where
   type GeneralizationOf Name = Text
   type SpecializationErrorOf Name = Text
-  specializeTo = refineText
-  generalizeFrom = to . toSnakeCaseTextBuilder
+  specialize = refineText
+  generalize = to . toSnakeCaseTextBuilder
 
 -- * QuickCheck
 

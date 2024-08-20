@@ -13,8 +13,8 @@ class Special a where
   -- unit if you don\'t need to provide any extra information when failing.
   type SpecializationErrorOf a
 
-  specializeTo :: GeneralizationOf a -> Either (SpecializationErrorOf a) a
-  generalizeFrom :: a -> GeneralizationOf a
+  specialize :: GeneralizationOf a -> Either (SpecializationErrorOf a) a
+  generalize :: a -> GeneralizationOf a
 
 -- |
 -- Prism from general to specialized value.
@@ -28,6 +28,6 @@ specializedPrism ::
   p (GeneralizationOf special) (f (GeneralizationOf special))
 specializedPrism =
   dimap
-    (\general -> general & specializeTo & first (const general))
-    (either pure (fmap generalizeFrom))
+    (\general -> general & specialize & first (const general))
+    (either pure (fmap generalize))
     . right'
