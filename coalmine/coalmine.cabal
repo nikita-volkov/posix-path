@@ -115,6 +115,7 @@ library
     Coalmine.DiffOf
     Coalmine.Domain
     Coalmine.ErrBuilder
+    Coalmine.ErrorReport
     Coalmine.EvenSimplerPaths
     Coalmine.EvenSimplerPaths.AttoparsecHelpers
     Coalmine.EvenSimplerPaths.Charsets
