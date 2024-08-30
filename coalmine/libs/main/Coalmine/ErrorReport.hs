@@ -1,5 +1,3 @@
-{-# LANGUAGE InstanceSigs #-}
-
 -- |
 -- Description of an error intended for rendering into various formats,
 -- but not for handling the various cases for logic.
