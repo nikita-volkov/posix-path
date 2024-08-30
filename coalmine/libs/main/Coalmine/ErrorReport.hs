@@ -1,3 +1,5 @@
+{-# LANGUAGE InstanceSigs #-}
+
 -- |
 -- Description of an error intended for rendering into various formats,
 -- but not for handling the various cases for logic.
@@ -10,12 +12,14 @@
 -- The most evident formats are YAML and JSON.
 module Coalmine.ErrorReport where
 
+import Coalmine.BaseExtras.Monoid
 import Coalmine.InternalPrelude
 
-type ErrorReport = [ErrorReportLevel]
+-- | Chain of levels diving deeper into the causes.
+type ErrorReport = [Cause]
 
-data ErrorReportLevel = ErrorReportLevel
-  { -- | Static message describing what happened.
+data Cause = Cause
+  { -- | Label. A static message describing what happened.
     --
     -- It should not be a dynamically constructed string.
     -- Use the @details@ field for that.
@@ -27,6 +31,14 @@ data ErrorReportLevel = ErrorReportLevel
 class ConvertsToErrorReport a where
   toErrorReport :: a -> ErrorReport
 
+instance ConvertsToErrorReport SomeException where
+  toErrorReport someException =
+    Cause
+      { message = "SomeException",
+        details = []
+      }
+      & pure
+
 toJson :: ErrorReport -> Text
 toJson =
   error "TODO"
@@ -36,17 +48,18 @@ toJsonTree =
   ArrayJson
     . fmap
       ( \level ->
-          [ ( "message",
-              level.message
-                & toJSON
-            ),
-            ( "details",
-              level.details
-                & (fmap . first) (fromString . toList)
-                & fromList
-                & ObjectJson
-            )
+          [ level.message
+              & toJSON
+              & Just
+              & fmap ("label",),
+            level.details
+              & (fmap . first) (fromString . toList)
+              & filtered (not . null) Just
+              & fmap fromList
+              & fmap ObjectJson
+              & fmap ("details",)
           ]
+            & catMaybes
             & fromList
             & ObjectJson
       )
