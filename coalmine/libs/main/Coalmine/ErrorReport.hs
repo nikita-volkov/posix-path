@@ -21,7 +21,7 @@ data Cause = Cause
     --
     -- It should not be a dynamically constructed string.
     -- Use the @details@ field for that.
-    message :: Text,
+    label :: Text,
     -- | Map describing various facts.
     details :: [(Text, Json)]
   }
@@ -31,11 +31,17 @@ class ConvertsToErrorReport a where
 
 instance ConvertsToErrorReport SomeException where
   toErrorReport someException =
-    Cause
-      { message = "SomeException",
-        details = []
-      }
-      & pure
+    [ Cause
+        { label = "SomeException",
+          details =
+            [ ( "displayed",
+                someException
+                  & displayException
+                  & toJSON
+              )
+            ]
+        }
+    ]
 
 toJson :: ErrorReport -> Text
 toJson =
@@ -46,7 +52,7 @@ toJsonTree =
   ArrayJson
     . fmap
       ( \level ->
-          [ level.message
+          [ level.label
               & toJSON
               & Just
               & fmap ("label",),
