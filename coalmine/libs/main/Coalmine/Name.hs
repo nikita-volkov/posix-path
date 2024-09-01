@@ -87,13 +87,13 @@ instance BroadPrinting Name where
 
 instance Literal.Literal Name where
   literalParser = attoparsec
-  literalTextBuilder = toSnakeCaseTextBuilder
+  literalTextBuilder = toSpinalCaseTextBuilder
 
 instance Special.Special Name where
   type GeneralizationOf Name = Text
   type SpecializationErrorOf Name = Text
   specialize = refineText
-  generalize = to . toSnakeCaseTextBuilder
+  generalize = to . toSpinalCaseTextBuilder
 
 -- * QuickCheck
 
