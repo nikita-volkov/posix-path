@@ -1,15 +1,17 @@
 module Coalmine.NumericVersion
   ( NumericVersion (..),
     fromNonEmpty,
+    toNonEmpty,
     lit,
     parts,
     bump,
   )
 where
 
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (toNonEmpty)
 import Coalmine.Literal qualified as Literal
 import Coalmine.Printing
+import Coalmine.Special
 import Data.Attoparsec.Text qualified as Attoparsec
 import QqExtras qualified as QuasiQuoter
 
@@ -53,9 +55,25 @@ instance Literal.Literal NumericVersion where
         Attoparsec.char '.'
         Attoparsec.decimal
 
+instance Special NumericVersion where
+  type GeneralizationOf NumericVersion = Text
+  type SpecializationErrorOf NumericVersion = Text
+  specialize = Literal.parseText
+  generalize = Literal.toText
+
+instance IsomorphicTo (NonEmpty Word) NumericVersion where
+  to = toNonEmpty
+
+instance IsomorphicTo NumericVersion (NonEmpty Word) where
+  to = fromNonEmpty
+
 fromNonEmpty :: NonEmpty Word -> NumericVersion
 fromNonEmpty (head :| tail) =
   NumericVersion {head, tail}
+
+toNonEmpty :: NumericVersion -> NonEmpty Word
+toNonEmpty NumericVersion {head, tail} =
+  head :| tail
 
 lit :: QuasiQuoter
 lit =
