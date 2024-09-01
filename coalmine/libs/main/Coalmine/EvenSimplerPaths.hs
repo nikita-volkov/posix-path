@@ -30,6 +30,7 @@ import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
 import Coalmine.InternalPrelude
 import Coalmine.NameConversion
 import Coalmine.Printing
+import Coalmine.Special
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.Serialize qualified as Cereal
@@ -210,6 +211,12 @@ instance Syntax.Syntax Path where
           (\_extension _next -> _next <> "." <> to _extension)
           (to _name)
           _extensions
+
+instance Special Path where
+  type GeneralizationOf Path = FilePath
+  type SpecializationErrorOf Path = Text
+  specialize = Syntax.fromTextInEither . fromString
+  generalize = toString
 
 -- * --
 

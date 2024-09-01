@@ -103,6 +103,12 @@ import PosixPathStructures.NormalizedPath qualified as NormalizedPath
 newtype Path = Path {underlying :: NormalizedPath.NormalizedPath}
   deriving newtype (Eq, Ord, Show, IsString, Semigroup, Monoid, Arbitrary, Cereal.Serialize, Syntax.Syntax, Hashable)
 
+instance Special Path where
+  type GeneralizationOf Path = FilePath
+  type SpecializationErrorOf Path = Text
+  specialize = Syntax.fromTextInEither . fromString
+  generalize = toFilePath
+
 -- * Constructors
 
 -- |
