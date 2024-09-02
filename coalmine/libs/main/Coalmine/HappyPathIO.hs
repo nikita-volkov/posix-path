@@ -39,7 +39,7 @@ readOneOf = go []
               <> list
             where
               list = List.mapIntercalate errReport "\n" errs
-              errReport (err, path) =
+              errReport (_err, path) =
                 "- " <> printCompactAs path
 
 -- | Load and parse a required environment variable.

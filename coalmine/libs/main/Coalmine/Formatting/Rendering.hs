@@ -16,6 +16,6 @@ render = renderAtIndent 0
 
 renderAtIndent :: Int -> Tree -> Tb.TextBuilder
 renderAtIndent indent = \case
-  MultilineTree lines -> error "TODO"
+  MultilineTree _lines -> error "TODO"
   IndentedTree indent' tree -> renderAtIndent (indent + indent') tree
   MergedTree left right -> renderAtIndent indent left <> renderAtIndent indent right

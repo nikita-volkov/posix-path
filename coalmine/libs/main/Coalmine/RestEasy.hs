@@ -28,11 +28,11 @@ serve =
 -- Request body parser.
 data RequestBody a
   = RequestBody
+      -- | Expected types.
       [Text]
-      -- ^ Expected types.
-      (IO ByteString -> IO (Either Text a))
-      -- ^ Consumer. Calls the provided chunk-producing action until it
+      -- | Consumer. Calls the provided chunk-producing action until it
       -- produces an empty chunk.
+      (IO ByteString -> IO (Either Text a))
 
 instance Functor RequestBody where
   fmap = error "TODO"
@@ -65,8 +65,8 @@ newtype Route
   = Route ([Text] -> Wai.Request -> Maybe (IO Wai.Response))
 
 postRoute :: [RequestBody req] -> (req -> IO Response) -> Route
-postRoute bodyParsers handler =
-  Route $ \segments request ->
+postRoute _bodyParsers _handler =
+  Route $ \_segments _request ->
     error "TODO"
 
 staticSegmentRoute :: Text -> [Route] -> Route

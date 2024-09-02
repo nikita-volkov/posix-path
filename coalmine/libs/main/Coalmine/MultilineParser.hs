@@ -12,14 +12,14 @@ import Data.Text qualified as Text
 
 data BlockState
   = BlockState
+      -- | Whether we're at the first line.
       !Bool
-      -- ^ Whether we're at the first line.
+      -- | Line.
       !Int
-      -- ^ Line.
+      -- | Indentation in amount of chars.
       !Int
-      -- ^ Indentation in amount of chars.
+      -- | Specific chars used for indentation.
       !Text
-      -- ^ Specific chars used for indentation.
 
 -- * --
 
@@ -76,7 +76,7 @@ line :: Line a -> Block a
 line (Line runLine) =
   Block $ \(BlockState isFirstLine lineNum indentationNum indentationText) -> do
     unless (isFirstLine || indentationNum == 0) $ void $ A.string indentationText
-    (res, columnNum) <- runLine lineNum indentationNum
+    (res, _columnNum) <- runLine lineNum indentationNum
     eolP <|> A.endOfInput
     return (res, (BlockState False (succ lineNum) indentationNum indentationText))
   where
@@ -129,7 +129,7 @@ locatedOnLine (Line runLine) =
 -- Narrow a char.
 narrowedChar :: (Char -> Maybe a) -> Line a
 narrowedChar narrow =
-  Line $ \line column -> do
+  Line $ \_line column -> do
     Just res <- A.satisfyWith narrow' isJust
     case succ column of
       column -> return (res, column)
@@ -141,7 +141,7 @@ narrowedChar narrow =
 
 validatedChar :: (Char -> Bool) -> Line Char
 validatedChar predicate =
-  Line $ \line column -> do
+  Line $ \_line column -> do
     char <- A.satisfy predicate'
     case succ column of
       column -> return (char, column)
@@ -151,7 +151,7 @@ validatedChar predicate =
 
 specificChar :: Char -> Line ()
 specificChar char =
-  Line $ \line column -> do
+  Line $ \_line column -> do
     A.char char
     case succ column of
       column -> return ((), column)
@@ -166,7 +166,7 @@ takeWhile p =
         else Nothing
 
 skipWhile :: (Char -> Bool) -> Line ()
-skipWhile p =
+skipWhile =
   error "TODO"
 
 -- |
@@ -300,26 +300,26 @@ vecSepBy1 sep elem =
 -- possibly spanning multiple lines.
 data Selection
   = SingleLineSelection
+      -- | Line.
       !Int
-      -- ^ Line.
+      -- | Start column.
       !Int
-      -- ^ Start column.
+      -- | End column.
       !Int
-      -- ^ End column.
   | MultilineSelection
+      -- | Start line.
       !Int
-      -- ^ Start line.
+      -- | Start column.
       !Int
-      -- ^ Start column.
+      -- | End line.
       !Int
-      -- ^ End line.
+      -- | End column.
       !Int
-      -- ^ End column.
   | UnendedSelection
+      -- | Start line.
       !Int
-      -- ^ Start line.
+      -- | Start column.
       !Int
-      -- ^ Start column.
 
 data Located a
   = Located !Selection a

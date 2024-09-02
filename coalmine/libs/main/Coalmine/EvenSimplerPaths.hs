@@ -227,7 +227,7 @@ toString = to . toCompactBuilder
 parent :: Path -> Maybe Path
 parent (Path abs components) =
   case components of
-    h : t -> Just $ Path abs t
+    _ : t -> Just $ Path abs t
     _ -> Nothing
 
 -- | Decompose into components.

@@ -46,7 +46,7 @@ subtractInt x = totalPartialIso (subtract x) (+ x)
 --
 -- The whole operation fails if it doesn't.
 updateMap :: (Ord k) => k -> EndoPartialIso v -> EndoPartialIso (Map k v)
-updateMap k (PartialIso vi vo) =
+updateMap k (PartialIso vi _vo) =
   PartialIso mi mo
   where
     mi = Map.alterF alter k
@@ -71,4 +71,4 @@ insertInMap :: k -> v -> EndoPartialIso (Map k v)
 insertInMap = error "TODO"
 
 ensureMapContainsKey :: k -> EndoPartialIso (Map k v)
-ensureMapContainsKey k = error "TODO"
+ensureMapContainsKey _k = error "TODO"

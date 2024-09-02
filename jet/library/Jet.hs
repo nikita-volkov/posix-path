@@ -8,7 +8,7 @@ import ListT (ListT (..))
 import ListT qualified
 
 dispatch :: Source a -> Sink b -> StateMachine a b -> IO ()
-dispatch source sink _ =
+dispatch _source _sink _ =
   error "TODO"
 
 -- | Output port of a stream producer.
@@ -60,15 +60,15 @@ startKeyPresses = error "TODO"
 startStdout :: IO (Sink ByteString)
 startStdout = do
   inputChannel <- newTBQueueIO 100
-  forkIO $
-    let go = do
-          chunk <- atomically $ readTBQueue inputChannel
-          case chunk of
-            Just chunk -> do
-              ByteString.hPut stdout chunk
-              go
-            Nothing -> return ()
-     in go
+  forkIO
+    $ let go = do
+            chunk <- atomically $ readTBQueue inputChannel
+            case chunk of
+              Just chunk -> do
+                ByteString.hPut stdout chunk
+                go
+              Nothing -> return ()
+       in go
   return
     Sink
       { tell = writeTBQueue inputChannel . Just,
@@ -79,13 +79,13 @@ startReactor :: (i -> ListT IO o) -> IO (Sink i, Source o)
 startReactor reactor = do
   inputChannel <- newTBQueueIO 100
   outputChannel <- newTBQueueIO 100
-  forkIO $
-    let go = do
-          input <- atomically $ readTBQueue inputChannel
-          forM_ input $ \input -> do
-            ListT.traverse_ (atomically . writeTBQueue outputChannel . error "TODO") (reactor input)
-            go
-     in go
+  forkIO
+    $ let go = do
+            input <- atomically $ readTBQueue inputChannel
+            forM_ input $ \input -> do
+              ListT.traverse_ (atomically . writeTBQueue outputChannel . error "TODO") (reactor input)
+              go
+       in go
   let tell = writeTBQueue inputChannel . Just
       stop = writeTBQueue inputChannel Nothing
       listen = readTBQueue outputChannel
@@ -93,7 +93,8 @@ startReactor reactor = do
   return (Sink {..}, Source {..})
 
 -- | Pure state machine.
-data StateMachine i o = forall state.
+data StateMachine i o
+  = forall state.
   StateMachine
   { start :: state,
     transition :: i -> state -> Maybe ([o], state)

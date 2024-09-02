@@ -59,7 +59,7 @@ renderForAdminAsPlainText =
 -- which will trigger handlers around the chain.
 -- That is why this function is actually not exported.
 dieWithForCli :: AppException -> IO a
-dieWithForCli exc =
+dieWithForCli _exc =
   error "TODO"
 
 -- |

@@ -12,11 +12,11 @@ foldUVec (Fold step init extract) vec =
   UVec.foldl' step init vec & extract
 
 discretize :: Int -> Int -> (a -> Int) -> (a -> b) -> Fold b o -> Fold a o
-discretize distance initEndPosition toPosition toOutput (Fold step init extract) =
+discretize _distance initEndPosition toPosition _toOutput (Fold _step init _extract) =
   Fold step' init' extract'
   where
     init' = (initEndPosition, init)
-    step' (endPosition, acc) input =
+    step' (endPosition, _acc) input =
       if endPosition > position
         then error "TODO"
         else error "TODO"

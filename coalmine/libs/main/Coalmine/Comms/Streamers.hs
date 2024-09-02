@@ -22,5 +22,5 @@ varLengthSignedInteger =
   error "TODO"
 
 constLengthInteger :: (Integral a, Bits a) => Int -> a -> Streamer
-constLengthInteger size =
+constLengthInteger _size =
   error "TODO"

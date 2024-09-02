@@ -31,13 +31,13 @@ aeson =
 attoparsecByteStringParser :: AttoparsecByteString.Parser a -> BodyConsumer a
 attoparsecByteStringParser parser fetch =
   fetch >>= AttoparsecByteString.parseWith fetch parser >>= \case
-    AttoparsecByteString.Done rmdr res ->
+    AttoparsecByteString.Done _rmdr res ->
       return $ Right res
-    AttoparsecByteString.Fail rmdr contexts msg ->
+    AttoparsecByteString.Fail _rmdr contexts msg ->
       return $ Left $ to [j|$contextsBdr: $msg|]
       where
         contextsBdr = foldMap (mappend "/") contexts
-    AttoparsecByteString.Partial cont ->
+    AttoparsecByteString.Partial _cont ->
       return $ Left "Not enough input"
 
 cereal :: Cereal.Get a -> BodyConsumer a

@@ -8,7 +8,7 @@ import Data.Vector qualified as BVec
 -- * Execution
 
 variantGet :: Variant sum -> Cereal.Get sum
-variantGet (Variant map1 map2 codec) =
+variantGet (Variant _map1 map2 codec) =
   codec.get <&> map2
 
 -- * Variant
@@ -16,12 +16,12 @@ variantGet (Variant map1 map2 codec) =
 data Variant sum
   = forall i o.
     Variant
+      -- | Narrow from the sum.
       (sum -> Maybe i)
-      -- ^ Narrow from the sum.
+      -- | Broaden to the sum.
       (o -> sum)
-      -- ^ Broaden to the sum.
+      -- | Variant codec.
       (Codec i o)
-      -- ^ Variant codec.
 
 instance Invariant Variant where
   invmap f g (Variant narrow broaden schema) =

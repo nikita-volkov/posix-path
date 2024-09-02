@@ -71,15 +71,15 @@ parts x =
   [x.major, x.minor, x.patch]
 
 bumpMajor :: SemverBase -> SemverBase
-bumpMajor x =
+bumpMajor =
   error "TODO"
 
 bumpMinor :: SemverBase -> SemverBase
-bumpMinor x =
+bumpMinor =
   error "TODO"
 
 bumpPatch :: SemverBase -> SemverBase
-bumpPatch x =
+bumpPatch =
   error "TODO"
 
 fromComponents :: Word -> Word -> Word -> SemverBase

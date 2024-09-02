@@ -7,18 +7,18 @@ import Data.ByteString.Internal qualified as ByteString
 data Status a
   = -- | Failed.
     FailedStatus
+      -- | Message.
       Text
-      -- ^ Message.
+      -- | Pointer at which we've stopped.
       (Ptr Word8)
-      -- ^ Pointer at which we've stopped.
   | -- | Finished with a result and a remainder.
     EmittingStatus
+      -- | Result.
       a
-      -- ^ Result.
+      -- | Pointer to read the following data from.
       (Ptr Word8)
-      -- ^ Pointer to read the following data from.
+      -- | Pointer after the data.
       (Ptr Word8)
-      -- ^ Pointer after the data.
   | -- | The provided pointer is read from in completion,
     -- we still need more data though.
     ExhaustedStatus
@@ -52,7 +52,7 @@ newtype Peeker a = Peeker
 instance Applicative Peeker where
   pure a = Peeker $ \currentPtr afterPtr ->
     pure $ EmittingStatus a currentPtr afterPtr
-  left <*> right =
+  _left <*> _right =
     error "TODO"
 
 instance Monad Peeker where
@@ -81,15 +81,15 @@ varLengthSignedInteger =
                 (plusPtr currentPtr 1)
                 afterPtr
             else
-              return $
-                EmittingStatus
+              return
+                $ EmittingStatus
                   (fromIntegral (fromIntegral @_ @Int8 byte))
                   (plusPtr currentPtr 1)
                   afterPtr
         else
-          return $
-            ExhaustedStatus $
-              Peeker processFirstByte
+          return
+            $ ExhaustedStatus
+            $ Peeker processFirstByte
     processNextByte negative !bitOffset !val currentPtr afterPtr =
       if currentPtr < afterPtr
         then do
@@ -104,13 +104,13 @@ varLengthSignedInteger =
                 (plusPtr currentPtr 1)
                 afterPtr
             else
-              return $
-                EmittingStatus
+              return
+                $ EmittingStatus
                   (if negative then negate updatedVal else updatedVal)
                   (plusPtr currentPtr 1)
                   afterPtr
         else
-          return $
-            ExhaustedStatus $
-              Peeker $
-                processNextByte negative bitOffset val
+          return
+            $ ExhaustedStatus
+            $ Peeker
+            $ processNextByte negative bitOffset val

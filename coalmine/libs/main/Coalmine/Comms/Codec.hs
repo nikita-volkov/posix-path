@@ -56,8 +56,8 @@ sum variants =
       error "TODO"
     reader = do
       idx <-
-        Reader.inContext "variant-tag" $
-          CommsReaders.varLengthUnsignedInteger 0 (pred (BVec.length vec))
+        Reader.inContext "variant-tag"
+          $ CommsReaders.varLengthUnsignedInteger 0 (pred (BVec.length vec))
       Reader.inContext "variant-payload" $ BVec.unsafeIndex vec idx
       where
         vec =
@@ -78,8 +78,9 @@ normallyDistributedInteger min max epicenter =
     schema =
       error "TODO"
     write val =
-      CommsWriters.varLengthSignedInteger $
-        val - epicenter
+      CommsWriters.varLengthSignedInteger
+        $ val
+        - epicenter
     stream =
       error "TODO"
     reader =
@@ -144,7 +145,7 @@ instance Profunctor ProductCodec where
       (fmap f2 codec.reader)
 
 field :: Text -> Codec a -> ProductCodec a a
-field name codec =
+field _name _codec =
   error "TODO"
 
 data VariantCodec a = VariantCodec
@@ -199,7 +200,7 @@ validate =
 
 data DecodingError
   = SchemaMismatchDecodingError
+      -- | Expected.
       Schema.Schema
-      -- ^ Expected.
+      -- | Actual.
       Schema.Schema
-      -- ^ Actual.

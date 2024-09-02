@@ -20,8 +20,8 @@ import Data.Text qualified as Text
 
 data Err
   = ConsumptionErr
+      -- | Index that we're at.
       Int
-      -- ^ Index that we're at.
       ConsumptionErr
   | TooManyArgsErr Int
   deriving (Show)
@@ -64,7 +64,7 @@ renderErr = \case
       TextParsingErr err -> case err of
         TooShortTextErr n -> fromReason [i|Shorter than $n|]
         TooLongTextErr n -> fromReason [i|Longer than $n|]
-      ParsedParsingErr format err ->
+      ParsedParsingErr format _err ->
         fromReason [i|Does not satisfy the "$format" format|]
       where
         fromReason :: TextBuilder -> Text
@@ -102,10 +102,10 @@ data ConsumptionErr
     ExhaustedConsumptionErr
   | -- | The arg exists, but we've failed parsing it.
     ParsingConsumptionErr
+      -- | Error details.
       ParsingErr
-      -- ^ Error details.
+      -- | Input.
       String
-      -- ^ Input.
   | CustomConsumptionErr String
   deriving (Show)
 

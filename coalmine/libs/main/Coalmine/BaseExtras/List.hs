@@ -9,7 +9,7 @@ dropPedantically :: Int -> [a] -> Either Int [a]
 dropPedantically amount =
   if amount > 0
     then \case
-      head : tail -> dropPedantically (pred amount) tail
+      _head : tail -> dropPedantically (pred amount) tail
       _ -> Left amount
     else
       if amount == 0
@@ -227,7 +227,7 @@ streamUniqueDuplicates list =
               then next map
               else a : next map
           Nothing -> next map
-    extract map = []
+    extract _map = []
 
 -- | Group a list of elements in the sublists of length @i@
 chunk :: Int -> [a] -> [[a]]

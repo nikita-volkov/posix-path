@@ -47,5 +47,5 @@ varLengthSignedInteger =
   error "TODO"
 
 constLengthInteger :: (Integral a, Bits a) => Int -> a -> Writer
-constLengthInteger size =
+constLengthInteger _size =
   error "TODO"

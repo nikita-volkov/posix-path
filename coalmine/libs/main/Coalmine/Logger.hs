@@ -38,17 +38,17 @@ start ::
   Bool ->
   Writer ->
   IO Logger
-start initialVerbosity verbosityLabels doTimestamping writer = do
+start initialVerbosity _verbosityLabels _doTimestamping writer = do
   taskQueue <- newTQueueIO
-  forkIO $
-    let go !verbosity = do
-          tasks <- atomically $ flushTQueue taskQueue
-          playResult <- playTasks verbosity tasks
-          writer.flush
-          case playResult of
-            Nothing -> return ()
-            Just newVerbosity -> go newVerbosity
-     in go initialVerbosity
+  forkIO
+    $ let go !verbosity = do
+            tasks <- atomically $ flushTQueue taskQueue
+            playResult <- playTasks verbosity tasks
+            writer.flush
+            case playResult of
+              Nothing -> return ()
+              Just newVerbosity -> go newVerbosity
+       in go initialVerbosity
   currentVerbosityVar <- newTVarIO initialVerbosity
   return $ Logger taskQueue currentVerbosityVar
   where
@@ -128,8 +128,8 @@ data Writer = Writer
 startHandleWriter :: Handle -> IO Writer
 startHandleWriter handle = do
   hSetBuffering handle (BlockBuffering Nothing)
-  return $
-    Writer
+  return
+    $ Writer
       { write = TextIO.hPutStrLn handle,
         flush = hFlush handle
       }

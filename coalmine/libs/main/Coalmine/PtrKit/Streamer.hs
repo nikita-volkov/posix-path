@@ -159,7 +159,7 @@ writer writer@(Writer.Writer size poke) =
             ptrAfter
             (cap - minusPtr ptrAfter ptr)
       else case Writer.toByteString writer of
-        input@(ByteStringInternal.BS inputFp inputSize) -> do
+        input@(ByteStringInternal.BS inputFp _inputSize) -> do
           unsafeWithForeignPtr inputFp $ \inputPtr ->
             copyBytes ptr inputPtr cap
           return $ ExhaustedStatus $ byteString $ ByteString.drop cap input

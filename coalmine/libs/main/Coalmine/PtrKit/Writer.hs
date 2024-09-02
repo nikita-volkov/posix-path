@@ -16,8 +16,8 @@ import Data.ByteString.Builder.Prim qualified as ByteStringBuilderPrim
 import Data.ByteString.Builder.Prim.Internal qualified as ByteStringBuilderPrimInternal
 import Data.ByteString.Internal qualified as ByteStringInternal
 
-data Writer =
-  -- Should not be exported, since we want to keep the control
+data Writer
+  = -- Should not be exported, since we want to keep the control
   -- over the ways of executing this abstraction.
   Writer
   { -- | How many bytes it might occupy.
@@ -38,7 +38,7 @@ data Writer =
   }
 
 instance Semigroup Writer where
-  left <> right =
+  _left <> _right =
     error "TODO"
 
 instance Monoid Writer where
@@ -49,7 +49,7 @@ run ::
   -- | Action providing a pointer of the requested capacity.
   (Int -> IO (Ptr Word8)) ->
   IO (Ptr Word8)
-run (Writer size poke) alloc =
+run (Writer _size _poke) _alloc =
   error "TODO"
 
 -- |

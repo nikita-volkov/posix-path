@@ -20,6 +20,6 @@ data Model = Model
   }
 
 transition :: Cmd -> Model -> ([Event], Model)
-transition cmd state = case cmd of
-  ResizeCmd widthDelta heightDelta ->
+transition cmd _state = case cmd of
+  ResizeCmd _widthDelta _heightDelta ->
     error "TODO"

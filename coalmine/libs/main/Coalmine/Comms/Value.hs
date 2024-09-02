@@ -27,7 +27,7 @@ simulateFromSchema = \case
     where
       variantValue i (name, schema) =
         VariantValue i name <$> simulateFromSchema schema
-  Schema.SeqSchema minLength maxLength elementSchema ->
+  Schema.SeqSchema _minLength _maxLength _elementSchema ->
     error "TODO"
   _ ->
     error "TODO"

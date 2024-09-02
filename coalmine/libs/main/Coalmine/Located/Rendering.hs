@@ -139,7 +139,7 @@ render input startOffset endOffset explanation =
               & Text.drop currentLineStart
               & Text.take (fromMaybe currentOffset earlyEnd - currentLineStart)
 
-    finish collectedLines currentOffset currentLineStart currentLineNum earlyEnd startReached startLineNum startCol endCol =
+    finish collectedLines currentOffset currentLineStart _currentLineNum earlyEnd _startReached startLineNum startCol endCol =
       megaparsecErrorMessageLayout
         (TextBuilder.unsignedDecimal startLineNum)
         (TextBuilder.unsignedDecimal startColNum)

@@ -8,19 +8,19 @@ import Data.ByteString.Internal qualified as ByteStringInternal
 data Status a
   = -- | Failed.
     FailedStatus
+      -- | Message.
       Text
-      -- ^ Message.
+      -- | Contexts.
       [Text]
-      -- ^ Contexts.
+      -- | Total offset amongst all consumed inputs before the beginning of this value.
       Int
-      -- ^ Total offset amongst all consumed inputs before the beginning of this value.
   | EmittingStatus
+      -- | Result.
       a
-      -- ^ Result.
+      -- | Pointer to read the following data from.
       (Ptr Word8)
-      -- ^ Pointer to read the following data from.
+      -- | Total offset amongst all consumed inputs.
       Int
-      -- ^ Total offset amongst all consumed inputs.
   | -- | The provided pointer is read from in completion,
     -- we still need more data though.
     ExhaustedStatus
@@ -47,7 +47,7 @@ readTotalByteString :: Reader a -> ByteString -> IO (Either Failure a)
 readTotalByteString reader (ByteStringInternal.BS fp len) =
   withForeignPtr fp $ \ptr ->
     reader.run [] 0 ptr (plusPtr ptr len) <&> \case
-      EmittingStatus res ptrAfter totalOffset ->
+      EmittingStatus res _ptrAfter totalOffset ->
         if totalOffset == len
           then Right res
           else Left $ Failure "Did not consume in whole" [] totalOffset
@@ -74,9 +74,9 @@ newtype Reader a = Reader
   deriving (Functor)
 
 instance Applicative Reader where
-  pure a = Reader $ \_ totalOffset ptr ptr' ->
+  pure a = Reader $ \_ totalOffset ptr _ptr' ->
     pure $ EmittingStatus a ptr totalOffset
-  left <*> right =
+  _left <*> _right =
     error "TODO"
 
 instance Monad Reader where
@@ -107,8 +107,8 @@ liftPeeker =
         Peeker.EmittingStatus result ptr'' _ ->
           EmittingStatus result ptr'' (offset + minusPtr ptr'' ptr)
         Peeker.ExhaustedStatus nextPeeker ->
-          ExhaustedStatus $
-            read nextPeeker path (offset + minusPtr ptr' ptr)
+          ExhaustedStatus
+            $ read nextPeeker path (offset + minusPtr ptr' ptr)
 
 inContext :: Text -> Reader a -> Reader a
 inContext =
