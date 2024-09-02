@@ -7,23 +7,23 @@ import Coalmine.Tasty
 
 tests :: [TestTree]
 tests =
-  [ testCase "Nested indentation" $
-      let expected =
-            "a :: Parser A\n\
-            \a =\n\
-            \  asum\n\
-            \    [ a,\n\
-            \      b,\n\
-            \      c\n\
-            \    ]"
-          actual =
-            parserDecl "a" "A" $
-              alternativeExp
-                [ "a",
-                  "b",
-                  "c"
-                ]
-       in assertEqual "" expected actual
+  [ testCase "Nested indentation"
+      $ let expected =
+              "a :: Parser A\n\
+              \a =\n\
+              \  asum\n\
+              \    [ a,\n\
+              \      b,\n\
+              \      c\n\
+              \    ]"
+            actual =
+              parserDecl "a" "A"
+                $ alternativeExp
+                  [ "a",
+                    "b",
+                    "c"
+                  ]
+         in assertEqual "" expected actual
   ]
 
 -- * Prerequisites
@@ -47,7 +47,7 @@ alternativeExp = \case
   options ->
     [i|
       asum
-        $optionsList
+        ${optionsList}
     |]
     where
       optionsList =
@@ -56,7 +56,7 @@ alternativeExp = \case
 parserDecl :: B.Builder -> B.Builder -> B.Builder -> B.Builder
 parserDecl parserName modelTypeName exp =
   [i|
-    $parserName :: Parser $modelTypeName
-    $parserName =
-      $exp
+    ${parserName} :: Parser ${modelTypeName}
+    ${parserName} =
+      ${exp}
   |]

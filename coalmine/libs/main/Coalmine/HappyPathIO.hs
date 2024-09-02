@@ -46,7 +46,7 @@ readOneOf = go []
 loadRequiredEnv :: (LenientParser a) => Text -> IO a
 loadRequiredEnv name = do
   loadNonRequiredEnv name >>= \case
-    Nothing -> die [i|Env var $name not found|]
+    Nothing -> die [i|Env var ${name} not found|]
     Just res -> return res
 
 -- | Load and parse a non-required environment variable.
@@ -58,11 +58,11 @@ loadNonRequiredEnv name = do
       Left err ->
         die
           [i|
-            Failed to parse env var $name.
+            Failed to parse env var ${name}.
             Reason:
-              $err
+              ${err}
             Input:
-              $env
+              ${env}
           |]
       Right res -> return $ Just res
     Nothing -> return Nothing

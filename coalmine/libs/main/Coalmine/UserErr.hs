@@ -22,32 +22,33 @@ instance Hashable UserErr
 
 instance BroadPrinting UserErr where
   toBroadBuilder e =
-    ListExtras.intercalate "\n\n" . catMaybes $
-      [ if Text.null e.reason
-          then Nothing
-          else Just $ to e.reason,
-        if null e.contexts
-          then Nothing
-          else
-            let compiledContext =
-                  ListExtras.mapIntercalate
-                    toBroadBuilder
-                    "/"
-                    e.contexts
-             in Just
-                  [j|
+    ListExtras.intercalate "\n\n"
+      . catMaybes
+      $ [ if Text.null e.reason
+            then Nothing
+            else Just $ to e.reason,
+          if null e.contexts
+            then Nothing
+            else
+              let compiledContext =
+                    ListExtras.mapIntercalate
+                      toBroadBuilder
+                      "/"
+                      e.contexts
+               in Just
+                    [j|
                     Context:
-                      $compiledContext
+                      ${compiledContext}
                   |],
-        if Text.null e.suggestion
-          then Nothing
-          else
-            Just
-              [j|
+          if Text.null e.suggestion
+            then Nothing
+            else
+              Just
+                [j|
                 Suggestion:
                   ${e.suggestion}
               |]
-      ]
+        ]
 
 -- * Rendering
 

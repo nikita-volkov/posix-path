@@ -37,7 +37,7 @@ renderForUserAsPlainText e =
       ${e.userReason}
 
       Context:
-        $compiledContext
+        ${compiledContext}
 
       Suggestion:
         ${e.suggestion}

@@ -10,17 +10,29 @@ import TestSuites.Inter.Regressions.FromFormatica qualified as RegressionsFromFo
 tests :: [TestTree]
 tests =
   [ testGroup "Expectations"
-      $ [ testCase ""
-            $ let expected = "a:\n  - a\n  b\n  c.\n\n  - b:\n    a\n    b\n    c\n  - c: $"
+      $ [ testCase "Indents and handles dollar"
+            $ let expected =
+                    "a:\n\
+                    \  - a\n\
+                    \  b\n\
+                    \  c.\n\
+                    \\n\
+                    \  - b:\n\
+                    \    a\n\
+                    \    b\n\
+                    \    c\n\
+                    \  - c: $\n\
+                    \  - d:"
                   actual :: Text
                   actual =
                     [i|
                       a:
-                        - $var.
+                        - ${var}.
 
                         - b:
                           ${var}
-                        - c: $$
+                        - c: $
+                        - d:
                     |]
                     where
                       var :: Text

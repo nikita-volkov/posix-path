@@ -157,9 +157,9 @@ render input startOffset endOffset explanation =
                 & Text.take (fromMaybe currentOffset earlyEnd - currentLineStart)
         megaparsecErrorMessageLayout startLine startColumn quote explanation =
           [i|
-            $startLine:$startColumn:
-            $quote
-            $explanation
+            ${startLine}:${startColumn}:
+            ${quote}
+            ${explanation}
           |]
 
 select :: Int -> Int -> Int -> [Text] -> [Text]

@@ -42,8 +42,8 @@ contentSegment :: Parser ContentSegment
 contentSegment =
   asum
     [ PlainContentSegment <$> takeWhile1 isPlainContentChar,
-      DollarContentSegment <$ string "$$",
-      PlaceholderContentSegment <$> placeholder
+      PlaceholderContentSegment <$> placeholder,
+      DollarContentSegment <$ char '$'
     ]
   where
     isPlainContentChar x =
@@ -56,7 +56,7 @@ placeholder =
     wrapped =
       char '{' *> sepByNonEmpty name (char '.') <* char '}'
     unwrapped =
-      pure <$> name
+      name $> error "Old use detected"
 
 name :: Parser Name
 name =

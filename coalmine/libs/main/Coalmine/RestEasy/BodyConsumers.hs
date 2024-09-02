@@ -34,7 +34,7 @@ attoparsecByteStringParser parser fetch =
     AttoparsecByteString.Done _rmdr res ->
       return $ Right res
     AttoparsecByteString.Fail _rmdr contexts msg ->
-      return $ Left $ to [j|$contextsBdr: $msg|]
+      return $ Left $ to [j|${contextsBdr}: ${msg}|]
       where
         contextsBdr = foldMap (mappend "/") contexts
     AttoparsecByteString.Partial _cont ->

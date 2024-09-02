@@ -46,32 +46,32 @@ consume (Consumer run) inputs =
 renderErr :: Err -> Text
 renderErr = \case
   TooManyArgsErr n ->
-    [i|Got $n unexpected arguments|]
+    [i|Got ${n} unexpected arguments|]
   ConsumptionErr index err -> case err of
     ExhaustedConsumptionErr ->
-      [i|Not enough arguments. Consumed $index|]
+      [i|Not enough arguments. Consumed ${index}|]
     ParsingConsumptionErr err input -> case err of
       InvalidIntParsingErr ->
         fromReason "Not a valid int"
       SmallerIntParsingErr n ->
-        fromReason [i|Int is smaller than $n|]
+        fromReason [i|Int is smaller than ${n}|]
       LargerIntParsingErr n ->
-        fromReason [i|Int is larger than $n|]
+        fromReason [i|Int is larger than ${n}|]
       MissingEnumParsingErr options ->
-        fromReason [i|No such enum option. Expecting one of $optionsString|]
+        fromReason [i|No such enum option. Expecting one of ${optionsString}|]
         where
           optionsString = show options
       TextParsingErr err -> case err of
-        TooShortTextErr n -> fromReason [i|Shorter than $n|]
-        TooLongTextErr n -> fromReason [i|Longer than $n|]
+        TooShortTextErr n -> fromReason [i|Shorter than ${n}|]
+        TooLongTextErr n -> fromReason [i|Longer than ${n}|]
       ParsedParsingErr format _err ->
-        fromReason [i|Does not satisfy the "$format" format|]
+        fromReason [i|Does not satisfy the "${format}" format|]
       where
         fromReason :: TextBuilder -> Text
         fromReason reason =
-          [i|Failed to parse arg "$input" at index $index: $reason|]
+          [i|Failed to parse arg "${input}" at index ${index}: ${reason}|]
     CustomConsumptionErr err ->
-      [i|Postprocessing err ad index $index: $err|]
+      [i|Postprocessing err ad index ${index}: ${err}|]
 
 -- * Args consumer
 

@@ -33,7 +33,7 @@ instance BroadPrinting Err where
         ${err.suggestion}
 
       Context:
-        $renderedContexts
+        ${renderedContexts}
     |]
     where
       renderedContexts =
@@ -48,4 +48,4 @@ newtype Context = Context {splice :: MultilineTextBuilder}
 
 context :: Text -> Text -> Context
 context category details =
-  Context [j|$category: $details|]
+  Context [j|${category}: ${details}|]
