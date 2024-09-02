@@ -43,7 +43,9 @@ contentSegment =
   asum
     [ PlainContentSegment <$> takeWhile1 isPlainContentChar,
       PlaceholderContentSegment <$> placeholder,
-      DollarContentSegment <$ char '$'
+      PlainContentSegment <$> do
+        char '$'
+        string "${" <|> pure "$"
     ]
   where
     isPlainContentChar x =
