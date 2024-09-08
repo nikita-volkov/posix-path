@@ -3,7 +3,7 @@ module Coalmine.UserErr where
 
 import Coalmine.BaseExtras.List qualified as ListExtras
 import Coalmine.Inter
-import Coalmine.InternalPrelude
+import Coalmine.InternalPrelude hiding (init)
 import Coalmine.Printing
 import Data.Text qualified as Text
 
@@ -14,7 +14,12 @@ import Data.Text qualified as Text
 data UserErr = UserErr
   { reason :: Text,
     suggestion :: Text,
-    contexts :: [Text]
+    -- | Sort of a path of the error.
+    --
+    -- Serves as the unique identifier of the error type.
+    contexts :: [Text],
+    -- | Structured view on the input if there is any.
+    input :: Maybe Json
   }
   deriving (Show, Eq, Ord, Generic)
 
@@ -59,15 +64,13 @@ renderAsPlainText =
 -- * Construction
 
 init ::
-  -- | Context.
-  Text ->
   -- | Reason.
   Text ->
   -- | Suggestion
   Text ->
   UserErr
-init context reason suggestion =
-  UserErr reason suggestion [context]
+init reason suggestion =
+  UserErr reason suggestion [] Nothing
 
 -- * Mapping
 
@@ -91,11 +94,28 @@ addContextsInMonadError :: (MonadError UserErr m) => [Text] -> m a -> m a
 addContextsInMonadError contexts =
   handleError $ throwError . addContexts contexts
 
+setInput :: Json -> UserErr -> UserErr
+setInput newInput UserErr {..} =
+  UserErr
+    { input = Just newInput,
+      ..
+    }
+
+setInputInMonadError :: (MonadError UserErr m) => Json -> m a -> m a
+setInputInMonadError input =
+  handleError $ throwError . setInput input
+
 -- * Ops
 
-throwInMonadError :: (MonadError UserErr m) => Text -> Text -> [Text] -> m a
-throwInMonadError reason suggestion contexts =
-  throwError $ UserErr reason suggestion contexts
+throwInMonadError ::
+  (MonadError UserErr m) =>
+  -- | Reason.
+  Text ->
+  -- | Suggestion.
+  Text ->
+  m a
+throwInMonadError reason suggestion =
+  throwError $ init reason suggestion
 
 nestInMonadError :: (MonadError UserErr m) => Text -> Either UserErr a -> m a
 nestInMonadError context = \case
