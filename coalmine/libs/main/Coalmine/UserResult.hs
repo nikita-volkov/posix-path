@@ -6,7 +6,6 @@ module Coalmine.UserResult
 where
 
 import Coalmine.InternalPrelude
-import Coalmine.Name (Name)
 import Coalmine.UserErr (UserErr (..))
 import Coalmine.UserErr qualified as UserErr
 
@@ -26,6 +25,6 @@ mapDef :: (Either UserErr a -> Either UserErr b) -> UserResult a -> UserResult b
 mapDef mapper (UserResult either) =
   UserResult (mapper either)
 
-inContext :: Name -> UserResult a -> UserResult a
+inContext :: Text -> UserResult a -> UserResult a
 inContext context =
   mapDef $ first (UserErr.addContext context)

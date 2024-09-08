@@ -8,18 +8,17 @@ module Coalmine.UserErrPrelude
 where
 
 import Coalmine.InternalPrelude
-import Coalmine.Name (Name)
 import Coalmine.UserErr (UserErr)
 import Coalmine.UserErr qualified as UserErr
 
-throwUserErr :: (MonadError UserErr m) => Text -> Text -> [Name] -> m a
+throwUserErr :: (MonadError UserErr m) => Text -> Text -> [Text] -> m a
 throwUserErr reason suggestion contexts =
   throwError $ UserErr.UserErr reason suggestion contexts
 
-rethrowUserErrAddingContext :: (MonadError UserErr m) => Name -> m a -> m a
+rethrowUserErrAddingContext :: (MonadError UserErr m) => Text -> m a -> m a
 rethrowUserErrAddingContext =
   UserErr.addContextInMonadError
 
-rethrowUserErrAddingContexts :: (MonadError UserErr m) => [Name] -> m a -> m a
+rethrowUserErrAddingContexts :: (MonadError UserErr m) => [Text] -> m a -> m a
 rethrowUserErrAddingContexts =
   UserErr.addContextsInMonadError

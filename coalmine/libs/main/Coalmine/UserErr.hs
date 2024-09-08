@@ -1,9 +1,9 @@
+-- | Report about an error.
 module Coalmine.UserErr where
 
 import Coalmine.BaseExtras.List qualified as ListExtras
 import Coalmine.Inter
 import Coalmine.InternalPrelude
-import Coalmine.Name (Name)
 import Coalmine.Printing
 import Data.Text qualified as Text
 
@@ -14,7 +14,7 @@ import Data.Text qualified as Text
 data UserErr = UserErr
   { reason :: Text,
     suggestion :: Text,
-    contexts :: [Name]
+    contexts :: [Text]
   }
   deriving (Show, Eq, Ord, Generic)
 
@@ -60,7 +60,7 @@ renderAsPlainText =
 
 init ::
   -- | Context.
-  Name ->
+  Text ->
   -- | Reason.
   Text ->
   -- | Suggestion
@@ -71,33 +71,33 @@ init context reason suggestion =
 
 -- * Mapping
 
-addContext :: Name -> UserErr -> UserErr
+addContext :: Text -> UserErr -> UserErr
 addContext context appException =
   appException {contexts = context : appException.contexts}
 
-addContextInEither :: Name -> Either UserErr a -> Either UserErr a
+addContextInEither :: Text -> Either UserErr a -> Either UserErr a
 addContextInEither context =
   first $ addContext context
 
-addContextInMonadError :: (MonadError UserErr m) => Name -> m a -> m a
+addContextInMonadError :: (MonadError UserErr m) => Text -> m a -> m a
 addContextInMonadError context =
   handleError $ throwError . addContext context
 
-addContexts :: [Name] -> UserErr -> UserErr
+addContexts :: [Text] -> UserErr -> UserErr
 addContexts contexts appException =
   appException {contexts = contexts <> appException.contexts}
 
-addContextsInMonadError :: (MonadError UserErr m) => [Name] -> m a -> m a
+addContextsInMonadError :: (MonadError UserErr m) => [Text] -> m a -> m a
 addContextsInMonadError contexts =
   handleError $ throwError . addContexts contexts
 
 -- * Ops
 
-throwInMonadError :: (MonadError UserErr m) => Text -> Text -> [Name] -> m a
+throwInMonadError :: (MonadError UserErr m) => Text -> Text -> [Text] -> m a
 throwInMonadError reason suggestion contexts =
   throwError $ UserErr reason suggestion contexts
 
-nestInMonadError :: (MonadError UserErr m) => Name -> Either UserErr a -> m a
+nestInMonadError :: (MonadError UserErr m) => Text -> Either UserErr a -> m a
 nestInMonadError context = \case
   Right a -> return a
   Left err -> throwError $ addContext context err
