@@ -9,6 +9,7 @@ module Coalmine.Literal where
 import Coalmine.InternalPrelude
 import Coalmine.Parsing
 import Data.Attoparsec.Text qualified as Attoparsec
+import Data.Text.IO qualified as Text
 import Language.Haskell.TH.Syntax qualified as Th
 import TextBuilderDev qualified
 
@@ -70,3 +71,10 @@ parseText :: (Literal a) => Text -> Either Text a
 parseText =
   first fromString
     . Attoparsec.parseOnly (literalParser <* Attoparsec.endOfInput)
+
+loadFromFile :: (Literal a) => FilePath -> IO a
+loadFromFile path =
+  Text.readFile path
+    & fmap parseText
+    & fmap (either (fail . toList) return)
+    & join
