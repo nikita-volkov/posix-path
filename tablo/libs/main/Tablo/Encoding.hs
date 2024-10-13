@@ -80,14 +80,14 @@ instance Monoid (TableEncoder a) where
 column ::
   -- | Header.
   Text ->
+  -- | Encoder.
+  CellEncoder cell ->
   -- | Field accessor.
   --
   -- When 'Nothing' the cell is empty.
   (row -> Maybe cell) ->
-  -- | Encoder.
-  CellEncoder cell ->
   TableEncoder row
-column header extractor cellEncoder =
+column header cellEncoder extractor =
   TableEncoder
     { header =
         pure (Text.encodeUtf8 header),
