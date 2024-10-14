@@ -1,4 +1,4 @@
-module Logic where
+module Logic.Simple where
 
 import Coalmine.Prelude
 

@@ -61,5 +61,8 @@ common language-settings
 library
   import:          language-settings
   hs-source-dirs:  library
-  exposed-modules: Logic
+  exposed-modules:
+    Logic.Simple
+    Logic.Transformer
+
   build-depends:   coalmine
