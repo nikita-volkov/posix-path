@@ -1,0 +1,68 @@
+cabal-version: 3.4
+name:          unicode-class
+version:       0
+
+common base
+  default-language:   Haskell2010
+  default-extensions:
+    NoFieldSelectors
+    NoImplicitPrelude
+    NoMonomorphismRestriction
+    ApplicativeDo
+    Arrows
+    BangPatterns
+    BinaryLiterals
+    BlockArguments
+    ConstraintKinds
+    DataKinds
+    DefaultSignatures
+    DeriveDataTypeable
+    DeriveFoldable
+    DeriveFunctor
+    DeriveGeneric
+    DeriveLift
+    DeriveTraversable
+    DerivingVia
+    DuplicateRecordFields
+    EmptyCase
+    EmptyDataDecls
+    FlexibleContexts
+    FlexibleInstances
+    FunctionalDependencies
+    GADTs
+    GeneralizedNewtypeDeriving
+    HexFloatLiterals
+    ImportQualifiedPost
+    LambdaCase
+    LiberalTypeSynonyms
+    MultiParamTypeClasses
+    MultiWayIf
+    NumericUnderscores
+    OverloadedLabels
+    OverloadedRecordDot
+    OverloadedStrings
+    ParallelListComp
+    PatternGuards
+    PatternSynonyms
+    QuasiQuotes
+    RankNTypes
+    RecordWildCards
+    ScopedTypeVariables
+    StandaloneDeriving
+    StrictData
+    TemplateHaskell
+    TupleSections
+    TypeApplications
+    TypeFamilies
+    TypeOperators
+    UndecidableInstances
+    ViewPatterns
+
+library
+  import:          base
+  hs-source-dirs:  libs/main
+  exposed-modules: UnicodeClass
+  build-depends:
+    , base
+    , bytestring
+    , text
