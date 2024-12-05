@@ -48,9 +48,9 @@ varLengthSignedInteger minVal maxVal valOffset =
                 then
                   if absValueState > absValueNegativeBound
                     then
-                      return $
-                        let message = "Value is smaller than " <> showAs minVal
-                         in FailedStatus message path startOffset
+                      return
+                        $ let message = "Value is smaller than " <> (from . show) minVal
+                           in FailedStatus message path startOffset
                     else
                       if testBit byte 6
                         then decodeTailInNegativeMode 6 absValueState (plusPtr currentPtr 1) maxPtr
@@ -65,9 +65,9 @@ varLengthSignedInteger minVal maxVal valOffset =
                   updatedPayloadBitOffset = payloadBitOffset + 7
               if absValueState > absValueNegativeBound
                 then
-                  return $
-                    let message = "Value is smaller than " <> showAs minVal
-                     in FailedStatus message path startOffset
+                  return
+                    $ let message = "Value is smaller than " <> (from . show) minVal
+                       in FailedStatus message path startOffset
                 else
                   if testBit byte 7
                     then decodeTailInNegativeMode updatedPayloadBitOffset updatedAbsValueState (plusPtr currentPtr 1) maxPtr
@@ -81,9 +81,9 @@ varLengthSignedInteger minVal maxVal valOffset =
                   updatedPayloadBitOffset = payloadBitOffset + 7
               if absValueState > absValuePositiveBound
                 then
-                  return $
-                    let message = "Value is larger than " <> showAs maxVal
-                     in FailedStatus message path startOffset
+                  return
+                    $ let message = "Value is larger than " <> (from . show) maxVal
+                       in FailedStatus message path startOffset
                 else
                   if testBit byte 7
                     then decodeTailInPositiveMode updatedPayloadBitOffset updatedAbsValueState (plusPtr currentPtr 1) maxPtr

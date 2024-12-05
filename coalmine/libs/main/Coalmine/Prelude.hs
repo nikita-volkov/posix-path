@@ -19,7 +19,7 @@ import Coalmine.HashableExtras as Exports
 import Coalmine.Inter as Exports
 import Coalmine.InternalPrelude as Exports
 import Coalmine.Interval as Exports (Interval)
-import Coalmine.IsomorphismClassInstances as Exports ()
+import Coalmine.LawfulConversionsInstances as Exports ()
 import Coalmine.Literal as Exports (Literal (..), l)
 import Coalmine.MtlExtras as Exports
 import Coalmine.MultilineTextBuilder as Exports (MultilineTextBuilder, Splice, TextBlock)

@@ -59,7 +59,7 @@ class Literal a where
 -- > exampleText = $$(l "Example text")
 l :: (Literal a, Lift a) => String -> Th.Code Th.Q a
 l literal = Th.Code do
-  literal <- case parseWith literalParser (to literal) of
+  literal <- case parseWith literalParser (from literal) of
     Right literal -> return literal
     Left err -> fail $ to err
   Th.examineCode $ Th.liftTyped literal

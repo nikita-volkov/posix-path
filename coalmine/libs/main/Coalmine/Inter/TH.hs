@@ -11,9 +11,9 @@ import THLego.Helpers qualified as Helpers
 
 -- * --
 
-fromLinesExp :: BVec D.Line -> Exp
-fromLinesExp =
-  AppE (VarE 'from) . linesExp
+toLinesExp :: BVec D.Line -> Exp
+toLinesExp =
+  AppE (VarE 'to) . linesExp
 
 linesExp :: BVec D.Line -> Exp
 linesExp =
@@ -44,9 +44,9 @@ lineExps = \case
           D.DollarContentSegment ->
             next (lit <> "$")
           D.PlaceholderContentSegment name ->
-            prependLitIfNeeded lit $
-              indent indentation (placeholder name)
-                : next mempty
+            prependLitIfNeeded lit
+              $ indent indentation (placeholder name)
+              : next mempty
       finish lit =
         prependLitIfNeeded lit []
       prependLitIfNeeded lit =
@@ -76,8 +76,8 @@ indent indent =
 
 placeholder :: NonEmpty D.Name -> Exp
 placeholder (modelHead :| modelTail) =
-  AppE (VarE 'toBroadBuilder) $
-    foldr
+  AppE (VarE 'toBroadBuilder)
+    $ foldr
       ( \model next !basis ->
           next $ GetFieldE basis (nameString model)
       )

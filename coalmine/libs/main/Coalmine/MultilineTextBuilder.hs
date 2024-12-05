@@ -20,7 +20,7 @@ where
 import Coalmine.BaseExtras.List qualified as List
 import Coalmine.Building
 import Coalmine.InternalPrelude hiding (intercalate, null)
-import Coalmine.IsomorphismClassInstances ()
+import Coalmine.LawfulConversionsInstances ()
 import Data.Text qualified as Text
 import Data.Text.Lazy qualified as TextLazy
 import Data.Text.Lazy.Builder qualified as TextLazyBuilder
@@ -66,38 +66,76 @@ instance Eq Builder where
 
 --
 
-instance IsomorphicTo Builder Builder where
-  to = id
+instance IsSome String Builder where
+  to = to . to @TextBuilder
+  maybeFrom = fmap (from @Text) . maybeFrom
 
-instance IsomorphicTo Builder String where
-  to = fromString
+instance IsMany String Builder where
+  from = from @Text . from
 
-instance IsomorphicTo Builder Text where
+--
+
+instance IsSome Text Builder where
+  to = to . to @TextBuilder
+
+instance IsSome Builder Text where
   to = text
 
-instance IsomorphicTo Builder TextBuilder where
-  to = to . to @Text
+instance IsMany Text Builder
 
-instance IsomorphicTo Builder TextLazy.Text where
-  to = to . to @TextBuilder
+instance IsMany Builder Text
 
-instance IsomorphicTo Builder TextLazyBuilder.Builder where
-  to = to . to @TextBuilder
+instance Is Text Builder
 
-instance IsomorphicTo String Builder where
-  to = to . to @TextBuilder
+instance Is Builder Text
 
-instance IsomorphicTo Text Builder where
-  to = to . to @TextBuilder
+--
 
-instance IsomorphicTo TextBuilder Builder where
+instance IsSome TextBuilder Builder where
   to (Builder _ builder) = builder mempty
 
-instance IsomorphicTo TextLazy.Text Builder where
+instance IsSome Builder TextBuilder where
+  to = to . to @Text
+
+instance IsMany TextBuilder Builder
+
+instance IsMany Builder TextBuilder
+
+instance Is TextBuilder Builder
+
+instance Is Builder TextBuilder
+
+--
+
+instance IsSome TextLazy.Text Builder where
   to = to . to @TextBuilder
 
-instance IsomorphicTo TextLazyBuilder.Builder Builder where
+instance IsSome Builder TextLazy.Text where
   to = to . to @TextBuilder
+
+instance IsMany TextLazy.Text Builder
+
+instance IsMany Builder TextLazy.Text
+
+instance Is TextLazy.Text Builder
+
+instance Is Builder TextLazy.Text
+
+--
+
+instance IsSome TextLazyBuilder.Builder Builder where
+  to = to . to @TextBuilder
+
+instance IsSome Builder TextLazyBuilder.Builder where
+  to = to . to @TextBuilder
+
+instance IsMany TextLazyBuilder.Builder Builder
+
+instance IsMany Builder TextLazyBuilder.Builder
+
+instance Is TextLazyBuilder.Builder Builder
+
+instance Is Builder TextLazyBuilder.Builder
 
 -- * Execution
 

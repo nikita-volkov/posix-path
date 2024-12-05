@@ -21,11 +21,11 @@ renderJson =
 
 data Schema value
   = Schema
-      !Text
-      -- ^ Name of the format.
+      -- | Name of the format.
       -- Empty means no name.
+      !Text
+      -- | Projection into a composable representation directly renderable to JSON string.
       (value -> Jsonifier.Json)
-      -- ^ Projection into a composable representation directly renderable to JSON string.
       (AesonValueParser.Value value)
 
 instance Invariant Schema where
@@ -61,10 +61,10 @@ stringSchema minLength maxLength =
     ( AesonValueParser.string . AesonValueParser.matchedText $ \text ->
         let length = Text.length text
          in if length < minLength
-              then Left $ "Shorter than " <> showAs minLength
+              then Left $ "Shorter than " <> (from . show) minLength
               else
                 if length > maxLength
-                  then Left $ "Longer than " <> showAs maxLength
+                  then Left $ "Longer than " <> (from . show) maxLength
                   else Right text
     )
 
@@ -81,12 +81,12 @@ uuidSchema =
 data OneOfSchemaVariant sum
   = forall variant.
     OneOfSchemaVariant
+      -- | Narrow from the sum.
       (sum -> Maybe variant)
-      -- ^ Narrow from the sum.
+      -- | Broaden to the sum.
       (variant -> sum)
-      -- ^ Broaden to the sum.
+      -- | Variant schema
       (Schema variant)
-      -- ^ Variant schema
 
 instance Invariant OneOfSchemaVariant where
   invmap f g (OneOfSchemaVariant narrow broaden schema) =

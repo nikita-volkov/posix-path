@@ -16,7 +16,7 @@ runCompletely get input =
       if ByteString.null rem
         then Right res
         else Left "Too much input"
-    Fail err _ -> Left (to err)
+    Fail err _ -> Left (from err)
     Partial _ -> Left "Not enough input"
 
 intInSLeb128 :: Get Int

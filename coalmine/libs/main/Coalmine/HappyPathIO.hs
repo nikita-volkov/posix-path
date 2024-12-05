@@ -32,7 +32,7 @@ readOneOf = go []
           (ByteString.readFile (printCompactAsString path))
           (\e -> go ((e, path) : errs) tail)
       [] ->
-        die (from @TextBuilder report)
+        die (to @_ @TextBuilder report)
         where
           report =
             "Failed to read from any of the following files:\n"
@@ -52,7 +52,7 @@ loadRequiredEnv name = do
 -- | Load and parse a non-required environment variable.
 loadNonRequiredEnv :: (LenientParser a) => Text -> IO (Maybe a)
 loadNonRequiredEnv name = do
-  env <- fmap to <$> lookupEnv (to name)
+  env <- fmap from <$> lookupEnv (to name)
   case env of
     Just env -> case parse parser env of
       Left err ->

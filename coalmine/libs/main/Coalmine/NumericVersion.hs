@@ -61,11 +61,19 @@ instance Special NumericVersion where
   specialize = Literal.parseText
   generalize = Literal.toText
 
-instance IsomorphicTo (NonEmpty Word) NumericVersion where
+instance IsSome (NonEmpty Word) NumericVersion where
   to = toNonEmpty
 
-instance IsomorphicTo NumericVersion (NonEmpty Word) where
+instance IsSome NumericVersion (NonEmpty Word) where
   to = fromNonEmpty
+
+instance IsMany (NonEmpty Word) NumericVersion
+
+instance IsMany NumericVersion (NonEmpty Word)
+
+instance Is (NonEmpty Word) NumericVersion
+
+instance Is NumericVersion (NonEmpty Word)
 
 fromNonEmpty :: NonEmpty Word -> NumericVersion
 fromNonEmpty (head :| tail) =

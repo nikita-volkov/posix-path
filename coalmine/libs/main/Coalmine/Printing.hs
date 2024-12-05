@@ -10,7 +10,7 @@ import TextBuilderDev qualified as Ub
 
 -- * Compact
 
-printCompactAs :: (IsomorphicTo b TextBuilder, CompactPrinting a) => a -> b
+printCompactAs :: (IsSome b TextBuilder, CompactPrinting a) => a -> b
 printCompactAs = to . toCompactBuilder
 
 printCompactAsText :: (CompactPrinting a) => a -> Text
@@ -36,7 +36,7 @@ instance CompactPrinting Text where
   toCompactBuilder = to
 
 instance CompactPrinting String where
-  toCompactBuilder = to
+  toCompactBuilder = from
 
 instance CompactPrinting TextBuilder where
   toCompactBuilder = id
@@ -73,7 +73,7 @@ instance CompactPrinting Word64 where
 
 -- * Broad
 
-printBroadAs :: (IsomorphicTo b Mb.Builder, BroadPrinting a) => a -> b
+printBroadAs :: (IsSome b Mb.Builder, BroadPrinting a) => a -> b
 printBroadAs = to . toBroadBuilder
 
 printBroadAsText :: (BroadPrinting a) => a -> Text
@@ -100,7 +100,7 @@ instance BroadPrinting Text where
   toBroadBuilder = to
 
 instance BroadPrinting String where
-  toBroadBuilder = to
+  toBroadBuilder = from
 
 instance BroadPrinting TextBuilder where
   toBroadBuilder = to

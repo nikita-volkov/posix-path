@@ -142,11 +142,11 @@ library
     Coalmine.Interval
     Coalmine.IsomorphismClasses
     Coalmine.IsomorphismClassesOptics
-    Coalmine.IsomorphismClassInstances
     Coalmine.Isomorphisms
     Coalmine.Json
     Coalmine.JsonEncoder
     Coalmine.JsonSchema
+    Coalmine.LawfulConversionsInstances
     Coalmine.Lingua
     Coalmine.Literal
     Coalmine.Located
@@ -271,8 +271,8 @@ library
     , headed-megaparsec
     , http-media
     , http-types
-    , isomorphism-class
     , jsonifier
+    , lawful-conversions
     , leb128-cereal
     , lift-instances
     , machines

@@ -14,7 +14,7 @@ i = QuasiQuoter.pureAttoparsedExp parser
     parser =
       Parsers.quasiQuote
         <&> Deindentation.quasiQuote
-        <&> InterTH.fromLinesExp
+        <&> InterTH.toLinesExp
 
 j :: QuasiQuoter
 j = QuasiQuoter.pureAttoparsedExp parser
