@@ -65,4 +65,6 @@ library
     Reactor
     Reactor.Model
 
-  build-depends:   base
+  build-depends:
+    , async
+    , base
