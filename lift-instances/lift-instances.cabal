@@ -1,18 +1,15 @@
 cabal-version: 3.0
-name:          lift-instances
-version:       0
-author:        Nikita Volkov <nikita.y.volkov@mail.ru>
-maintainer:    Nikita Volkov <nikita.y.volkov@mail.ru>
-copyright:     (c) 2023 Nikita Volkov
-license:       MIT
-license-file:  LICENSE
+name: lift-instances
+version: 0
+author: Nikita Volkov <nikita.y.volkov@mail.ru>
+maintainer: Nikita Volkov <nikita.y.volkov@mail.ru>
+copyright: (c) 2023 Nikita Volkov
+license: MIT
+license-file: LICENSE
 
 common language-settings
-  default-language:   Haskell2010
+  default-language: Haskell2010
   default-extensions:
-    NoFieldSelectors
-    NoImplicitPrelude
-    NoMonomorphismRestriction
     ApplicativeDo
     Arrows
     BangPatterns
@@ -42,6 +39,9 @@ common language-settings
     LiberalTypeSynonyms
     MultiParamTypeClasses
     MultiWayIf
+    NoFieldSelectors
+    NoImplicitPrelude
+    NoMonomorphismRestriction
     NumericUnderscores
     OverloadedLabels
     OverloadedRecordDot
@@ -64,10 +64,14 @@ common language-settings
     ViewPatterns
 
 library
-  import:          language-settings
-  hs-source-dirs:  library
-  exposed-modules: LiftInstances
+  import: language-settings
+  hs-source-dirs: library
+  exposed-modules:
+    LiftInstances
+
   other-modules:
+    LiftInstances.Fixed
+
   build-depends:
-    , rerebase
-    , th-lift
+    base,
+    th-lift ^>=0.8.6,
