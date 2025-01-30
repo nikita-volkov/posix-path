@@ -20,7 +20,7 @@ instance Syntax.Syntax Component where
       then do
         mplus
           ( do
-              Attoparsec.char '.'
+              _ <- Attoparsec.char '.'
               mplus
                 (Attoparsec.char '.' $> DotDotComponent)
                 (pure DotComponent)

@@ -104,7 +104,7 @@ sepEnd1 :: (Ord err, Stream strm) => HeadedParsec err strm separator -> HeadedPa
 sepEnd1 sepP endP elP = do
   headEl <- elP
   let loop !list = do
-        sepP
+        _ <- sepP
         asum
           [ do
               end <- endP

@@ -12,14 +12,15 @@ scanVector :: (GVec.Vector iv i, GVec.Vector ov o) => Mealy i o -> iv i -> ov o
 scanVector mealy inputVec =
   runST $ do
     mVec <- GMVec.unsafeNew (GVec.length inputVec)
-    GVec.ifoldM
-      ( \(Mealy runMealy) idx input ->
-          case runMealy input of
-            (output, nextMealy) ->
-              GMVec.unsafeWrite mVec idx output $> nextMealy
-      )
-      mealy
-      inputVec
+    _ <-
+      GVec.ifoldM
+        ( \(Mealy runMealy) idx input ->
+            case runMealy input of
+              (output, nextMealy) ->
+                GMVec.unsafeWrite mVec idx output $> nextMealy
+        )
+        mealy
+        inputVec
     GVec.unsafeFreeze mVec
 
 -- * --
@@ -88,5 +89,6 @@ ema multiplier =
 -- - https://www.tradingview.com/ideas/ema/
 tradingViewEma :: Double -> Double -> Mealy Double Double
 tradingViewEma smoothing length =
-  ema $
-    smoothing / succ length
+  ema
+    $ smoothing
+    / succ length

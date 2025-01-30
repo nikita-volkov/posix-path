@@ -152,7 +152,7 @@ validatedChar predicate =
 specificChar :: Char -> Line ()
 specificChar char =
   Line $ \_line column -> do
-    A.char char
+    _ <- A.char char
     case succ column of
       column -> return ((), column)
 

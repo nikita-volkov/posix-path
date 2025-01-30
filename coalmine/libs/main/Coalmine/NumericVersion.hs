@@ -52,7 +52,7 @@ instance Literal.Literal NumericVersion where
     return (NumericVersion head tail)
     where
       tailSegmentParser = do
-        Attoparsec.char '.'
+        _ <- Attoparsec.char '.'
         Attoparsec.decimal
 
 instance Special NumericVersion where

@@ -1,5 +1,5 @@
 {-# LANGUAGE CPP #-}
-{-# OPTIONS_GHC -Wno-orphans  -Wno-unused-imports #-}
+{-# OPTIONS_GHC -Wno-orphans -Wno-unused-imports #-}
 
 module LiftInstances.Fixed where
 

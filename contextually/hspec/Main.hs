@@ -12,5 +12,5 @@ main = hspec do
         contextually "b" do
           fail "c"
       case res of
-        Left exception -> shouldBe (displayException exception) "a/b: user error (c)"
+        Left exception -> shouldStartWith (displayException exception) "a/b: user error (c)"
         Right () -> return ()

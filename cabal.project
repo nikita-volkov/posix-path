@@ -6,7 +6,7 @@ packages:
 source-repository-package
   type: git
   location: https://github.com/nikita-volkov/structure-kit
-  tag: 33229b4e548300fd858096e9835b8eceee999b16
+  tag: a2c2df159b2c7a478f3f362a969b5b9a6f725259
 
 allow-newer:
   , lzma-conduit:*

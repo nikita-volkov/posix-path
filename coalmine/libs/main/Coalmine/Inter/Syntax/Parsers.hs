@@ -44,7 +44,7 @@ contentSegment =
     [ PlainContentSegment <$> takeWhile1 isPlainContentChar,
       PlaceholderContentSegment <$> placeholder,
       PlainContentSegment <$> do
-        char '$'
+        _ <- char '$'
         string "${" <|> pure "$"
     ]
   where
