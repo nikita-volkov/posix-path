@@ -10,7 +10,3 @@ source-repository-package
 
 allow-newer:
   , lzma-conduit:*
-
-constraints:
-  , lawful-conversions >=0.1.4 && <0.2
-  , text-builder-dev >=0.3.9 && <0.4
