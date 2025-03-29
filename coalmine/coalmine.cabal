@@ -1,23 +1,20 @@
-cabal-version:      3.0
-name:               coalmine
-version:            0
-synopsis:           My evolving toolkit that I come to projects with
-description:        Collection of unpolished utils for application development.
-homepage:           https://github.com/nikita-volkov/coalmine
-bug-reports:        https://github.com/nikita-volkov/coalmine/issues
-author:             Nikita Volkov <nikita.y.volkov@mail.ru>
-maintainer:         Nikita Volkov <nikita.y.volkov@mail.ru>
-copyright:          (c) 2019 Nikita Volkov
-license:            MIT
-license-file:       LICENSE
+cabal-version: 3.0
+name: coalmine
+version: 0
+synopsis: My evolving toolkit that I come to projects with
+description: Collection of unpolished utils for application development.
+homepage: https://github.com/nikita-volkov/coalmine
+bug-reports: https://github.com/nikita-volkov/coalmine/issues
+author: Nikita Volkov <nikita.y.volkov@mail.ru>
+maintainer: Nikita Volkov <nikita.y.volkov@mail.ru>
+copyright: (c) 2019 Nikita Volkov
+license: MIT
+license-file: LICENSE
 extra-source-files: domain/*.domain.yaml
 
 common language-settings
-  default-language:   Haskell2010
+  default-language: Haskell2010
   default-extensions:
-    NoFieldSelectors
-    NoImplicitPrelude
-    NoMonomorphismRestriction
     ApplicativeDo
     Arrows
     BangPatterns
@@ -48,6 +45,9 @@ common language-settings
     MultiParamTypeClasses
     MultiWayIf
     NamedFieldPuns
+    NoFieldSelectors
+    NoImplicitPrelude
+    NoMonomorphismRestriction
     NumericUnderscores
     OverloadedLabels
     OverloadedRecordDot
@@ -70,8 +70,8 @@ common language-settings
     ViewPatterns
 
 library
-  import:          language-settings
-  hs-source-dirs:  libs/main
+  import: language-settings
+  hs-source-dirs: libs/main
   exposed-modules:
     Coalmine.AppException
     Coalmine.ArgsParser
@@ -79,8 +79,8 @@ library
     Coalmine.BaseExtras.Alternative
     Coalmine.BaseExtras.Applicative
     Coalmine.BaseExtras.Function
-    Coalmine.BaseExtras.Integer
     Coalmine.BaseExtras.IO
+    Coalmine.BaseExtras.Integer
     Coalmine.BaseExtras.List
     Coalmine.BaseExtras.MonadPlus
     Coalmine.BaseExtras.Monoid
@@ -115,8 +115,8 @@ library
     Coalmine.DiffOf
     Coalmine.Domain
     Coalmine.ErrBuilder
-    Coalmine.ErrorReport
     Coalmine.ErrReport
+    Coalmine.ErrorReport
     Coalmine.EvenSimplerPaths
     Coalmine.EvenSimplerPaths.AttoparsecHelpers
     Coalmine.EvenSimplerPaths.Charsets
@@ -124,17 +124,17 @@ library
     Coalmine.EvenSimplerPaths.QuickCheckGens
     Coalmine.EvenSimplerPathsClasses
     Coalmine.EvenSimplerPathsClassesLaws
-    Coalmine.Fileset
     Coalmine.FileSystem
+    Coalmine.Fileset
     Coalmine.FoldlExtras.Fold
     Coalmine.Formatting
     Coalmine.Formatting.Rendering
     Coalmine.Gen
     Coalmine.GithubActionKit
+    Coalmine.HCurrying
     Coalmine.HandleService
     Coalmine.HappyPathIO
     Coalmine.HashableExtras
-    Coalmine.HCurrying
     Coalmine.HeadedMegaparsecExtras
     Coalmine.HeadedMegaparsecExtras.Text
     Coalmine.Inter
@@ -204,6 +204,8 @@ library
     Coalmine.Streamer
     Coalmine.SyntaxModelling
     Coalmine.SyntaxModellingQuickCheck
+    Coalmine.TH.Code
+    Coalmine.TH.Exp
     Coalmine.Tasty
     Coalmine.Tasty.TestTrees
     Coalmine.Tasty.TestTrees.Cereal
@@ -212,8 +214,6 @@ library
     Coalmine.TerminalMarkup
     Coalmine.TextAppender
     Coalmine.TextExtras.Text
-    Coalmine.TH.Code
-    Coalmine.TH.Exp
     Coalmine.TimeExtras.Conversions
     Coalmine.TimeExtras.IO
     Coalmine.TransformersExtras.Cont
@@ -244,71 +244,71 @@ library
     Coalmine.XmlSyntaxParser.Attoparsec
 
   build-depends:
-    , acc
-    , aeson
-    , aeson-unqualified-ast
-    , aeson-value-parser
-    , attoparsec
-    , attoparsec-aeson
-    , attoparsec-data
-    , case-insensitive
-    , cereal
-    , cereal-text
-    , cereal-unordered-containers
-    , cereal-vector
-    , conduit
-    , data-default
-    , data-dword
-    , Decimal
-    , deferred-folds
-    , deque
-    , directory
-    , domain
-    , domain-optics
-    , foldl
-    , from-sum
-    , ghc
-    , headed-megaparsec
-    , http-media
-    , http-types
-    , jsonifier
-    , lawful-conversions
-    , leb128-cereal
-    , lift-instances
-    , machines
-    , megaparsec
-    , natural-sort
-    , network-ip
-    , optics
-    , optparse-applicative
-    , qq-extras
-    , QuickCheck
-    , quickcheck-classes
-    , quickcheck-instances
-    , rerebase
-    , semialign
-    , structure-kit
-    , tasty
-    , tasty-hunit
-    , tasty-quickcheck
-    , template-haskell
-    , text-builder
-    , text-builder-dev
-    , th-lego
-    , tuple
-    , turtle
-    , vector-builder
-    , vector-extras
-    , vector-th-unbox
-    , wai
-    , witherable
-    , yaml
+    Decimal,
+    QuickCheck,
+    acc,
+    aeson,
+    aeson-unqualified-ast,
+    aeson-value-parser,
+    attoparsec,
+    attoparsec-aeson,
+    attoparsec-data,
+    case-insensitive,
+    cereal,
+    cereal-text,
+    cereal-unordered-containers,
+    cereal-vector,
+    conduit,
+    data-default,
+    data-dword,
+    deferred-folds,
+    deque,
+    directory,
+    domain,
+    domain-optics,
+    foldl,
+    from-sum,
+    ghc,
+    headed-megaparsec,
+    http-media,
+    http-types,
+    jsonifier,
+    lawful-conversions ^>=0.1.6,
+    leb128-cereal,
+    lift-instances,
+    machines,
+    megaparsec,
+    natural-sort,
+    network-ip,
+    optics,
+    optparse-applicative,
+    qq-extras,
+    quickcheck-classes,
+    quickcheck-instances,
+    rerebase,
+    semialign,
+    structure-kit,
+    tasty,
+    tasty-hunit,
+    tasty-quickcheck,
+    template-haskell,
+    text-builder,
+    text-builder-dev ^>=0.3.9.1,
+    th-lego,
+    tuple,
+    turtle,
+    vector-builder,
+    vector-extras,
+    vector-th-unbox,
+    wai,
+    witherable,
+    yaml,
 
 test-suite tasty
-  import:         language-settings
-  type:           exitcode-stdio-1.0
+  import: language-settings
+  type: exitcode-stdio-1.0
   hs-source-dirs: tests/tasty
-  main-is:        Main.hs
+  main-is: Main.hs
   other-modules:
     TestSuites.BaseExtras.List
     TestSuites.CerealExtras.Compact
@@ -326,15 +326,15 @@ test-suite tasty
     TestSuites.TimeExtrasConversions
 
   build-depends:
-    , coalmine
-    , conduit
-    , megaparsec
-    , rerebase <2
+    coalmine,
+    conduit,
+    megaparsec,
+    rerebase <2,
 
 test-suite open-api-demo
-  import:         language-settings
-  type:           exitcode-stdio-1.0
+  import: language-settings
+  type: exitcode-stdio-1.0
   hs-source-dirs: tests/open-api-demo
-  main-is:        Main.hs
-  other-modules:  OpenApiDemo.Model
-  build-depends:  coalmine
+  main-is: Main.hs
+  other-modules: OpenApiDemo.Model
+  build-depends: coalmine
