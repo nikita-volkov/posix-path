@@ -58,7 +58,7 @@ placeholder =
     wrapped =
       char '{' *> sepByNonEmpty name (char '.') <* char '}'
     unwrapped =
-      name $> error "Old use detected"
+      name $> error "Placeholder without curlies. This is no longer supported"
 
 name :: Parser Name
 name =
