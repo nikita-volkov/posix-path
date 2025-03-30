@@ -42,23 +42,16 @@ contentSegment :: Parser ContentSegment
 contentSegment =
   asum
     [ PlainContentSegment <$> takeWhile1 isPlainContentChar,
-      PlaceholderContentSegment <$> placeholder,
-      PlainContentSegment <$> do
+      do
         _ <- char '$'
-        string "${" <|> pure "$"
+        asum
+          [ PlaceholderContentSegment <$> (char '{' *> sepByNonEmpty name (char '.') <* char '}'),
+            PlainContentSegment <$> (string "${" <|> pure "$")
+          ]
     ]
   where
     isPlainContentChar x =
       x /= '\n' && x /= '\r' && x /= '$'
-
-placeholder :: Parser (NonEmpty Name)
-placeholder =
-  char '$' *> (wrapped <|> unwrapped)
-  where
-    wrapped =
-      char '{' *> sepByNonEmpty name (char '.') <* char '}'
-    unwrapped =
-      name $> error "Placeholder without curlies. This is no longer supported"
 
 name :: Parser Name
 name =
