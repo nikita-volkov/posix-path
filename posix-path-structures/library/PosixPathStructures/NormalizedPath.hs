@@ -38,13 +38,13 @@ import Test.QuickCheck qualified as QuickCheck
 data NormalizedPath
   = -- | Absolute path.
     AbsNormalizedPath
+      -- | Components in reverse order.
       ![Name.Name]
-      -- ^ Components in reverse order.
   | RelNormalizedPath
+      -- | Preceding go up commands.
       !Int
-      -- ^ Preceding go up commands.
+      -- | Components in reverse order.
       ![Name.Name]
-      -- ^ Components in reverse order.
   deriving (Eq)
 
 instance Ord NormalizedPath where
@@ -93,9 +93,8 @@ instance QuickCheck.Arbitrary NormalizedPath where
             QuickCheck.chooseInt (0, 3)
       names = do
         size <- QuickCheck.chooseInt (0, 20)
-        QuickCheck.vectorOf size $
-          QuickCheck.suchThat QuickCheck.arbitrary $
-            not . Name.null
+        QuickCheck.vectorOf size do
+          QuickCheck.suchThat QuickCheck.arbitrary (not . Name.null)
   shrink = \case
     AbsNormalizedPath names ->
       AbsNormalizedPath <$> QuickCheck.shrink names
@@ -182,8 +181,8 @@ toPath = \case
   AbsNormalizedPath names ->
     Path.Path True (fmap Component.NameComponent names)
   RelNormalizedPath movesUp names ->
-    Path.Path False $
-      if movesUp == 0
+    Path.Path False
+      $ if movesUp == 0
         then
           fmap Component.NameComponent names
             <> pure Component.DotComponent
