@@ -81,12 +81,13 @@ library
     rerebase,
     text-builder-dev,
 
-test-suite tasty
+test-suite tests
   import: language-settings
   type: exitcode-stdio-1.0
-  hs-source-dirs: tasty
+  hs-source-dirs: tests
   main-is: Main.hs
   build-depends:
-    coalmine,
+    hspec,
     posix-path-structures,
     quickcheck-classes,
+    rerebase,
