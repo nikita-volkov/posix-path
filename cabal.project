@@ -5,8 +5,14 @@ packages:
 
 source-repository-package
   type: git
+  location: https://github.com/nikita-volkov/coalmine
+  tag: 5f86235d9c508849600d4765bc2a2886feb35687
+  subdir:
+    coalmine
+    lift-instances
+    qq-extras
+
+source-repository-package
+  type: git
   location: https://github.com/nikita-volkov/structure-kit
   tag: a2c2df159b2c7a478f3f362a969b5b9a6f725259
-
-allow-newer:
-  , lzma-conduit:*
