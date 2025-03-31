@@ -1,7 +1,7 @@
 cabal-version: 3.0
 name: posix-path
 version: 0
-synopsis: Flexible Posix File System Path Data-Structure
+synopsis: Algebraic Path Data-Structure
 author: Nikita Volkov <nikita.y.volkov@mail.ru>
 maintainer: Nikita Volkov <nikita.y.volkov@mail.ru>
 copyright: (c) 2023 Nikita Volkov
