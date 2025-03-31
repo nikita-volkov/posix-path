@@ -107,9 +107,6 @@ library structures
     PosixPath.Structures.Path
 
   other-modules:
-    PosixPath.Structures.Name.AttoparsecParsers
-    PosixPath.Structures.Name.Charsets
-
   build-depends:
     QuickCheck,
     attoparsec,
