@@ -89,9 +89,13 @@ library
   exposed-modules: PosixPath
   other-modules:
   build-depends:
+    QuickCheck,
+    attoparsec,
+    base,
     cereal,
     posix-path:structures,
     posix-path:util,
+    text-builder,
 
 library structures
   import: base
@@ -99,7 +103,6 @@ library structures
   exposed-modules:
     PosixPath.Structures.Component
     PosixPath.Structures.Name
-    PosixPath.Structures.NormalizedPath
     PosixPath.Structures.Path
 
   other-modules:
@@ -132,10 +135,10 @@ library util
 test-suite tests
   import: test
   type: exitcode-stdio-1.0
-  hs-source-dirs: src/structures-tests
+  hs-source-dirs: src/tests
   main-is: Main.hs
   build-depends:
     hspec,
-    posix-path:structures,
+    posix-path,
     quickcheck-classes,
     rerebase,

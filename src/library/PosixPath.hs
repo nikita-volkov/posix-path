@@ -8,22 +8,30 @@ module PosixPath
     toText,
     toBasename,
     toExtensions,
+    toSegments,
 
-    -- * Constructors
-    root,
+    -- * Partial constructors
     maybeFromText,
     maybeFromFilePath,
 
-    -- * Algebra
+    -- * Constructors
+    root,
     parent,
     sansParent,
     relativeTo,
   )
 where
 
+import Data.Attoparsec.Text qualified as Attoparsec
+import Data.List qualified as List
 import Data.Serialize qualified as Cereal
-import PosixPath.Structures.NormalizedPath qualified as NormalizedPath
-import PosixPath.Util.Prelude
+import PosixPath.Structures.Component qualified as Component
+import PosixPath.Structures.Name qualified as Name
+import PosixPath.Structures.Path qualified as Path
+import PosixPath.Util.List qualified as List
+import PosixPath.Util.Prelude hiding (null)
+import Test.QuickCheck qualified as QuickCheck
+import TextBuilder qualified
 
 -- |
 -- Composable automatically normalized path.
@@ -99,53 +107,197 @@ import PosixPath.Util.Prelude
 --
 -- >>> "/a/b" <> "/c" :: Path
 -- "/c"
-newtype Path = Path {underlying :: NormalizedPath.NormalizedPath}
-  deriving newtype (Eq, Ord, Show, IsString, Semigroup, Monoid, Arbitrary, Cereal.Serialize, Hashable)
+data Path
+  = -- | Absolute path.
+    AbsNormalizedPath
+      -- | Components in reverse order.
+      [Name.Name]
+  | RelNormalizedPath
+      -- | Preceding go up commands.
+      Int
+      -- | Components in reverse order.
+      [Name.Name]
+  deriving (Eq)
+
+instance Ord Path where
+  compare = \case
+    AbsNormalizedPath lNames -> \case
+      AbsNormalizedPath rNames -> compare lNames rNames
+      _ -> GT
+    RelNormalizedPath lMovesUp lNames -> \case
+      AbsNormalizedPath _ -> LT
+      RelNormalizedPath rMovesUp rNames -> case compare lMovesUp rMovesUp of
+        EQ -> compare lNames rNames
+        res -> res
+
+instance IsString Path where
+  fromString =
+    either error id
+      . Attoparsec.parseOnly (attoparsecParserOf <* Attoparsec.endOfInput)
+      . fromString
+
+instance Show Path where
+  show = show . toText
+
+instance Semigroup Path where
+  lPath <> rPath = case rPath of
+    AbsNormalizedPath _ -> rPath
+    RelNormalizedPath rMovesUp rNames ->
+      case lPath of
+        RelNormalizedPath lMovesUp lNames ->
+          case List.dropPedantically rMovesUp lNames of
+            Left rMovesUp -> RelNormalizedPath (rMovesUp + lMovesUp) rNames
+            Right lNames -> RelNormalizedPath lMovesUp (rNames <> lNames)
+        AbsNormalizedPath lNames ->
+          AbsNormalizedPath (rNames <> drop rMovesUp lNames)
+
+instance Monoid Path where
+  mempty =
+    RelNormalizedPath 0 []
+
+instance QuickCheck.Arbitrary Path where
+  arbitrary =
+    QuickCheck.oneof [abs, rel]
+    where
+      abs =
+        AbsNormalizedPath <$> names
+      rel =
+        RelNormalizedPath <$> movesUp <*> names
+        where
+          movesUp =
+            QuickCheck.chooseInt (0, 3)
+      names = do
+        size <- QuickCheck.chooseInt (0, 20)
+        QuickCheck.vectorOf size do
+          QuickCheck.suchThat QuickCheck.arbitrary (not . Name.null)
+  shrink = \case
+    AbsNormalizedPath names ->
+      AbsNormalizedPath <$> QuickCheck.shrink names
+    RelNormalizedPath movesUp names ->
+      QuickCheck.shrink (movesUp, names) <&> \(movesUp, names) ->
+        RelNormalizedPath movesUp names
+
+instance Cereal.Serialize Path where
+  put = \case
+    AbsNormalizedPath names -> do
+      Cereal.put @Word8 0
+      Cereal.put names
+    RelNormalizedPath movesUp names -> do
+      Cereal.put @Word8 1
+      Cereal.put movesUp
+      Cereal.put names
+  get = do
+    tag <- Cereal.get @Word8
+    case tag of
+      0 -> do
+        names <- Cereal.get
+        return $ AbsNormalizedPath names
+      1 -> do
+        movesUp <- Cereal.get
+        names <- Cereal.get
+        return $ RelNormalizedPath movesUp names
+      _ -> fail $ "Invalid tag: " <> show tag
+
+instance Hashable Path where
+  hashWithSalt salt = \case
+    AbsNormalizedPath names ->
+      salt
+        & extendHash @Int 0
+        & extendHash names
+    RelNormalizedPath movesUp names ->
+      salt
+        & extendHash @Int 1
+        & extendHash movesUp
+        & extendHash names
+    where
+      extendHash :: (Hashable a) => a -> Int -> Int
+      extendHash = flip hashWithSalt
 
 -- * Partial constructors
 
--- | Parse text.
 maybeFromText :: Text -> Maybe Path
-maybeFromText = fmap Path . NormalizedPath.maybeFromText
+maybeFromText =
+  either (const Nothing) Just . Attoparsec.parseOnly (attoparsecParserOf <* Attoparsec.endOfInput)
 
 -- | Parse file path.
 maybeFromFilePath :: FilePath -> Maybe Path
 maybeFromFilePath = maybeFromText . fromString
 
--- * Constructors
+attoparsecParserOf :: Attoparsec.Parser Path
+attoparsecParserOf =
+  fromPath <$> Path.attoparsecParserOf
 
 -- |
+-- Normalize a path.
+fromPath :: Path.Path -> Path
+fromPath (Path.Path root components) =
+  foldr step finish components 0 []
+  where
+    step component next !collectedMovesUp !collectedNames =
+      case component of
+        Component.NameComponent name ->
+          if collectedMovesUp > 0
+            then next (pred collectedMovesUp) collectedNames
+            else
+              if Name.null name
+                then next collectedMovesUp collectedNames
+                else next collectedMovesUp (name : collectedNames)
+        Component.DotComponent ->
+          next collectedMovesUp collectedNames
+        Component.DotDotComponent ->
+          next (succ collectedMovesUp) collectedNames
+    finish collectedMovesUp collectedNames =
+      if root
+        then AbsNormalizedPath (reverse collectedNames)
+        else RelNormalizedPath collectedMovesUp (reverse collectedNames)
+
+-- |
+-- >>> root
+-- "/"
+--
 -- Prepending it to a relative path will make it absolute.
 root :: Path
-root = Path NormalizedPath.root
+root =
+  AbsNormalizedPath []
 
--- * Accessors
+-- * Traversers (aka Van Laarhoven lenses)
 
--- | Compile to standard file path string.
-toFilePath :: Path -> FilePath
-toFilePath = NormalizedPath.toFilePath . coerce
+traverseNames :: (Functor f) => ([Name.Name] -> f [Name.Name]) -> Path -> f Path
+traverseNames f = \case
+  AbsNormalizedPath names ->
+    AbsNormalizedPath <$> f names
+  RelNormalizedPath movesUp names ->
+    RelNormalizedPath movesUp <$> f names
 
--- | Compile to text.
-toText :: Path -> Text
-toText = NormalizedPath.toText . coerce
+traverseLastName :: (Functor f) => (Name.Name -> f Name.Name) -> Path -> f Path
+traverseLastName =
+  traverseNames . List.traverseHeadWithDefault Name.empty
 
-null :: Path -> Bool
-null =
-  error "TODO"
+traverseExtensions :: (Functor f) => ([Text] -> f [Text]) -> Path -> f Path
+traverseExtensions =
+  traverseLastName . Name.traverseExtensions
 
--- | Whether the path starts from root.
-absolute :: Path -> Bool
-absolute =
-  error "TODO"
+-- * Mappers
 
--- | File name sans toExtensions.
-toBasename :: Path -> Text
-toBasename = NormalizedPath.toBasename . coerce
+mapNames :: ([Name.Name] -> [Name.Name]) -> Path -> Path
+mapNames f = \case
+  AbsNormalizedPath names ->
+    AbsNormalizedPath (f names)
+  RelNormalizedPath movesUp names ->
+    RelNormalizedPath movesUp (f names)
 
-toExtensions :: Path -> [Text]
-toExtensions = NormalizedPath.toExtensions . coerce
+mapHeadName :: (Name.Name -> Name.Name) -> Path -> Path
+mapHeadName f = mapNames $ \case
+  head : tail -> f head : tail
+  [] -> []
 
--- * Algebra
+mapExtensions :: ([Text] -> [Text]) -> Path -> Path
+mapExtensions mapper =
+  runIdentity . traverseExtensions (Identity . mapper)
+
+-- | Add file extension to the sansParent component of the path.
+addExtension :: Text -> Path -> Path
+addExtension ext = mapExtensions (ext :)
 
 -- | Get the parent directory.
 --
@@ -181,9 +333,21 @@ toExtensions = NormalizedPath.toExtensions . coerce
 -- >>> parent "../a"
 -- ".."
 parent :: Path -> Path
-parent = mapNormalizedPath NormalizedPath.parent
+parent = \case
+  AbsNormalizedPath names -> case names of
+    _ : tail -> AbsNormalizedPath tail
+    [] -> AbsNormalizedPath []
+  RelNormalizedPath movesUp names -> case names of
+    _ : tail -> RelNormalizedPath movesUp tail
+    [] -> RelNormalizedPath (succ movesUp) []
 
--- |
+deabsolutize :: Path -> Path
+deabsolutize = \case
+  AbsNormalizedPath names -> RelNormalizedPath 0 names
+  relPath -> relPath
+
+-- | Drop path to the parent directory.
+--
 -- >>> sansParent "/a/b"
 -- "b"
 --
@@ -202,25 +366,17 @@ parent = mapNormalizedPath NormalizedPath.parent
 -- >>> sansParent "/"
 -- "/"
 sansParent :: Path -> Path
-sansParent = mapNormalizedPath NormalizedPath.dropParent
+sansParent = fromNames . toNames
+  where
+    fromNames = \case
+      head : _ -> RelNormalizedPath 0 [head]
+      _ -> RelNormalizedPath 0 []
 
+-- | Drop last extension.
 sansExtension :: Path -> Path
-sansExtension = mapNormalizedPath NormalizedPath.dropExtension
+sansExtension = mapHeadName $ Name.mapExtensions $ List.drop 1
 
-mapNormalizedPath ::
-  (NormalizedPath.NormalizedPath -> NormalizedPath.NormalizedPath) ->
-  Path ->
-  Path
-mapNormalizedPath f =
-  Path . f . coerce
-
-mapBasename :: (Text -> Text) -> Path -> Path
-mapBasename =
-  error "TODO"
-
-mapExtensions :: ([Text] -> [Text]) -> Path -> Path
-mapExtensions =
-  error "TODO"
+-- * Partial mappers
 
 -- | Given a destination path and context path, compute a path that leads from context to destination.
 --
@@ -256,5 +412,96 @@ mapExtensions =
 -- Nothing
 --
 -- You can view this as a sort of a subtraction operation.
-relativeTo :: Path -> Path -> Maybe Path
-relativeTo = coerce NormalizedPath.relativeTo
+relativeTo ::
+  Path ->
+  Path ->
+  Maybe Path
+relativeTo = \case
+  RelNormalizedPath _targetMovesUp _targetComponents -> \case
+    RelNormalizedPath _sourceMovesUp _sourceComponents ->
+      error "TODO"
+    AbsNormalizedPath _sourceComponents ->
+      error "TODO"
+  AbsNormalizedPath _targetComponents ->
+    error "TODO"
+
+-- |
+-- >>> without "b/c" "a/b/c"
+-- Just "./a"
+--
+-- >>> without "b/c" "/a/b/c"
+-- Just "./a"
+--
+-- >>> without "b/c" "a/b"
+-- Nothing
+--
+-- >>> without "/b/c" "/a/b/c"
+-- Nothing
+--
+-- >>> without "a" "a"
+-- .
+--
+-- >>> without "/b/c" "/b/c"
+-- .
+without :: Path -> Path -> Maybe Path
+without =
+  error "TODO"
+
+-- * Accessors
+
+toTextBuilder :: Path -> TextBuilder.TextBuilder
+toTextBuilder =
+  Path.toTextBuilder . toPath
+
+-- | Compile to standard file path string.
+toFilePath :: Path -> FilePath
+toFilePath = toList . toText
+
+-- | Compile to text.
+toText :: Path -> Text
+toText = TextBuilder.run . toTextBuilder
+
+toPath :: Path -> Path.Path
+toPath = \case
+  AbsNormalizedPath names ->
+    Path.Path True (fmap Component.NameComponent names)
+  RelNormalizedPath movesUp names ->
+    Path.Path False
+      $ if movesUp == 0
+        then
+          fmap Component.NameComponent names
+            <> pure Component.DotComponent
+        else
+          fmap Component.NameComponent names
+            <> replicate movesUp Component.DotDotComponent
+
+-- |
+-- Decompose into individual components.
+toSegments :: Path -> [Path]
+toSegments = \case
+  AbsNormalizedPath names ->
+    case reverse names of
+      head : tail ->
+        AbsNormalizedPath [head]
+          : fmap (RelNormalizedPath 0 . pure) tail
+      _ ->
+        [AbsNormalizedPath []]
+  RelNormalizedPath movesUp names ->
+    replicate movesUp (RelNormalizedPath 1 [])
+      <> fmap (RelNormalizedPath 0 . pure) (reverse names)
+
+toNames :: Path -> [Name.Name]
+toNames = \case
+  AbsNormalizedPath names -> names
+  RelNormalizedPath _ names -> names
+
+-- | File name sans extensions.
+toBasename :: Path -> Text
+toBasename path =
+  case toNames path of
+    head : _ -> Name.toBase head
+    _ -> mempty
+
+toExtensions :: Path -> [Text]
+toExtensions =
+  reverse . Name.toExtensions . List.headOr Name.empty . toNames
