@@ -90,8 +90,8 @@ library
   other-modules:
   build-depends:
     cereal,
-    posix-path:base-extras,
     posix-path:structures,
+    posix-path:util,
 
 library structures
   import: base
@@ -111,17 +111,17 @@ library structures
     cereal,
     cereal-text,
     natural-sort,
-    posix-path:base-extras,
+    posix-path:util,
     rerebase,
     text-builder ^>=0.6.9,
 
-library base-extras
+library util
   import: base
-  hs-source-dirs: src/base-extras
+  hs-source-dirs: src/util
   exposed-modules:
-    PosixPath.BaseExtras.List
-    PosixPath.BaseExtras.MonadPlus
-    PosixPath.BaseExtras.Prelude
+    PosixPath.Util.List
+    PosixPath.Util.MonadPlus
+    PosixPath.Util.Prelude
 
   build-depends:
     QuickCheck,

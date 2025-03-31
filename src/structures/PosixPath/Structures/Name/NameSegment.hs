@@ -9,7 +9,7 @@ import Algorithms.NaturalSort qualified
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List
 import Data.Text qualified as Text
-import PosixPath.BaseExtras.Prelude
+import PosixPath.Util.Prelude
 import Test.QuickCheck qualified as QuickCheck
 
 newtype NameSegment = NameSegment Text

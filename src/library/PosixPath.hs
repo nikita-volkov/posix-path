@@ -22,8 +22,8 @@ module PosixPath
 where
 
 import Data.Serialize qualified as Cereal
-import PosixPath.BaseExtras.Prelude
 import PosixPath.Structures.NormalizedPath qualified as NormalizedPath
+import PosixPath.Util.Prelude
 
 -- |
 -- Composable automatically normalized path.

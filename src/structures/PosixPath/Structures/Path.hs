@@ -6,8 +6,8 @@ module PosixPath.Structures.Path
 where
 
 import Data.Attoparsec.Text qualified as Attoparsec
-import PosixPath.BaseExtras.MonadPlus
 import PosixPath.Structures.Component qualified as Component
+import PosixPath.Util.MonadPlus
 import TextBuilder qualified as TextBuilder
 import Prelude
 

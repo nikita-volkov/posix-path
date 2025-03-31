@@ -1,4 +1,4 @@
-module PosixPath.BaseExtras.Prelude
+module PosixPath.Util.Prelude
   ( module X,
   )
 where

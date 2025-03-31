@@ -29,10 +29,10 @@ where
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List
 import Data.Serialize qualified as Cereal
-import PosixPath.BaseExtras.List qualified as List
 import PosixPath.Structures.Component qualified as Component
 import PosixPath.Structures.Name qualified as Name
 import PosixPath.Structures.Path qualified as Path
+import PosixPath.Util.List qualified as List
 import Test.QuickCheck qualified as QuickCheck
 import TextBuilder qualified
 import Prelude hiding (null)

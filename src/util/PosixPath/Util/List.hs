@@ -1,4 +1,4 @@
-module PosixPath.BaseExtras.List where
+module PosixPath.Util.List where
 
 import Prelude
 
