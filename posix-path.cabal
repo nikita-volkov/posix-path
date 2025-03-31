@@ -90,7 +90,7 @@ library
   other-modules:
   build-depends:
     cereal,
-    coalmine,
+    posix-path:base-extras,
     posix-path:structures,
 
 library classes
@@ -99,7 +99,7 @@ library classes
   exposed-modules: PosixPath.Classes
   other-modules:
   build-depends:
-    coalmine,
+    base,
     posix-path,
 
 library directory-integration
@@ -108,9 +108,9 @@ library directory-integration
   exposed-modules: PosixPath.DirectoryIntegration
   other-modules:
   build-depends:
-    coalmine,
     directory,
     posix-path,
+    posix-path:base-extras,
 
 library structures
   import: base
@@ -118,17 +118,37 @@ library structures
   exposed-modules:
     PosixPath.Structures.Component
     PosixPath.Structures.Name
+    PosixPath.Structures.NameSegment
     PosixPath.Structures.NormalizedPath
     PosixPath.Structures.Path
+
+  other-modules:
+    PosixPath.Structures.Name.AttoparsecParsers
+    PosixPath.Structures.Name.Charsets
 
   build-depends:
     QuickCheck,
     attoparsec,
     cereal,
-    coalmine,
+    cereal-text,
     natural-sort,
+    posix-path:base-extras,
     rerebase,
-    text-builder-dev,
+    text-builder ^>=0.6.9,
+
+library base-extras
+  import: base
+  hs-source-dirs: src/base-extras
+  exposed-modules:
+    PosixPath.BaseExtras.List
+    PosixPath.BaseExtras.MonadPlus
+    PosixPath.BaseExtras.Prelude
+
+  build-depends:
+    QuickCheck,
+    base,
+    hashable,
+    text,
 
 test-suite tests
   import: test

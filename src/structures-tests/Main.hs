@@ -18,7 +18,7 @@ main = hspec do
         itEquals
           "Component decomposition works and keeps order"
           ["src", "main", "java"]
-          (decompose "src/main/java")
+          (toComponents "src/main/java")
 
       describe "Empty" do
         itEquals @NormalizedPath
@@ -48,7 +48,7 @@ main = hspec do
         itEquals
           "Doesn't produce a trailing component"
           ["src", "main", "java"]
-          (decompose "src/main/java/")
+          (toComponents "src/main/java/")
 
       describe "Multislash" do
         itEquals @NormalizedPath

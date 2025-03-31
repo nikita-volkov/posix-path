@@ -5,9 +5,9 @@ module PosixPath.DirectoryIntegration
   )
 where
 
-import Coalmine.Prelude hiding (Path)
 import PosixPath (Path)
 import PosixPath qualified as Path
+import PosixPath.BaseExtras.Prelude
 import System.Directory qualified as Directory
 
 createDirectory :: Path -> IO ()
@@ -28,5 +28,5 @@ listDirectory path =
 
 parseFilePath :: FilePath -> IO Path
 parseFilePath path =
-  Path.parseFilePath path
+  Path.maybeFromFilePath path
     & maybe (fail ("Invalid path: " <> path)) return

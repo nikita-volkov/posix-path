@@ -1,38 +1,53 @@
 module PosixPath.Structures.Name
-  ( Name (..),
-    null,
+  ( Name,
+
+    -- * Constructors
     empty,
-    traverseExtensions,
     mapExtensions,
+
+    -- * Functors
+    traverseExtensions,
+    attoparsecParserOf,
+
+    -- * Destructors
+    null,
+    toTextBuilder,
+    toBase,
+    toExtensions,
   )
 where
 
 import Algorithms.NaturalSort qualified as NaturalSort
-import Coalmine.BaseExtras.MonadPlus
-import Coalmine.EvenSimplerPaths.AttoparsecHelpers qualified as AttoparsecHelpers
-import Coalmine.EvenSimplerPaths.QuickCheckGens qualified as QuickCheckGens
-import Coalmine.Prelude hiding (Name, empty, null)
-import Coalmine.SyntaxModelling qualified as Syntax
+import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List
 import Data.Serialize qualified as Cereal
+import Data.Serialize.Text ()
 import Data.Text qualified as Text
+import PosixPath.BaseExtras.MonadPlus
+import PosixPath.BaseExtras.Prelude hiding (empty, null)
+import PosixPath.Structures.NameSegment qualified as NameSegment
 import Test.QuickCheck qualified as QuickCheck
+import TextBuilder qualified
 
 -- |
 -- Structured base of a single component of a path.
 data Name = Name
   { -- | Name.
-    base :: !Text,
+    base :: Text,
     -- | Extensions in reverse order.
-    extensions :: ![Text]
+    extensions :: [Text]
   }
   deriving (Eq, Show)
 
 instance QuickCheck.Arbitrary Name where
   arbitrary = do
-    base <- QuickCheckGens.fileName
-    fileExtensions <- QuickCheckGens.fileExtensions
-    return $ Name base fileExtensions
+    base <-
+      QuickCheck.oneof
+        [ NameSegment.toText <$> arbitrary,
+          pure ""
+        ]
+    extensions <- fmap NameSegment.toText <$> arbitrary
+    pure (Name base extensions)
   shrink (Name base extensions) =
     QuickCheck.shrink (base, extensions) <&> \(base, extensions) ->
       Name base (List.filter (not . Text.null) extensions)
@@ -61,21 +76,10 @@ instance Ord Name where
           then LT
           else GT
     where
-      la = baseSortKey l
-      lb = extensionsSortKey l
-      ra = baseSortKey r
-      rb = extensionsSortKey r
-
-instance Syntax.Syntax Name where
-  attoparsecParser = do
-    base <- AttoparsecHelpers.fileName
-    extensions <- reverseMany AttoparsecHelpers.extension
-    return $ Name base extensions
-  toTextBuilder (Name base extensions) =
-    foldr
-      (\extension next -> next <> "." <> to extension)
-      (to base)
-      extensions
+      la = toBaseSortKey l
+      lb = toExtensionsSortKey l
+      ra = toBaseSortKey r
+      rb = toExtensionsSortKey r
 
 instance Hashable Name where
   hashWithSalt salt Name {..} =
@@ -85,24 +89,49 @@ instance Hashable Name where
     where
       extendHash = flip hashWithSalt
 
-baseSortKey :: Name -> NaturalSort.SortKey
-baseSortKey = NaturalSort.sortKey . (.base)
-
-extensionsSortKey :: Name -> [NaturalSort.SortKey]
-extensionsSortKey = reverse . fmap NaturalSort.sortKey . (.extensions)
-
-null :: Name -> Bool
-null (Name name extensions) =
-  Text.null name && List.null extensions
-
 empty :: Name
 empty =
   Name mempty mempty
+
+mapExtensions :: ([Text] -> [Text]) -> Name -> Name
+mapExtensions f (Name base extensions) =
+  Name base (f extensions)
+
+-- * Functors
 
 traverseExtensions :: (Functor f) => ([Text] -> f [Text]) -> Name -> f Name
 traverseExtensions f (Name base extensions) =
   Name base <$> f extensions
 
-mapExtensions :: ([Text] -> [Text]) -> Name -> Name
-mapExtensions f (Name base extensions) =
-  Name base (f extensions)
+attoparsecParserOf :: Attoparsec.Parser Name
+attoparsecParserOf = do
+  base <- NameSegment.attoparsecParserOf <|> pure ""
+  extensions <- reverseMany (Attoparsec.char '.' *> NameSegment.attoparsecParserOf)
+  return (Name base extensions)
+
+-- * Destructors
+
+toBase :: Name -> Text
+toBase (Name base _) =
+  base
+
+toExtensions :: Name -> [Text]
+toExtensions (Name _ extensions) =
+  extensions
+
+toTextBuilder :: Name -> TextBuilder.TextBuilder
+toTextBuilder (Name base extensions) =
+  foldr
+    (\extension next -> next <> "." <> TextBuilder.text extension)
+    (TextBuilder.text base)
+    extensions
+
+toBaseSortKey :: Name -> NaturalSort.SortKey
+toBaseSortKey = NaturalSort.sortKey . toBase
+
+toExtensionsSortKey :: Name -> [NaturalSort.SortKey]
+toExtensionsSortKey = reverse . fmap NaturalSort.sortKey . toExtensions
+
+null :: Name -> Bool
+null (Name name extensions) =
+  Text.null name && List.null extensions

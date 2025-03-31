@@ -1,27 +1,30 @@
 module PosixPath.Structures.Path
   ( Path (..),
+    attoparsecParserOf,
+    toTextBuilder,
   )
 where
 
-import Coalmine.BaseExtras.MonadPlus
-import Coalmine.Prelude hiding (Path, null)
-import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
+import PosixPath.BaseExtras.MonadPlus
 import PosixPath.Structures.Component qualified as Component
-import TextBuilderDev qualified as TextBuilderDev
+import TextBuilder qualified as TextBuilder
+import Prelude
 
 data Path
   = Path Bool [Component.Component]
 
-instance Syntax.Syntax Path where
-  attoparsecParser = do
-    abs <- Attoparsec.char '/' $> True <|> pure False
-    components <- reverseSepBy Syntax.attoparsecParser (Attoparsec.char '/')
-    return $ Path abs components
-  toTextBuilder (Path abs components) =
-    if abs
-      then "/" <> relative
-      else relative
-    where
-      relative =
-        TextBuilderDev.intercalate "/" . fmap Syntax.toTextBuilder . reverse $ components
+attoparsecParserOf :: Attoparsec.Parser Path
+attoparsecParserOf = do
+  abs <- Attoparsec.char '/' $> True <|> pure False
+  components <- reverseSepBy Component.attoparsecParserOf (Attoparsec.char '/')
+  return $ Path abs components
+
+toTextBuilder :: Path -> TextBuilder.TextBuilder
+toTextBuilder (Path abs components) =
+  if abs
+    then "/" <> relative
+    else relative
+  where
+    relative =
+      TextBuilder.intercalate "/" . fmap Component.toTextBuilder . reverse $ components

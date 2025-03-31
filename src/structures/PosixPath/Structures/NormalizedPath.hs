@@ -6,13 +6,16 @@ module PosixPath.Structures.NormalizedPath
     fromPath,
     addExtension,
 
+    -- * Partial constructors
+    maybeFromText,
+
     -- * Accessors
     toFilePath,
     toText,
     toPath,
-    decompose,
-    basename,
-    extensions,
+    toComponents,
+    toBasename,
+    toExtensions,
     parent,
     deabsolutize,
     dropParent,
@@ -23,15 +26,16 @@ module PosixPath.Structures.NormalizedPath
   )
 where
 
-import Coalmine.BaseExtras.List qualified as List
-import Coalmine.Prelude hiding (null)
-import Coalmine.SyntaxModelling qualified as Syntax
+import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List
 import Data.Serialize qualified as Cereal
+import PosixPath.BaseExtras.List qualified as List
 import PosixPath.Structures.Component qualified as Component
 import PosixPath.Structures.Name qualified as Name
 import PosixPath.Structures.Path qualified as Path
 import Test.QuickCheck qualified as QuickCheck
+import TextBuilder qualified
+import Prelude hiding (null)
 
 -- |
 -- Composable automatically normalized path.
@@ -39,12 +43,12 @@ data NormalizedPath
   = -- | Absolute path.
     AbsNormalizedPath
       -- | Components in reverse order.
-      ![Name.Name]
+      [Name.Name]
   | RelNormalizedPath
       -- | Preceding go up commands.
-      !Int
+      Int
       -- | Components in reverse order.
-      ![Name.Name]
+      [Name.Name]
   deriving (Eq)
 
 instance Ord NormalizedPath where
@@ -59,10 +63,13 @@ instance Ord NormalizedPath where
         res -> res
 
 instance IsString NormalizedPath where
-  fromString = Syntax.fromStringUnsafe
+  fromString =
+    either error id
+      . Attoparsec.parseOnly (attoparsecParserOf <* Attoparsec.endOfInput)
+      . fromString
 
 instance Show NormalizedPath where
-  show = show . Syntax.toText
+  show = show . toText
 
 instance Semigroup NormalizedPath where
   lPath <> rPath = case rPath of
@@ -123,12 +130,6 @@ instance Cereal.Serialize NormalizedPath where
         return $ RelNormalizedPath movesUp names
       _ -> fail $ "Invalid tag: " <> show tag
 
-instance Syntax.Syntax NormalizedPath where
-  attoparsecParser =
-    fromPath <$> Syntax.attoparsecParser
-  toTextBuilder =
-    Syntax.toTextBuilder . toPath
-
 instance Hashable NormalizedPath where
   hashWithSalt salt = \case
     AbsNormalizedPath names ->
@@ -144,13 +145,25 @@ instance Hashable NormalizedPath where
       extendHash :: (Hashable a) => a -> Int -> Int
       extendHash = flip hashWithSalt
 
+maybeFromText :: Text -> Maybe NormalizedPath
+maybeFromText =
+  either (const Nothing) Just . Attoparsec.parseOnly (attoparsecParserOf <* Attoparsec.endOfInput)
+
+attoparsecParserOf :: Attoparsec.Parser NormalizedPath
+attoparsecParserOf =
+  fromPath <$> Path.attoparsecParserOf
+
+toTextBuilder :: NormalizedPath -> TextBuilder.TextBuilder
+toTextBuilder =
+  Path.toTextBuilder . toPath
+
 -- | Compile to standard file path string.
 toFilePath :: NormalizedPath -> FilePath
-toFilePath = to @String . Syntax.toTextBuilder
+toFilePath = toList . toText
 
 -- | Compile to text.
 toText :: NormalizedPath -> Text
-toText = to . Syntax.toTextBuilder
+toText = TextBuilder.run . toTextBuilder
 
 -- |
 -- Normalize a path.
@@ -197,9 +210,9 @@ root =
   AbsNormalizedPath []
 
 -- |
--- Explode into individual components.
-decompose :: NormalizedPath -> [NormalizedPath]
-decompose = \case
+-- Decompose into individual components.
+toComponents :: NormalizedPath -> [NormalizedPath]
+toComponents = \case
   AbsNormalizedPath names ->
     case reverse names of
       head : tail ->
@@ -257,16 +270,16 @@ names = \case
   AbsNormalizedPath names -> names
   RelNormalizedPath _ names -> names
 
--- | File name sans extensions.
-basename :: NormalizedPath -> Text
-basename path =
+-- | File name sans toExtensions.
+toBasename :: NormalizedPath -> Text
+toBasename path =
   case names path of
-    head : _ -> head.base
+    head : _ -> Name.toBase head
     _ -> mempty
 
-extensions :: NormalizedPath -> [Text]
-extensions =
-  reverse . (.extensions) . List.headOr Name.empty . names
+toExtensions :: NormalizedPath -> [Text]
+toExtensions =
+  reverse . Name.toExtensions . List.headOr Name.empty . names
 
 parent :: NormalizedPath -> NormalizedPath
 parent = \case

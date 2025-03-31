@@ -1,7 +1,7 @@
 module PosixPath.Classes where
 
-import Coalmine.Prelude hiding (Path)
 import PosixPath
+import Prelude
 
 class ModelsSomePaths a where
   demodel :: a -> Path

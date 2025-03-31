@@ -6,13 +6,13 @@ module PosixPath
     -- * Accessors
     toFilePath,
     toText,
-    basename,
-    extensions,
+    toBasename,
+    toExtensions,
 
     -- * Constructors
     root,
-    parseText,
-    parseFilePath,
+    maybeFromText,
+    maybeFromFilePath,
 
     -- * Algebra
     parent,
@@ -21,9 +21,8 @@ module PosixPath
   )
 where
 
-import Coalmine.Prelude hiding (Path)
-import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Serialize qualified as Cereal
+import PosixPath.BaseExtras.Prelude
 import PosixPath.Structures.NormalizedPath qualified as NormalizedPath
 
 -- |
@@ -101,13 +100,17 @@ import PosixPath.Structures.NormalizedPath qualified as NormalizedPath
 -- >>> "/a/b" <> "/c" :: Path
 -- "/c"
 newtype Path = Path {underlying :: NormalizedPath.NormalizedPath}
-  deriving newtype (Eq, Ord, Show, IsString, Semigroup, Monoid, Arbitrary, Cereal.Serialize, Syntax.Syntax, Hashable)
+  deriving newtype (Eq, Ord, Show, IsString, Semigroup, Monoid, Arbitrary, Cereal.Serialize, Hashable)
 
-instance Special Path where
-  type GeneralizationOf Path = FilePath
-  type SpecializationErrorOf Path = Text
-  specialize = Syntax.fromTextInEither . fromString
-  generalize = toFilePath
+-- * Partial constructors
+
+-- | Parse text.
+maybeFromText :: Text -> Maybe Path
+maybeFromText = fmap Path . NormalizedPath.maybeFromText
+
+-- | Parse file path.
+maybeFromFilePath :: FilePath -> Maybe Path
+maybeFromFilePath = maybeFromText . fromString
 
 -- * Constructors
 
@@ -115,14 +118,6 @@ instance Special Path where
 -- Prepending it to a relative path will make it absolute.
 root :: Path
 root = Path NormalizedPath.root
-
--- | Parse text.
-parseText :: Text -> Maybe Path
-parseText = Syntax.fromTextInMaybe
-
--- | Parse file path.
-parseFilePath :: FilePath -> Maybe Path
-parseFilePath = parseText . fromString
 
 -- * Accessors
 
@@ -143,12 +138,12 @@ absolute :: Path -> Bool
 absolute =
   error "TODO"
 
--- | File name sans extensions.
-basename :: Path -> Text
-basename = NormalizedPath.basename . coerce
+-- | File name sans toExtensions.
+toBasename :: Path -> Text
+toBasename = NormalizedPath.toBasename . coerce
 
-extensions :: Path -> [Text]
-extensions = NormalizedPath.extensions . coerce
+toExtensions :: Path -> [Text]
+toExtensions = NormalizedPath.toExtensions . coerce
 
 -- * Algebra
 
