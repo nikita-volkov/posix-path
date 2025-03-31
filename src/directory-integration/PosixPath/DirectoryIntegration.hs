@@ -1,4 +1,4 @@
-module PosixPathDirectoryIntegration
+module PosixPath.DirectoryIntegration
   ( createDirectory,
     createDirectoryIfMissing,
     listDirectory,

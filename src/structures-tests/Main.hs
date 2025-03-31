@@ -1,6 +1,6 @@
 module Main where
 
-import PosixPathStructures.NormalizedPath
+import PosixPath.Structures.NormalizedPath
 import Test.Hspec
 import Test.Hspec.QuickCheck
 import Test.QuickCheck.Classes qualified
@@ -8,7 +8,7 @@ import Prelude
 
 main :: IO ()
 main = hspec do
-  describe "PosixPathStructures" do
+  describe "PosixPath.Structures" do
     describe "NormalizedPath" do
       describe "Laws" do
         itFollowsLaws (Test.QuickCheck.Classes.semigroupLaws (Proxy @NormalizedPath))

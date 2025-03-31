@@ -1,4 +1,4 @@
-module PosixPathStructures.Component
+module PosixPath.Structures.Component
   ( Component (..),
   )
 where
@@ -6,7 +6,7 @@ where
 import Coalmine.Prelude
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
-import PosixPathStructures.Name qualified as Name
+import PosixPath.Structures.Name qualified as Name
 
 data Component
   = NameComponent Name.Name

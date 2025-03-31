@@ -1,4 +1,4 @@
-module PosixPathClasses where
+module PosixPath.Classes where
 
 import Coalmine.Prelude hiding (Path)
 import PosixPath

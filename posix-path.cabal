@@ -96,7 +96,7 @@ library
 library classes
   import: base
   hs-source-dirs: src/classes
-  exposed-modules: PosixPathClasses
+  exposed-modules: PosixPath.Classes
   other-modules:
   build-depends:
     coalmine,
@@ -105,7 +105,7 @@ library classes
 library directory-integration
   import: base
   hs-source-dirs: src/directory-integration
-  exposed-modules: PosixPathDirectoryIntegration
+  exposed-modules: PosixPath.DirectoryIntegration
   other-modules:
   build-depends:
     coalmine,
@@ -116,10 +116,10 @@ library structures
   import: base
   hs-source-dirs: src/structures
   exposed-modules:
-    PosixPathStructures.Component
-    PosixPathStructures.Name
-    PosixPathStructures.NormalizedPath
-    PosixPathStructures.Path
+    PosixPath.Structures.Component
+    PosixPath.Structures.Name
+    PosixPath.Structures.NormalizedPath
+    PosixPath.Structures.Path
 
   build-depends:
     QuickCheck,

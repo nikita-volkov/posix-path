@@ -1,4 +1,4 @@
-module PosixPathStructures.Name
+module PosixPath.Structures.Name
   ( Name (..),
     null,
     empty,

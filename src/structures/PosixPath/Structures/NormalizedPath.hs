@@ -1,4 +1,4 @@
-module PosixPathStructures.NormalizedPath
+module PosixPath.Structures.NormalizedPath
   ( NormalizedPath (..),
 
     -- * Constructors
@@ -28,9 +28,9 @@ import Coalmine.Prelude hiding (null)
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.List qualified as List
 import Data.Serialize qualified as Cereal
-import PosixPathStructures.Component qualified as Component
-import PosixPathStructures.Name qualified as Name
-import PosixPathStructures.Path qualified as Path
+import PosixPath.Structures.Component qualified as Component
+import PosixPath.Structures.Name qualified as Name
+import PosixPath.Structures.Path qualified as Path
 import Test.QuickCheck qualified as QuickCheck
 
 -- |

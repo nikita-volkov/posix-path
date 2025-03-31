@@ -24,7 +24,7 @@ where
 import Coalmine.Prelude hiding (Path)
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Serialize qualified as Cereal
-import PosixPathStructures.NormalizedPath qualified as NormalizedPath
+import PosixPath.Structures.NormalizedPath qualified as NormalizedPath
 
 -- |
 -- Composable automatically normalized path.

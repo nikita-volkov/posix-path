@@ -1,4 +1,4 @@
-module PosixPathStructures.Path
+module PosixPath.Structures.Path
   ( Path (..),
   )
 where
@@ -7,7 +7,7 @@ import Coalmine.BaseExtras.MonadPlus
 import Coalmine.Prelude hiding (Path, null)
 import Coalmine.SyntaxModelling qualified as Syntax
 import Data.Attoparsec.Text qualified as Attoparsec
-import PosixPathStructures.Component qualified as Component
+import PosixPath.Structures.Component qualified as Component
 import TextBuilderDev qualified as TextBuilderDev
 
 data Path
