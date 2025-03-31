@@ -102,11 +102,12 @@ library structures
   exposed-modules:
     PosixPath.Structures.Component
     PosixPath.Structures.Name
-    PosixPath.Structures.NameSegment
     PosixPath.Structures.NormalizedPath
     PosixPath.Structures.Path
 
   other-modules:
+    PosixPath.Structures.Name.NameSegment
+
   build-depends:
     QuickCheck,
     attoparsec,

@@ -25,7 +25,7 @@ import Data.Serialize.Text ()
 import Data.Text qualified as Text
 import PosixPath.BaseExtras.MonadPlus
 import PosixPath.BaseExtras.Prelude hiding (empty, null)
-import PosixPath.Structures.NameSegment qualified as NameSegment
+import PosixPath.Structures.Name.NameSegment qualified as NameSegment
 import Test.QuickCheck qualified as QuickCheck
 import TextBuilder qualified
 
