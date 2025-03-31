@@ -87,30 +87,14 @@ library
   import: base
   hs-source-dirs: src/library
   exposed-modules: PosixPath
-  other-modules:
-  build-depends:
-    cereal,
-    posix-path:base-extras,
-    posix-path:structures,
-
-library classes
-  import: base
-  hs-source-dirs: src/classes
   exposed-modules: PosixPath.Classes
-  other-modules:
-  build-depends:
-    base,
-    posix-path,
-
-library directory-integration
-  import: base
-  hs-source-dirs: src/directory-integration
   exposed-modules: PosixPath.DirectoryIntegration
   other-modules:
   build-depends:
+    cereal,
     directory,
-    posix-path,
     posix-path:base-extras,
+    posix-path:structures,
 
 library structures
   import: base

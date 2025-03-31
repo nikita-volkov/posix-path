@@ -1,7 +1,7 @@
 module PosixPath.Classes where
 
 import PosixPath
-import Prelude
+import PosixPath.BaseExtras.Prelude
 
 class ModelsSomePaths a where
   demodel :: a -> Path
