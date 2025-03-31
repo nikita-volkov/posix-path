@@ -1,13 +1,18 @@
 cabal-version: 3.0
-name: posix-path-structures
+name: posix-path
 version: 0
+synopsis: Flexible Posix File System Path Data-Structure
 author: Nikita Volkov <nikita.y.volkov@mail.ru>
 maintainer: Nikita Volkov <nikita.y.volkov@mail.ru>
 copyright: (c) 2023 Nikita Volkov
 license: MIT
 license-file: LICENSE
 
-common language-settings
+source-repository head
+  type: git
+  location: https://github.com/nikita-volkov/posix-path
+
+common base
   default-language: Haskell2010
   default-extensions:
     ApplicativeDo
@@ -63,9 +68,53 @@ common language-settings
     UndecidableInstances
     ViewPatterns
 
+common executable
+  import: base
+  ghc-options:
+    -O2
+    -threaded
+    -with-rtsopts=-N
+    -rtsopts
+    -funbox-strict-fields
+
+common test
+  import: base
+  ghc-options:
+    -threaded
+    -with-rtsopts=-N
+
 library
-  import: language-settings
-  hs-source-dirs: library
+  import: base
+  hs-source-dirs: src/library
+  exposed-modules: PosixPath
+  other-modules:
+  build-depends:
+    cereal,
+    coalmine,
+    posix-path:structures,
+
+library classes
+  import: base
+  hs-source-dirs: src/classes
+  exposed-modules: PosixPathClasses
+  other-modules:
+  build-depends:
+    coalmine,
+    posix-path,
+
+library directory-integration
+  import: base
+  hs-source-dirs: src/directory-integration
+  exposed-modules: PosixPathDirectoryIntegration
+  other-modules:
+  build-depends:
+    coalmine,
+    directory,
+    posix-path,
+
+library structures
+  import: base
+  hs-source-dirs: src/structures
   exposed-modules:
     PosixPathStructures.Component
     PosixPathStructures.Name
@@ -82,12 +131,12 @@ library
     text-builder-dev,
 
 test-suite tests
-  import: language-settings
+  import: test
   type: exitcode-stdio-1.0
-  hs-source-dirs: tests
+  hs-source-dirs: src/structures-tests
   main-is: Main.hs
   build-depends:
     hspec,
-    posix-path-structures,
+    posix-path:structures,
     quickcheck-classes,
     rerebase,

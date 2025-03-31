@@ -1,7 +1,4 @@
-with-compiler: ghc-9.10
-
-packages:
-  */*.cabal
+packages: .
 
 source-repository-package
   type: git
