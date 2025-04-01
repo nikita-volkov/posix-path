@@ -1,4 +1,4 @@
-module PosixPath.Structures.Path
+module PosixPath.Ast.Path
   ( Path (..),
     attoparsecParserOf,
     toTextBuilder,
@@ -6,7 +6,7 @@ module PosixPath.Structures.Path
 where
 
 import Data.Attoparsec.Text qualified as Attoparsec
-import PosixPath.Structures.Component qualified as Component
+import PosixPath.Ast.Component qualified as Component
 import PosixPath.Util.MonadPlus
 import TextBuilder qualified as TextBuilder
 import Prelude

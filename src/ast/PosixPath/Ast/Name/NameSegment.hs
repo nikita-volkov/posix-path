@@ -1,4 +1,4 @@
-module PosixPath.Structures.Name.NameSegment
+module PosixPath.Ast.Name.NameSegment
   ( NameSegment,
     attoparsecParserOf,
     toText,

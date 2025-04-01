@@ -93,20 +93,20 @@ library
     attoparsec,
     base,
     cereal,
-    posix-path:structures,
+    posix-path:ast,
     posix-path:util,
     text-builder,
 
-library structures
+library ast
   import: base
-  hs-source-dirs: src/structures
+  hs-source-dirs: src/ast
   exposed-modules:
-    PosixPath.Structures.Component
-    PosixPath.Structures.Name
-    PosixPath.Structures.Path
+    PosixPath.Ast.Component
+    PosixPath.Ast.Name
+    PosixPath.Ast.Path
 
   other-modules:
-    PosixPath.Structures.Name.NameSegment
+    PosixPath.Ast.Name.NameSegment
 
   build-depends:
     QuickCheck,

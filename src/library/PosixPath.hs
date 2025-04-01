@@ -25,9 +25,9 @@ where
 import Data.Attoparsec.Text qualified as Attoparsec
 import Data.List qualified as List
 import Data.Serialize qualified as Cereal
-import PosixPath.Structures.Component qualified as Component
-import PosixPath.Structures.Name qualified as Name
-import PosixPath.Structures.Path qualified as Path
+import PosixPath.Ast.Component qualified as Ast.Component
+import PosixPath.Ast.Name qualified as Ast.Name
+import PosixPath.Ast.Path qualified as Ast.Path
 import PosixPath.Util.List qualified as List
 import PosixPath.Util.Prelude hiding (null)
 import Test.QuickCheck qualified as QuickCheck
@@ -110,13 +110,13 @@ import TextBuilder qualified
 data Path
   = -- | Absolute path.
     AbsNormalizedPath
-      -- | Components in reverse order.
-      [Name.Name]
+      -- | Ast.Components in reverse order.
+      [Ast.Name.Name]
   | RelNormalizedPath
       -- | Preceding go up commands.
       Int
-      -- | Components in reverse order.
-      [Name.Name]
+      -- | Ast.Components in reverse order.
+      [Ast.Name.Name]
   deriving (Eq)
 
 instance Ord Path where
@@ -169,7 +169,7 @@ instance QuickCheck.Arbitrary Path where
       names = do
         size <- QuickCheck.chooseInt (0, 20)
         QuickCheck.vectorOf size do
-          QuickCheck.suchThat QuickCheck.arbitrary (not . Name.null)
+          QuickCheck.suchThat QuickCheck.arbitrary (not . Ast.Name.null)
   shrink = \case
     AbsNormalizedPath names ->
       AbsNormalizedPath <$> QuickCheck.shrink names
@@ -225,26 +225,26 @@ maybeFromFilePath = maybeFromText . fromString
 
 attoparsecParserOf :: Attoparsec.Parser Path
 attoparsecParserOf =
-  fromPath <$> Path.attoparsecParserOf
+  fromPath <$> Ast.Path.attoparsecParserOf
 
 -- |
 -- Normalize a path.
-fromPath :: Path.Path -> Path
-fromPath (Path.Path root components) =
+fromPath :: Ast.Path.Path -> Path
+fromPath (Ast.Path.Path root components) =
   foldr step finish components 0 []
   where
     step component next !collectedMovesUp !collectedNames =
       case component of
-        Component.NameComponent name ->
+        Ast.Component.NameComponent name ->
           if collectedMovesUp > 0
             then next (pred collectedMovesUp) collectedNames
             else
-              if Name.null name
+              if Ast.Name.null name
                 then next collectedMovesUp collectedNames
                 else next collectedMovesUp (name : collectedNames)
-        Component.DotComponent ->
+        Ast.Component.DotComponent ->
           next collectedMovesUp collectedNames
-        Component.DotDotComponent ->
+        Ast.Component.DotDotComponent ->
           next (succ collectedMovesUp) collectedNames
     finish collectedMovesUp collectedNames =
       if root
@@ -262,31 +262,31 @@ root =
 
 -- * Traversers (aka Van Laarhoven lenses)
 
-traverseNames :: (Functor f) => ([Name.Name] -> f [Name.Name]) -> Path -> f Path
+traverseNames :: (Functor f) => ([Ast.Name.Name] -> f [Ast.Name.Name]) -> Path -> f Path
 traverseNames f = \case
   AbsNormalizedPath names ->
     AbsNormalizedPath <$> f names
   RelNormalizedPath movesUp names ->
     RelNormalizedPath movesUp <$> f names
 
-traverseLastName :: (Functor f) => (Name.Name -> f Name.Name) -> Path -> f Path
+traverseLastName :: (Functor f) => (Ast.Name.Name -> f Ast.Name.Name) -> Path -> f Path
 traverseLastName =
-  traverseNames . List.traverseHeadWithDefault Name.empty
+  traverseNames . List.traverseHeadWithDefault Ast.Name.empty
 
 traverseExtensions :: (Functor f) => ([Text] -> f [Text]) -> Path -> f Path
 traverseExtensions =
-  traverseLastName . Name.traverseExtensions
+  traverseLastName . Ast.Name.traverseExtensions
 
 -- * Mappers
 
-mapNames :: ([Name.Name] -> [Name.Name]) -> Path -> Path
+mapNames :: ([Ast.Name.Name] -> [Ast.Name.Name]) -> Path -> Path
 mapNames f = \case
   AbsNormalizedPath names ->
     AbsNormalizedPath (f names)
   RelNormalizedPath movesUp names ->
     RelNormalizedPath movesUp (f names)
 
-mapHeadName :: (Name.Name -> Name.Name) -> Path -> Path
+mapHeadName :: (Ast.Name.Name -> Ast.Name.Name) -> Path -> Path
 mapHeadName f = mapNames $ \case
   head : tail -> f head : tail
   [] -> []
@@ -374,7 +374,7 @@ sansParent = fromNames . toNames
 
 -- | Drop last extension.
 sansExtension :: Path -> Path
-sansExtension = mapHeadName $ Name.mapExtensions $ List.drop 1
+sansExtension = mapHeadName $ Ast.Name.mapExtensions $ List.drop 1
 
 -- * Partial mappers
 
@@ -451,7 +451,7 @@ without =
 
 toTextBuilder :: Path -> TextBuilder.TextBuilder
 toTextBuilder =
-  Path.toTextBuilder . toPath
+  Ast.Path.toTextBuilder . toPath
 
 -- | Compile to standard file path string.
 toFilePath :: Path -> FilePath
@@ -461,19 +461,19 @@ toFilePath = toList . toText
 toText :: Path -> Text
 toText = TextBuilder.run . toTextBuilder
 
-toPath :: Path -> Path.Path
+toPath :: Path -> Ast.Path.Path
 toPath = \case
   AbsNormalizedPath names ->
-    Path.Path True (fmap Component.NameComponent names)
+    Ast.Path.Path True (fmap Ast.Component.NameComponent names)
   RelNormalizedPath movesUp names ->
-    Path.Path False
+    Ast.Path.Path False
       $ if movesUp == 0
         then
-          fmap Component.NameComponent names
-            <> pure Component.DotComponent
+          fmap Ast.Component.NameComponent names
+            <> pure Ast.Component.DotComponent
         else
-          fmap Component.NameComponent names
-            <> replicate movesUp Component.DotDotComponent
+          fmap Ast.Component.NameComponent names
+            <> replicate movesUp Ast.Component.DotDotComponent
 
 -- |
 -- Decompose into individual components.
@@ -490,7 +490,7 @@ toSegments = \case
     replicate movesUp (RelNormalizedPath 1 [])
       <> fmap (RelNormalizedPath 0 . pure) (reverse names)
 
-toNames :: Path -> [Name.Name]
+toNames :: Path -> [Ast.Name.Name]
 toNames = \case
   AbsNormalizedPath names -> names
   RelNormalizedPath _ names -> names
@@ -499,9 +499,9 @@ toNames = \case
 toBasename :: Path -> Text
 toBasename path =
   case toNames path of
-    head : _ -> Name.toBase head
+    head : _ -> Ast.Name.toBase head
     _ -> mempty
 
 toExtensions :: Path -> [Text]
 toExtensions =
-  reverse . Name.toExtensions . List.headOr Name.empty . toNames
+  reverse . Ast.Name.toExtensions . List.headOr Ast.Name.empty . toNames

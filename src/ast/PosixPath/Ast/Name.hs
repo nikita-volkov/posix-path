@@ -1,4 +1,4 @@
-module PosixPath.Structures.Name
+module PosixPath.Ast.Name
   ( Name,
 
     -- * Constructors
@@ -23,7 +23,7 @@ import Data.List qualified as List
 import Data.Serialize qualified as Cereal
 import Data.Serialize.Text ()
 import Data.Text qualified as Text
-import PosixPath.Structures.Name.NameSegment qualified as NameSegment
+import PosixPath.Ast.Name.NameSegment qualified as NameSegment
 import PosixPath.Util.MonadPlus
 import PosixPath.Util.Prelude hiding (empty, null)
 import Test.QuickCheck qualified as QuickCheck
