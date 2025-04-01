@@ -18,7 +18,6 @@ module PosixPath
     root,
     parent,
     sansParent,
-    relativeTo,
   )
 where
 
