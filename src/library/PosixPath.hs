@@ -7,6 +7,7 @@ module PosixPath
     toBasename,
     toExtensions,
     toSegments,
+    isAbsolute,
 
     -- * Partial constructors
     maybeFromText,
@@ -486,3 +487,21 @@ toBasename path =
 toExtensions :: Path -> [Text]
 toExtensions =
   reverse . Ast.Name.toExtensions . List.headOr Ast.Name.empty . toNames
+
+-- | Check if the path is absolute.
+--
+-- >>> isAbsolute "/a/b"
+-- True
+--
+-- >>> isAbsolute "a/b"
+-- False
+--
+-- >>> isAbsolute "/"
+-- True
+--
+-- >>> isAbsolute "."
+-- False
+isAbsolute :: Path -> Bool
+isAbsolute = \case
+  AbsNormalizedPath _ -> True
+  RelNormalizedPath _ _ -> False
