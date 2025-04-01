@@ -214,22 +214,23 @@ instance Hashable Path where
 
 -- * Partial constructors
 
+-- | Attempt to parse a path from text.
 maybeFromText :: Text -> Maybe Path
 maybeFromText =
   either (const Nothing) Just . Attoparsec.parseOnly (attoparsecParserOf <* Attoparsec.endOfInput)
 
--- | Parse file path.
+-- | Attempt to parse the standard file path which is an alias to 'String'.
 maybeFromFilePath :: FilePath -> Maybe Path
 maybeFromFilePath = maybeFromText . fromString
 
+-- | Attoparsec parser of 'Path'.
 attoparsecParserOf :: Attoparsec.Parser Path
 attoparsecParserOf =
-  fromPath <$> Ast.Path.attoparsecParserOf
+  fromAst <$> Ast.Path.attoparsecParserOf
 
--- |
--- Normalize a path.
-fromPath :: Ast.Path.Path -> Path
-fromPath (Ast.Path.Path root components) =
+-- | Construct from AST.
+fromAst :: Ast.Path.Path -> Path
+fromAst (Ast.Path.Path root components) =
   foldr step finish components 0 []
   where
     step component next !collectedMovesUp !collectedNames =
@@ -424,33 +425,11 @@ relativeTo = \case
   AbsNormalizedPath _targetComponents ->
     error "TODO"
 
--- |
--- >>> without "b/c" "a/b/c"
--- Just "./a"
---
--- >>> without "b/c" "/a/b/c"
--- Just "./a"
---
--- >>> without "b/c" "a/b"
--- Nothing
---
--- >>> without "/b/c" "/a/b/c"
--- Nothing
---
--- >>> without "a" "a"
--- .
---
--- >>> without "/b/c" "/b/c"
--- .
-without :: Path -> Path -> Maybe Path
-without =
-  error "TODO"
-
 -- * Accessors
 
+-- | Compile to strict text builder.
 toTextBuilder :: Path -> TextBuilder.TextBuilder
-toTextBuilder =
-  Ast.Path.toTextBuilder . toPath
+toTextBuilder = Ast.Path.toTextBuilder . toAst
 
 -- | Compile to standard file path string.
 toFilePath :: Path -> FilePath
@@ -460,8 +439,8 @@ toFilePath = toList . toText
 toText :: Path -> Text
 toText = TextBuilder.run . toTextBuilder
 
-toPath :: Path -> Ast.Path.Path
-toPath = \case
+toAst :: Path -> Ast.Path.Path
+toAst = \case
   AbsNormalizedPath names ->
     Ast.Path.Path True (fmap Ast.Component.NameComponent names)
   RelNormalizedPath movesUp names ->
@@ -475,7 +454,7 @@ toPath = \case
             <> replicate movesUp Ast.Component.DotDotComponent
 
 -- |
--- Decompose into individual components.
+-- Decompose into individual segments. I.e., the parts separated by slashes.
 toSegments :: Path -> [Path]
 toSegments = \case
   AbsNormalizedPath names ->
