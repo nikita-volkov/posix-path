@@ -89,19 +89,38 @@ instance Hashable Name where
     where
       extendHash = flip hashWithSalt
 
+-- * Constructors
+
 empty :: Name
 empty =
   Name mempty mempty
 
 mapExtensions :: ([Text] -> [Text]) -> Name -> Name
-mapExtensions f (Name base extensions) =
-  Name base (f extensions)
+mapExtensions f = runIdentity . traverseExtensions (Identity . f)
+
+maybeFromText :: Text -> Maybe Name
+maybeFromText text =
+  Attoparsec.parseOnly (attoparsecParserOf <* Attoparsec.endOfInput) text
+    & either (const Nothing) Just
 
 -- * Functors
 
 traverseExtensions :: (Functor f) => ([Text] -> f [Text]) -> Name -> f Name
 traverseExtensions f (Name base extensions) =
-  Name base <$> f extensions
+  f extensions
+    & fmap
+      ( \list ->
+          list
+            & concatMap
+              ( \extension ->
+                  case maybeFromText extension of
+                    Just (Name base' extensions') ->
+                      (extensions' <> [base'])
+                        & filter (not . Text.null)
+                    Nothing -> []
+              )
+            & Name base
+      )
 
 attoparsecParserOf :: Attoparsec.Parser Name
 attoparsecParserOf = do

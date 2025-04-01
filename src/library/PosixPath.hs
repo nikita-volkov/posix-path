@@ -1,5 +1,3 @@
-{-# OPTIONS_GHC -Wno-unused-top-binds #-}
-
 module PosixPath
   ( Path,
 
@@ -14,10 +12,28 @@ module PosixPath
     maybeFromText,
     maybeFromFilePath,
 
+    -- * Parsers
+    attoparsecParserOf,
+
     -- * Constructors
     root,
-    parent,
-    sansParent,
+    dropParent,
+    addExtension,
+    dropExtension,
+    dropExtensions,
+    deabsolutize,
+
+    -- * Idioms
+
+    -- | Getting the parent directory
+    --
+    -- >>> "a/b" <> ".." :: Path
+    -- "./a"
+
+    -- | Isolating to just the file name
+    --
+    -- >>> (dropParent . dropExtensions) "/a/b.c.d" :: Path
+    -- "./b"
   )
 where
 
@@ -92,6 +108,11 @@ import TextBuilder qualified
 --
 -- The 'Monoid' instance makes paths composable and provides the following behaviour.
 --
+-- Empty path is the same as dot:
+--
+-- >>> mempty :: Path
+-- "."
+--
 -- Appending a relative path nests it:
 --
 -- >>> "/a/b" <> "c.d" :: Path
@@ -135,6 +156,7 @@ instance IsString Path where
       . Attoparsec.parseOnly (attoparsecParserOf <* Attoparsec.endOfInput)
       . fromString
 
+-- | Renders as a string literal.
 instance Show Path where
   show = show . toText
 
@@ -295,52 +317,36 @@ mapExtensions :: ([Text] -> [Text]) -> Path -> Path
 mapExtensions mapper =
   runIdentity . traverseExtensions (Identity . mapper)
 
--- | Add file extension to the sansParent component of the path.
+-- | Add file extension to the last segment of the path.
+--
+-- >>> addExtension "tar" "/a/b"
+-- "/a/b.tar"
+--
+-- >>> addExtension "gz" "/a/b.tar"
+-- "/a/b.tar.gz"
+--
+-- >>> addExtension "gitignore" ""
+-- "./.gitignore"
+--
+-- Extra dots in the extension are ignored:
+--
+-- >>> addExtension ".gitignore" ""
+-- "./.gitignore"
+--
+-- In fact dots are interpreted as extension delimiters:
+--
+-- >>> addExtension "tar.gz" ""
+-- "./.tar.gz"
 addExtension :: Text -> Path -> Path
 addExtension ext = mapExtensions (ext :)
 
--- | Get the parent directory.
+-- | Make the path non-absolute.
 --
--- Is essentially the same as the following idiom:
+-- >>> deabsolutize "/a/b"
+-- "./a/b"
 --
--- >parent a == a <> ".."
---
--- If the path is root, the same path will be returned:
---
--- >>> parent "/"
--- "/"
---
--- If the path is relative and is either empty or points outside,
--- another level will be added.
---
--- >>> parent "."
--- ".."
---
--- >>> parent ".."
--- "../.."
---
--- For all other cases the behaviour should be self-evident:
---
--- >>> parent "/a/b"
--- "/a"
---
--- >>> parent "a/b"
--- "./a"
---
--- >>> parent "a"
--- "."
---
--- >>> parent "../a"
--- ".."
-parent :: Path -> Path
-parent = \case
-  AbsNormalizedPath names -> case names of
-    _ : tail -> AbsNormalizedPath tail
-    [] -> AbsNormalizedPath []
-  RelNormalizedPath movesUp names -> case names of
-    _ : tail -> RelNormalizedPath movesUp tail
-    [] -> RelNormalizedPath (succ movesUp) []
-
+-- >>> deabsolutize "a/b"
+-- "./a/b"
 deabsolutize :: Path -> Path
 deabsolutize = \case
   AbsNormalizedPath names -> RelNormalizedPath 0 names
@@ -348,33 +354,55 @@ deabsolutize = \case
 
 -- | Drop path to the parent directory.
 --
--- >>> sansParent "/a/b"
+-- >>> dropParent "/a/b"
 -- "./b"
 --
--- >>> sansParent "a/b"
+-- >>> dropParent "a/b"
 -- "./b"
 --
--- >>> sansParent "../a/b"
+-- >>> dropParent "../a/b"
 -- "./b"
 --
--- >>> sansParent ".."
+-- >>> dropParent ".."
 -- "."
 --
--- >>> sansParent "."
+-- >>> dropParent "."
 -- "."
 --
--- >>> sansParent "/"
+-- >>> dropParent "/"
 -- "."
-sansParent :: Path -> Path
-sansParent = fromNames . toNames
+dropParent :: Path -> Path
+dropParent = fromNames . toNames
   where
     fromNames = \case
       head : _ -> RelNormalizedPath 0 [head]
       _ -> RelNormalizedPath 0 []
 
--- | Drop last extension.
-sansExtension :: Path -> Path
-sansExtension = mapHeadName $ Ast.Name.mapExtensions $ List.drop 1
+-- | Drop last extension if there is one.
+--
+-- >>> dropExtension "/a/b.c.d"
+-- "/a/b.c"
+--
+-- >>> dropExtension "/a/b.c"
+-- "/a/b"
+--
+-- >>> dropExtension "/a/b"
+-- "/a/b"
+--
+-- >>> dropExtension "/"
+-- "/"
+dropExtension :: Path -> Path
+dropExtension = mapHeadName $ Ast.Name.mapExtensions $ List.drop 1
+
+-- | Drop all extensions.
+--
+-- >>> dropExtensions "/a/b.c.d"
+-- "/a/b"
+--
+-- >>> dropExtensions "a"
+-- "./a"
+dropExtensions :: Path -> Path
+dropExtensions = mapHeadName $ Ast.Name.mapExtensions $ const []
 
 -- * Accessors
 
@@ -406,6 +434,14 @@ toAst = \case
 
 -- |
 -- Decompose into individual segments. I.e., the parts separated by slashes.
+--
+-- >>> toSegments "a/b.c.d"
+-- ["./a","./b.c.d"]
+--
+-- Information about the absolute path is retained in the first segment:
+--
+-- >>> toSegments "/a/b.c.d"
+-- ["/a","./b.c.d"]
 toSegments :: Path -> [Path]
 toSegments = \case
   AbsNormalizedPath names ->
@@ -424,13 +460,29 @@ toNames = \case
   AbsNormalizedPath names -> names
   RelNormalizedPath _ names -> names
 
--- | File name sans extensions.
+-- | File name sans extensions and path to it.
+--
+-- >>> toBasename "/a/b.c.d"
+-- "b"
+--
+-- >>> toBasename "/a/b"
+-- "b"
+--
+-- >>> toBasename "/a/.gitignore"
+-- ""
 toBasename :: Path -> Text
 toBasename path =
   case toNames path of
     head : _ -> Ast.Name.toBase head
     _ -> mempty
 
+-- | Convert to a list of extensions.
+--
+-- >>> toExtensions "/a/b.c.d"
+-- ["c","d"]
+--
+-- >>> toExtensions "/a/b"
+-- []
 toExtensions :: Path -> [Text]
 toExtensions =
   reverse . Ast.Name.toExtensions . List.headOr Ast.Name.empty . toNames
