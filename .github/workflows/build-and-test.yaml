@@ -20,10 +20,10 @@ jobs:
         include:
           - ghc: ${{ inputs.minimal-ghc }}
             ghc-options: ""
-            skip-haddock: "true"
-            skip-tests: "false"
-            skip-cabal-check: "true"
-            skip-doctest: ${{ inputs.skip-doctest }}
+            skip-haddock: true
+            skip-tests: false
+            skip-cabal-check: true
+            skip-doctest: true
           - ghc: latest
             skip-doctest: ${{ inputs.skip-doctest }}
 

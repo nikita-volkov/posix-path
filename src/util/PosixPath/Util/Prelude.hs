@@ -10,7 +10,6 @@ import Data.Bool as X
 import Data.Char as X
 import Data.Coerce as X
 import Data.Either as X
-import Data.Enum as X
 import Data.Eq as X
 import Data.Foldable as X hiding (toList)
 import Data.Function as X
@@ -33,6 +32,7 @@ import Data.Tuple as X
 import Data.Void as X
 import Data.Word as X
 import Debug.Trace as X
+import GHC.Enum as X
 import GHC.Exts as X (IsList (..))
 import GHC.Generics as X (Generic)
 import GHC.Num as X

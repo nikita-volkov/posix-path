@@ -12,6 +12,7 @@ module PosixPath.Ast.Name
     -- * Destructors
     null,
     toTextBuilder,
+    toText,
     toBase,
     toExtensions,
   )
@@ -144,6 +145,9 @@ toTextBuilder (Name base extensions) =
     (\extension next -> next <> "." <> TextBuilder.text extension)
     (TextBuilder.text base)
     extensions
+
+toText :: Name -> Text
+toText = TextBuilder.run . toTextBuilder
 
 toBaseSortKey :: Name -> NaturalSort.SortKey
 toBaseSortKey = NaturalSort.sortKey . toBase

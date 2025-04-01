@@ -434,27 +434,21 @@ toAst = \case
             <> replicate movesUp Ast.Component.DotDotComponent
 
 -- |
--- Decompose into individual segments. I.e., the parts separated by slashes.
+-- Decompose into individual segments as texts. I.e., the parts separated by slashes.
 --
 -- >>> toSegments "a/b.c.d"
--- ["./a","./b.c.d"]
---
--- Information about the absolute path is retained in the first segment:
+-- ["a","b.c.d"]
 --
 -- >>> toSegments "/a/b.c.d"
--- ["/a","./b.c.d"]
-toSegments :: Path -> [Path]
-toSegments = \case
-  AbsNormalizedPath names ->
-    case reverse names of
-      head : tail ->
-        AbsNormalizedPath [head]
-          : fmap (RelNormalizedPath 0 . pure) tail
-      _ ->
-        [AbsNormalizedPath []]
-  RelNormalizedPath movesUp names ->
-    replicate movesUp (RelNormalizedPath 1 [])
-      <> fmap (RelNormalizedPath 0 . pure) (reverse names)
+-- ["a","b.c.d"]
+--
+-- >>> toSegments "."
+-- []
+--
+-- >>> toSegments "/"
+-- []
+toSegments :: Path -> [Text]
+toSegments = fmap Ast.Name.toText . reverse . toNames
 
 toNames :: Path -> [Ast.Name.Name]
 toNames = \case

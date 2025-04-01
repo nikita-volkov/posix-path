@@ -1,7 +1,16 @@
 cabal-version: 3.0
 name: posix-path
 version: 0
-synopsis: Algebraic Path Data-Structure
+synopsis: Flexible and simple path manipulation library
+description:
+  Path library that:
+
+  - Makes paths monoidally composable and provides a rich algebra
+  - Avoids type-level wizardry
+  - Doesn't target Windows
+    - Thus maintaining focus and avoiding quirks
+
+category: Path, FilePath, Filesystem
 author: Nikita Volkov <nikita.y.volkov@mail.ru>
 maintainer: Nikita Volkov <nikita.y.volkov@mail.ru>
 copyright: (c) 2023 Nikita Volkov
@@ -125,7 +134,7 @@ library util
 
   build-depends:
     QuickCheck >=2.14 && <3,
-    base,
+    base >=4.14 && <5,
     hashable >=1.3 && <2,
     text >=1.2 && <3,
 
