@@ -5,7 +5,7 @@ on:
     inputs:
       minimal-ghc:
         type: string
-        default: 8.8.1
+        default: 8.10.1
       skip-doctest:
         type: boolean
         default: false
