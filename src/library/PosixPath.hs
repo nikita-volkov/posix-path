@@ -325,7 +325,7 @@ addExtension ext = mapExtensions (ext :)
 -- "/a"
 --
 -- >>> parent "a/b"
--- "a"
+-- "./a"
 --
 -- >>> parent "a"
 -- "."
@@ -349,22 +349,22 @@ deabsolutize = \case
 -- | Drop path to the parent directory.
 --
 -- >>> sansParent "/a/b"
--- "b"
+-- "./b"
 --
 -- >>> sansParent "a/b"
--- "b"
+-- "./b"
 --
 -- >>> sansParent "../a/b"
--- "b"
+-- "./b"
 --
 -- >>> sansParent ".."
--- ".."
+-- "."
 --
 -- >>> sansParent "."
 -- "."
 --
 -- >>> sansParent "/"
--- "/"
+-- "."
 sansParent :: Path -> Path
 sansParent = fromNames . toNames
   where
@@ -375,55 +375,6 @@ sansParent = fromNames . toNames
 -- | Drop last extension.
 sansExtension :: Path -> Path
 sansExtension = mapHeadName $ Ast.Name.mapExtensions $ List.drop 1
-
--- * Partial mappers
-
--- | Given a destination path and context path, compute a path that leads from context to destination.
---
--- >>> relativeTo "a/b/c" "a/b"
--- Just ".."
---
--- >>> relativeTo "a/c" "a/b"
--- Just "../b"
---
--- >>> relativeTo "b" "a"
--- Just "../a"
---
--- >>> relativeTo "b" "."
--- Just ".."
---
--- >>> relativeTo "." "a"
--- Just "a"
---
--- >>> relativeTo "b" "/a"
--- Just "/a"
---
--- >>> relativeTo "/a/b" "/a"
--- Just ".."
---
--- It's impossible to derive a diff from an absolute path to a relative path:
---
--- >>> relativeTo "/b" "a"
--- Nothing
---
--- It's impossible to derive a diff from outside:
---
--- >>> relativeTo ".." "a"
--- Nothing
---
--- You can view this as a sort of a subtraction operation.
-relativeTo ::
-  Path ->
-  Path ->
-  Maybe Path
-relativeTo = \case
-  RelNormalizedPath _targetMovesUp _targetComponents -> \case
-    RelNormalizedPath _sourceMovesUp _sourceComponents ->
-      error "TODO"
-    AbsNormalizedPath _sourceComponents ->
-      error "TODO"
-  AbsNormalizedPath _targetComponents ->
-    error "TODO"
 
 -- * Accessors
 

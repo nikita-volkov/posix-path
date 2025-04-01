@@ -44,12 +44,9 @@ common base
     LiberalTypeSynonyms
     MultiParamTypeClasses
     MultiWayIf
-    NoFieldSelectors
     NoImplicitPrelude
     NoMonomorphismRestriction
     NumericUnderscores
-    OverloadedLabels
-    OverloadedRecordDot
     OverloadedStrings
     ParallelListComp
     PatternGuards

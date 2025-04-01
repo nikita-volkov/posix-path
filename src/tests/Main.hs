@@ -122,6 +122,6 @@ itEquals name a b =
   it name (shouldBe a b)
 
 itFollowsLaws :: (HasCallStack) => Test.QuickCheck.Classes.Laws -> Spec
-itFollowsLaws laws =
-  describe laws.lawsTypeclass do
-    forM_ laws.lawsProperties (uncurry prop)
+itFollowsLaws Test.QuickCheck.Classes.Laws {..} =
+  describe lawsTypeclass do
+    forM_ lawsProperties (uncurry prop)
