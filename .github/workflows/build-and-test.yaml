@@ -9,21 +9,23 @@ on:
       skip-doctest:
         type: boolean
         default: false
+      skip-haddock:
+        type: boolean
+        default: false
+      skip-cabal-check:
+        type: boolean
+        default: false
 
 jobs:
-  build-and-test:
+  build:
     strategy:
       fail-fast: false
       matrix:
         include:
           - ghc: ${{ inputs.minimal-ghc }}
-            ghc-options: ""
             skip-tests: false
-            skip-haddock: true
-            skip-cabal-check: true
-            skip-doctest: true
           - ghc: latest
-            skip-doctest: ${{ inputs.skip-doctest }}
+            ghc-options: ""
 
     runs-on: ubuntu-latest
 
@@ -39,30 +41,22 @@ jobs:
       - name: Configure the build
         shell: bash
         run: |
-          cabal configure${{ !matrix.skip-tests && ' --enable-tests --enable-benchmarks' || ''}}${{ !matrix.skip-haddock && ' --enable-documentation' || ''}}
+          cabal configure${{ !matrix.skip-tests && ' --enable-tests --enable-benchmarks' || ''}}
           cabal build all --dry-run
-
-      - name: Extract metadata from cabal file
-        id: cabal-metadata
-        uses: nikita-volkov/extract-metadata-from-cabal.github-action@v1
 
       - name: Restore cached dependencies
         uses: actions/cache/restore@v4
         id: cache
         env:
-          key: ${{ runner.os }}-ghc-${{ steps.setup.outputs.ghc-version }}-cabal-${{ steps.setup.outputs.cabal-version }}
+          key: ${{ runner.os }}-${{ steps.setup.outputs.cabal-version }}-${{ steps.setup.outputs.ghc-version }}-${{ github.job }}
         with:
           path: ${{ steps.setup.outputs.cabal-store }}
-          key: ${{ env.key }}-plan-${{ hashFiles('**/plan.json') }}
-          restore-keys: ${{ env.key }}-
+          key: ${{ env.key }}-${{ hashFiles('**/plan.json') }}
+          restore-keys: ${{ env.key }}
 
       - name: Install dependencies
         shell: bash
-        run: cabal build all --only-dependencies${{ !matrix.skip-tests && ' --enable-tests --enable-benchmarks' || ''}}${{ !matrix.skip-haddock && ' --enable-documentation' || ''}} -j +RTS -A128m -n2m -N -RTS --ghc-options="${{ matrix.ghc-options }}"
-
-      - name: Install doctest
-        if: ${{ !matrix.skip-doctest }}
-        run: cabal install doctest --overwrite-policy=always
+        run: cabal build all --only-dependencies${{ !matrix.skip-tests && ' --enable-tests --enable-benchmarks' || ''}} -j +RTS -A128m -n2m -N -RTS --ghc-options="${{ matrix.ghc-options }}"
 
       - name: Save dependencies cache
         uses: actions/cache/save@v4
@@ -80,17 +74,105 @@ jobs:
         shell: bash
         run: cabal test all --test-show-details streaming -j +RTS -A128m -n2m -N -RTS --ghc-options="${{ matrix.ghc-options }}"
 
+  doctest:
+    if: ${{ !inputs.skip-doctest }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up GHC
+        id: setup
+        uses: haskell-actions/setup@v2
+
+      - name: Configure the build
+        shell: bash
+        run: |
+          cabal configure
+          cabal build all --dry-run
+
+      - name: Extract metadata from cabal file
+        id: cabal-metadata
+        uses: nikita-volkov/extract-metadata-from-cabal.github-action@v1
+
+      - name: Restore cached dependencies
+        uses: actions/cache/restore@v4
+        id: cache
+        env:
+          key: ${{ runner.os }}-${{ steps.setup.outputs.cabal-version }}-${{ steps.setup.outputs.ghc-version }}-${{ github.job }}
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ env.key }}-${{ hashFiles('**/plan.json') }}
+          restore-keys: ${{ env.key }}
+
+      - name: Install dependencies
+        shell: bash
+        run: cabal build all --only-dependencies -j +RTS -A128m -n2m -N -RTS
+
+      - name: Install doctest
+        run: cabal install doctest --overwrite-policy=always
+
+      - name: Save dependencies cache
+        uses: actions/cache/save@v4
+        if: ${{ steps.cache.outputs.cache-primary-key != steps.cache.outputs.cache-matched-key }}
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ steps.cache.outputs.cache-primary-key }}
+
       - name: Run doctests
-        if: ${{ !matrix.skip-doctest }}
         shell: bash
         run: cabal repl --with-compiler=doctest ${{ steps.cabal-metadata.outputs.name }}
-        
-      - name: Build docs
-        if: ${{ !matrix.skip-haddock }}
-        shell: bash
-        run: cabal haddock -j +RTS -A128m -n2m -N -RTS --ghc-options="${{ matrix.ghc-options }}"
-    
+
+  cabal-check:
+    if: ${{ !inputs.skip-cabal-check }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up GHC
+        id: setup
+        uses: haskell-actions/setup@v2
+
       - name: Check cabal file
-        if: ${{ !matrix.skip-cabal-check }}
         shell: bash
         run: cabal check
+
+  haddock:
+    if: ${{ !inputs.skip-haddock }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up GHC
+        id: setup
+        uses: haskell-actions/setup@v2
+
+      - name: Configure the build
+        shell: bash
+        run: |
+          cabal configure --enable-documentation
+          cabal build all --dry-run
+
+      - name: Restore cached dependencies
+        uses: actions/cache/restore@v4
+        id: cache
+        env:
+          key: ${{ runner.os }}-${{ steps.setup.outputs.cabal-version }}-${{ steps.setup.outputs.ghc-version }}-${{ github.job }}
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ env.key }}-${{ hashFiles('**/plan.json') }}
+          restore-keys: ${{ env.key }}
+
+      - name: Install dependencies
+        shell: bash
+        run: cabal build all --only-dependencies --enable-documentation -j +RTS -A128m -n2m -N -RTS
+
+      - name: Save dependencies cache
+        uses: actions/cache/save@v4
+        if: ${{ steps.cache.outputs.cache-primary-key != steps.cache.outputs.cache-matched-key }}
+        with:
+          path: ${{ steps.setup.outputs.cabal-store }}
+          key: ${{ steps.cache.outputs.cache-primary-key }}
+
+      - name: Build docs
+        shell: bash
+        run: cabal haddock -j +RTS -A128m -n2m -N -RTS
