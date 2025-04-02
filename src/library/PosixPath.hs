@@ -19,6 +19,7 @@ module PosixPath
     -- * Constructors
     root,
     dropParent,
+    dropLastSegment,
     addExtension,
     dropExtension,
     dropExtensions,
@@ -50,17 +51,22 @@ import Test.QuickCheck qualified as QuickCheck
 import TextBuilder qualified
 
 -- |
--- Composable automatically normalized path.
+-- Composable normalized path with a powerful algebra and consistent behaviour.
 --
--- It has an instance of 'IsString',
+-- - It has 'toFilePath' and 'maybeFromFilePath' conversions,
+-- which let you easily integrate it with any 'FilePath'-oriented libs.
+-- - It has an instance of 'IsString',
 -- so you can use string literals to define it.
--- It also has a 'toFilePath' conversion,
--- which lets you easily integrate it with any 'FilePath'-oriented libs.
+-- - It provides a 'Monoid' instance replacing the `(</>)` operator of other libs with a standard lawful abstraction.
+-- - It is automatically normalized, ensuring that various representations of the same path are equal, produce equal hashes and get ordered the same.
+-- - It implements [natural sorting](https://en.wikipedia.org/wiki/Natural_sort_order).
+-- - It integrates with 'Text' using 'toText' and 'maybeFromText'.
+-- - It integrates with \"attoparsec\" via 'attoparsecParserOf'.
 --
 -- === Normalization
 --
 -- Internally 'Path' models a normalized form,
--- making it easier to reason about and allowing to achieve the following behaviour.
+-- removing many ambiguities and allowing to achieve the following behaviour.
 --
 -- The trailing slash gets ignored:
 --
@@ -128,6 +134,40 @@ import TextBuilder qualified
 --
 -- >>> "/a/b" <> "/c" :: Path
 -- "/c"
+--
+-- === Consistent equality, order and hashing
+--
+-- Thanks to 'Path' being in normalized form, the equality is consistent:
+--
+-- >>> ("./a/b" :: Path) == "a/b"
+-- True
+--
+-- >>> ("./a/b" :: Path) == "a/b/"
+-- True
+--
+-- >>> ("./a/b" :: Path) == "a//b/"
+-- True
+--
+-- >>> ("./a/b" :: Path) == "a/../a/b/"
+-- True
+--
+-- None of the above would hold for 'FilePath'.
+--
+-- Same logic applies to ordering and hashing.
+--
+-- === Natural sorting
+--
+-- The path is sorted [naturally](https://en.wikipedia.org/wiki/Natural_sort_order), meaning that the segments are compared as numbers if they are all digits.
+-- This is useful for sorting paths with version numbers:
+--
+-- >>> import Data.List (sort)
+-- >>> sort ["a/1", "a/11", "a/20", "a/2", "a/10"] :: [Path]
+-- ["./a/1","./a/2","./a/10","./a/11","./a/20"]
+--
+-- where with 'FilePath' you would get:
+--
+-- >>> sort ["a/1", "a/11", "a/20", "a/2", "a/10"] :: [FilePath]
+-- ["a/1","a/10","a/11","a/2","a/20"]
 data Path
   = -- | Absolute path.
     AbsNormalizedPath
@@ -279,6 +319,9 @@ fromAst (Ast.Path.Path root components) =
 -- "/"
 --
 -- Prepending it to a relative path will make it absolute.
+--
+-- >>> root <> "a/b"
+-- "/a/b"
 root :: Path
 root =
   AbsNormalizedPath []
@@ -329,14 +372,17 @@ mapExtensions mapper =
 -- >>> addExtension "gitignore" ""
 -- "./.gitignore"
 --
--- Extra dots in the extension are ignored:
+-- Dots in the prefix are ignored:
 --
 -- >>> addExtension ".gitignore" ""
 -- "./.gitignore"
 --
--- In fact dots are interpreted as extension delimiters:
+-- In fact dots are interpreted as extension delimiters, meaning that the following two are equivalent:
 --
 -- >>> addExtension "tar.gz" ""
+-- "./.tar.gz"
+--
+-- >>> (addExtension "gz" . addExtension "tar") ""
 -- "./.tar.gz"
 addExtension :: Text -> Path -> Path
 addExtension ext = mapExtensions (ext :)
@@ -378,6 +424,28 @@ dropParent = fromNames . toNames
     fromNames = \case
       head : _ -> RelNormalizedPath 0 [head]
       _ -> RelNormalizedPath 0 []
+
+-- | Drop the last segment of the path.
+--
+-- >>> dropLastSegment "./a/b.c.d"
+-- "./a"
+--
+-- >>> dropLastSegment "./a"
+-- "."
+--
+-- >>> dropLastSegment "."
+-- "."
+--
+-- >>> dropLastSegment "/"
+-- "/"
+--
+-- >>> dropLastSegment ".."
+-- ".."
+dropLastSegment :: Path -> Path
+dropLastSegment =
+  mapNames \case
+    [] -> []
+    _ : tail -> tail
 
 -- | Drop last extension if there is one.
 --
@@ -447,6 +515,14 @@ toAst = \case
 --
 -- >>> toSegments "/"
 -- []
+--
+-- If you also want to retain the information on the path being absolute, use this in combination with 'isAbsolute':
+--
+-- >>> let path = "/a/b.c.d" :: Path
+-- >>> toSegments path
+-- ["a","b.c.d"]
+-- >>> isAbsolute path
+-- True
 toSegments :: Path -> [Text]
 toSegments = fmap Ast.Name.toText . reverse . toNames
 
@@ -455,7 +531,7 @@ toNames = \case
   AbsNormalizedPath names -> names
   RelNormalizedPath _ names -> names
 
--- | File name sans extensions and path to it.
+-- | Get the last segment sans extensions.
 --
 -- >>> toBasename "/a/b.c.d"
 -- "b"
