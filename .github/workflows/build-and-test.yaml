@@ -11,17 +11,15 @@ on:
         default: false
 
 jobs:
-
   build-and-test:
-
     strategy:
       fail-fast: false
       matrix:
         include:
           - ghc: ${{ inputs.minimal-ghc }}
             ghc-options: ""
-            skip-haddock: true
             skip-tests: false
+            skip-haddock: true
             skip-cabal-check: true
             skip-doctest: true
           - ghc: latest
@@ -30,7 +28,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-
       - uses: actions/checkout@v4
 
       - name: Set up GHC ${{ matrix.ghc }}
@@ -42,13 +39,13 @@ jobs:
       - name: Configure the build
         shell: bash
         run: |
-          cabal configure${{ matrix.skip-tests != 'true' && ' --enable-tests --enable-benchmarks' || ''}}${{ matrix.skip-haddock != 'true' && ' --enable-documentation' || ''}}
+          cabal configure${{ !matrix.skip-tests && ' --enable-tests --enable-benchmarks' || ''}}${{ !matrix.skip-haddock && ' --enable-documentation' || ''}}
           cabal build all --dry-run
 
       - name: Extract metadata from cabal file
         id: cabal-metadata
         uses: nikita-volkov/extract-metadata-from-cabal.github-action@v1
-          
+
       - name: Restore cached dependencies
         uses: actions/cache/restore@v4
         id: cache
@@ -58,13 +55,13 @@ jobs:
           path: ${{ steps.setup.outputs.cabal-store }}
           key: ${{ env.key }}-plan-${{ hashFiles('**/plan.json') }}
           restore-keys: ${{ env.key }}-
-      
+
       - name: Install dependencies
         shell: bash
-        run: cabal build all --only-dependencies${{ matrix.skip-tests != 'true' && ' --enable-tests --enable-benchmarks' || ''}}${{ matrix.skip-haddock != 'true' && ' --enable-documentation' || ''}} -j +RTS -A128m -n2m -N -RTS --ghc-options="${{ matrix.ghc-options }}"
+        run: cabal build all --only-dependencies${{ !matrix.skip-tests && ' --enable-tests --enable-benchmarks' || ''}}${{ !matrix.skip-haddock && ' --enable-documentation' || ''}} -j +RTS -A128m -n2m -N -RTS --ghc-options="${{ matrix.ghc-options }}"
 
       - name: Install doctest
-        if: ${{ matrix.skip-doctest != 'true' }}
+        if: ${{ !matrix.skip-doctest }}
         run: cabal install doctest --overwrite-policy=always
 
       - name: Save dependencies cache
@@ -76,24 +73,24 @@ jobs:
 
       - name: Build
         shell: bash
-        run: cabal build all${{ matrix.skip-tests != 'true' && ' --enable-tests --enable-benchmarks' || ''}} -j +RTS -A128m -n2m -N -RTS --ghc-options="${{ matrix.ghc-options }}"
+        run: cabal build all${{ !matrix.skip-tests && ' --enable-tests --enable-benchmarks' || ''}} -j +RTS -A128m -n2m -N -RTS --ghc-options="${{ matrix.ghc-options }}"
 
       - name: Test
-        if: ${{ matrix.skip-tests != 'true' }}
+        if: ${{ !matrix.skip-tests }}
         shell: bash
         run: cabal test all --test-show-details streaming -j +RTS -A128m -n2m -N -RTS --ghc-options="${{ matrix.ghc-options }}"
 
       - name: Run doctests
-        if: ${{ matrix.skip-doctest != 'true' }}
+        if: ${{ !matrix.skip-doctest }}
         shell: bash
         run: cabal repl --with-compiler=doctest ${{ steps.cabal-metadata.outputs.name }}
         
       - name: Build docs
-        if: ${{ matrix.skip-haddock != 'true' }}
+        if: ${{ !matrix.skip-haddock }}
         shell: bash
         run: cabal haddock -j +RTS -A128m -n2m -N -RTS --ghc-options="${{ matrix.ghc-options }}"
     
       - name: Check cabal file
-        if: ${{ matrix.skip-cabal-check != 'true' }}
+        if: ${{ !matrix.skip-cabal-check }}
         shell: bash
         run: cabal check
