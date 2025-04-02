@@ -17,15 +17,15 @@ jobs:
   format:
     uses: nikita-volkov/haskell-hackage-lib-github-actions-workflows/.github/workflows/format.yaml@v3
     secrets: inherit
-  
-  test:
-    uses: nikita-volkov/haskell-hackage-lib-github-actions-workflows/.github/workflows/check.yaml@v3
+
+  build:
+    uses: nikita-volkov/check-haskell-fast.github-actions-workflow/.github/workflows/check-haskell-fast.yaml@v1
     secrets: inherit
   
   release:
     needs:
       - format
-      - test
+      - build
     uses: nikita-volkov/haskell-hackage-lib-github-actions-workflows/.github/workflows/release.yaml@v3
     secrets: inherit
     with:

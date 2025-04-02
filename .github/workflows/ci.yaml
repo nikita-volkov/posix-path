@@ -6,13 +6,17 @@ on:
       - master
   pull_request:
 
+concurrency:
+  group: ci
+  cancel-in-progress: true
+
 jobs:
 
   format:
     uses: nikita-volkov/haskell-hackage-lib-github-actions-workflows/.github/workflows/format.yaml@v3
     secrets: inherit
-  
-  test:
-    uses: ./.github/workflows/build-and-test.yaml
+
+  build:
+    uses: nikita-volkov/check-haskell-fast.github-actions-workflow/.github/workflows/check-haskell-fast.yaml@v1
     secrets: inherit
   
